@@ -8,6 +8,10 @@
   background-color: $body-background-color;
 }
 
+svg{
+  background-color: transparent;
+}
+
 ::selection {
   color: $white;
   background: $link-color;
