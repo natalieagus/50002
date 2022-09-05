@@ -1,0 +1,297 @@
+.stackedit__toc ul {
+    background-image:none;
+    padding: 0;
+    margin-left:20px;
+  }
+.stackedit__toc ul a {
+  background-image:none;
+  margin: 0rem 0;
+  padding: 0rem 1rem;
+}
+.stackedit__toc ol {
+  background-image:none;
+  margin-left: -20px;
+}
+.stackedit__toc ul ul {
+  background-image:none;
+  color: #888;
+  font-size: 13px;
+}
+
+.stackedit__toc ul ul a {
+  background-image:none;
+  margin: 0;
+  padding: 0.1rem 1rem;
+}
+.stackedit__toc li {
+  background-image:none;
+  display: block;
+}
+.stackedit__toc a {
+  background-image:none;
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.stackedit__toc a:active {
+  background-image: none;
+  color: $purple-lt-100;
+}
+
+// .stackedit__toc a:hover {
+//   background-color: $toc-hover ;
+//   border-radius: 3px  ;
+//   background-image:none  ;
+//   color: $purple-000 ;
+// }
+
+.stackedit-scrolled{
+  background-color: $toc-hover !important;
+  border-radius: 3px !important ;
+  background-image:none !important ;
+  color: $purple-000 !important;
+}
+
+.stackedit-clicked{
+  background-color: $toc-hover !important;
+  border-radius: 3px !important ;
+  background-image:none !important ;
+  color: $purple-000 !important;
+}
+
+
+.grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.stackedit__left {
+  grid-column: 0;
+  grid-row: 1;
+  display: none;
+  width: 250px;
+  top: 5px;
+  padding: 1.5rem 0rem;
+  left: 0;
+  overflow: visible;
+  z-index: 100;
+  font-family: "Helvetica Neue";
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(184, 184, 184);
+  border-radius: 10px;
+}
+
+.stackedit__left__inner {
+  overflow-y: scroll;
+  height: 75vh;
+}
+
+@media (min-width: 1060px) {
+  .stackedit__left {
+    display: block;
+  }
+}
+
+  /* Style the buttons */
+.toc-btn {
+    border: none;
+    outline: none;
+    padding: 10px 16px;
+    background-color: #f1f1f1;
+    cursor: pointer;
+  }
+  
+/* Style the active class (and buttons on mouse-over) */
+.btn:active{
+    background-color: #666;
+    color: white;
+}
+
+.btnScrollToTop {
+  vertical-align: middle;
+  color: $top-icon-color;       
+  opacity: 0;   
+  width: 40px;
+  height: 40px;
+  padding-bottom: 8px;
+  color: $grey-dk-250;
+  background-color: $purple-lt-100;
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;    
+  border-radius: 50%; 
+  border: 0px solid rgb(255, 255, 255);
+  font: bold 30px monospace;       
+  transition: opacity 0.5s, transform 0.5s;
+  z-index: 200;
+}
+
+.btnScrollToTop.show {      
+  opacity: 1;  
+  transition: opacity 1s, transform 1s;     
+}
+
+.btnScrollToTop:active {
+  background-color: transparent;
+}
+
+
+.center_full {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.center_seventy {
+display: block;
+margin-left: auto;
+margin-right: auto;
+width: 70%;
+}
+.center_fifty {
+display: block;
+margin-left: auto;
+margin-right: auto;
+width: 50%;
+}
+
+.center_fourty {
+display: block;
+margin-left: auto;
+margin-right: auto;
+width: 40%;
+}
+
+.blueborder {
+  border-style: solid;
+  border-color: #287ec7;
+  padding: 10px;
+  line-height: 1.8;
+  color: black;
+}
+
+.redborder {
+border-style: solid;
+border-color: #ff0000;
+padding: 10px;
+line-height: 1.8;
+}
+
+.greenbox {
+background-color: #cfc;
+padding: 10px;
+border: 1px solid green;
+line-height: 1.8;
+color: black;
+}
+
+.orangebox {
+background-color: #ffe4b5;
+padding: 10px;
+border: 1px solid #ff8c00;
+line-height: 1.8;
+color: black;
+}
+
+.redbox {
+background-color: #ffe4e1;
+border: 1px solid #fa8072;
+display: block;
+padding: 10px;
+line-height: 1.8;
+color: black;
+}
+
+.bluebox {
+background-color: #f0f8ff;
+border: 1px solid #87cefa;
+display: block;
+padding: 10px;
+color: black;
+line-height: 1.8;
+}
+
+.yellowbox {
+background-color: #fff7aa;
+display: block;
+padding: 10px;
+line-height: 1.8;
+color: black;
+}
+
+.redtext {
+color: red;
+}
+
+.bluetext {
+color: blue;
+}
+
+.orangetext {
+color: #ff791a;
+}
+
+.greentext {
+color: green;
+}
+
+.collapsible_code {
+font-size: 0.9em;
+}
+
+
+/* Style the button that is used to open and close the collapsible content */
+.collapsible {
+background-color: $grey-lt-100;
+color: #444;
+cursor: pointer;
+padding: 5px;
+border: none;
+text-align: left;
+outline: none;
+font-size: 0.9em;
+font-weight: bold;
+line-height: 20pt;
+padding-left: 10px;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+//   .active,
+.collapsible.active {
+  background-color: $purple-lt-50;
+}
+
+.collapsible:hover{
+  background-color: $purple-lt-50;
+}
+
+/* Style the collapsible content. Note: hidden by default */
+.content_answer {
+padding: 0 10px;
+display: none;
+overflow: hidden;
+color: #444;
+background-color: $grey-lt-100;
+font-size: 0.9em;
+}
+
+
+.theme-toggle-button{
+  display: flex;
+  height: 100%;
+  padding: $gutter-spacing-sm;
+  align-items: center;
+  font-size: 1.5em;
+  cursor: pointer;
+}
+
+.theme-toggle-button.active{
+  background-color: none;
+}
