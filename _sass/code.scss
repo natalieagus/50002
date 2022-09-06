@@ -9,6 +9,9 @@ code {
   background-color: $code-background-color;
   border: $border $border-color;
   border-radius: $border-radius;
+  > span{
+    background-color: $code-background-color;
+  }
 }
 
 // Avoid appearance of dark border around visited code links in Safari
@@ -60,6 +63,7 @@ div.highlighter-rouge {
     padding: 0;
     margin: 0;
     border: 0;
+    background-color: $code-background-color;
   }
 }
 
@@ -79,6 +83,7 @@ figure.highlight {
     padding: 0;
     margin: 0;
     border: 0;
+    background-color: $code-background-color;
   }
 }
 

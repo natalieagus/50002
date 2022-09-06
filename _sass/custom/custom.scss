@@ -39,12 +39,11 @@
   color: $purple-lt-100;
 }
 
-// .stackedit__toc a:hover {
-//   background-color: $toc-hover ;
-//   border-radius: 3px  ;
-//   background-image:none  ;
-//   color: $purple-000 ;
-// }
+.stackedit__toc a:hover {
+  background-color: $toc-hover !important;
+  background-image:none !important ;
+  color: $purple-000 !important;
+}
 
 .stackedit-scrolled{
   background-color: $toc-hover !important;
@@ -72,7 +71,7 @@
   padding: 1.5rem 0rem;
   left: 0;
   overflow: visible;
-  z-index: 100;
+  z-index: 2;
   font-family: "Helvetica Neue";
 }
 
@@ -128,7 +127,7 @@
   border: 0px solid rgb(255, 255, 255);
   font: bold 30px monospace;       
   transition: opacity 0.5s, transform 0.5s;
-  z-index: 200;
+  z-index: 10;
 }
 
 .btnScrollToTop.show {      

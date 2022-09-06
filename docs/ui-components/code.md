@@ -39,6 +39,14 @@ Lorem ipsum dolor sit amet, `<inline code snippet>` adipisicing elit, sed do eiu
 
 Use Jekyll's built-in syntax highlighting with Rouge for code blocks by using three backticks, followed by the language name:
 
+```js
+// Javascript code with syntax highlighting.
+var fun = function lang(l) {
+  dateformat.i18n = require('./lang/' + l)
+  return true;
+}
+```
+
 <div class="code-example" markdown="1">
 ```js
 // Javascript code with syntax highlighting.

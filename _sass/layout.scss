@@ -100,6 +100,7 @@
   display: flex;
   min-height: $header-height;
   align-items: center;
+  font-weight: bold;
 
   @include mq(md) {
     height: $header-height;
