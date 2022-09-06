@@ -52,6 +52,7 @@ layout: table_wrappers
 
   <div class="side-bar">
     <div class="site-header">
+      <a class="theme-toggle-button toggle-theme">🌑</a>
       <a href="{{ '/' | absolute_url }}" class="site-title lh-tight">{% include title.html %}</a>
       <a href="#" id="menu-button" class="site-button">
         <svg viewBox="0 0 24 24" class="icon"><use xlink:href="#svg-menu"></use></svg>
@@ -104,7 +105,6 @@ layout: table_wrappers
                   {{ link.first }}
                 </a>
               </li>
-              <li class="aux-nav-list-item"><a class="theme-toggle-button toggle-theme">🌑</a></li>
             {% endfor %}
           </ul>
         </nav>
