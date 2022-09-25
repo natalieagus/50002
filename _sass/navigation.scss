@@ -199,6 +199,7 @@
   height: 100%;
   overflow-x: auto;
   @include fs-2;
+  width: $content-width - $search-results-width;
 
   .aux-nav-list {
     display: flex;
