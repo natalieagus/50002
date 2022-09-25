@@ -2,6 +2,8 @@ version: "3.5"
 
 services:
   jekyll:
+    environment:
+      - JEKYLL_ENV=production
     build:
       context: ./
     ports:
@@ -10,5 +12,5 @@ services:
       - .:/usr/src/app
     stdin_open: true
     tty: true
-    command: bundle exec jekyll serve -H 0.0.0.0 -t
+    command: bundle exec jekyll serve --host 0.0.0.0 --config _config.yml,_config_docker.yml
 
