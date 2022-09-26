@@ -13,48 +13,63 @@ function setTheme(){
     }
 }
 
+function setButtonsText(elements, value){
+    for (var i = 0; i<elements.length; i++){
+        elements[i].textContent = value;
+    }
+}
+
+function setClickEvent(elements){
+    for (var i = 0; i<elements.length; i++){
+        jtd.addEvent(elements[i], 'click', function(){
+            if (jtd.getTheme() === 'dark') {
+                jtd.setTheme('light');
+                // set both buttons to be light
+                setButtonsText(document.querySelectorAll('.toggle-theme'), '🌕')
+                localStorage.setItem('theme', 'light')
+            } else {
+                jtd.setTheme('dark');
+                // set both buttons to be dark
+                setButtonsText(document.querySelectorAll('.toggle-theme'), '🌑')
+                localStorage.setItem('theme', 'dark')
+            }
+        });
+    }
+}
+
 function setThemeToggle(){ 
     
     // Set current state of the icon based on current theme   
-    const toggleTheme = document.querySelector('.toggle-theme');
+    const toggleThemeButtons = document.querySelectorAll('.toggle-theme');
     var currentTheme = localStorage.getItem('theme');
+    
     if (currentTheme == 'dark') {
-        toggleTheme.textContent = '🌕';
+        setButtonsText(toggleThemeButtons, '🌑');
     } else {
-        toggleTheme.textContent = '🌑';
+        setButtonsText(toggleThemeButtons, '🌕');
     }
 
     // Setup toggle callback 
-    jtd.addEvent(toggleTheme, 'click', function(){
-        if (jtd.getTheme() === 'dark') {
-            jtd.setTheme('light');
-            toggleTheme.textContent = '🌑';
-            localStorage.setItem('theme', 'light')
-        } else {
-            jtd.setTheme('dark');
-            toggleTheme.textContent = '🌕';
-            localStorage.setItem('theme', 'dark')
-        }
-    });
+    setClickEvent(toggleThemeButtons);
 
     // Setup hover callback
     $(".toggle-theme").hover(
         () => { //hover
-            const toggleTheme = document.querySelector('.toggle-theme');
+            const toggleThemeButtons = document.querySelectorAll('.toggle-theme');
             var currentTheme = localStorage.getItem('theme');
             if (currentTheme == 'dark') {
-                toggleTheme.textContent = '🌕';
+                setButtonsText(toggleThemeButtons, '🌕')
             } else {
-                toggleTheme.textContent = '🌑';
+                setButtonsText(toggleThemeButtons, '🌑')
             }
         }, 
         () => { //out
-            const toggleTheme = document.querySelector('.toggle-theme');
+            const toggleThemeButtons = document.querySelectorAll('.toggle-theme');
             var currentTheme = localStorage.getItem('theme');
             if (currentTheme == 'dark') {
-                toggleTheme.textContent = '🌑';
+                setButtonsText(toggleThemeButtons, '🌑')
             } else {
-                toggleTheme.textContent = '🌕';
+                setButtonsText(toggleThemeButtons, '🌕')
             }
         }
         );

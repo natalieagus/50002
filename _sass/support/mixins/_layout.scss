@@ -21,6 +21,27 @@
   }
 }
 
+// Media query mixin
+// Usage:
+// @include mq(md) {
+//   ..medium and below styles
+// }
+@mixin mq-max($name) {
+  // Retrieves the value from the key
+  $value: map-get($media-queries, $name);
+
+  // If the key exists in the map
+  @if $value {
+    // Prints a media query based on the value
+    @media (max-width: rem($value)) {
+      @content;
+    }
+  } @else {
+    @warn "No value could be retrieved from `#{$media-query}`. "
+      + "Please make sure it is defined in `$media-queries` map.";
+  }
+}
+
 // Responsive container
 
 @mixin container {

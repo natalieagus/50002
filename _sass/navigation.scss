@@ -200,13 +200,17 @@
   overflow-x: auto;
   @include fs-2;
   width: $content-width - $search-results-width;
-
+  
   .aux-nav-list {
+    justify-content: right;
     display: flex;
     height: 100%;
     padding: 0;
     margin: 0;
     list-style: none;
+    @include mq-max(md) { // medium and down styles
+      justify-content: left;
+    }
   }
 
   .aux-nav-list-item {
@@ -216,9 +220,6 @@
     margin: 0;
   }
 
-  @include mq(md) {
-    padding-right: $gutter-spacing-sm;
-  }
 }
 
 // Breadcrumb nav

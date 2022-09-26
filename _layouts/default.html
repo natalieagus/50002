@@ -54,12 +54,12 @@ layout: table_wrappers
 
   <div class="side-bar">
     <div class="site-header">
-      <a class="theme-toggle-button toggle-theme">🌑</a>
-      
-      <a href="{{ '/' | relative_url }}" class="site-title lh-tight">{% include title.html %}</a>
       <a href="#" id="menu-button" class="site-button">
         <svg viewBox="0 0 24 24" class="icon"><use xlink:href="#svg-menu"></use></svg>
       </a>
+      
+      <a href="{{ '/' | relative_url }}" class="site-title lh-tight">{% include title.html %}</a>
+      <a class="theme-toggle-button toggle-theme theme-toggle-button-screen-small">🌑</a>
     </div>
     <nav aria-label="Main" id="site-nav" class="site-nav">
       {% assign pages_top_size = site.html_pages
@@ -142,6 +142,7 @@ layout: table_wrappers
                 </a>
               </li>
             {% endfor %}
+            <a class="theme-toggle-button toggle-theme theme-toggle-button-screen-large">🌑</a>
           </ul>
         </nav>
       {% endif %}

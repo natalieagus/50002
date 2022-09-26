@@ -289,6 +289,18 @@ font-size: 1.5em;
 cursor: pointer;
 }
 
+.theme-toggle-button-screen-small{
+  @include mq(md) {
+    display: none;
+  }
+}
+
+.theme-toggle-button-screen-large{
+  @include mq-max(md) {
+    display: none;
+  }
+}
+
 .theme-toggle-button.active{
 background-color: none;
 }
