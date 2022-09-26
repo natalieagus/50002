@@ -135,7 +135,7 @@
 
   &:hover,
   &.active {
-    background-color: $feedback-color;
+    background-color: $feedback-color !important;
   }
 }
 
