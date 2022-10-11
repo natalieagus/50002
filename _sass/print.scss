@@ -6,15 +6,12 @@
   #edit-this-page,
   #back-to-top,
   .site-nav,
+  .side-bar,
+  .stackedit__left,
   .main-header {
     display: none !important;
   }
 
-  .side-bar {
-    width: 100%;
-    height: auto;
-    border-right: 0 !important;
-  }
 
   .site-header {
     border-bottom: 1px solid $border-color;
@@ -36,5 +33,11 @@
   .main {
     max-width: none;
     margin-left: 0;
+  }
+  
+  // prevent horrendous linebreaks
+  p {
+    display: inline;
+    break-inside: avoid;
   }
 }

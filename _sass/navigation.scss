@@ -89,13 +89,13 @@
         padding-left: #{$nav-list-item-height / 4};
       }
 
-      &:hover {
-        background-image: linear-gradient(
-          -90deg,
-          rgba($feedback-color, 1) 0%,
-          rgba($feedback-color, 0.8) 100%
-        );
-      }
+      // &:hover {
+      //   background-image: linear-gradient(
+      //     -90deg,
+      //     rgba($feedback-color, 1) 0%,
+      //     rgba($feedback-color, 0.8) 100%
+      //   );
+      // }
 
       @if $nav-list-expander-right {
         svg {

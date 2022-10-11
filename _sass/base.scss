@@ -55,8 +55,7 @@ h5,
 h6,
 #toctitle {
   margin-top: 0;
-  margin-bottom: 1em;
-  font-weight: 500;
+  font-weight: 800;
   line-height: $body-heading-line-height;
   color: $body-heading-color;
 }
@@ -118,4 +117,26 @@ blockquote {
   margin-inline-start: 0;
   padding-left: 15px;
   border-left: 3px solid $border-color;
+  background-color: rgba($border-color, 0.3);
 }
+
+// scrollbar
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 10px;
+}
+
+*::-webkit-scrollbar-thumb:horizontal{
+  background: transparent;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgba($sidebar-color, 0.5);
+  
+}
+

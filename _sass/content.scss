@@ -67,14 +67,12 @@
   }
 
   ul {
-    list-style: none;
+    list-style-position: inside;
 
     > li {
       &::before {
         position: absolute;
-        margin-left: -1.4em;
         color: $grey-dk-000;
-        content: "•";
       }
     }
   }
@@ -208,7 +206,7 @@
   #toctitle {
     position: relative;
     margin-top: 1.5em;
-    margin-bottom: 0.25em;
+    margin-bottom: 1em;
 
     + table,
     + .table-wrapper,

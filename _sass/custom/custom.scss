@@ -36,25 +36,25 @@ text-decoration: none;
 
 .stackedit__toc a:active {
 background-image: none;
-color: $purple-lt-100;
+color: $toc-color-active;
 }
 
 .stackedit__toc a:hover {
 background-color: $toc-hover !important;
 background-image:none !important ;
-color: $purple-000 !important;
+color: $toc-color-active !important;
 }
 
 .stackedit-scrolled{
 background-color: $toc-hover !important;
 background-image:none !important ;
-color: $purple-000 !important;
+color: $toc-color-active !important;
 }
 
 .stackedit-clicked{
 background-color: $toc-hover !important;
 background-image:none !important ;
-color: $purple-000 !important;
+color: $toc-color-active !important;
 }
 
 
@@ -73,16 +73,7 @@ left: 0;
 overflow: visible;
 z-index: 1;
 font-family: "Helvetica Neue";
-}
 
-::-webkit-scrollbar {
-width: 8px;
-background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-background: rgb(184, 184, 184);
-border-radius: 10px;
 }
 
 .stackedit__left__inner {
@@ -303,4 +294,11 @@ cursor: pointer;
 
 .theme-toggle-button.active{
 background-color: none;
+}
+
+
+b,
+strong {
+  font-weight: bold;
+  color: $bold-color;
 }
