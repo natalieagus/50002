@@ -14,7 +14,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 title: 50.002 CS 
-description: Computation Structures Course Site
+description: Full stack development starts here, literally.
 baseurl: "/50002" # the subpath of your site, e.g. /blog
 url: "https://natalieagus.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 

@@ -6,7 +6,8 @@ description: "This course introduces the **architecture** of digital systems, em
 permalink: /
 ---
 
-## Introduction
+## Hello World!
+<strong>*Full stack development starts here.*</strong>
 
 This course introduces the **architecture** of digital systems, emphasising structural principles common to a wide range of technologies, including:
 * Multi-level implementation strategies

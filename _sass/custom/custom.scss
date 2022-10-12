@@ -159,7 +159,7 @@ width: 40%;
 
 .blueborder {
 border-style: solid;
-border-color: #287ec7;
+border-color: #0000ff;
 padding: 10px;
 line-height: 1.8;
 color: black;
@@ -173,45 +173,41 @@ line-height: 1.8;
 }
 
 .greenbox {
-background-color: #cfc;
+background-color: $code-background-color;
 padding: 10px;
-border: 1px solid green;
+border: 1px solid $green-300;
 line-height: 1.8;
-color: black;
 }
 
 .orangebox {
-background-color: #ffe4b5;
+background-color: $code-background-color;
 padding: 10px;
-border: 1px solid #ff8c00;
+border: 1px solid $highlight-orange;
 line-height: 1.8;
-color: black;
 }
 
 .redbox {
-background-color: #ffe4e1;
-border: 1px solid #fa8072;
+background-color: $code-background-color;
+border: 1px solid $red-300;
 display: block;
 padding: 10px;
 line-height: 1.8;
-color: black;
 }
 
 .bluebox {
-background-color: #f0f8ff;
-border: 1px solid #87cefa;
+background-color: $code-background-color;
+border: 1px solid $blue-300;
 display: block;
 padding: 10px;
-color: black;
 line-height: 1.8;
 }
 
 .yellowbox {
-background-color: #fff7aa;
+background-color: $code-background-color;
+border: 1px solid $yellow-300;
 display: block;
 padding: 10px;
 line-height: 1.8;
-color: black;
 }
 
 .redtext {
@@ -237,8 +233,8 @@ font-size: 0.9em;
 
 /* Style the button that is used to open and close the collapsible content */
 .collapsible {
-background-color: $grey-lt-100;
-color: #444;
+background-color: $collapsible-bg-color;
+color: $collapsible-font-color;
 cursor: pointer;
 padding: 5px;
 border: none;
@@ -253,11 +249,11 @@ padding-left: 10px;
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
 //   .active,
 .collapsible.active {
-background-color: $purple-lt-50;
+background-color: $collapsible-active-bg-color;
 }
 
 .collapsible:hover{
-background-color: $purple-lt-50;
+background-color: $collapsible-active-bg-color;
 }
 
 /* Style the collapsible content. Note: hidden by default */
@@ -265,8 +261,8 @@ background-color: $purple-lt-50;
 padding: 0 10px;
 display: none;
 overflow: hidden;
-color: #444;
-background-color: $grey-lt-100;
+color: $collapsible-font-color;
+background-color: $collapsible-body-color;
 font-size: 0.9em;
 }
 

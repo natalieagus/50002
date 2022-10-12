@@ -26,6 +26,7 @@ Singapore University of Technology and Design
 
 One of the cheapest ways to encode information in terms of 0s and 1s is using    voltage levels, illustrated in the diagram below. 
 
+
 <img src="/50002/assets/contentimage/notes_b/1.png"  class="center_seventy"/>
 
 This is how digital circuits work. This method of determining *discrete* values out of analog voltage (which value is originally made up of real number, and therefore *continuous* and *infinite*) is called the **digital abstraction**. We need to find a way to determine **digital** signal values out of analog voltage values. 
@@ -93,7 +94,8 @@ Consider two digital devices connected in series as shown in the figure below. T
 
 >*Why is this so?*
 
-<img src="https://dropbox.com/s/9lejkhiqx50ga8y/p4.png?raw=1"    style="width: 80%;" >
+
+<img src="https://dropbox.com/s/9lejkhiqx50ga8y/p4.png?raw=1"  style="width: 80%;" >
 
 This explanation can be made clear with the following example. Suppose we supply 0.5V and Device 1 is able to produce also 0.5V, which means digital bit . 
 * However, the problem is that a *wire*, that connects two or more combinational devices together is susceptible to **noise**. 

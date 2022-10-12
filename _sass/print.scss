@@ -8,18 +8,15 @@
   .site-nav,
   .side-bar,
   .stackedit__left,
-  .main-header {
+  .main-header, 
+  .collapsible,
+  .btnScrollToTop
+   {
     display: none !important;
   }
 
-
-  .site-header {
-    border-bottom: 1px solid $border-color;
-  }
-
-  .site-title {
-    font-size: $root-font-size !important;
-    font-weight: 700 !important;
+  h2 {
+    break-before: always;
   }
 
   .text-small {
@@ -35,9 +32,17 @@
     margin-left: 0;
   }
   
-  // prevent horrendous linebreaks
+  // prevent horrendous linebreaks between texts
   p {
     display: inline;
     break-inside: avoid;
+    page-break-inside: avoid;
   }
+
+  img {
+    display: inline;
+    break-inside: avoid;
+  }
+
+
 }

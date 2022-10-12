@@ -103,7 +103,12 @@ $highlight-aqua         : #8abeb7;
 $highlight-blue         : #81a2be;
 $highlight-purple       : #b294bb;
 
-//
+// Collapsible
+$collapsible-bg-color: $grey-lt-100;
+$collapsible-font-color: $body-text-color;
+$collapsible-body-color: $grey-lt-100;
+$collapsible-active-bg-color: $purple-lt-50;
+
 // Spacing
 
 $spacing-unit: 1rem; // 1rem == 16px
