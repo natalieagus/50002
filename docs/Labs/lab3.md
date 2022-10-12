@@ -128,8 +128,7 @@ Click the checkoff button (the **green tick** at the upper right window of JSim)
 ### Part 2: Compare Unit
 Design a 32-bit compare unit that generates one of two constants (`0` or `1`) depending on the `ALUFN` control signals (used to select the comparison to be performed) and the `Z`, `V`, and `N` outputs of the adder/subtractor unit.  
 
-<span style="background-color:yellow; color: black">Clearly the high order 31 bits of the output are **always zero** (use that connection to connect `0` in JSim to zero `cmp[31:1]`).  The least significant bit of the output is determined by the answer to the **comparison** being performed.
-</span>
+Clearly the high order 31 bits of the output are **always zero** (use that connection to connect `0` in JSim to zero `cmp[31:1]`).  The least significant bit of the output is determined by the answer to the **comparison** being performed.
 
 <img src="/50002/assets/contentimage/lab3/7.png"  class=" center_seventy"/>
 

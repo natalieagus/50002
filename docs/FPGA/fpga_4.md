@@ -64,7 +64,7 @@ out = memory_unit.read_data;
 * Number of bits for `.raddr` / `waddr` is $$\log_2$$(`DEPTH`). 
 * **Important** documentation: 
 	*  `.read_data` always produces the output from `.raddr` supplied in the previous clock cycle. <> The documentation says that if you supplied address `A` at `t=0`, then at `t=1` (next clock cycle), `Mem[A]` is produced at `.read_data` port. 
-	*  <span style="background-color:yellow; color: black"> If you perform **read and write** to the **same location** at the **same clock cycle** e.g: at`t=0`, the result of the data written will be observed only **two clock cycles later** at `t=2`. *At `t=1`, the old data is still produced at the read port.* 
+  * If you perform **read and write** to the **same location** at the **same clock cycle** e.g: at`t=0`, the result of the data written will be observed only **two clock cycles later** at `t=2`. *At `t=1`, the old data is still produced at the read port.* 
 
 You can familiarise yourself first with how the memory unit works using an `fsm`. 
 * Perform some writes onto the memory unit, and then

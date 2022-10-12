@@ -62,7 +62,7 @@ The goal of this lab is to build a fully functional Beta Processor. It is a huge
  
 <img src="/50002/assets/contentimage/lab4/beta_lab.png"  class="center_full"/><br>
 
-The signals indicated in <span  style="background-color:red; color:white">red</span> refers to external **`INPUT`** to our Beta, supplied by the **Memory Unit** defined in our checkoff file:`lab4checkoff.jsim`. The signals indicated in yellow<>  refers to our Beta's **`OUTPUT`** to the **Memory Unit** defined in `lab4checkoff.jsim`.  
+The signals indicated in red refers to external **`INPUT`** to our Beta, supplied by the **Memory Unit** defined in our checkoff file:`lab4checkoff.jsim`. The signals indicated in yellow<>  refers to our Beta's **`OUTPUT`** to the **Memory Unit** defined in `lab4checkoff.jsim`.  
 
 ## Bus unit
 There exist the `bus` unit inside `stdcell.jsim` that will come in handy to duplicate certain nodes for you with a different name. It is defined as such:
