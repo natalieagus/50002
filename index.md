@@ -2,7 +2,7 @@
 layout: default
 title: Home
 nav_order: 1
-description: "This course introduces the **architecture** of digital systems, emphasising structural principles common to a wide range of technologies."
+description: "Full stack development starts here."
 permalink: /
 ---
 
