@@ -17,6 +17,7 @@ Information Systems Technology and Design
 Singapore University of Technology and Design
 
 # The CMOS Technology
+{: .no_toc}
 [You can find the lecture video here. ](https://youtu.be/JqgZcV_1IU4)You can also **click** on each header to bring you to the section of the video covering the subtopic. 
   
 ## [Overview](https://www.youtube.com/watch?v=JqgZcV_1IU4&t=0s)
@@ -52,11 +53,8 @@ Current flows between the diffusion terminals (source and drain) if the voltage 
 Notable parts of  MOSFET and its function:
 
   1.  MOSFETs are devices that are used to 'switch' 1s to 0s (high voltage to low voltage) and vice versa, so that we can implement functionalities (truth table or logics)
-
   2.  It has 4 terminals. Input is supplied at the **gate**, and output is obtained at the **drain**.
-
   3.  The current flow between source and drain $$I_{DS}$$ is proportional to $$\frac{W}{L}$$ (the width and the length) of the MOSFET.
-
   4.  Source and drain is physically symmetrical, we name them depending on the type of the MOSFET.
 
 Some basic recap before we move on: 
@@ -72,9 +70,7 @@ If we connect these MOSFETs connected in a specific way, we can **create** a com
 There are two types of FETs: the **NFET** and the **PFET**.
 
 1.  **The NFET** : the majority of the charge carrier for the **bulk** are *holes* (p-type semiconductor). The majority of the charge carrier for the **source and drain** are electrons (n-type semiconductor). Typically, the bulk is connected to GND to keep the PN junction *reverse biased*.
-
 	>Please watch the pre-preading video or refer to the later section if you are unclear about what is a PN junction, p-type, or n-type semiconductors.
-
 2.  **The PFET** : the majority of the charge carrier for the **bulk** are electrons (n-type semiconductor). The majority of the charge carrier for the **source and drain** are holes (p-type semiconductor). Typically, the bulk is connected to `VDD` to keep the PN junction *reverse biased*
 
 
@@ -89,7 +85,7 @@ Some terms we need to set straight before we proceed:
 
 The circuit symbol for NFET and PFET are shown as below. Note that the bulk of NFET is connected to `GND`, and the bulk of PFET is connected to `VDD`.
 
-<img src="https://dropbox.com/s/qd1zhsulqjmknv2/pfetnfet.png?raw=1"  style="width: 70%;"    >
+<img src="https://dropbox.com/s/qd1zhsulqjmknv2/pfetnfet.png?raw=1"  class="center_seventy"    >
 
 ## Switching NFETs and PFETs ON/OFF
 
@@ -100,12 +96,11 @@ See the figure below and its corresponding explanation to understand better how 
 
 ###  [How NFET operates](https://www.youtube.com/watch?v=JqgZcV_1IU4&t=819s)
 
-<img src="https://dropbox.com/s/7oevad7tcpr2ob4/nfet_t.png?raw=1" style="width: 70%;"  >	  
+<img src="https://dropbox.com/s/7oevad7tcpr2ob4/nfet_t.png?raw=1" class="center_seventy"  >	  
 
 1.  Connections:
 	- Bulk is connected to `GND` to keep the PN junction reverse biased, meaning that no current should flow or leak between source and bulk and between drain and bulk.
 	- S (and also bulk) is connected to `GND` for NFET. Current from D is therefore *drained* to `GND` connected to S.
-	
 2.  It is "**ON**" when $$V_{GS} = V_G - V_S$$ is **high** enough. Since source terminal is connected to the `GND` for NFET, 
 	- $$V_{GS} = V_G - 0 = V_G$$, 
 	- the NFET is \"ON\" whenever $$V_G$$ is high enough, i.e: $$> V_{TH}$$.
@@ -121,7 +116,7 @@ See the figure below and its corresponding explanation to understand better how 
 
 ###  [How PFET operates](https://www.youtube.com/watch?v=JqgZcV_1IU4&t=960s)
 
-<img src="https://dropbox.com/s/u7nuy6cayaik0q7/pfet_t.png?raw=1"  style="width: 70%;" >	  
+<img src="https://dropbox.com/s/u7nuy6cayaik0q7/pfet_t.png?raw=1"  class="center_seventy" >	  
 
 1.  The PFET symbol is similar to NFET except that it has the by the  bubble $$\circ$$.
 2. Conversely, 
@@ -205,7 +200,7 @@ To form a fully **functional combinational logic device** that implements a part
 
 There are two parts of CMOS: **the pull-up circuit** and **the pull-down circuit**. Its *general schematic* is shown in the figure below:
 
- <img src="https://dropbox.com/s/ywble3yr4bxj99z/cmos.png?raw=1"   style="width: 80%;"   >F
+ <img src="https://dropbox.com/s/ywble3yr4bxj99z/cmos.png?raw=1"   class="center_seventy"   >F
 
 
 Contents of the pull-up circuit:
@@ -240,7 +235,7 @@ The main building blocks of the CMOS complements is summarized as below:
 
 For example, the following is a CMOS circuitry for a NAND gate: 
 
-<img src="https://dropbox.com/s/pfkmo27rmgiklbo/nand.png?raw=1"    style="width: 70%;"  >
+<img src="https://dropbox.com/s/pfkmo27rmgiklbo/nand.png?raw=1"    class="center_seventy"  >
   
 
 There are two inputs to this circuit, called A and B. A low or high voltage representing bit `0` or bit `1` respectively can be supplied to both input terminals. From the diagram, A is connected to the PFET on the **left** and the NFET on the **top**. B is connected to the PFET on the **right** and the NFET on the **bottom**. 

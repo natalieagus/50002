@@ -19,7 +19,7 @@ Singapore University of Technology and Design
 Modified by: Kenny Choo, Natalie Agus, Oka Kurniawan (2021)
 
 # Lab 3: Arithmetic Logic Unit
-
+{: .no_toc}
 ## Starter Code
 The following files inside your `/50002/` folder are what you're going to open and modify or study for this lab, then submit (unless otherwise stated):
 - `lab3_alu.jsim` 

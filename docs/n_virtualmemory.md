@@ -16,6 +16,7 @@ Information Systems Technology and Design
 Singapore University of Technology and Design
 
 # Virtual Memory
+{: .no_toc}
 [You can find the lecture video here.](https://youtu.be/19wS4GC6mbQ) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
  
 ## [Overview](https://www.youtube.com/watch?v=19wS4GC6mbQ&t=0s)
@@ -24,7 +25,7 @@ The physical memory can contain all kinds of information, and is typically segme
 
 > A **program** and a **process** are terms that are  very closely related. Formally, we refer to a **program** as a group of instructions made carry out a specified task whereas a process simply means *a program that is currently run* or *a program in execution*. We can open and run the same program `N` times simultaneously, forming `N` distinct processes (e.g: opening multiple instances of text editors). 
 
-<img src="https://dropbox.com/s/m1vg38rki9m5z1i/memimage.png?raw=1" style="width: 70%;"  >
+<img src="https://dropbox.com/s/m1vg38rki9m5z1i/memimage.png?raw=1" class="center_seventy"  >
 
 In the lower address (address `0` onwards), we typically have executable instructions loaded there (PC starts from `0`). 
 
@@ -65,7 +66,7 @@ In virtual memory, we use a part of the disk as an *extension* to the physical m
 
  A **page** is a fixed-size block of data that forms   *contiguous* physical memory addresses,  as illustrated in the figure below:
 
-<img src="https://dropbox.com/s/janbxcdijndlhc4/page.png?raw=1" style="width: 60%;"   >
+<img src="https://dropbox.com/s/janbxcdijndlhc4/page.png?raw=1" class="center_seventy"   >
   
 > It is very *useful* and *efficient* to transfer data in *pages* (instead of word by word) between the physical memory and disk due to **locality of reference.**
 
@@ -185,22 +186,19 @@ There are three other columns, `D`, `R`, and `LRU` (if `LRU` is the chosen repla
 	* This bit is present only if replacement policy used is LRU. 
 	* It indicates the LRU ordering of the *pages* **resident** in the physical memory. 
 		> This information is used to decide which page in the physical memory can be *replaced* in the event that it is full and the CPU asks for a `VA` which actual *content* is not resident.  
-	* The number of LRU bits *needed per entry in the pagetable* is $$v$$ (#VPN) bits, since the number of entries in the pagetable is $$2^v$$. We assume a vanilla, naive LRU implementation here, although in practice various optimisation may be done. The LRU bits simply behaves as a **pointer** to the row *containing* the LRU PPN, therefore we need at least $$v$$ bits and not $$#PPN$$ bits. 
+	* The number of LRU bits *needed per entry in the pagetable* is $$v$$ (#VPN) bits, since the number of entries in the pagetable is $$2^v$$. We assume a vanilla, naive LRU implementation here, although in practice various optimisation may be done. The LRU bits simply behaves as a **pointer** to the row *containing* the LRU PPN, therefore we need at least $$v$$ bits and not #$$PPN$$ bits. 
 
 #### [Pagetable Arithmetic](https://www.youtube.com/watch?v=19wS4GC6mbQ&t=1990s)
 
 **Assuming we have byte addressing,** given a `VA` of `(v+p)` bits and a `PA` of `(m+p)` bits, we can deduce the following information:
 *  The size of VM is: $$2^{v+p}$$ bytes 
-
 *  The actual size of the physical memory is: $$2^{m+p}$$ 
-
 *  The Pagetable must store $$(2 + m) \times 2^v$$ bits (please ignore the video's mistake in it stating $$2+m+v$$):
 	* There are $$2^v$$ rows, 
 	* each row stores `m` bits of `PPN`
 	* plus helper bits:  `2` bits for `D` and `R`, `v` bits for `LRU` ordering
 	* The $$v$$ VPN bits are *not exactly stored* as entries in the pagetable, but used as *indexing* (addressing, eg: using a decoder to select exactly one pagetable row using $$v$$ bits as the selector to the decoder)
 	* Note that the $$v$$ bits is often drawn as the first column of the Pagetable. This is just to make your computation *easier*, but they're actually used for **indexing** only as explained in the point above. 
-
 *  There are $$2^{p}$$ bytes per page.
 
 
@@ -218,7 +216,6 @@ The MMU device has a component called the `Pagetable Pointer`, and it can be set
 
 There is only one problem with storing the Pagetable in the physical memory: It causes us to access the (slow) physical memory twice.
 1.  Look up Pagetable to translate the `VA` to PA
-
 1.  Access the Physical Memory again to get the content `Mem[PA]`. 
 
 Therefore this *cheap* solution to utilize a portion of the Physical Memory to store the Pagetable *comes at the cost of reduced performance.* 
@@ -257,7 +254,6 @@ However, the main idea of demand paging is that *data is not copied from the swa
 > We ignore the presence of *data cache* and TLB for now, for the sake of simplicity in explanation. We will add it back to the picture later on. 
 
 *  ***At first*** (when the program has just been opened) its entire content is placed on the swap space of the disk. 
-
 *  Pages will only be brought up to physical memory if the program code asks for it.
 
 When a computer is turned off, every bits of information is stored in its non-volatile memory storage (disk, NAND flash, etc). 
@@ -271,9 +267,7 @@ The OS Kernel is (*one of the*) first programs that is loaded onto the physical 
 The moment a request to open a program is made,  the OS Kernel:
 1. Allocates and prepares the *almost the entire virtual memory space* for this program on the disk's swap space, 
 	> Only *a small subset*, essentially the program's *entry point* (elf table, main function, initial stack) is put onto the physical memory, and everything else is loaded later.
-
 2. and *copies* contents required for execution over to this designated swap space from the *storage* part of the disk.
-
 	> All *instructions* necessary for this program to run, its *stack space*, *heap space*, etc are nicely prepared by the OS Kernel before the program begins execution. 
 
 Therefore, **almost all of its `VA` initially corresponds to some address on disk.** 
@@ -286,7 +280,7 @@ The OS Kernel will then handle this "*missing*" page and start copying them over
 
 Many page faults will occur as the program begins its execution **until most of the working set of pages are in physical memory** (not the entire program, as some programs can be way larger than the actual size of your physical memory, e.g: your video games. 
 
- In other words, the OS  Kernel bring only necessary pages that are going to be executed onto the physical memory  as the program runs, thus the name: ****demand paging**** for this technique.
+ In other words, the OS  Kernel bring only necessary pages that are going to be executed onto the physical memory  as the program runs, thus the name: **demand paging** for this technique.
 
 ### [Replacing Resident Pages](https://www.youtube.com/watch?v=19wS4GC6mbQ&t=2978s)
  
@@ -302,7 +296,7 @@ Finally when the program terminates, the OS Kernel  and frees up all the space i
 
 
 ### [An example](https://www.youtube.com/watch?v=19wS4GC6mbQ&t=3106s)
-<img src="https://dropbox.com/s/r8nia46u4gdw6gk/vmexample.png?raw=1" style="width: 70%;"  >
+<img src="https://dropbox.com/s/r8nia46u4gdw6gk/vmexample.png?raw=1" class="center_seventy"  >
 
 The figure above shows a snapshot of the physical memory state at some point in time. There exist a pagetable with 16 entries and 8 pages of data labeled as `A` to `H` in the physical memory. LRU replacement policy with write back policy is used. **Lower** LRU means that the data is **more recently used.** 
 
@@ -356,7 +350,7 @@ After page `D` write is done, the OS Kernel can copy page `I` over from the swap
 The state of the physical memory after **both** instructions are executed in sequence is:
 > `I'` is just a symbol of an updated page `I` after a `ST` instruction is completed
 
-<img src="https://dropbox.com/s/mis63e6z0nm0n3b/vmexample-after.png?raw=1" style="width: 70%;"  >
+<img src="https://dropbox.com/s/mis63e6z0nm0n3b/vmexample-after.png?raw=1" class="center_seventy"  >
 
 The new changes are written in blue. 
 
@@ -374,9 +368,7 @@ Actually, the CPU **switches** the execution of each programs from time to time;
 
 **Recall that:**
 * Each program *has its own virtual memory* (its like giving the illusion that each program has independent physical memory unit all for itself)
-
 * Therefore every program can be written as if it has access to all memory, without considering where other programs reside. 
-
 *  So for example, the `VA` of each program can start from `0x00000000` onwards but it actually points to different physical addresses on disk.
 
 
@@ -389,7 +381,6 @@ To distinguish between one program's `VA` address space with another, the OS Ker
 The context number can be appended to the requested `VPN` to find its correct `PPN` mapping: 
 
 * A register can be used (added to the MMU hardware) to hold the current context number `C`. 
-
 * The TLB `TAG` field contains both `C` and `VPN`. 
 * In the case of `MISS`, the Pagetable Pointer is updated to point to the *beginning* of the pagetable section for context `C`, and the index based on `VPN` finds the corresponding entry.  
 
@@ -412,7 +403,7 @@ Recall that a *cache* is used to store copies of memory addresses and its conten
 
 There are two possible options on where to assemble the cache hardware, **before** or **after** the MMU, each having its pros and cons. 
 
-  <img src="https://dropbox.com/s/j7l3t20a9cmt2ez/cacheMMU.png?raw=1"  style="width: 70%;" >
+  <img src="https://dropbox.com/s/j7l3t20a9cmt2ez/cacheMMU.png?raw=1"  class="center_seventy" >
 
 Note that if cache is placed before the MMU, then the cache stores `VA` (instead of PA) in its `TAG` field. 
 
@@ -424,7 +415,7 @@ Observe that if cache line selection is based on `PO` (unmapped, identical on bo
  
 Therefore we can arrange the components as such:
 
- <img src="https://dropbox.com/s/mdgucv6qubun01l/cachemmu2.png?raw=1"   style="width: 90%;">
+ <img src="https://dropbox.com/s/mdgucv6qubun01l/cachemmu2.png?raw=1"   class="center_seventy">
 
 Each cache line in the DW/NWSA used in the design above stores a *single word*  **(not pages)** in the `Content` field and its physical address in the `TAG` field.
 
@@ -441,12 +432,9 @@ Page must be fetched from the swap space and copied over to the Physical Memory.
 
 > Ask yourself these questions to enhance your understanding. 
 > * What happens if the page is `Not Resident` and if Physical Memory is full? Assume LRU policy is used. 
-> 
 > * Which part of the TLB that we need to update on each memory reference request? What about the cache? Why? 
-> 
 > * What should be done if TLB `MISS` happens? 
-> 
->* *Is it possible* for cache `HIT` to occur but the requested page is **not resident**? Why or why not?  
+> * Is it possible* for cache `HIT` to occur but the requested page is **not resident**? Why or why not?  
 
 
 ## [Summary](https://www.youtube.com/watch?v=19wS4GC6mbQ&t=4180s) 

@@ -17,6 +17,7 @@ Singapore University of Technology and Design
 
 
 # Assemblers and Compilers 
+{: .no_toc}
 [You can find the lecture video here.](https://youtu.be/Hhq3RhZcngQ) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
 ## [Overview](https://www.youtube.com/watch?v=Hhq3RhZcngQ&t=49s)
@@ -69,7 +70,7 @@ In order to write a code thats runnable in BSIM conveniently, we need:
 * A **symbolic language** (UASM) for representing strings of bits
 * A Program for translating UASM source code into binary. 
 
-<img src="https://dropbox.com/s/5krjxvccdmeesge/uasmstuff.png?raw=1" style="width: 70%;" >
+<img src="https://dropbox.com/s/5krjxvccdmeesge/uasmstuff.png?raw=1" class="center_seventy" >
 
 A UASM source file contains, in symbolic text, **values of successive bytes to be loaded into memory.** We can define various things in UASM source file:
 * **Basic values**: **Decimals**, **binary** (with `0b` prefix), and **hexadecimal** (with `0x` prefix) -- all will be loaded (from low to high address) as 1 byte each, separated by spaces. 

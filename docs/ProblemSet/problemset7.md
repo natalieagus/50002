@@ -18,7 +18,7 @@ Information Systems Technology and Design
 Singapore University of Technology and Design
 
 # Problem Set 7
-
+{: .no_toc}
 This page contains all practice questions that constitutes the topics learned in <ins>Week 10</ins>:  **Memory Hierarchy**, **Cache Issues**.
 
 Each topic's questions are grouped into **three** categories: basic, intermediate, and challenging. You are recommended to do all basic problem set before advancing further. 
@@ -174,7 +174,7 @@ Each question asks which cache(s) give the best hit rate for the sequence. Answe
 
 ## DM Cache Arithmetic (Basic)
 The diagram below illustrates a blocked, direct-mapped cache for a computer that uses 32-bit data words and 32-bit byte addresses. Assume that memory location `0x0012347B` was present in the cache.
-<img src="https://dropbox.com/s/z5hvlhyk97wa2xa/QnCache.png?raw=1"  style="width: 80%;">
+<img src="https://dropbox.com/s/z5hvlhyk97wa2xa/QnCache.png?raw=1"  class="center_seventy">
 
 1. Using the row and column labels from the figure, in what cache location could we find the data from that memory location? You may assume that e.g: Row 15 means index `0xF`, Row 14 means index `0xE`, and so on. 
 	<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
@@ -190,7 +190,7 @@ The diagram below illustrates a blocked, direct-mapped cache for a computer that
 
 Take a look at the following 3-way set associative cache:
 
-<img src="https://dropbox.com/s/eou2p0yh6j56s3k/3w.png?raw=1" style="width: 80%;" >
+<img src="https://dropbox.com/s/eou2p0yh6j56s3k/3w.png?raw=1" class="center_seventy" >
 
 The shaded region indicates that the tag-data cells are filled with some data. For the LRU bit, the higher value means that the item is more recently used. Assume that **word** addressing is used unless stated otherwise, and each instruction is 32-bit long. The label A, B, C, and 0 to 7 drawn in the picture is for you to identify which corresponding set and DM cache a particular data resides. According to the diagram, we have 8 sets, indexed from 0 to 7, and three DM caches (A to C) in total.
 

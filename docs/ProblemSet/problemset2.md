@@ -18,7 +18,7 @@ Information Systems Technology and Design
 Singapore University of Technology and Design
 
 # Problem Set 2
-
+{: .no_toc}
 This page contains all practice questions that constitutes the topics learned in <ins>Week 2</ins>: **CMOS Technology** and **Logic Synthesis**. 
 
 Each topic's questions are grouped into **three** categories: basic, intermediate, and challenging. You are recommended to do all basic problem set before advancing further. 
@@ -389,7 +389,7 @@ Y &= AB \bar{C} \bar{D} + AB \bar{C}D + \bar{A} \bar{B}CD + \bar{A}BCD + ABCD \\
 
 Anna Logue, a circuit designer who missed several early 6.004 lectures, is struggling to design her first CMOS logic gate. She has implemented the following circuit:
 
-<img src="https://dropbox.com/s/4a5ipod927ton7h/Q2.png?raw=1" style="width: 50%;"  >
+<img src="https://dropbox.com/s/4a5ipod927ton7h/Q2.png?raw=1" class="center_seventy"  >
 
 
 Anna has fabricated 100 test chips containing this circuit, and has a simple testing circuit which allows her to try out her proposed gate statically for various combinations of the A and B inputs. 
@@ -454,15 +454,15 @@ Answer the following questions based on the truth table:
 <ol type="1">
 <li>Sum-of-products expressionf or F is: $$\overline{A}\text{ }\overline{B}\text{ }\overline{C} + \overline{A}BC + A \overline{B}\text{ }\overline{C} + A \overline{B}C + ABC$$</li><br>
 <li> <strong>The minimal sum of products is:</strong> $$\overline{B}A + \overline{B} \text{ } \overline{C} + BC$$. You can draw a combinational circuit of this by adding an input to a  big OR gate for every '+', INV (where necessary for negated input) with AND gate for every *pair* of input in the minimal sum of products:<br>
-<img src="https://dropbox.com/s/39en3zjm86f3h6l/sumofpdt.png?raw=1"  style="width: 50%;" >
+<img src="https://dropbox.com/s/39en3zjm86f3h6l/sumofpdt.png?raw=1"  class="center_seventy" >
 <br>To turn AND and ORs into just NANDs, we can do this in two steps. First, turn the AND into NAND and add an inverter:<br>
-<img src="https://dropbox.com/s/o52diqfidgb7dul/sumofpdt1.png?raw=1"  style="width: 50%;" >
+<img src="https://dropbox.com/s/o52diqfidgb7dul/sumofpdt1.png?raw=1"  class="center_seventy" >
 <br>
 Then apply DeMorgan law:<br>
-<img src="https://dropbox.com/s/yzjpvf2xbn3car5/sumofpdt2.png?raw=1" style="width: 50%;"  >
+<img src="https://dropbox.com/s/yzjpvf2xbn3car5/sumofpdt2.png?raw=1" class="center_seventy"  >
 </li><br>
 <li> If we use A and B as the <strong>select</strong> inputs for the MUX, then the four data inputs of the MUX should be tied to one of "0" (ground), "1" (VDD), "C" or "NOT C". The following is one of the correct schematics that implement this function (there are other acceptable answers as well). Note that by changing the connections on the data inputs to the mux, we could implement any function of A, B and C.
-<br><img src="https://dropbox.com/s/0yykalujmctihu4/mux_stuff.png?raw=1"  style="width: 50%;" >
+<br><img src="https://dropbox.com/s/0yykalujmctihu4/mux_stuff.png?raw=1"  class="center_seventy" >
 </li><br>
 <li>We can just write *sum of product* for rows that results the `0`s in the table above, and then reduce the expression into: $$\overline{F} = B \overline{C} + \overline{A} \text{ } \overline{B} C$$</li></ol></p></div><br>
 

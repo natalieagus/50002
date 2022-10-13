@@ -20,7 +20,7 @@ Singapore University of Technology and Design
 **Natalie Agus (Fall 2020)**
 
 # Getting Started with FPGA: Part 3
-
+{: .no_toc}
 This is the final document in the series. It mainly shows how to handle I/O units, namely **reset**, **input button presses**, and **routing output to external LEDs**.  We will utilize all the parts we have learned before: combinational logic modules, sequential modules (with `dff` and `fsm`), usage of `counter` to slow the clock, and ROM. Finally, we will try to write our own constraints `.acf` file to connect our board to external LED outputs (or button/switch inputs). 
 
 *Note*: We won't be discussing how to use the 7 segment here. 
@@ -80,7 +80,7 @@ Now if you **hold** `io_button[0]` **long enough** then the output is reset back
 
 Consider the following time-plot of `reset`, `slowclock` and actual FPGA `clk`:
 
-<img src="https://dropbox.com/s/u8hh5xcjpej97yl/timesync.png?raw=1"   style="width: 70%;"  >
+<img src="https://dropbox.com/s/u8hh5xcjpej97yl/timesync.png?raw=1"   class="center_seventy"  >
 
 It is **entirely possible** for the slowclock (rising edge) to entirely **miss** the "reset" button (in our example, we used `io_button[0]` as manual reset) press *if the press isn't covering the shaded region* (depending on how slow the clock is).  
 
@@ -119,7 +119,7 @@ We need another module called the **edge detector** because we just want to have
 > In 1 second, 100 million cycles of the FPGA clock have passed. We only want ONE out of the 100 million cycles to trigger the +2.  
 
 The time diagram below illustrates how an edge detector work:
-<img src="https://dropbox.com/s/f6jzjq0smatdb5r/edge.png?raw=1"    style="width: 70%;" >
+<img src="https://dropbox.com/s/f6jzjq0smatdb5r/edge.png?raw=1"    class="center_seventy" >
 
 Add the edge-detector component (under Pulse Manipulation), and declare it in `seq_plus_two.luc`:
 ```cpp

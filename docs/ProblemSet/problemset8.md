@@ -17,7 +17,7 @@ Information Systems Technology and Design
 Singapore University of Technology and Design
 
 # Problem Set 8
-
+{: .no_toc}
 This page contains all practice questions that constitutes the topics learned in <ins>Week 11</ins>:  **Virtual Memory**, **Virtual Machine**.
 
 Each topic's questions are grouped into **three** categories: basic, intermediate, and challenging. You are recommended to do all basic problem set before advancing further. 
@@ -123,7 +123,7 @@ Consider two possible page-replacement strategies: LRU (the least recently used 
 
 Consider a virtual memory system that uses a single-level page map to translate virtual addresses into physical addresses. The following table shows the first 8 entries in the page map. If there are 1024 ($$2^{10}$$) bytes per page, what is the physical address corresponding to the virtual address `0x1C92`?
 
-<img src="https://dropbox.com/s/93f6hoa3nk9iyah/vapa.png?raw=1"  style="width: 50%;">
+<img src="https://dropbox.com/s/93f6hoa3nk9iyah/vapa.png?raw=1"  class="center_seventy">
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 The PA is <code>0x0492</code>. You can obtain it by figuring out how many bits is the **VPN**. Given that there's 1024 bytes per page, this gives us the clue that `PO` (Page Offset) is **10 bits**, which means that **VPN** is consisted of **6 bits**: <code> 000111</code>. From the table, we find that the **PPN** is <code>1</code> for **VPN** `7`. Appending **PPN** and **PO** and making it 16 bits hex representation, we have PO: <code> 0010010010 </code> and PPN: <code> 000001</code>. Appending them together and converting them to results in <code>0x0492</code>.
@@ -137,7 +137,7 @@ Refer to the state of RAM, pagetable, and TLB below. The addresses in the RAM, D
 
 **The biggest LRU number refers to the MOST recently used item and vice versa,** and that BYTE addressing is used. The total size of the RAM is 4 PAGES and the total number of entries in the pagetable is 8. The letter A, B, C, and D written in the RAM table below refers to the entire page, meaning that address `000000` to `001100` belong to page A, address `010000` to `011100` belong to page B, and so on.
 
-<img src="https://dropbox.com/s/rddyib7t32636a2/VMqns.png?raw=1"  style="width: 70%;">
+<img src="https://dropbox.com/s/rddyib7t32636a2/VMqns.png?raw=1"  class="center_seventy">
 
 
 1. How many bits is PO, PPN, and VPN?

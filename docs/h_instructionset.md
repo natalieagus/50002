@@ -17,6 +17,7 @@ Information Systems Technology and Design
 Singapore University of Technology and Design
 
 # Designing an Instruction Set
+{: .no_toc}
 [You can find the lecture video here.](https://youtu.be/h1KGzAbJH4Q) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
 ## [Overview](https://www.youtube.com/watch?v=h1KGzAbJH4Q&t=0s)
@@ -33,16 +34,16 @@ In this document, we will begin by understanding what does it mean to simply cre
 ## [An Example of a Basic Programmable Control System](https://www.youtube.com/watch?v=h1KGzAbJH4Q&t=134s)
 Suppose we have a simple sequential logic circuit called Machine $$M$$ as shown below. It receives **one** $$N$$ bit *input*, and produces **two** output: $$N$$ bit `output1` and  1 bit `output2`.   Formally, we call this "circuit" a datapath. A **datapath** is a collection of functional units made up of combinational devices, registers, and buses. 
 
-<img src="https://dropbox.com/s/yt5vj66b71tfkmn/A.png?raw=1" style="width: 70%;"   >
+<img src="https://dropbox.com/s/yt5vj66b71tfkmn/A.png?raw=1" class="center_seventy"   >
 
 > Note that since the machine receives $$N$$ bit inputs, it means that there are $$N$$ **units** of each 2-to-1 multiplexers *in parallel*, as shown:
-> <br><img src="https://dropbox.com/s/js10ymfd5shqxbp/mux_n.png?raw=1" style="width: 70%;" ><br>
+> <br><img src="https://dropbox.com/s/js10ymfd5shqxbp/mux_n.png?raw=1" class="center_seventy" ><br>
 > The registers also are actually N 1-bit registers:
-> <br><img src="https://dropbox.com/s/spox2rzjii4b735/regsN.png?raw=1"  style="width: 70%;"><br>
+> <br><img src="https://dropbox.com/s/spox2rzjii4b735/regsN.png?raw=1"  class="center_seventy"><br>
 > In diagrams, they are only drawn once, but you can differentiate between a single wire (that carries 1-bit of information) with a bunch of wires that carry $$>1$$ bits of information by the "/" symbol. 
 
 In this example, Machine $$M$$ also has four control signals, symbolised as $$\text{A}_{\text{SEL}}$$, $$\text{B}_{\text{SEL}}$$, $$\text{A}_{\text{LE}}$$, and $$\text{B}_{\text{LE}}$$. These four control signals are dictated by a **control FSM unit** shown below, meaning that these four signals will vary accordingly at each time step, hence changing the *behaviour* of the circuit above when we need it: 
-<br><img src="https://dropbox.com/s/zshb59hefekv1nr/cfsm.png?raw=1"  style="width: 60%;" >
+<br><img src="https://dropbox.com/s/zshb59hefekv1nr/cfsm.png?raw=1"  class="center_seventy" >
 
 R1 and R2 units are **not a regular dff**. They accept an additional control signal, denoted as `LE`. These control signals $$\text{A}_{\text{LE}}$$, $$\text{B}_{\text{LE}}$$ fed to R1 and R2 unit works as follows:
 * If $$\text{A}_{\text{LE}}$$ is `1`, then the current **input** to R1 will be reflected as R1's output in the next clock cycle. It's like "enabling" the R1, allowing it to "remember" new value. 
@@ -59,7 +60,7 @@ In other words, we **can control the processing of inputs at each time-step** (c
 
 If we can load another Control FSM unit that also produces these four signals but in different sequences, then we allow machine $$M$$ to be *programmable*. The complete circuit after plugging in a Control FSM unit is as shown: 
 
-<img src="https://dropbox.com/s/k9m89zfzb7aqopj/B.png?raw=1"  style="width: 70%;" >
+<img src="https://dropbox.com/s/k9m89zfzb7aqopj/B.png?raw=1"  class="center_seventy" >
 
 For example, let's say we have Control FSM unit type $$A$$ that has the following functional specifications (its starting state is $$S_0$$):
 
@@ -113,7 +114,7 @@ Now it is clear that what we need to do to create a general-purpose computer is 
  
  Many architecture approaches to a general-purpose computing device have been explored (see [others here](https://konstantin.solnushkin.org/teaching_reports/intro_to_hpc/2007/harvard_architecture.pdf)), but the Von Neumann Model is one where most modern and practical computers are based on. 
  
-<img src="https://dropbox.com/s/rjotczxs894klvg/vnm.png?raw=1" style="width: 60%;"  >
+<img src="https://dropbox.com/s/rjotczxs894klvg/vnm.png?raw=1" class="center_seventy"  >
 
 The generic anatomy of a Von Neumann architecture is shown above. The four *main* components of the model are:
 
@@ -130,7 +131,7 @@ The generic anatomy of a Von Neumann architecture is shown above. The four *main
 A basic anatomy of the CPU is shown below, consisted of four major components: the Data Path, Internal Storage called REGFILE, consisted of many Registers (e.g: D Flip-Flops), the Arithmetic Logic Unit (ALU), and a Control Unit (FSM). 
 
 
-<img src="https://dropbox.com/s/w5dt2ixcx1p6g7q/cpu.png?raw=1" style="width: 60%;"  >
+<img src="https://dropbox.com/s/w5dt2ixcx1p6g7q/cpu.png?raw=1" class="center_seventy"  >
 
 The CPU is essentially "brain" of the computing device, and it is be able to:
 1. Load a series of instructions (from the Memory Unit),
@@ -169,7 +170,7 @@ We will learn more about the anatomy of the memory unit, but for now we can thin
 >If we rent such unit, we are typically given an *address* -- some kind of index to identify the unit that is ours. The $$N$$-bit data is the "object" that we put in a storage unit (addressable segment), and the *memory address* is the identifier of the storage unit location where the data is held.
 
 
-<img src="https://dropbox.com/s/42f2xrubviwc5oj/ramaddr.png?raw=1"  style="width: 70%;" >
+<img src="https://dropbox.com/s/42f2xrubviwc5oj/ramaddr.png?raw=1"  class="center_seventy" >
 
 
 
@@ -275,7 +276,7 @@ There are **only two types** of instruction encoding: Without Literal (Type 1) a
 
 The figure below shows the two types of $$\beta$$ instruction encoding:
 
- <img src="https://dropbox.com/s/6sij3diwmtxs7q3/S4.png?raw=1" style="width: 70%;"  >
+ <img src="https://dropbox.com/s/6sij3diwmtxs7q3/S4.png?raw=1" class="center_seventy"  >
 
 The 32-bit instruction `I` is segmented to various sections:
 
@@ -444,7 +445,7 @@ ans: LONG(0)
 Of course then the final step is to convert this into machine language and load it to the Memory Unit, and allow the PC of the $$\beta$$ machine to execute the first line of instruction (ADDC) . 
 
 > You can actually do this! Open `bsim.jar`, paste the assembly code above and run it. 
-<img src="https://dropbox.com/s/oo514c8yuq48ies/bsimsample.png?raw=1"  style="width: 80%;"  >
+<img src="https://dropbox.com/s/oo514c8yuq48ies/bsimsample.png?raw=1"  class="center_seventy"  >
 
 When the machine halts, we should have the answered stored somewhere in the memory unit, thus effectively enabling $$\beta$$ machine to emulate the ability of Machine $$M$$ without changing its datapath. 
 

@@ -19,6 +19,7 @@ Singapore University of Technology and Design
 *Materials Adapted from MIT 6.004*
 
 # Tiny OS
+{: .no_toc}
 This Lab will be used in 50.005 Computer System Engineering in Term 5 (Week 1-2) to gently bridge your knowledge from the last 3 weeks of 50.002 to the first 2 weeks of 50.005. You are free to read around if you'd like to get started early. 
 
 ## Starter Code

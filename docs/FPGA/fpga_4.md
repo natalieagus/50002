@@ -20,7 +20,7 @@ Singapore University of Technology and Design
 **Natalie Agus (Fall 2020)**
 
 # Getting Good with FPGA: Building the Beta CPU
-
+{: .no_toc}
 This document is created for the sake of enhancing our understanding in how basic CPU works by actually implementing it onto an FPGA. We will create our 32-bit $$\beta$$ CPU and use simple dual-port RAM to simulate some of the instructions that we have learned in class and **test** if they're working properly. 
 
 You are recommended to read this document only after you've understood **completely** up until the chapter on $$\beta$$ datapath and are comfortable enough with HDL programming:

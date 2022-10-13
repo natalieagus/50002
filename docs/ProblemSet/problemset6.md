@@ -17,7 +17,7 @@ Information Systems Technology and Design
 Singapore University of Technology and Design
 
 # Problem Set 6
-
+{: .no_toc}
 This page contains all practice questions that constitutes the topics learned in <ins>Week 9</ins>:  **Assemblers and Compilers**, **Stack and Procedure**.
 
 Each topic's questions are grouped into **three** categories: basic, intermediate, and challenging. You are recommended to do all basic problem set before advancing further. 
@@ -197,7 +197,7 @@ Answer the following questions. **For convenience sake, although all data is in 
 	</p></div><br>
 	
 During execution of `gcd(28,70)`, the Beta processor is halted and the contents of portions of the stack are found to contain the following: 
-<img src="https://dropbox.com/s/z954a19n78di4od/1.png?raw=1" style="width: 70%;" >
+<img src="https://dropbox.com/s/z954a19n78di4od/1.png?raw=1" class="center_seventy" >
 
 
 

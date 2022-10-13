@@ -16,6 +16,7 @@ Information Systems Technology and Design
 Singapore University of Technology and Design
 
 # Cache Design Issues
+{: .no_toc}
 [You can find the lecture video here.](https://youtu.be/2OARjqLK4io) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
 ## [Overview](https://www.youtube.com/watch?v=2OARjqLK4io&t=0s)
@@ -229,7 +230,7 @@ There's no one superior replacement policy. One replacement policy can be better
 We can further improve cache performance by **increasing the capacity of each cache line**. We can **fetch  `B` words of data at a time**, and this is especially useful if there's high locality of reference.  The figure below illustrates a cache line with block size of 4:
   
 
-<img src="https://dropbox.com/s/ceamhyfon0dsofw/blocksize.png?raw=1"   style="width: 90%;"  >
+<img src="https://dropbox.com/s/ceamhyfon0dsofw/blocksize.png?raw=1"   class="center_seventy"  >
 
  The number of data **words** in each cache line is called the **block size** and is always a power of two.  
 
@@ -333,7 +334,7 @@ Given a memory unit of fixed size `M`, can use 2 bits less if we were to use wor
 
 For DM/NWSA cache with `B` blocks and **word addressing**, we need to divide the original requested address into the same **three segments**, but we don't have the default `00` in the lowest 2 bits of the address (as when byte addressing is used) anymore: 
 
-<img src="https://dropbox.com/s/2dsjsjurxtndevq/wordbyte.png?raw=1" style="width: 70%;"   >
+<img src="https://dropbox.com/s/2dsjsjurxtndevq/wordbyte.png?raw=1" class="center_seventy"   >
 
 * Lowest`b`-bits to index each word in a cache line block. 
 * `K`-bits to index each cache line or set. 

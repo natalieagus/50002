@@ -18,7 +18,7 @@ Singapore University of Technology and Design
 <br>
 Modified by: Kenny Choo, Natalie Agus, Oka Kurniawan (2021)
 # Lab 1: CMOS
-
+{: .no_toc}
 ## Starter Code
 The following files inside your `/50002/` folder are what you're going to open and modify or study for this lab, then submit (unless otherwise stated):
 - `lab1_submit.jsim` 
@@ -500,7 +500,7 @@ A |  B |  C | F(A,B,C)
 
 <div class="yellowbox"><div class="custom_box">**Write** your answer in the space provided under inside `lab1_submit.jsim`.</div></div><br>
 
-<img src="/50002/assets/contentimage/lab1/7.png"  class="center_fifty" style="width: 50%;"/>
+<img src="/50002/assets/contentimage/lab1/7.png"  class="center_fifty" class="center_seventy"/>
 
 * Open `lab1_submit.jsim` and write your answer there:
   * There should be three parts to your answer

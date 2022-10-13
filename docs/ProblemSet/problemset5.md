@@ -18,7 +18,7 @@ Information Systems Technology and Design
 Singapore University of Technology and Design
 
 # Problem Set 5
-
+{: .no_toc}
 This page contains all practice questions that constitutes the topics learned in <ins>Week 5</ins>:  **Beta Datapath**.
 
 Each topic's questions are grouped into **three** categories: basic, intermediate, and challenging. You are recommended to do all basic problem set before advancing further. 

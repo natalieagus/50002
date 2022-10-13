@@ -18,7 +18,7 @@ Singapore University of Technology and Design
 <br>
 Modified by: Kenny Choo, Natalie Agus, Oka Kurniawan (2021)
 # Lab 2: Adder
-
+{: .no_toc}
 ## Starter Code
 The following files inside your `/50002/` folder are what you're going to open and modify or study for this lab, then submit (unless otherwise stated):
 - `lab2_submit.jsim` 

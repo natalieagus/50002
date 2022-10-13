@@ -66,7 +66,7 @@ The most naive way to use voltage to encode information is to use ‘low’ volt
 
 Anything that is between the low and high threshold value is called the invalid zone, as shown in the figure below:
   
-<img src="https://dropbox.com/s/6uo61vk9yze1aot/Volt.png?raw=1"  style="width: 90%;"    >
+<img src="https://dropbox.com/s/6uo61vk9yze1aot/Volt.png?raw=1"  class="center_seventy"    >
 
 > The values of operating voltage in practice is commonly set to be 0.3V for low voltage and 3.3V for high voltage. 
   
@@ -95,7 +95,7 @@ Consider two digital devices connected in series as shown in the figure below. T
 >*Why is this so?*
 
 
-<img src="https://dropbox.com/s/9lejkhiqx50ga8y/p4.png?raw=1"  style="width: 80%;" >
+<img src="https://dropbox.com/s/9lejkhiqx50ga8y/p4.png?raw=1"  class="center_seventy" >
 
 This explanation can be made clear with the following example. Suppose we supply 0.5V and Device 1 is able to produce also 0.5V, which means digital bit . 
 * However, the problem is that a *wire*, that connects two or more combinational devices together is susceptible to **noise**. 
@@ -114,19 +114,11 @@ Hence, we need to account for the presence of some light **noise**. Instead of n
 
 Below are the explanations necessary to understand the figure above:
 1.  $$V_{ol}$$ (voltage output low) and $$V_{oh}$$ (voltage output high) is the voltage that **your system** outputs, depending on whether your system is outputting bit `0` or `1`. The output of this system is going to be received by another system after traversing through some wire.
-
- 
 2.  $$V_{il}$$ (voltage input low) or $$V_{ih}$$ (voltage input high) is the voltage that **your system** receives as **input** from another system.
-
 3.  The **absolute difference** between $$V_{ol}$$ and $$V_{il}$$ is called the **low bit noise margin**, and the **absolute difference** between $$V_{oh}$$ and $$V_{ih}$$ is called the **high bit noise margin**.
 	> Noise margin is formally defined as the **maximum** voltage amplitude of *extraneous* (erronous) signal that can be added to the noise-free input level *without* causing a drastic change in the output voltage and that it is still within the valid logic level. 
-
 4.  The **noise immunity** (like an "overall" or "effective" noise margin) is the ***minimum*** between the high bit noise margin and the low bit noise margin.
-
 5.  $$V_{ol}$$ is **less** than $$V_{il}$$, because we would want to have some *buffer* against noise. A device always outputs a lower voltage value to signify digital bit `0``0` and accepts a slightly higher low-voltage value as digital bit `0``0`. The same logic applies for the higher region as well, as $$V_{oh}$$ is greater than $$V_{ih}$$
-
-  
-
 6.  In our previous case earlier, if $$V_{ol}$$ is set to be `0.5V`, and $$V_{il}$$ is set to be `0.6V`, then *Device 2*  will be able to **tolerate** up to `0.1V` of noise (if any). Therefore, `0.55V` in our example above is still '*seen*' as a valid bit `0` when it arrives at the input terminal of Device 2, thus making Device 1 ***obeys the static discipline.***
 
 

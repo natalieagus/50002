@@ -107,7 +107,6 @@ color: $top-icon-color;
 opacity: 0;   
 width: 40px;
 height: 40px;
-padding-bottom: 8px;
 color: $grey-dk-250;
 background-color: $purple-lt-100;
 position: fixed;
@@ -154,6 +153,13 @@ display: block;
 margin-left: auto;
 margin-right: auto;
 width: 40%;
+}
+
+.center_thirty {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 30%;
 }
 
 .blueborder {
@@ -296,4 +302,10 @@ b,
 strong {
   font-weight: bold;
   color: $bold-color;
+}
+
+.invert {
+
+  filter: invert(1) hue-rotate(180deg);
+
 }

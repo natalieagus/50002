@@ -17,6 +17,7 @@ Information Systems Technology and Design
 Singapore University of Technology and Design
 
 # Logic Synthesis
+{: .no_toc}
 [You can find the lecture video here.](https://youtu.be/yXBAy432vT8) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
 ## [Overview](https://www.youtube.com/watch?v=yXBAy432vT8&t=0s)
@@ -57,7 +58,7 @@ There are 16-possible 2-input gates, as shown in the image below. The AND gate a
 
 > *Note:* please do not memorize these things blindly. They're **logic**, encoded in binary. The names of the gates signify the logic, for example logic AND means that we shall *detect* and produce a discernible output if input `i` **and** `j` (or any other inputs) to the device are all `1`. 
 
-<img src="https://dropbox.com/s/p407rd2m9n943hh/tt.png?raw=1"  style="width: 90%;" >  
+<img src="https://dropbox.com/s/p407rd2m9n943hh/tt.png?raw=1"  class="center_seventy" >  
   
 
 
@@ -88,7 +89,7 @@ NAND and NOR gates are **universal**, meaning that each *alone* can implement **
 
 We can use just NANDs or just NORs gates to make AND, OR and INV gates:
 
-<img src="https://dropbox.com/s/dflzkxdqvuyypjt/univgates.png?raw=1" style="width: 70%;" >
+<img src="https://dropbox.com/s/dflzkxdqvuyypjt/univgates.png?raw=1" class="center_seventy" >
 
 Therefore, NANDs and NORs are <ins>universal</ins> gates.
 
@@ -120,7 +121,7 @@ Y = \overline{C} \text{ }\overline{B} A + \overline{C} B A + CB\overline{A} + CB
  
 We can make a combinational device as such that it adheres to the expression above using these three logic devices only, as shown below: 
 
-<img src="https://dropbox.com/s/9snlkdv9s4ldy10/gates.png?raw=1" style="width: 70%;" >
+<img src="https://dropbox.com/s/9snlkdv9s4ldy10/gates.png?raw=1" class="center_seventy" >
 
 Explanation:
 * The boolean expression of the output Y contains **4 terms** that are added or summed together.
@@ -214,14 +215,14 @@ The Karnaugh Map offers an alternative method to perform boolean minimization. T
 *The following figure shows a 2-input (by input it just basically means how many input boolean variables), 3-input, and 4-input Karnaugh maps.* **Please do not change the order**, they follow **Gray code configuration** to preserve **adjacency** so rules 1-6 below can apply. 
 > It is possible to rotate them clockwise or anticlockwise but do so only if you understand the logic behind arrangement of Karnaugh map configuration, which is out of this syllabus. 
 
-<img src="https://dropbox.com/s/3aaw73p23w2zd4j/k1.png?raw=1"   style="width: 80%;" >
+<img src="https://dropbox.com/s/3aaw73p23w2zd4j/k1.png?raw=1"   class="center_seventy" >
 
 The number of **cells** of Karnaugh maps with $$x$$ inputs is $$2^x$$ cells. Then, fill in `1` to all the cells that represent logic `1` on the boolean expression. 
 
 For instance, here is an example of a  truth table and its corresponding Karnaugh map:
 
   
-<img src="https://dropbox.com/s/cmx3apt9l48izd5/k2.png?raw=1" style="width: 80%;" >
+<img src="https://dropbox.com/s/cmx3apt9l48izd5/k2.png?raw=1" class="center_seventy" >
 
 Then you can **simplify** the Karnaugh Map using these 6 ground rules:
 
@@ -242,7 +243,7 @@ Then you can **simplify** the Karnaugh Map using these 6 ground rules:
 
 Following the rules above, the simplified example Karnaugh map is:
 
-<img src="https://dropbox.com/s/ul1xkga719faqes/k3.png?raw=1" style="width: 60%;">
+<img src="https://dropbox.com/s/ul1xkga719faqes/k3.png?raw=1" class="center_seventy">
 
   
 To convert this Map back into boolean expression, we need to look at each group and use a little bit of logic:
@@ -278,7 +279,7 @@ We can also create the device straight using CMOS recipe given the minimised boo
 $$Y= \overline{C} A + CB$$
 
 It can be made this way with a combination of **universal gates**:
-<img src="https://dropbox.com/s/rqc1v5b9uioneef/dev.png?raw=1" style="width: 60%;" >
+<img src="https://dropbox.com/s/rqc1v5b9uioneef/dev.png?raw=1" class="center_seventy" >
 
 This requires **20 MOSFETs** to build.
 
@@ -292,7 +293,7 @@ Or the **primitive** way:
 
 	Therefore we have two sets of two NFETs in **series**: 
 
-<img src="https://dropbox.com/s/vsfyv7iefuv19cx/DEVMOS1.png?raw=1"  style="width: 50%;"   >
+<img src="https://dropbox.com/s/vsfyv7iefuv19cx/DEVMOS1.png?raw=1"  class="center_seventy"   >
 
 * **Step 2:** Add **inverter** at the output.
 	* In **Step 1** we created a pull-down circuitry that is *activated* when each of the terms in the boolean expression produces an overall `1`. 
@@ -300,14 +301,14 @@ Or the **primitive** way:
 	* Since what we want is the *opposite*, we need to put an inverter at the output. 
 		>that is   $$Y=1$$ when $$B,C$$ are both 1, we need to put an inverter at the output, as shown: 
 
-<img src="https://dropbox.com/s/x2ktjw4gqxx979r/devmos2.png?raw=1"  style="width: 60%;"   > 
+<img src="https://dropbox.com/s/x2ktjw4gqxx979r/devmos2.png?raw=1"  class="center_seventy"   > 
 
 If what you want is for $$Y$$ to be <code>0</code> when $$B,C$$ are both <code>1</code> then there's no need to put an inverter in the end. Just draw the complementary pullup and call it a day 
 <br>
 * **Step 3:** Construct the **complementary** pull-up circuitry and assemble. 
 	>  Refer to the CMOS recipe in the previous chapter. 
 
-<img src="https://dropbox.com/s/ft9xplwm26ksgks/devmos3.png?raw=1"   style="width: 60%;"  >
+<img src="https://dropbox.com/s/ft9xplwm26ksgks/devmos3.png?raw=1"   class="center_seventy"  >
 
 This requires **14 MOSFETs** to build, less than the previous design. It is definitely easier (for us) to create a combinational logic device using a bunch of universal gates, but it comes at the cost of money and size. 
 
@@ -334,11 +335,11 @@ For example in the case of 2-input mux below, when S=0, it will reflect whatever
 
 > Take some time to make sense of the truth table. That is if S=0, OUT = A. Else, if S=1, OUT = B. produce the signal  $$D_0$$ as its output:
 
-<img src="https://dropbox.com/s/nbatvm3m7xvq279/muxtt.png?raw=1"    style="width: 70%;" >
+<img src="https://dropbox.com/s/nbatvm3m7xvq279/muxtt.png?raw=1"    class="center_seventy" >
 
 You can build a 2-input multiplexer using basic gates:
 
-<img src="https://dropbox.com/s/kl35pytim23xlm4/muxin.png?raw=1"   style="width: 60%;"  >
+<img src="https://dropbox.com/s/kl35pytim23xlm4/muxin.png?raw=1"   class="center_seventy"  >
 
 Some properties about multiplexers:
 1. Muxes are **universal**, meaning that it can implement any boolean functions
@@ -346,22 +347,22 @@ Some properties about multiplexers:
 
 We can also generalise the multiplexer to take more inputs: 4, or 8, or 16, etc. We can either build a bigger multiplexer or cascade many 2-input multiplexers. The following figure shows an example of a 4-input multiplexer, implemented as a big mux (left) or using a series of 2-input mux (right):  
 
-<img src="https://dropbox.com/s/g5sqzvvn5pqwoha/4mux.png?raw=1"   style="width: 70%;"   > 	
+<img src="https://dropbox.com/s/g5sqzvvn5pqwoha/4mux.png?raw=1"   class="center_seventy"   > 	
   
 Similarly, you can build a 4-input mux using basic logic gates: 
 
-<img src="https://dropbox.com/s/pl9902hnvpeg9mp/4muxin.png?raw=1"  style="width: 70%;"   >
+<img src="https://dropbox.com/s/pl9902hnvpeg9mp/4muxin.png?raw=1"  class="center_seventy"   >
 
 Below is an example of how a mux can be used to implement a more complex combinational device, the full adder that we encounter in the lab. The truth table of a full adder is as shown, it is basically an addition (of three inputs) in base 2:
 
   
 
-<img src="https://dropbox.com/s/lryt8p85jrowz40/addr.png?raw=1" style="width: 40%;"  >  
+<img src="https://dropbox.com/s/lryt8p85jrowz40/addr.png?raw=1" class="center_seventy"  >  
 
 The multiplexer can simply implement the truth table by mapping each type of output bit $$C_{out}$$, and $$S$$ in each of the input terminals of the mux as illustrated below (for the carry out): 
 
 
-<img src="https://dropbox.com/s/0vpdyz1lch62jd1/muxc.png?raw=1"  style="width: 90%;" >
+<img src="https://dropbox.com/s/0vpdyz1lch62jd1/muxc.png?raw=1"  class="center_seventy" >
 
 We can do the same thing for $$S$$, and both of them combined will function as a full adder. 
 
@@ -369,14 +370,14 @@ We can do the same thing for $$S$$, and both of them combined will function as a
 
 The Decoder (also known as "demux") is a special combinational logic device that is also very commonly used in practice. It can have $$k$$ select inputs, and $$2^k$$ possible output combinations. The schematic of a 1-select input decoder is:
 
-<img src="https://dropbox.com/s/btt8jleh2quwnjq/decoder2hzdkw3c4rzxsd6p/demuxin.png?raw=1"  style="width: 50%;"  >
+<img src="https://dropbox.com/s/btt8jleh2quwnjq/decoder2hzdkw3c4rzxsd6p/demuxin.png?raw=1"  class="center_seventy"  >
 
 > Practice: Draw out the truth table of the decoder above.
 
 
 The schematic of a 2-select inputs decoder: $$S_0$$ and $$S_1$$ is (we omit the "IN") because it is usually just VDD:
 
-<img src="https://dropbox.com/s/8uagnvsipvppgby/decoderinside.png?raw=1"   style="width: 50%;"  >
+<img src="https://dropbox.com/s/8uagnvsipvppgby/decoderinside.png?raw=1"   class="center_seventy"  >
 
 > Take some time to trace out the selector values to the output and draw out a truth table for the decoder. Do not worry about the logic gate schematics of a decoder. It is only there to show you that a decoder is made up of the normal logic gates like inverters and AND gates.
 
@@ -384,7 +385,7 @@ Some properties about decoders:
 
 1. A Decoder is basically the *opposite* of a multiplexer. It has $$k$$ select inputs, and $$2^k$$  **possible data outputs**, and only 1 bit of input (typically VDD). The symbol is shown below:
 	<br>
-<img src="https://www.dropbox.com/s/ig6s46lb2s992c2/demux.png?raw=1"  style="width: 50%;"   > 
+<img src="https://www.dropbox.com/s/ig6s46lb2s992c2/demux.png?raw=1"  class="center_seventy"   > 
 
 2. This figure omits the 1 bit input to the decoder because **it is always set to 1** in practice.
 3. Therefore, for a 4 bit decoder as shown in the figure above, the input signals are only the two **SELECTOR** signals, denoted as $$IA_0$$ and $$IA_1$$ in the figure.

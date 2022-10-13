@@ -18,7 +18,7 @@ Singapore University of Technology and Design
 **Natalie Agus (Fall 2020)**
 
 # Designing a Programmable Datapath 
-
+{: .no_toc}
 For your 1D project, you are required to build an electronic game prototype that utilizes a **16-bit ALU**. You can do this by first designing a programmable datapath and the control logic (FSM) for your game, and finally implement on your FPGA. 
 
 This document shows an example on how you can create a programmable data path for a simple game idea. 
@@ -31,10 +31,10 @@ When you brainstorm for a game, try to keep two very **important** things in min
 	* **Some upgrade:** You can buy bigger buttons, LEDs or 7 segments, and buy **transistors** (simple, cheap BJT ones) to be used as **amplifiers** using external power source if the voltage from the Au is not strong enough. 
 	* **More upgrade:** You can buy LED strips (e.g: WS2812B), and **read the specifications**: typically the type of serial data and clock cycles required to set the lights. The specification of the model that you buy **must be CLEAR**, compelete with details on how to encode information to light up your LEDs. [See this sample for WS2812B](https://www.dropbox.com/s/7kj6aa9n6817tid/WS2812.pdf?dl=0). 
 	* **Even more upgrade:** You can buy LED matrix. There are TWO types: a simple up to 8x8 dot matrix,
-<img src="https://dropbox.com/s/9fq8jdfe4n5h0zp/dot.png?raw=1"  style="width: 40%;"  >
+<img src="https://dropbox.com/s/9fq8jdfe4n5h0zp/dot.png?raw=1"  class="center_seventy"  >
 <br>
 Or, a **bigger** matrix that receives serial data,<br>
-<img src="https://dropbox.com/s/8nfp3inp8yi1t4v/bigmatrix.png?raw=1" style="width: 40%;"   >
+<img src="https://dropbox.com/s/8nfp3inp8yi1t4v/bigmatrix.png?raw=1" class="center_seventy"   >
 <br>
 
 	For the small matrix, you can use easy registers / dff to manage the data. For the big matrix, **you need to use some kind of RAM module** (you can use simple RAM default component in Alchitry) to store your data for the matrix to display at all times. 
@@ -206,7 +206,7 @@ After either cases above is done, we have to check if both players have pressed 
 
  Hence you can see that each **state** is like a **single** instruction, and an event is like  a function, comprised of many states. Within each state, you need to decide the value of the appropriate **all control signals**. <>
 
-Lets understand this with example. **Look at **`CHECK BUTTON COUNT P1<3` state****. It is *triggered* (from `IDLE`) if `P1 Button` is pressed, and output the following control signals:
+Lets understand this with example. **Look at `CHECK BUTTON COUNT P1<3` state**. It is *triggered* (from `IDLE`) if `P1 Button` is pressed, and output the following control signals:
 * `alufn = CMPLT`
 * `asel = b00`
 * `bsel = b11`
@@ -241,7 +241,7 @@ The black boxes signifies connection to **external input/output devices.** Inter
 3. Create a combinational logic module that randomly produce a value of `1` (denoted as `VARIABLE INCREMENTER`). You can see the code [here](https://github.com/natalieagus/SampleAlchitryProjects/blob/master/CounterGame/source/variable_counter.luc).
 
 Notice the bootstrapped REGFILE output : all 16-bits `Rb_data` straight to the FSM. This is like the `Z` unit in $$\beta$$, used for **branching** after a comparison check in the previous state.  You can also use this to branch and *perform next check* in **1 cycle**. The relevant state illustration and its sample lucid code is:<br>
-<img src="https://dropbox.com/s/wh5rs5dakly3jtv/bcheck.png?raw=1" style="width: 40%;"   >
+<img src="https://dropbox.com/s/wh5rs5dakly3jtv/bcheck.png?raw=1" class="center_seventy"   >
 
 
 ```cpp

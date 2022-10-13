@@ -17,6 +17,7 @@ Singapore University of Technology and Design
 
 
 # Building the $$\beta$$ CPU
+{: .no_toc}
 [You can find the lecture video here.](https://youtu.be/4T9MR8BSzt0) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
 ## [Overview](https://www.youtube.com/watch?v=4T9MR8BSzt0&t=0s)
@@ -142,10 +143,10 @@ As mentioned above, the REGFILE unit has **2 combinational read ports** that is 
 
 This unit also have **1 sequential write port**. The write data is always supplied at `WD`. When the `EN` signal of a target register is a valid `1`, we need to wait until the nearest CLK rise edge in order for `WD` to be reflected at the `Q` port of that register. 
 
-<span style="background-color:yellow; color:black"> In register transfer language, the content of register with address `A` is often denoted as : `Reg[A]` </span>
+In register transfer language, the content of register with address `A` is often denoted as : `Reg[A]` 
 
 The timing diagram for read and write is shown below. Please take some time to study them: 
-<img src="https://dropbox.com/s/rvpovodxab54ywl/timing_reg.png?raw=1" style="width: 70%;"   >
+<img src="https://dropbox.com/s/rvpovodxab54ywl/timing_reg.png?raw=1" class="center_seventy"   >
 
 
 Notice how the new data denoted as `new Reg[A]` supplied at port `WD` (to be written onto `Reg[A]`) must fulfill both $$t_S$$ and $$t_h$$ requirement of the hardware. 
@@ -194,7 +195,7 @@ This datapath involves:
 
 The instructions that fall under `OP` category are: `ADD, SUB, MUL, DIV, AND, OR, XOR, CMPEQ, CMPLT, CMPLE, SHL, SHR`, and `SRA`. Its general format is:
 
-<img src="https://dropbox.com/s/sufiy5rhdo5k2j0/op_ins.png?raw=1" style="width: 70%;"  >
+<img src="https://dropbox.com/s/sufiy5rhdo5k2j0/op_ins.png?raw=1" class="center_seventy"  >
 
 
 The register transfer language for this instruction is: 
@@ -244,7 +245,7 @@ The highlighted lines in **pink** show how the signals should flow in order for 
 
 The instructions that fall under `OPC` category are: `ADDC, SUBC, MULC, DIVC, ANDC, ORC, XORC, CMPEQC, CMPLTC, CMPLEC, SHLC, SHRC`, and `SRAC`. It's general format is:
 
-<img src="https://dropbox.com/s/wcirw4bgwhh2xbg/opc_insdfhi9j45vnuw7n0/opc.png?raw=1" style="width: 70%;"  >
+<img src="https://dropbox.com/s/wcirw4bgwhh2xbg/opc_insdfhi9j45vnuw7n0/opc.png?raw=1" class="center_seventy"  >
 
 The register transfer language for this instruction is: 
 `PC` $$\leftarrow$$ `PC+4`<br>
@@ -286,7 +287,7 @@ There are three instructions that involve access to the Memory Unit: `LD`, `LDR`
 
 The general format of the `LD` instruction is:
 
-<img src="https://dropbox.com/s/bicusis1a1cx707/ld_ins.png?raw=1"  style="width: 70%;" >
+<img src="https://dropbox.com/s/bicusis1a1cx707/ld_ins.png?raw=1"  class="center_seventy" >
 
 The register transfer language for this instruction is: 
 `PC` $$\leftarrow$$ `PC+4`<br>
@@ -332,7 +333,7 @@ The `LDR` instruction is similar to the `LD` instruction, except in the method o
 
 The general format of the `LDR` instruction is:
 
-<img src="https://dropbox.com/s/5kj00vwcw0ghlfp/ldr_inst.png?raw=1" style="width: 70%;"  >
+<img src="https://dropbox.com/s/5kj00vwcw0ghlfp/ldr_inst.png?raw=1" class="center_seventy"  >
 
 The register transfer language for this instruction is: 
 `PC` $$\leftarrow$$ `PC+4`<br>
@@ -379,7 +380,7 @@ The `ST` instruction does the opposite to what the `LD` instruction does. It all
 
 The general format of the `ST` instruction is:
 
-<img src="https://dropbox.com/s/is3q37kvo167325/st_ins.png?raw=1"  style="width: 70%;" >
+<img src="https://dropbox.com/s/is3q37kvo167325/st_ins.png?raw=1"  class="center_seventy" >
 
 The register transfer language for this instruction is: 
 * `PC` $$\leftarrow$$ `PC+4`<br>
@@ -460,7 +461,7 @@ This instruction allows the `PC` to *branch* to a particular `EA` if the content
   
 The general format of the `BEQ` instruction is:
 
-<img src="https://dropbox.com/s/hla3dyi15xjxocf/beq_inst.png?raw=1"   style="width: 70%;" >
+<img src="https://dropbox.com/s/hla3dyi15xjxocf/beq_inst.png?raw=1"   class="center_seventy" >
 
 The register transfer language for this instruction is: 
 `PC` $$\leftarrow$$ `PC+4`<br>
@@ -512,7 +513,7 @@ The control signals therefore must be set to:
   
 The general format of the `BNE` instruction is:
 
-<img src="https://dropbox.com/s/wrqpdsusx3g7lkd/bne_ins.png?raw=1" style="width: 70%;"   >
+<img src="https://dropbox.com/s/wrqpdsusx3g7lkd/bne_ins.png?raw=1" class="center_seventy"   >
 
 The register transfer language for this instruction is: 
 `PC` $$\leftarrow$$ `PC+4`<br>
@@ -554,7 +555,7 @@ The control signals therefore must be set to:
 `JMP` also allows the CPU to change its `PC` value, but without any condition (*jump*). 
   
 The general format of the `JMP` instruction is:
-<img src="https://dropbox.com/s/94bul2ifo7a3afj/jmp_inst.png?raw=1" style="width: 70%;"   >
+<img src="https://dropbox.com/s/94bul2ifo7a3afj/jmp_inst.png?raw=1" class="center_seventy"   >
 
 The register transfer language for this instruction is: 
 `PC` $$\leftarrow$$ `PC+4`<br>

@@ -16,6 +16,7 @@ Information Systems Technology and Design
 Singapore University of Technology and Design
 
 # Virtual Machine
+{: .no_toc}
 [You can find the lecture video here.](https://youtu.be/4pizOgCT11k) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
 ## [Overview](https://www.youtube.com/watch?v=4pizOgCT11k&t=0s)
@@ -52,7 +53,7 @@ In the Figure below, we illustrate `N` processes that are present in the system:
 
 > These processes are **isolated** from one another, meaning that `Pi` cannot access (or corrupt) the memory space of other process  `Pj` because each of them run on a separate virtual memory. 
 
-<img src="https://dropbox.com/s/fvo6fllqrwwg2qr/context.png?raw=1"  style="width: 70%;"  >
+<img src="https://dropbox.com/s/fvo6fllqrwwg2qr/context.png?raw=1"  class="center_seventy"  >
 
 
 Writing an Operating System Kernel is not a trivial task as one has to take into consideration a plethora of *issues* (security, performance, memory management, scheduling, etc). However with its presence, it makes *easier to write all other programs*. **It provides a layer of abstraction, allowing each program to run on a  *virtual machine***, devoid of any knowledge about any other processes.
@@ -83,11 +84,10 @@ This is a **major benefit**: programs can be easily written as if they have *abs
 
 The main idea of OS multiplexing is illustrated below using two processes `P1` and `P2`, sharing a single system:
 
-<img src="https://dropbox.com/s/p5r7q2uit6vbdkz/process.png?raw=1"  style="width: 90%;"  >
+<img src="https://dropbox.com/s/p5r7q2uit6vbdkz/process.png?raw=1"  class="center_seventy"  >
   
 The `ARROW` illustrates the timeline of execution:
 * At first, the CPU runs some task from `P1`. 
-
 * After some time `t`, imagine that a *timed  interrupt* (caused by other asynchronous hardware, e.g: a *timer*) occurs. This causes the CPU to execute part of the kernel program that handles such **asynchronous interrupt**, hence *pausing* the execution of `P1`.
 * This *interrupt handler* takes control of the CPU when hardware interrupt occurs, and **saves** the  current **states** (PC, Registers, etc)  of P1 to a dedicated space **(Kernel Stack)** in the Memory Unit  (*so that P1's progress is not lost and can be resumed later on*) before performing a "*context switch*":
 	1. Load the states of `P2` to the CPU (and also the required resources, mapping, etc), and
@@ -103,7 +103,7 @@ The key technology that allows for OS Multiplexing is the **asynchronous hardwar
 
 ## [Hardware Support for OS Multiplexing ](https://www.youtube.com/watch?v=4pizOgCT11k&t=1285s)
 
-To allow for proper multiplexing, four things must be supported ****in the hardware level****:
+To allow for proper multiplexing, four things must be supported **in the hardware level**:
 
 1.  There has to be a way to **asynchronously interrupt** a currently running program *periodically* via hardware, since that program is currently using the CPU and will not stop voluntarily. 
 
@@ -150,7 +150,7 @@ The asynchronous interrupt handler is located at `XAddr`, which is usually pre-d
 The first few instructions of the interrupt handler saves current process states (`R0` to `R30` contents, PC state, stack, and others) in **process table**. 
 
 > **Process table:** a Kernel data structure that stores all the states of running processes in the machine. It lives in the Kernel memory space. The kernel keeps track on which process is currently scheduled to run in the CPU. 
-<img src="https://dropbox.com/s/ypgac0w1uotc471/proctable.png?raw=1"   style="width: 70%;" >
+<img src="https://dropbox.com/s/ypgac0w1uotc471/proctable.png?raw=1"   class="center_seventy" >
 
 Then, the handler will figure out which specific **service routine** needs to be called to *service* the interrupt, e.g: scheduler, or I/O routines. 
 

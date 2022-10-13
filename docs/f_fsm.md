@@ -17,6 +17,7 @@ Information Systems Technology and Design
 Singapore University of Technology and Design
 
 # Finite State Machine
+{: .no_toc}
 [You can find the lecture video here.](https://youtu.be/efLcdpqlAyI) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
 ## [Overview](https://www.youtube.com/watch?v=efLcdpqlAyI&t=0s)
@@ -56,7 +57,7 @@ We can represent a state machine in two forms: **state transition diagram or tru
 
 Suppose we have a simple digital lock machine, that will open only if we give the password: `0110`. The following state diagram illustrates how that lock works:
  
-  <img src="https://dropbox.com/s/peuby3etfi3twvx/Q2%202.png?raw=1"  style="width: 80%;" >
+  <img src="https://dropbox.com/s/peuby3etfi3twvx/Q2%202.png?raw=1"  class="center_seventy" >
 
 That **S_X** in bold represents the *initial* state. The **arrows** are the possible *transitions* between states. The little numbers beside the arrows are the kind of *input* required for state transition to happen. The word $$U$$ inside each state circle is the *output* of each state. If it is unlocked, $$U=1$$, otherwise $$U=0$$ for a locked output 
 * When input `0110` is entered in that *exact* sequence, you'll land at `S_3` -- and the lock will be **unlocked**. 
@@ -228,11 +229,11 @@ Now that we have the boolean equations for each machine ready, we can simply con
 
 One possible schematic for the Moore version of the lock is :
 
-<img src="https://dropbox.com/s/6trfvoracwgajwl/moore_1.png?raw=1" style="width: 60%;"  >
+<img src="https://dropbox.com/s/6trfvoracwgajwl/moore_1.png?raw=1" class="center_seventy"  >
 
  One possible schematic for the Mealy version of the lock is:
  
- <img src="https://dropbox.com/s/bu45lxkolwzbj8n/meally_1.png?raw=1" style="width: 60%;"  >
+ <img src="https://dropbox.com/s/bu45lxkolwzbj8n/meally_1.png?raw=1" class="center_seventy"  >
  
 > Both diagrams above are obtained after minimising the boolean expression. There are other ways to construct them machine, such as using only NAND gates, only NOR gates, only multiplexers, or ROMs. Try it yourself as practice.
 
@@ -278,7 +279,7 @@ The goal of this section is that, after establishing the abstraction (specs) of 
 The truth table will look something like this for any *arbitrary* FSM with  $$i$$ input bits, $$s$$ state bits, and $$o$$ output bits:
  
 
-<img src="https://dropbox.com/s/bmm0uh4uzk6mrwe/Q1.png?raw=1"  style="width: 60%;" >
+<img src="https://dropbox.com/s/bmm0uh4uzk6mrwe/Q1.png?raw=1"  class="center_seventy" >
 
 In short, we need **to create a combinational logic device** that conforms to the FSM's truth table. We have learned several ways to create such devices:
 

@@ -18,7 +18,7 @@ Information Systems Technology and Design
 Singapore University of Technology and Design
 
 # Problem Set 1
-
+{: .no_toc}
 This page contains all practice questions that constitutes the topics learned in <ins>Week 1</ins>: **Basics of Information** and **The Digital Abstraction**. 
 
 Each topic's questions are grouped into **three** categories: basic, intermediate, and challenging. You are recommended to do all basic problem set before advancing further. 
@@ -370,7 +370,7 @@ which is exactly the two complement's steps.
 
 The behavior of a 1-input 1-output device is measured by hooking a voltage source to its input and measuring the voltage at the output for several different input voltages, resulting in the following VTC plot,
 
-<img src="https://dropbox.com/s/t6na36ox8r8osef/Q1.png?raw=1"   style="width: 70%;"     >
+<img src="https://dropbox.com/s/t6na36ox8r8osef/Q1.png?raw=1"   class="center_seventy"     >
 
 We're interested in whether this device can serve as a legal combinational device that obeys the **static discipline**. For this device, obeying the static discipline means that,
 
@@ -416,7 +416,7 @@ as the part with the highest gain in the middle of the graph can most probably b
 
 **(a).** The following graph plots the VTC for a device with one input and one output. **Can this device be used** as a combinational device in logic family with 0.75 noise margins?
 
-<img src="https://dropbox.com/s/q363sc7ov84ww45/Q2.png?raw=1"    style="width: 60%;"    >
+<img src="https://dropbox.com/s/q363sc7ov84ww45/Q2.png?raw=1"    class="center_seventy"    >
 
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
@@ -427,7 +427,7 @@ No. This device gain is not more than 1, hence it cannot be used as a combinatio
 
 *Hint: you may want to start by choosing NM to be 0.5V for ease of computation.*
 
-<img src="https://dropbox.com/s/j8e2aii7x6cjtv2/Q3.png?raw=1"     style="width: 70%;"   >
+<img src="https://dropbox.com/s/j8e2aii7x6cjtv2/Q3.png?raw=1"     class="center_seventy"   >
 
 
 
@@ -466,7 +466,7 @@ However we do know for sure that the <i>input cannot be higher than</i> **Vih** 
 
 Take a look at the figure below.
  
-<img src="https://dropbox.com/s/kuplff553g8jdff/vtc.png?raw=1"      style="width: 60%;"  >
+<img src="https://dropbox.com/s/kuplff553g8jdff/vtc.png?raw=1"      class="center_seventy"  >
 
 Which of the following specification(s) **does not obey** the static discipline? Select all that apply.
 

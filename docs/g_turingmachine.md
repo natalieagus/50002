@@ -18,6 +18,7 @@ Singapore University of Technology and Design
 
 
 # Turing Machine and Programmability
+{: .no_toc}
 [You can find the lecture video here.](https://youtu.be/cmfDBAiogA0) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
   
 ## [Overview](https://www.youtube.com/watch?v=cmfDBAiogA0&t=0s)
@@ -37,7 +38,7 @@ The Turing Machine is a mathematical model of computation that defines an abstra
 
 A Turing Machine is often represented as an "arrow" and a series of input written on a "tape", as drawn in the figure below:
  
-<img src="https://dropbox.com/s/n41r5z8o2p5dpea/tmeg.png?raw=1"  style="width: 70%;" >
+<img src="https://dropbox.com/s/n41r5z8o2p5dpea/tmeg.png?raw=1"  class="center_seventy" >
 
 <ins>Turing Machine Basics </ins>:
 -  The idea is to imagine that we have a physical machine (like a typewriter machine or something), called the Turing Machine, which can read a sequence of inputs written on an *infinitely long* "*tape*" (its basically an array).
@@ -76,7 +77,7 @@ A Turing Machine is often represented as an "arrow" and a series of input writte
 
 Consider a machine whose job is to add $$1$$ to any *arbitrary* length input and present that as the output. An FSM can do this as well if the number of bits of input is **finite**, but it will run into a problem if the input bit is *too* *large*. An example of a 3-bit counter FSM is:
 
-<img src="https://dropbox.com/s/j6p4riuu67t8l6l/fsm_cntr.png?raw=1" style="width: 70%;"  >
+<img src="https://dropbox.com/s/j6p4riuu67t8l6l/fsm_cntr.png?raw=1" class="center_seventy"  >
 
 
 > The key feature for a Turing Machine is this *infinite* tape (hence its capability of processing arbitrary input).
@@ -86,19 +87,19 @@ A Turing Machine with the following specification can easily solve the problem a
 <img src="https://www.dropbox.com/s/2ljstii81t6nn7b/tmincr.png?raw=1"   >
 
 With this sample input, the Turing Machine runs as follows:
-<img src="https://dropbox.com/s/34dxvi3tdwz1shu/tmi1.png?raw=1" style="width: 70%;"  >
+<img src="https://dropbox.com/s/34dxvi3tdwz1shu/tmi1.png?raw=1" class="center_seventy"  >
 
 
 
 1. At `t=0`: The initial state of the machine is `S_0`, and the machine is currently reading $$*$$ as an input (beginning of string). According to the first row of the table, it should write back a $$*$$, and then move the tape to the left.  In fact, the machine keeps moving the tape to the left until the end of the string (+) is found: 
-<img src="https://dropbox.com/s/dnnziq8lk0uukj9/tmi2.png?raw=1"  style="width: 70%;" >
+<img src="https://dropbox.com/s/dnnziq8lk0uukj9/tmi2.png?raw=1"  class="center_seventy" >
 4. The machine then starts adding 1, and moving the tape to the right, keeping track of the *carry over* value: 
-<img src="https://dropbox.com/s/gr4kh2zof2ubwxx/tmi3.png?raw=1"  style="width: 70%;" >
+<img src="https://dropbox.com/s/gr4kh2zof2ubwxx/tmi3.png?raw=1"  class="center_seventy" >
 5. This continues until it reads back the beginning of the string (*):
-<img src="https://dropbox.com/s/oqqxqejul2zcoef/tmi4.png?raw=1"  style="width: 70%;" >
+<img src="https://dropbox.com/s/oqqxqejul2zcoef/tmi4.png?raw=1"  class="center_seventy" >
 
 6. The final output is written on the tape, and we should have this output in the end when the machine halts:
-<img src="https://dropbox.com/s/m58690zk66gzj9q/tmiend.png?raw=1"   style="width: 70%;">
+<img src="https://dropbox.com/s/m58690zk66gzj9q/tmiend.png?raw=1"   class="center_seventy">
 
 ## Example 2: [Implementing a Coin Counter Machine](https://www.youtube.com/watch?v=cmfDBAiogA0&t=690s)
 
@@ -120,23 +121,23 @@ However, a Turing machine with the following specification can solve the problem
 <img src="https://dropbox.com/s/xrz0i5o8246ay7r/tmcounter.png?raw=1"    >
 
 Given an input as follows and starting state at `S_0` (at `t=0`):
-<img src="https://dropbox.com/s/d87trx48ssoefnl/tm1.png?raw=1"   style="width: 70%;">
+<img src="https://dropbox.com/s/d87trx48ssoefnl/tm1.png?raw=1"   class="center_seventy">
 
 
 The state of the machine is as follows at `t=2`:
-<img src="https://dropbox.com/s/zse8nwcf94c5u6o/tm2.png?raw=1"  style="width: 70%;" >
+<img src="https://dropbox.com/s/zse8nwcf94c5u6o/tm2.png?raw=1"  class="center_seventy" >
 
 It will try to find the first '20', and has this outcome and state at `t=5` once the first '20' is found:
-<img src="https://dropbox.com/s/httistkevl5a6i8/tm3.png?raw=1"  style="width: 70%;" >
+<img src="https://dropbox.com/s/httistkevl5a6i8/tm3.png?raw=1"  class="center_seventy" >
   
 It will then try to find the leftmost unprocessed '10':
-<img src="https://dropbox.com/s/5tzhbeplzr8k39v/tm4.png?raw=1"  style="width: 70%;" >
+<img src="https://dropbox.com/s/5tzhbeplzr8k39v/tm4.png?raw=1"  class="center_seventy" >
 
 The whole process is repeated until there's no more 10. The Machine now will try to find `END`:
-<img src="https://dropbox.com/s/w96o00c9cx15oro/tm5.png?raw=1" style="width: 70%;"  >
+<img src="https://dropbox.com/s/w96o00c9cx15oro/tm5.png?raw=1" class="center_seventy"  >
 
 Once found, it halts and wrote the final value (`ACCEPT`):
-<img src="https://dropbox.com/s/4t9kyrtvlsfjh7m/tm6.png?raw=1"  style="width: 70%;" >
+<img src="https://dropbox.com/s/4t9kyrtvlsfjh7m/tm6.png?raw=1"  class="center_seventy" >
 
 As practice, you can try the running the machine using another set of input that will result in a `REJECT`. 
 > Can you solve the problem with less states? Why or why not?
@@ -353,16 +354,16 @@ In the next chapter, we will learn further on how our general purpose computer i
 This section tells us one of the ways to realise the incrementer Turing Machine sample above as an actual machine using  hardware components that we have learned in the earlier weeks.
 
 First, we need to encode the logic of the machine in terms of binary values. We can use 2 bits to represent the state: `S_0`, `S_1`, and `HALT` and 2 bits to represent the input/output characters: `0`, `1`, `*` and `+` each. 
-<img src="https://dropbox.com/s/uowbhzkfjyu3ysx/encodedTM.png?raw=1"   style="width: 70%;">
+<img src="https://dropbox.com/s/uowbhzkfjyu3ysx/encodedTM.png?raw=1"   class="center_seventy">
 
 We also must create a kind of *addressable input tape (**memory unit** that stores the data)*. Imagine that we can address each bit in the input tape as such, where `ADDRS` is an `n-bit` arbitrary starting address:
-<img src="https://dropbox.com/s/vhfx5fxt48syi2t/addressableInput.png?raw=1"  style="width: 70%;" >
+<img src="https://dropbox.com/s/vhfx5fxt48syi2t/addressableInput.png?raw=1"  class="center_seventy" >
 
 Since we want to read and write **two** bits of input and output at a time (i.e: *at each clock cycle*), we can "move the tape" by advancing or reducing the value of `Current Address` *(that we supply to the addressable memory unit)* by 2 at each clock cycle. 
 > Note: it is impossible to have "infinitely large" memory unit, so in practice we simply have a large enough memory unit such that it appears infinite for the particular usage. 
  
 We can then construct some kind of *machine control system* (the unit represented as the *arrow* in the TM diagram). This similar to how we build an FSM using combinational logic devices to **compute** the TM's 2-bit output data, next `address`, and the next state, given current `address`, current state,  and 2-bit input data based on the functional specification stated in the truth table above. 
 
-<img src="https://dropbox.com/s/d22zfd7tpxawm2d/TMREALISE.png?raw=1"  style="width: 70%;" >
+<img src="https://dropbox.com/s/d22zfd7tpxawm2d/TMREALISE.png?raw=1"  class="center_seventy" >
 
 The diagram above shows a rough schematic on how we can realise the abstract concept of a Turing Machine with a specification that does *increment* by building a (*non-programmable*) physical machine that can only do this **one task**. 

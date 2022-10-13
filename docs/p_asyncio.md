@@ -16,6 +16,7 @@ Information Systems Technology and Design
 Singapore University of Technology and Design
 
 # Asynchronous Handling of I/O Devices
+{: .no_toc}
 There's no pre-recorded video for this chapter as the file that was uploaded on YouTube was corrupted (no sound). Please watch the stream session instead, this chapter is very short and simple anyway. It is a precursor to what you'll learn in Term 5.  
   
 ## Overview
@@ -185,7 +186,7 @@ There are two different policies that can be adopted to handle I/O interrupts:
 The **priority level** for each interrupt handler can be illustrated using the  higher `p` bits of PC -- meaning that the *location* of the handler in memory *matters*; it defines the handler's priority level.  
 > Some hardware tweaks on the CPU is needed to support this feature, but we don't have to dwell too deep into that at this point. 
 
-<img src="https://dropbox.com/s/7w7oy1jyaa5trnq/pc.png?raw=1"     style="width: 60%;"  >
+<img src="https://dropbox.com/s/7w7oy1jyaa5trnq/pc.png?raw=1"     class="center_seventy"  >
 
 * The value `p` depends on how many priority levels you want the machine to have, e.g: 3 bits for 8 levels.
 
