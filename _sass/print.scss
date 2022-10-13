@@ -42,7 +42,13 @@
   img {
     display: inline;
     break-inside: avoid;
+    filter: none !important;
   }
+
+  svg, object {
+    filter: none !important;
+  }
+
 
 
 }

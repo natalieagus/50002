@@ -102,8 +102,6 @@ figure.highlight::before {
     .il  { color: $highlight-orange; } /* Literal.Number.Integer.Long */
   }
   
-  img, svg {
-
+  img, svg, object {
     filter: invert(0.9) hue-rotate(180deg);
-  
   }
