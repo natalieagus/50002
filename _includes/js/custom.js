@@ -275,8 +275,8 @@ window.addEventListener("DOMContentLoaded", (event) => {
     // highlight whatever is in view
     highlightTocInView();
 
-    // compute height
-    navbarHeight = $('.site-header').outerHeight()
+    // check device width
+    handleDeviceChange(smallDevice);
 
 });
 
@@ -284,5 +284,23 @@ window.addEventListener("DOMContentLoaded", (event) => {
 $(window).on('mousewheel touchmove', function(){
     highlightTocInView();
 });
+
+
+// Define the query
+const smallDevice = window.matchMedia("(min-width: 1200px)");
+
+smallDevice.addListener(handleDeviceChange);
+
+function handleDeviceChange(e) {
+  if (e.matches){
+    jQuery(".search").detach().prependTo(".main-header")
+    console.log("Bigger Than Mobile");
+  }
+  else {
+    // detach the search bar
+    console.log("Mobile");
+    jQuery(".search").detach().insertBefore(".side-bar")
+  }
+}
 
 
