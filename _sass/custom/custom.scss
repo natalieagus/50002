@@ -117,7 +117,7 @@ height: 75vh;
     transform: scale(0);
     font: bold 30px monospace; 
     cursor: pointer;     
-    z-index: 10;
+    z-index: 2;
     border: 0px;
     transition: opacity 1s, transform 0.5s, color 0.3s;  
 
@@ -294,17 +294,17 @@ font-size: 1.5em;
 cursor: pointer;
 }
 
-.theme-toggle-button-screen-small{
-  @include mq(md) {
-    display: none;
-  }
-}
+// .theme-toggle-button-screen-small{
+//   @include mq(md) {
+//     display: none;
+//   }
+// }
 
-.theme-toggle-button-screen-large{
-  @include mq-max(md) {
-    display: none;
-  }
-}
+// .theme-toggle-button-screen-large{
+//   @include mq-max(md) {
+//     display: none;
+//   }
+// }
 
 .theme-toggle-button.active{
 background-color: none;

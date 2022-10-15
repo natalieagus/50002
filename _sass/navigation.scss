@@ -201,7 +201,7 @@
   @include fs-2;
   width: $content-width - $search-results-width;
   @include mq-max(md) { // medium and down styles
-    display: none;
+    width: fit-content;
   }
   .aux-nav-list {
     justify-content: right;
@@ -210,9 +210,9 @@
     padding: 0;
     margin: 0;
     list-style: none;
-    @include mq-max(md) { // medium and down styles
-      justify-content: left;
-    }
+    // @include mq-max(md) { // medium and down styles
+    //   justify-content: right;
+    // }
   }
 
   .aux-nav-list-item {

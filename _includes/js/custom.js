@@ -173,7 +173,7 @@ setTheme();
 // Hide Header on on scroll down
 var didScroll;
 var lastScrollTop = 0;
-var delta = 200;
+var delta = 10;
 var navbarHeight = 0;
 
 $(window).scroll(function(event){
@@ -200,13 +200,13 @@ function hasScrolled() {
         // Scroll Down
         console.log("scrolling down, hiding search input");
         $('.search').removeClass('nav-stick')
-        $('.nav-show').removeClass('nav-stick')
+        $('.main-header').removeClass('nav-stick')
     } else {
         // Scroll Up
         if(st + $(window).height() < $(document).height()) {
             console.log("scrolling up, enabled search input");
             $('.search').addClass('nav-stick');
-            $('.nav-show').addClass('nav-stick');
+            $('.main-header').addClass('nav-stick');
         }
     }
     
@@ -298,12 +298,14 @@ smallDevice.addListener(handleDeviceChange);
 function handleDeviceChange(e) {
   if (e.matches){
     console.log("Bigger Than Mobile");
+    jQuery(".aux-nav").detach().prependTo(".main-header")
     jQuery(".search").detach().prependTo(".main-header")
   }
   else {
     // detach the search bar
     // detach the hamburger
     console.log("Mobile");
+    jQuery(".aux-nav").detach().appendTo(".site-header")
     jQuery(".search").detach().insertBefore(".side-bar")
   }
 }
