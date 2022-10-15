@@ -173,7 +173,7 @@ setTheme();
 // Hide Header on on scroll down
 var didScroll;
 var lastScrollTop = 0;
-var delta = 5;
+var delta = 200;
 var navbarHeight = 0;
 
 $(window).scroll(function(event){
@@ -198,11 +198,15 @@ function hasScrolled() {
     // This is necessary so you never see what is "behind" the navbar.
     if (st > lastScrollTop && st > navbarHeight){
         // Scroll Down
-        $('.site-header').removeClass('nav-down').addClass('nav-up');
+        console.log("scrolling down, hiding search input");
+        $('.search').removeClass('nav-stick')
+        $('.nav-show').removeClass('nav-stick')
     } else {
         // Scroll Up
         if(st + $(window).height() < $(document).height()) {
-            $('.site-header').removeClass('nav-up').addClass('nav-down');
+            console.log("scrolling up, enabled search input");
+            $('.search').addClass('nav-stick');
+            $('.nav-show').addClass('nav-stick');
         }
     }
     
@@ -293,11 +297,12 @@ smallDevice.addListener(handleDeviceChange);
 
 function handleDeviceChange(e) {
   if (e.matches){
-    jQuery(".search").detach().prependTo(".main-header")
     console.log("Bigger Than Mobile");
+    jQuery(".search").detach().prependTo(".main-header")
   }
   else {
     // detach the search bar
+    // detach the hamburger
     console.log("Mobile");
     jQuery(".search").detach().insertBefore(".side-bar")
   }

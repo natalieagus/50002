@@ -200,7 +200,9 @@
   overflow-x: auto;
   @include fs-2;
   width: $content-width - $search-results-width;
-  
+  @include mq-max(md) { // medium and down styles
+    display: none;
+  }
   .aux-nav-list {
     justify-content: right;
     display: flex;

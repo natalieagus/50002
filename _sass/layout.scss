@@ -55,6 +55,10 @@
 
   @include mq(md) {
     display: flex;
+    // TODO
+    // position: sticky;
+    top: 0px;
+    // width: $content-width - 250px; // minus stackedit left
     justify-content: space-between;
     height: $header-height;
     background-color: $body-background-color;
@@ -85,12 +89,12 @@
   position: fixed;
   overflow-y: scroll;
   z-index: 998;
-  transition: 0.5s;
+  transition: 0.2s;
   display: block;
   &.nav-open {
-    transition: 0.5s;
+    transition: 0.2s;
     height: 100vh; /* viewport height */
-    width: 60%;
+    width: 80%;
     top: 0px;
   }
 
@@ -151,7 +155,7 @@
 }
 
 .site-button {
-  display: fixed;
+  display: flex;
   height: 100%;
   padding: $gutter-spacing-sm;
   align-items: center;
