@@ -102,7 +102,9 @@ height: 75vh;
 }
 
 .btnScrollToTop {
-    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: $top-icon-color;       
     opacity: 0;   
     width: 4rem;
@@ -321,3 +323,8 @@ strong {
   filter: invert(1) hue-rotate(180deg);
 
 }
+
+.nav-up {
+  top: -80px;
+}
+
