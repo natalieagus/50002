@@ -52,11 +52,11 @@ layout: table_wrappers
     {% include icons/external_link.html %}
   </svg>
 
+  <div href="#" id="menu-button" class="hamburger-button">
+    <svg viewBox="0 0 24 24" class="icon"><use xlink:href="#svg-menu"></use></svg>
+  </div>
   <div class="side-bar">
     <div class="site-header">
-      <a href="#" id="menu-button" class="site-button">
-        <svg viewBox="0 0 24 24" class="icon"><use xlink:href="#svg-menu"></use></svg>
-      </a>
       
       <a href="{{ '/' | relative_url }}" class="site-title lh-tight">{% include title.html %}</a>
       <a class="theme-toggle-button toggle-theme theme-toggle-button-screen-small">🌑</a>

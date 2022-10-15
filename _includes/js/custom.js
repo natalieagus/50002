@@ -302,5 +302,14 @@ function handleDeviceChange(e) {
     jQuery(".search").detach().insertBefore(".side-bar")
   }
 }
+document.addEventListener('mouseup', function(e) {
+    var container = document.getElementById('site-nav');
+    if (!container.contains(e.target) && container.classList.contains("nav-open")) {
+        container.classList.remove("nav-open");
+        console.log("close sidebar");
+    }
+});
+
+
 
 

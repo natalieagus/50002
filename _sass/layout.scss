@@ -81,17 +81,30 @@
 }
 
 .site-nav {
-  display: none;
+  width: 0%;
+  position: fixed;
+  overflow-y: scroll;
+  z-index: 998;
+  transition: 0.5s;
+  display: block;
   &.nav-open {
-    display: block;
+    transition: 0.5s;
+    height: 100vh; /* viewport height */
+    width: 60%;
+    top: 0px;
   }
 
   @include mq(md) {
+    position: relative;
+    width: auto;
     display: block;
     padding-top: $sp-8;
     padding-bottom: $gutter-spacing-sm;
     overflow-y: auto;
     flex: 1 1 auto;
+    &.nav-open {
+        top: 0px;
+    }
   }
 }
 
@@ -138,10 +151,25 @@
 }
 
 .site-button {
-  display: flex;
+  display: fixed;
   height: 100%;
   padding: $gutter-spacing-sm;
   align-items: center;
+  bottom: 4rem;
+  left: 4rem;
+}
+
+.hamburger-button{
+  background-color: $body-background-color;
+  display: flex;
+  position: fixed;
+  height: auto;
+  width: auto;
+  padding: $gutter-spacing-sm;
+  align-items: center;
+  bottom: 2rem;
+  left: 2rem;
+  border-radius: 50%; 
 }
 
 
@@ -149,6 +177,9 @@
 @include mq(md) {
   .site-header .site-button {
     display: none;
+  }
+  .hamburger-button {
+    width: 0;
   }
 }
 
@@ -162,6 +193,13 @@
 }
 
 .site-button:hover {
+  background-image: linear-gradient(
+    -90deg,
+    rgba($feedback-color, 1) 0%,
+    rgba($feedback-color, 0.8) 100%
+  );
+}
+.hamburger-button:hover {
   background-image: linear-gradient(
     -90deg,
     rgba($feedback-color, 1) 0%,
