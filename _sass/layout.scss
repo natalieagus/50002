@@ -165,7 +165,7 @@
 }
 
 .hamburger-button{
-  background-color: $body-background-color;
+  background-color: rgba($body-background-color, 0.8);
   display: flex;
   position: fixed;
   height: auto;
