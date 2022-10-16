@@ -91,10 +91,12 @@
   z-index: 998;
   transition: 0.2s;
   display: block;
+  padding-top: $sp-8;
+  padding-bottom: $gutter-spacing-sm;
   &.nav-open {
     transition: 0.2s;
     height: 100vh; /* viewport height */
-    width: 80%;
+    width: 70%;
     top: 0px;
   }
 
@@ -185,6 +187,7 @@
     display: none;
   }
   .hamburger-button {
+    display:none;
     width: 0;
   }
 }

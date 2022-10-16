@@ -38,6 +38,7 @@ function initNav() {
   const siteNav = document.getElementById('site-nav');
   const mainHeader = document.getElementById('main-header');
   const menuButton = document.getElementById('menu-button');
+  const searchOverlay = document.getElementsByClassName('search-overlay')[0];
 
   jtd.addEvent(menuButton, 'click', function(e){
     e.preventDefault();
@@ -45,9 +46,11 @@ function initNav() {
     if (menuButton.classList.toggle('nav-open')) {
       siteNav.classList.add('nav-open');
       mainHeader.classList.add('nav-open');
+      searchOverlay.classList.add('search-overlay-active');
     } else {
       siteNav.classList.remove('nav-open');
       mainHeader.classList.remove('nav-open');
+      searchOverlay.classList.remove('search-overlay-active');
     }
   });
 

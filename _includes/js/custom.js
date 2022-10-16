@@ -282,6 +282,9 @@ window.addEventListener("DOMContentLoaded", (event) => {
     // check device width
     handleDeviceChange(smallDevice);
 
+    // set mouse up listener
+    setMouseUpListener();
+
 });
 
 // Set Callback event to highlight toc
@@ -309,13 +312,23 @@ function handleDeviceChange(e) {
     jQuery(".search").detach().insertBefore(".side-bar")
   }
 }
-document.addEventListener('mouseup', function(e) {
+
+function setMouseUpListener(){
     var container = document.getElementById('site-nav');
-    if (!container.contains(e.target) && container.classList.contains("nav-open")) {
-        container.classList.remove("nav-open");
-        console.log("close sidebar");
-    }
-});
+    var hamburger = document.getElementsByClassName('hamburger-button')[0];
+    var main_header = document.getElementsByClassName('main-header')[0];
+    var overlay = document.getElementsByClassName('search-overlay')[0];
+    
+    document.addEventListener('mouseup', function(e) {
+        if (!container.contains(e.target) && container.classList.contains("nav-open")) {
+            container.classList.remove("nav-open");
+            hamburger.classList.remove("nav-open");
+            main_header.classList.remove("nav-open");
+            overlay.classList.remove('search-overlay-active');
+            console.log("close sidebar");
+        }
+    });
+}
 
 
 

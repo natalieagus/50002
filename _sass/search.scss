@@ -3,7 +3,7 @@
 .search {
   position: relative;
   width:100%;
-  z-index: 3;
+  z-index: 4;
   flex-grow: 1;
   height: $sp-10;
   padding: $sp-2;
@@ -21,7 +21,7 @@
 
 .search-input-wrap {
   position: relative;
-  z-index: 3;
+  z-index: 4;
   height: $sp-8;
   overflow: hidden;
   border-radius: $border-radius;
@@ -103,6 +103,7 @@
   background-color: $search-background-color;
   border-bottom-right-radius: $border-radius;
   border-bottom-left-radius: $border-radius;
+  z-index: 4;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08);
 
   @include mq(md) {
@@ -252,7 +253,6 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 3;
   width: 0;
   height: 0;
   background-color: rgba(0, 0, 0, 0.3);
@@ -303,6 +303,7 @@
     width: 100%;
     height: 100%;
     opacity: 1;
+    z-index: 2 !important;
     transition: opacity ease $transition-duration, width 0s, height 0s;
   }
 
@@ -321,4 +322,13 @@
       padding-top: 0;
     }
   }
+}
+
+.search-overlay-active {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  opacity: 1;
+  z-index: 5;
+  transition: opacity ease $transition-duration, width 0s, height 0s;
 }
