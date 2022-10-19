@@ -85,33 +85,48 @@
   }
 }
 
+
+// .site-nav {
+//   display: none;
+//   &.nav-open {
+//     display: block;
+//   }
+
+//   @include mq(md) {
+//     display: block;
+//     padding-top: $sp-8;
+//     padding-bottom: $gutter-spacing-sm;
+//     overflow-y: auto;
+//     flex: 1 1 auto;
+//   }
+// }
+
 .site-nav {
-  width: 0%;
+  @include mq-max(md) {
+    width: 0%;
+    transition: 0.2s;
+  }
   position: fixed;
   overflow-y: scroll;
   z-index: 998;
-  transition: 0.2s;
-  display: block;
   padding-top: $sp-8;
   padding-bottom: $gutter-spacing-sm;
+  
   &.nav-open {
-    transition: 0.2s;
+    display: block;
     height: 100vh; /* viewport height */
     width: 70%;
     top: 0px;
+    transition: 0.2s;
   }
 
   @include mq(md) {
     position: relative;
-    width: auto;
     display: block;
     padding-top: $sp-8;
     padding-bottom: $gutter-spacing-sm;
     overflow-y: auto;
     flex: 1 1 auto;
-    &.nav-open {
-        top: 0px;
-    }
   }
 }
 
