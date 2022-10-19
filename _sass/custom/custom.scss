@@ -106,8 +106,8 @@ height: 75vh;
     justify-content: center;
     color: $top-icon-color;       
     opacity: 0;   
-    width: 4rem;
-    height: 4rem;
+    width: 3rem;
+    height: 3rem;
     color: $grey-dk-250;
     background-color: $purple-lt-100;
     position: fixed;
@@ -120,7 +120,7 @@ height: 75vh;
     z-index: 2;
     border: 0px;
     transition: opacity 1s, transform 0.5s, color 0.3s;  
-
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
     &:hover{
       color: white;
       transition: color 0.3s;

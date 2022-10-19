@@ -198,7 +198,7 @@
 .aux-nav {
   height: 100%;
   overflow-x: auto;
-  @include fs-2;
+  @include fs-4;
   width: $content-width - $search-results-width;
   @include mq-max(md) { // medium and down styles
     width: fit-content;
