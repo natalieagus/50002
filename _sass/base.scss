@@ -140,3 +140,16 @@ blockquote {
   
 }
 
+*::-webkit-scrollbar-thumb:horizontal{
+  background: transparent;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgba($sidebar-color, 0);
+}
+
+

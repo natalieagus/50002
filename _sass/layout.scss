@@ -14,6 +14,7 @@
     flex-direction: column;
     border-right: $border $border-color;
     align-items: flex-end;
+    background-color: $sidebar-color;
   }
 
   @include mq(lg) {
