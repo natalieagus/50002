@@ -82,7 +82,7 @@ a:not([class]) {
 
 code {
   font-family: $mono-font-family;
-  font-size: 0.75em;
+  font-size: 0.9em;
   line-height: $body-line-height;
 }
 
@@ -115,9 +115,9 @@ blockquote {
   // resets user-agent stylesheets for blockquotes
   margin-block-start: 0;
   margin-inline-start: 0;
-  padding-left: 15px;
-  border-left: 3px solid $border-color;
-  background-color: rgba($border-color, 0.3);
+  padding-left: 16px;
+  border-left: 2px solid $link-color;
+  background-color: rgba($border-color, 0.1);
 }
 
 // scrollbar

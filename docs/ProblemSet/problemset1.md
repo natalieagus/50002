@@ -40,7 +40,7 @@ We are literally <i>told</i> that the first hex digit is <code>B = 1011</code>. 
 **(a).** Bob used an enhanced keyboard that was made up of 101 keys. He told Alice that he pressed one of the letter keys. **How much information did Bob give to Alice?** Hint: There are 26 letters in an alphabet.
 
 
-<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+<div cursor="pointer" class="collapsible"> Show Answer</div><div class="content_answer"><p>
 Initially, there are 101 choices. The information that Bob gave Alice narrows down the choices into 26. The information given is therefore: $$\log_2(101) - \log_2(26) = 1.958$$ 
 </p></div><br>
 

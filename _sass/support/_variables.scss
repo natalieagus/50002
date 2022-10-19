@@ -75,12 +75,16 @@ $red-000: #f77e7e !default;
 $red-100: #f96e65 !default;
 $red-200: #e94c4c !default;
 $red-300: #dd2e2e !default;
+$blue-chakra-100: #BEE3F8 !default;
+$purple-chakra-50: #FAF5FF !default;
+$pink-chakra-100: #FED7E2;
 
 $cs-orange: rgba(245, 196,113,1.0);
 $cs-red: rgb(93,34,66);
 $cs-blue: rgb(81,132,197);
 
-
+$btn-scroll-top-bg: $purple-lt-100;
+$base-code-color: rgb(184, 50, 128);
 $bold-color: $grey-dk-300;
 $toc-color-active: $purple-300;
 $body-background-color: $white !default;
@@ -93,10 +97,11 @@ $body-text-color: $grey-dk-200 !default;
 $body-heading-color: $grey-dk-300 !default;
 $search-result-preview-color: $grey-dk-000 !default;
 $nav-child-link-color: $grey-dk-100 !default;
-$link-color: $purple-000 !default;
+$link-color: rgb(63,32,186)!default;
 $btn-primary-color: $purple-100 !default;
 $base-button-color: #f7f7f7 !default;
 
+$content-answer-border: $grey-lt-100;
 // $bold-color: $grey-dk-300;
 // $toc-color-active: $purple-300;
 // $body-background-color: $white !default;

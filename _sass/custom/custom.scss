@@ -106,24 +106,23 @@ height: 75vh;
     justify-content: center;
     color: $top-icon-color;       
     opacity: 0;   
-    width: 3rem;
-    height: 3rem;
-    color: $grey-dk-250;
-    background-color: $purple-lt-100;
+    height: 1.5em;
+    width: 1.5em;
+    color: black;
+    background-color: rgba($btn-scroll-top-bg, 0.6);
     position: fixed;
     bottom: 2rem;
     right: 2rem;    
     border-radius: 50%; 
-    transform: scale(0);
-    font: bold 30px monospace; 
+    font:  30px monospace; 
     cursor: pointer;     
     z-index: 2;
     border: 0px;
     transition: opacity 1s, transform 0.5s, color 0.3s;  
     box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
     &:hover{
-      color: white;
       transition: color 0.3s;
+      background-color: rgba($btn-scroll-top-bg, 1.0);
     }
 
 
@@ -251,27 +250,33 @@ font-size: 0.9em;
 
 /* Style the button that is used to open and close the collapsible content */
 .collapsible {
-background-color: $collapsible-bg-color;
-color: $collapsible-font-color;
-cursor: pointer;
-padding: 5px;
-border: none;
-text-align: left;
-outline: none;
-font-size: 0.9em;
-font-weight: bold;
-line-height: 20pt;
-padding-left: 10px;
+  // background-color: $collapsible-bg-color;
+  color: $collapsible-font-color;
+  border: 1px solid $content-answer-border;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-left: 2px solid $link-color !important;
+  cursor: pointer;
+  margin-top: 12px;
+  padding: 5px;
+  text-align: left;
+  outline: none;
+  font-size: 0.9em;
+  font-weight: bold;
+  line-height: 20pt;
+  padding-left: 10px;
 }
 
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
 //   .active,
 .collapsible.active {
-background-color: $collapsible-active-bg-color;
+background-color: $collapsible-bg-color;
+border-bottom-right-radius: 0px;
+border-bottom: none;
 }
 
 .collapsible:hover{
-background-color: $collapsible-active-bg-color;
+background-color: $collapsible-bg-color;
 }
 
 /* Style the collapsible content. Note: hidden by default */
@@ -280,8 +285,10 @@ padding: 0 10px;
 display: none;
 overflow: hidden;
 color: $collapsible-font-color;
-background-color: $collapsible-body-color;
-font-size: 0.9em;
+border-left: 2px solid $link-color !important;
+border-right: 1px solid $content-answer-border;
+border-bottom: 1px solid $content-answer-border;
+border-bottom-right-radius: 6px;
 }
 
 
@@ -331,4 +338,14 @@ strong {
 
 .no-invert{
   filter: none !important
+}
+
+.avatar {
+  height: 2em;
+  width: 2em;
+  scale: 1;
+  // float: left;
+  // margin-top: -13px;
+  // border-radius: 0.2em;
+  // margin-right: 0.5em;
 }

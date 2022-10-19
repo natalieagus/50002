@@ -4,10 +4,11 @@
 // {% raw %}
 
 code {
-  padding: 0.2em 0.15em;
+  padding: 0.2em 0.4em;
   font-weight: 400;
   background-color: $code-background-color;
-  border: $border $border-color;
+  color: $base-code-color;
+  // border: $border $border-color;
   border-radius: $border-radius;
   // > span{
   //   background-color: $code-background-color;
