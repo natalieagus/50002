@@ -23,16 +23,14 @@ Singapore University of Technology and Design
 ## [Overview](https://www.youtube.com/watch?v=JqgZcV_1IU4&t=0s)
 Recall that the ideal behaviors and characteristics of a **combinational logic device** are:
 
-1.  The device should be able to tolerate some amount of errors due to its *Noise Margins.* The Noise Margin exists if its VTC gain $$>1$$.
+1.  The device should be able to **tolerate** some amount of errors due to its *Noise Margins.* The Noise Margin exists if its VTC gain $$>1$$.
 2.  If we have **high gain**, that means we can have **more noise margin**.
 	 > Take some time to convince yourself that this is true.
 3.  The device should be cheap, and small sized. 
 	> We do not want to have bulky devices, do we?
 4.  The device should have **zero power dissipation** when input voltages aren't changing. That's why the device must have a nonlinear gain.
-
 6.  Otherwise when voltage is changing from, `0` to `1` or `1` to `0`, then power within the device has to dissipate easily.
 	> Meaning that the change is swift is and quick 
-
 7.  The device has to be **functional**, meaning that it conforms to the assigned **truth table** (**logic**) at all times.
 	> We do not want unpredictable behavior with our devices.
 
@@ -70,9 +68,10 @@ If we connect these MOSFETs connected in a specific way, we can **create** a com
 There are two types of FETs: the **NFET** and the **PFET**.
 
 1.  **The NFET** : the majority of the charge carrier for the **bulk** are *holes* (p-type semiconductor). The majority of the charge carrier for the **source and drain** are electrons (n-type semiconductor). Typically, the bulk is connected to GND to keep the PN junction *reverse biased*.
-	>Please watch the pre-preading video or refer to the later section if you are unclear about what is a PN junction, p-type, or n-type semiconductors.
 2.  **The PFET** : the majority of the charge carrier for the **bulk** are electrons (n-type semiconductor). The majority of the charge carrier for the **source and drain** are holes (p-type semiconductor). Typically, the bulk is connected to `VDD` to keep the PN junction *reverse biased*
 
+{: .note}
+Please watch the [post-preading video](https://www.youtube.com/watch?v=cJxBlO5NMGs&list=PLklpDKpv-EBhCVUAZDDRWEGZzR_It-FSo&index=3) or refer to the [later](https://natalieagus.github.io/50002/notes/cmostechnology#supplementary-sections) section if you are unclear about what is a PN junction, p-type, or n-type semiconductors.
 
 
 Some terms we need to set straight before we proceed:
@@ -98,7 +97,7 @@ See the figure below and its corresponding explanation to understand better how 
 
 <img src="https://dropbox.com/s/7oevad7tcpr2ob4/nfet_t.png?raw=1" class="center_seventy"  >	  
 
-1.  Connections:
+1.  **Connections**:
 	- Bulk is connected to `GND` to keep the PN junction reverse biased, meaning that no current should flow or leak between source and bulk and between drain and bulk.
 	- S (and also bulk) is connected to `GND` for NFET. Current from D is therefore *drained* to `GND` connected to S.
 2.  It is "**ON**" when $$V_{GS} = V_G - V_S$$ is **high** enough. Since source terminal is connected to the `GND` for NFET, 
@@ -107,8 +106,8 @@ See the figure below and its corresponding explanation to understand better how 
 	- When $$V_G > V_{TH}$$, it draws the electrons towards the gate. An n-channel (made of electrons) will be formed between source and drain.
 	- Note that $$V_{TH}$$ for NFET is *positive*.
 3.  When it is \"ON\", current can pass from D to S.
-	- Electrons, its **majority** charge carrier flows from S to D
-		>We can say that its majority charge carrier is drained at D. 
+	- Electronits **majority** charge carrier flows from S to D
+		> We can say that its majority charge carrier is **drained** at 
 	- The output of an NFET is at the D terminal.
 	- Hence, the output of an \"ON\" N-type is `0`
 4.  It is \"OFF\" when $$V_{GS}$$ is **low**, as it encourages depletion region to form further.
@@ -118,27 +117,25 @@ See the figure below and its corresponding explanation to understand better how 
 
 <img src="https://dropbox.com/s/u7nuy6cayaik0q7/pfet_t.png?raw=1"  class="center_seventy" >	  
 
-1.  The PFET symbol is similar to NFET except that it has the by the  bubble $$\circ$$.
-2. Conversely, 
+1.  The PFET symbol is similar to NFET except that it has the by the  bubble $$\circ$$. Conversely for its **connections**: 
 	- Bulk is connected to `VDD` to keep the PN junction reverse biased, meaning that no current should flow or leak between source and bulk and between drain and bulk.
 	- S (and also bulk) is connected to `VDD` for PFET. Current can flow from S to D.
-  3.  It is "ON" when $$V_{GS}$$ is **low** enough. Since source terminal is connected to `VDD` for PFET, 
+2.  It is "ON" when $$V_{GS}$$ is **low** enough. Since source terminal is connected to `VDD` for PFET, 
 	  - $$V_{GS} = V_G - VDD$$, 
 	  - Hence effectively PFET is \"ON\" whenever $$V_G - VDD$$ is low enough, i.e: $$< V_{TH}$$. 
 	  - When $$V_G < `VDD` + V_{TH}$$ (or equivalently, $$V_{GS} < V_{TH}$$), it draws the holes towards the gate. A p-channel (made of holes) will be formed between source and drain.
 	  - Note that $$V_{TH}$$ for PFET is *negative*.
-
-
-
 3.  When it is \"ON\", current can pass from S to D.
-	- Holes, its **majority** charge carrier flows from S to D. 
-		>We can say that its majority charge carrier is drained at D.
+	- Holeits **majority** charge carrier flows from S to D. 
+		> We can say that its majority charge carrier is **drained** at D (same as NFE
 	- The output of an PFET is also at the D terminal.
 	- Hence, the output of an \"ON\" p-type is `1`
-5.  It is "OFF" when $$V_{GS}$$ is **high**, as it encourages depletion region to form further.
+4.  It is "OFF" when $$V_{GS}$$ is **high**, as it encourages depletion region to form further.
 
-  In summary: 
->    MOSFETs operates using **voltages**. No current flows from the gate towards source/drain since the gate is insulated from source and drain. This is unlike common (cheaper) PNP and NPN transistor (standard bipolar junction transistor -- BJT) that operates using current. The "output" that we get at the drain of either PFET or NFET is a result of the connection between Source and Drain due to the presence / absence of voltage in the gate.  
+{: .note-title}
+> Summary
+> 
+> MOSFETs operates using **voltages**. No current flows from the gate towards source/drain since the gate is insulated from source and drain. This is unlike common (cheaper) PNP and NPN transistor (standard bipolar junction transistor -- BJT) that operates using current. The "output" that we get at the drain of either PFET or NFET is a result of the connection between Source and Drain due to the presence / absence of voltage in the gate.  
 
 
 ## Supplementary Sections
@@ -148,8 +145,8 @@ Please refer to this section if you have not already understand about p-type and
   
 ### P-type and N-type Semiconductors
 
-
-> **Not to be confused with PFET and NFET.**
+{: .important}
+**Not to be confused with PFET and NFET.**
 
 In the **p-type** semiconductor there are plenty of **acceptor atoms** and in the **n-type** semiconductor there are plenty of **extra electrons (donor atoms)**. We can say that a p-type region is where the majority of the carriers are holes and an n-type region is where the majority of the carriers are electrons. 
 
@@ -174,18 +171,19 @@ These electrons form a conducting **n-type channel** between the source and the 
 
 For PFETs the opposite happens. When there's presence of low (negative) voltage at the gate, it repels the extra electrons at the n-type bulk. Basically, holes (which are minority in the n-type substrate) are the majority in the region between the gate dielectric and the two p-types semiconductors, forming a conducting **p-type channel** (inversion layer). When there's potential difference between drain and source, then the current will flow from source to drain through this inversion layer. 
 
->Note that the position of the source and drain in PFET is switched , compared to what is depicted for NFET. Read the next section for details.
+{: .note}
+The position of the source and drain in PFET is switched , compared to what is depicted for NFET. Read the next section for details.
 
   
 
 ### Naming of Source and Drain  
 
-The naming of the Source and Drain terminal depends on the **majority** of the charge carrier. 
->*The **majority** charge carrier is always meant to be **drained** at D and **sourced** at S, meaning that it flows from S to D.*  
+The naming of the Source and Drain terminal depends on the **majority** of the charge carrier. The **majority** charge carrier is always meant to be **drained** at D and **sourced** at S, meaning that it flows from S to D.
 
 In PFETs, current flows from Source to Drain, because the majority of the charge carrier is holes (positively charged). In NFETs, current flows from Drain to Source, because the majority of the charge carrier is electrons (negatively charged).
 
-> Note: Current (I) **cannot flow out back to the Gate** because there's a capacitor there (infinite resistance). The function of the gate capacitor is to create electric field enough to pull either electrons up to the gate in NFETS or holes up to gate in PFETs to create a conductive n-type (electrons) or p-type(holes) channel.
+{: .note}
+Current (`I`) **cannot flow out back to the Gate** because there's a capacitor there (**infinite** resistance). The function of the gate capacitor is to create electric field enough to pull either electrons up to the gate in NFETS or holes up to gate in PFETs to create a conductive n-type (electrons) or p-type(holes) channel.
 
 ### Reverse Bias in PN Junction
 
@@ -200,7 +198,7 @@ To form a fully **functional combinational logic device** that implements a part
 
 There are two parts of CMOS: **the pull-up circuit** and **the pull-down circuit**. Its *general schematic* is shown in the figure below:
 
- <img src="https://dropbox.com/s/ywble3yr4bxj99z/cmos.png?raw=1"   class="center_seventy"   >F
+<img src="https://dropbox.com/s/ywble3yr4bxj99z/cmos.png?raw=1"   class="center_fifty"   >
 
 
 Contents of the pull-up circuit:
@@ -218,7 +216,7 @@ Contents of the pull-down circuit:
 2.  **We call the pull-down circuit to be ON if there exists any direct path for *electrons* to flow from any source of the NFETs in the pull-up circuit to the logic output drain.** 
 
 
-## [The CMOS Complements Recipe](https://www.youtube.com/watch?v=JqgZcV_1IU4&t=1388s)
+## [The CMOS Complementary Recipe](https://www.youtube.com/watch?v=JqgZcV_1IU4&t=1388s)
 
 Imagine if pull-up and pull-down circuit (as an overall) are both "ON". This means that there exists a direct  connection to `GND` from the `VDD` (the source of the pull-up to the source of the pull-down) resulting in **short-circuit**. 
 
@@ -235,7 +233,7 @@ The main building blocks of the CMOS complements is summarized as below:
 
 For example, the following is a CMOS circuitry for a NAND gate: 
 
-<img src="https://dropbox.com/s/pfkmo27rmgiklbo/nand.png?raw=1"    class="center_seventy"  >
+<img src="https://dropbox.com/s/pfkmo27rmgiklbo/nand.png?raw=1"    class="center_fourty">
   
 
 There are two inputs to this circuit, called A and B. A low or high voltage representing bit `0` or bit `1` respectively can be supplied to both input terminals. From the diagram, A is connected to the PFET on the **left** and the NFET on the **top**. B is connected to the PFET on the **right** and the NFET on the **bottom**. 
@@ -261,10 +259,10 @@ Now we consider several cases. In Case 1, we consider what the output will be wh
 
   
 
-Notice how there's parallel PFET in the pull-up, and series NFET in the pull-down. 
-> This is exactly the **recipe** for **CMOS complement**, ensuring that there will be no combination of input that will cause both pull-up and pull-down circuits to be **ON**. 
+Notice how there's parallel PFET in the pull-up, and series NFET in the pull-down. This is exactly the **recipe** for **CMOS complement**, ensuring that there will be no combination of input that will cause both pull-up and pull-down circuits to be **ON**. 
 
-> As practice, you can try to trace what happens when `A=0, B=0`, and when `A=1,  B=0` and construct a truth table for this simple circuit. 
+
+As practice, you can try to trace what happens when `A=0, B=0`, and when `A=1,  B=0` and construct a truth table for this simple circuit. 
 
 ## [Logic Gates](https://www.youtube.com/watch?v=JqgZcV_1IU4&t=1860s)
 
@@ -319,7 +317,7 @@ The intuition behind why t$$_{cd}$$ is calculated as the minimum cumulative cont
 
 Complementary pull-up (made up of PFETs) and pull-down circuits (made up of NFETs) form a CMOS gate. With these gates, we can form a combinational logic circuit, example as shown:
 
-<img src="https://dropbox.com/s/nhxsimty73njphx/example.png?raw=1"       >
+<img src="https://dropbox.com/s/nhxsimty73njphx/example.png?raw=1" class="center_fifty"      >
 
 Given the $$t_{pd}$$ and $$t_{cd}$$ for the NAND gate: $$t_{pd} = 4 ns$$, $$t_{cd}=1ns$$, we can find that:
 - The overall $$t_{pd}$$ of the circuit is $$12 ns$$ (the path in red)
@@ -333,7 +331,8 @@ We begin the chapter by understanding how a MOSFET can be used as the most basic
 
 It takes time for these FETs to work, e.g: reacting to the input voltage at its gate and establish a (low or high) voltage value at its drain. Therefore it is important to specify the *timing specifications* of a combinational logic device so that users may know how long the device takes to *react* (to a new valid input, or to an invalid input). 
 
-> *Note*: knowing how long the combinational device takes to react (at most) tells us how *often* (e.g: at what rate) can we supply  new inputs to the device, and how fast the device can process/compute a *batch* of input values. 
+{: .note}
+Knowing how long the combinational device takes to react (at most) tells us how *often* (e.g: at what rate) can we supply  new inputs to the device, and how fast the device can process/compute a *batch* of input values. 
 
 We can assemble a few FETs to implement any truth table or Boolean functions (we will learn this more in next chapter), hence creating combinational logic devices. A specific type of combinational logic devices that has one output bit is called as **gate**. There are many types of gates, depending on the Boolean function that's realised. Then, an even larger combinational logic circuits (that realises more complicated Boolean functions) can be created by assembling many of these gates together. 
 

@@ -43,9 +43,9 @@ The lecture notes on **[CMOS technology](https://natalieagus.github.io/50002/not
 * Realise that there’s more than ONE way to construct a FA circuit. There’s no one *right or best* circuit. 
 
 ## 4-bit Ripple Carry Adder
-Your mission this week is to design and test a CMOS circuit that performs addition on **TWO** ***UNSIGNED*** 4-bit inputs</span>: `A[3:0], B[3:0]`, producing a 5-bit output `S[4:0]`:
+Your mission this week is to design and test a CMOS circuit that performs addition on **TWO** ***UNSIGNED*** 4-bit inputs: `A[3:0], B[3:0]`, producing a 5-bit output `S[4:0]`:
 
-<img src="/50002/assets/contentimage/lab2/1.png"  class="center_fifty"/>
+<img src="/50002/assets/contentimage/lab2/1.png"  class="center_thirty"/>
 
 ## Task A: Building Logic Gates XOR and XNOR (50 mins)
 
@@ -59,14 +59,14 @@ We have given you a headstart by implementing 2-input `nand`, 2-input `nor`, and
 ## XOR and XNOR Gate Schematic
 It’s much easier to debug your circuit module-by-module rather than as one big lump.  XOR/XNOR can be challenging gates to design; here’s one suggestion for how they might be implemented. Use PFET with specs: SW as 4 and SL as 1, and NFET with specs: SW as 2 and SL as 1. 
 
-<img src="/50002/assets/contentimage/lab2/2.png"  class=" center_fifty"/>
+<img src="/50002/assets/contentimage/lab2/2.png"  class=" center_fourty"/>
 
-<br>
+<img src="/50002/assets/contentimage/lab2/3.png"  class=" center_fourty"/>
 
-<img src="/50002/assets/contentimage/lab2/3.png"  class=" center_fifty"/>
+{: .highlight}
+**Write** your xnor and xor circuitry inside `lab2_submit.jsim`. <br>
 
-<div class="yellowbox"><div class="custom_box">**Write** your xnor and xor circuitry inside `lab2_submit.jsim`.  </div></div><br>
-<img src="/50002/assets/contentimage/lab2/4.png"  class=" center_seventy"/>
+<img src="/50002/assets/contentimage/lab2/4.png"  class=" center_seventy no-invert"/>
 
 ## Task B: Simple 1-bit Adder (30 mins)
 Let’s start a simple **1-bit full-adder** module before proceeding to create a 4-bit Ripple-Carry adder. Later we will discuss higher performance adder architectures you can use in the implementation of the Beta (the computer central processing unit we will be designing in later labs).
@@ -86,9 +86,10 @@ Hints:
 * S is typically implemented using two cascaded 2-input XOR gates. 
 * You can use three 2-input NANDs and one 3-input NAND to implement Co (remember that by De Morgan’s Law, two cascaded NANDs are logically equivalent to a cascade of AND/OR).
 
-<div class="yellowbox"><div class="custom_box">**Write** your answer inside lab2_submit.jsim. </div></div><br>
+{: .highlight}
+**Write** your answer inside `lab2_submit.jsim`.
 
-<img src="/50002/assets/contentimage/lab2/14.png"  class="center_seventy"/>
+<img src="/50002/assets/contentimage/lab2/14.png"  class="center_fifty no-invert"/>
 
 ## Ripple-Carry Adder
 We can cascade FA units to form Ripple-Carry Adder. The module performs the addition of two one-bit inputs (`A` and `B`) incorporating the carry in from the **previous** stage (`Ci`).  The result appears on the `S` output and a carry (`Co`) is generated for the **next** stage. 
@@ -99,7 +100,7 @@ A possible schematic for the 4-bit adder is shown below:
 
 We have implemented this part for you inside `lab2_submit.jsim`. Please study it. 
 
-<img src="/50002/assets/contentimage/lab2/7.png"  class=" center_seventy"/>
+<img src="/50002/assets/contentimage/lab2/7.png"  class=" center_seventy no-invert"/>
 
 ## Testing your Circuit
 The file `lab2_debug.jsim` contains code to debug and test your circuit. **You DO NOT need to submit this file.** 
@@ -121,7 +122,7 @@ For example, to completely test all possible input combinations for a 2-input ga
 
 Below is a screenshot on the contents of `lab2_submit.jsim`:
 
-<img src="/50002/assets/contentimage/lab2/8.png"  class=" center_fifty"/>
+<img src="/50002/assets/contentimage/lab2/8.png"  class=" center_thirty no-invert"/>
 
 * In `lab2_debug.jsim`, we use `clk1`, `clk2`, and `clk3` to create signals for `A`, `B`, and `Ci` using an **inverter** (you can use a buffer too, it doesn't really matter). 
 * Since each clock period is *double* the previous one, we will be able to create **all** 8 input combinations: `000, 001, …, 111` using these three clocks. 
@@ -149,7 +150,7 @@ Interpreting analog signal levels as logic values can be **tedious**. For a give
 
 These values are **already** specified in `nominal.jsim`, but you can override them in your own netlist.  Voltages between `vil` and `vih` are displayed as a filled-in rectangle to indicate that the logic value cannot be determined (**invalid** values).  For example:
 
-<img src="/50002/assets/contentimage/lab2/9.png"  class=" center_seventy"/>
+<img src="/50002/assets/contentimage/lab2/9.png"  class=" center_fifty"/>
 
 You can also ask for the values of a set of signals to be displayed as a bus, e.g., `L(a3,a2,a1,a0)`. The signals should be listed, **most-significant bit first**. A bus waveform is displayed as a:
 1. **Filled-rectangle** if any of the component signals has an **invalid** logic level or

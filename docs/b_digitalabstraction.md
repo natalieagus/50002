@@ -101,7 +101,8 @@ This explanation can be made clear with the following example. Suppose we supply
 * However, the problem is that a *wire*, that connects two or more combinational devices together is susceptible to **noise**. 
 * The voltage value that is received at Device 2 may be *slightly higher* than 0.5V, for example: 0.55V instead, and therefore according to our specification, it is *no longer a valid bit `0`*.
 
-> *Note that a noise can knock the voltage down as well, this is just an example that's detrimental to the function of the devices in this example.*
+{: .note}
+A noise can knock the voltage down as well, this is just an example that's detrimental to the function of the devices in this example.*
 
   
 Device 1 in the figure above **violates** static discipline because given a **valid** input, it may be **unable** to produce a valid output (to **reach** the next device 2), because the `0.5V` produced at the output of Device 1 may meet some disturbances that caused it to be slightly off, e.g: `0.55V`.

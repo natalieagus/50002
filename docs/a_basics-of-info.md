@@ -234,8 +234,8 @@ Once we are **comfortable**  with conveying logic (information) in terms of bits
 > 
 > The problem sets are created so that you're comfortable with bit manipulation and *communicating* (with your future machine) in that domain.  
 
-
-Note that transistor is *not the first* tool created to manipulate voltages: triode vacuum tubes and electro-mechanical relays were used in pre-1950s. Before electricity was discovered, people used **mechanical** gears and **punch cards** to encode  digital data. Also in case it's not clear, digital data is the *discrete*, discontinuous *representation* of **information**.
+{: .note}
+Transistor is *not the first* tool created to manipulate voltages: triode vacuum tubes and electro-mechanical relays were used in pre-1950s. Before electricity was discovered, people used **mechanical** gears and **punch cards** to encode  digital data. Also in case it's not clear, digital data is the *discrete*, discontinuous *representation* of **information**.
 
 ### Early Transistors
 If you Google "triode vacuum tubes", and "electro-mechanical relays" -- or even the "**early transistors**", you'd realise that they have quite a **large** size and they are definitely **not cheap.** You can find some information [here](https://spectrum.ieee.org/tech-talk/semiconductors/devices/how-much-did-early-transistors-cost) for context, but on average in the past it costs about $$8$$ each. They cost about **a billion times** more than they are now, *so your computers that have billions of transistors might cost you a few billion $$ in the past (not to mention that it would've been enormous in size too).* 
