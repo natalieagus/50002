@@ -43,7 +43,7 @@ How do we represent integers (basic numbers) in binary? Suppose we have binary n
 ```
 
 The above means the integer value:
-$$0 \times 2^5 + 0 \times 2^4 + 1 \times 2^3 + 1 \times 2^2 + 0 \times 2^1 + 1 \times 2^0 = 13$$ in decimal (base 10). 
+$$0 \times 2^5 + 0 \times 2^4 + 1\times 2^3$$  $$+ 1\times 2^2 + 0 \times 2^1 + 1 \times 2^0 = 13$$ in decimal (base 10). 
 
 > Binary to Decimal conversion is really simple, but takes time to get used to. 
 

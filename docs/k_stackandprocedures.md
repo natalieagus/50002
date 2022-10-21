@@ -46,7 +46,7 @@ int result_2 = fact(9);
 
 If we were to naively assemble this, we can translate this into the following $$\beta$$ assembly source code:
 
-```cpp
+```m68k
 .include beta.uasm
 || we call fact(4) first
 LD(R31, n_1, R1)	| load 4 to R1
@@ -321,7 +321,7 @@ To allocate memory space for variables, we can either:
 
 To allocate memory space for instructions (i.e: make `SP` point to some unused memory location), we can use `ALLOCATE`. 
 
-```cpp
+```nasm
 .include beta.uasm 
 . = 0x01B0 | load values at fixed location
 result_1 : LONG(0)
@@ -332,7 +332,7 @@ ALLOCATE(50)
 ```
 
 ### Secondly,  implement the calling sequence
-```cpp
+```nasm
 || Calling sequence
 ADDC(R31, 4, R1) | put 4 to R1 
 

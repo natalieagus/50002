@@ -10,7 +10,7 @@
   color: rgb(27,34,64);
 } // generic //
 .highlight .k {
-  color: #859900;
+  color: rgb(0, 92, 197);
 } // keyword //
 .highlight .l {
   color: rgb(27,34,64);
@@ -19,7 +19,7 @@
   color: rgb(27,34,64);
 } // name //
 .highlight .o {
-  color: #859900;
+  color: rgb(34, 134, 58);
 } // operator //
 .highlight .x {
   color: #cb4b16;
@@ -31,13 +31,13 @@
   color: #586e75;
 } // comment.multiline //
 .highlight .cp {
-  color: #859900;
+  color: rgb(34, 134, 58);
 } // comment.preproc //
 .highlight .c1 {
   color: #586e75;
 } // comment.single //
 .highlight .cs {
-  color: #859900;
+  color: rgb(34, 134, 58);
 } // comment.special //
 .highlight .gd {
   color: #2aa198;
@@ -53,7 +53,7 @@
   color: #cb4b16;
 } // generic.heading //
 .highlight .gi {
-  color: #859900;
+  color: rgb(34, 134, 58);
 } // generic.inserted //
 .highlight .go {
   color: rgb(27,34,64);
@@ -75,16 +75,16 @@
   color: #cb4b16;
 } // keyword.constant //
 .highlight .kd {
-  color: #268bd2;
+  color: rgb(111, 66, 193);
 } // keyword.declaration //
 .highlight .kn {
-  color: #859900;
+  color: rgb(34, 134, 58);
 } // keyword.namespace //
 .highlight .kp {
-  color: #859900;
+  color: rgb(34, 134, 58);
 } // keyword.pseudo //
 .highlight .kr {
-  color: #268bd2;
+  color: rgb(111, 66, 193);
 } // keyword.reserved //
 .highlight .kt {
   color: #dc322f;
@@ -105,13 +105,13 @@
   color: #b58900;
 } // name.builtin //
 .highlight .nc {
-  color: #268bd2;
+  color: rgb(111, 66, 193);
 } // name.class //
 .highlight .no {
   color: #cb4b16;
 } // name.constant //
 .highlight .nd {
-  color: #268bd2;
+  color: rgb(111, 66, 193);
 } // name.decorator //
 .highlight .ni {
   color: #cb4b16;
@@ -120,7 +120,7 @@
   color: #cb4b16;
 } // name.exception //
 .highlight .nf {
-  color: #268bd2;
+  color: rgb(111, 66, 193);
 } // name.function //
 .highlight .nl {
   color: #555;
@@ -135,13 +135,13 @@
   color: rgb(27,34,64);
 } // name.property //
 .highlight .nt {
-  color: #268bd2;
+  color: rgb(111, 66, 193);
 } // name.tag //
 .highlight .nv {
-  color: #268bd2;
+  color: rgb(111, 66, 193);
 } // name.variable //
 .highlight .ow {
-  color: #859900;
+  color: rgb(34, 134, 58);
 } // operator.word //
 .highlight .w {
   color: rgb(27,34,64);
@@ -192,16 +192,16 @@
   color: #2aa198;
 } // literal.string.symbol //
 .highlight .bp {
-  color: #268bd2;
+  color: rgb(111, 66, 193);
 } // name.builtin.pseudo //
 .highlight .vc {
-  color: #268bd2;
+  color: rgb(111, 66, 193);
 } // name.variable.class //
 .highlight .vg {
-  color: #268bd2;
+  color: rgb(111, 66, 193);
 } // name.variable.global //
 .highlight .vi {
-  color: #268bd2;
+  color: rgb(111, 66, 193);
 } // name.variable.instance //
 .highlight .il {
   color: #2aa198;
