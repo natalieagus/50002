@@ -10,6 +10,7 @@ permalink: /
 {:toc}
 
 
+
 ## Hello World!
 <strong>*Full stack development starts here.*</strong>
 

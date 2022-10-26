@@ -128,9 +128,6 @@ height: 75vh;
       transition: color 0.3s;
       background-color: rgba($btn-scroll-top-bg, 1.0);
     }
-
-
-
 }
 
 .btnScrollToTop.show {      
@@ -329,9 +326,7 @@ strong {
 }
 
 .invert {
-
   filter: invert(1) hue-rotate(180deg);
-
 }
 
 .nav-stick {
