@@ -216,28 +216,29 @@ function hasScrolled() {
 
 // Button to copy code blocks
 function setupCopyButton() {
-const codeBlocks = document.querySelectorAll("pre.highlight");
+    const codeBlocks = document.querySelectorAll("pre.highlight");
 
-codeBlocks.forEach(function (codeBlock) {
-    const copyButton = document.createElement("button");
-    copyButton.className = "copy";
-    copyButton.type = "button";
-    copyButton.ariaLabel = "Copy code to clipboard";
-    copyButton.innerText = "Copy";
-
-    codeBlock.append(copyButton);
-
-    copyButton.addEventListener("click", function () {
-    const code = codeBlock.querySelector("code").innerText.trim();
-    navigator.clipboard.writeText(code);
-
-    copyButton.innerText = "Copied";
-
-    setTimeout(function () {
+    codeBlocks.forEach(function (codeBlock) {
+        const copyButton = document.createElement("button");
+        copyButton.className = "copy";
+        copyButton.type = "button";
+        copyButton.ariaLabel = "Copy code to clipboard";
         copyButton.innerText = "Copy";
-    }, 2000);
+        copyButton.style =  "z-index: 0 !important"
+
+        codeBlock.append(copyButton);
+
+        copyButton.addEventListener("click", function () {
+        const code = codeBlock.querySelector("code").innerText.trim();
+        navigator.clipboard.writeText(code);
+
+        copyButton.innerText = "Copied";
+
+        setTimeout(function () {
+            copyButton.innerText = "Copy";
+        }, 2000);
+        });
     });
-});
 }
 
 
@@ -286,8 +287,8 @@ window.addEventListener("DOMContentLoaded", (event) => {
     });
     }
     
-    setThemeToggle();
     setupCopyButton();
+    setThemeToggle();
     showContent();
 
     // Add callback for toc elements
