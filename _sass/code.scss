@@ -163,13 +163,13 @@ pre.highlight > button {
   position: absolute;
   right: 0rem;
   top: 0rem;
-  opacity: 0;
+  // opacity: 0;
   display: inline-block;
   background-color: transparent;
   outline: 0;
   cursor: pointer;
   padding: 4px 12px;
-  font-size: 0.8rem;
+  font-size: 0.75rem ;
   font-weight: 500;
   line-height: 15px;
   vertical-align: middle;
@@ -177,14 +177,18 @@ pre.highlight > button {
   border-radius: 6px;
   color: $body-text-color;
   &:hover {
-    background-color: $copy-button-background-color;
+    background-color: rgba($copy-button-background-color,0.4);;
     transition-duration: 0.1s;
+  }
+  &:focus{
+    transition-duration: 0s;
+    background-color: rgba($copy-button-background-color,1.0);
   }
 }
 
-pre.highlight:hover > button {
-  opacity: 1;
-}
+// pre.highlight:hover > button {
+//   opacity: 1;
+// }
 
 
 
