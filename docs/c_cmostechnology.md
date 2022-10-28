@@ -24,15 +24,11 @@ Singapore University of Technology and Design
 Recall that the ideal behaviors and characteristics of a **combinational logic device** are:
 
 1.  The device should be able to **tolerate** some amount of errors due to its *Noise Margins.* The Noise Margin exists if its VTC gain $$>1$$.
-2.  If we have **high gain**, that means we can have **more noise margin**.
-	 > Take some time to convince yourself that this is true.
-3.  The device should be cheap, and small sized. 
-	> We do not want to have bulky devices, do we?
+2.  If we have **high gain**, that means we can have **more noise margin**. *Take some time to convince yourself that this is true.*
+3.  The device should be cheap, and small sized. *We do not want to have bulky devices, do we?*
 4.  The device should have **zero power dissipation** when input voltages aren't changing. That's why the device must have a nonlinear gain.
-6.  Otherwise when voltage is changing from, `0` to `1` or `1` to `0`, then power within the device has to dissipate easily.
-	> Meaning that the change is swift is and quick 
-7.  The device has to be **functional**, meaning that it conforms to the assigned **truth table** (**logic**) at all times.
-	> We do not want unpredictable behavior with our devices.
+5.  Otherwise when voltage is changing from, `0` to `1` or `1` to `0`, then power within the device has to dissipate **easily**, meaning that the change is swift, reliable, and quick. *We always want our computers to be fast, don't we?*
+6.  The device has to be **functional**, meaning that it conforms to the assigned **truth table** (**logic**) at all times. *We do not want unpredictable "buggy" behavior with our devices.*
 
 In this chapter, we are learning a particular component called the **MOSFET** that can be used as a building block for our combinational logic device. It has all the characteristics mentioned above.   
 
