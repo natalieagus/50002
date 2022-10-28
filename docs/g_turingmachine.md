@@ -25,9 +25,7 @@ Singapore University of Technology and Design
 
 A Finite State Machine does not keep track of the number of states it *visited*, it is only aware of the current state *it is in*. Therefore it is unable to solve problems like detecting palindrome or checking balanced parenthesis. There is no way to tell whether you have visited a state for the first time, or for the $$n^{th}$$ time. 
 
-> A Finite Automata (FSM), cannot **count**. 
-> 
-The Turing Machine is a mathematical model of computation that defines an abstract **machine**: one that is able to implement any functionalities that FSM can implement, and it doesn't face this limitation that FSM has. 
+The Turing Machine is a **mathematical** model of computation that defines an abstract **machine**. It is a machine that is able to implement **any** functionalities that FSM can implement, and it doesn't face this limitation that FSM has. 
 
 ## [Basics of Turing Machine](https://www.youtube.com/watch?v=cmfDBAiogA0&t=111s)
 
@@ -41,23 +39,18 @@ A Turing Machine is often represented as an "arrow" and a series of input writte
 <img src="https://dropbox.com/s/n41r5z8o2p5dpea/tmeg.png?raw=1"  class="center_seventy" >
 
 <ins>Turing Machine Basics </ins>:
--  The idea is to imagine that we have a physical machine (like a typewriter machine or something), called the Turing Machine, which can read a sequence of inputs written on an *infinitely long* "*tape*" (its basically an array).
+The idea is to imagine that we have a physical machine (like a typewriter machine or something), called the Turing Machine, which can read a sequence of inputs written on an *infinitely long* "*tape*" (its basically an array).
 
 
 -  We can write onto the currently pointed location of the tape  (and also read from it).
-
 - Like an FSM, the Turing Machine also has a **specification**, illustrated by the truth table above. Building a Turing Machine with specification $$K$$ allows it to behave based on $$K$$ when fed any array of inputs. 
-
 -  The pointer of the machine (black arrow)  represents our current input read on the tape. 
-
 -  To operate the machine, we can *move the tape* left and right to shift the arrow, or you can *move the arrow* left and right. They are the same. 
-	
-	*Note that in order to move the arrow  to the right **right**, we need to equivalently move the tape to the **left**. **In practice**, we move the tape, not the arrow*.  
-
+   >  *Note that in order to move the arrow  to the right **right**, we need to equivalently move the tape to the **left**. **In practice**, we move the tape, not the arrow*.  
 -  There exists  a **HALT** state where you reach the end-state, and of course a **START** state as well. 
 
 
-<ins>Turing Machine Operation </ins>:
+<ins>Turing Machine Operation :
 
 1.   Referring to the figure above, we know that the start state is $$S_0$$, and as shown the black arrow is reading an input: $$1$$ 
 
