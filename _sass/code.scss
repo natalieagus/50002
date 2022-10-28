@@ -154,4 +154,38 @@ code.language-mermaid {
   border: 0;
 }
 
+// copy button
+pre.highlight {
+  position: relative;
+}
+
+pre.highlight > button {
+  position: absolute;
+  right: 0rem;
+  top: 0rem;
+  opacity: 0;
+  display: inline-block;
+  background-color: transparent;
+  outline: 0;
+  cursor: pointer;
+  padding: 4px 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 15px;
+  vertical-align: middle;
+  border: 1px solid $body-text-color;
+  border-radius: 6px;
+  color: $body-text-color;
+  &:hover {
+    background-color: $copy-button-background-color;
+    transition-duration: 0.1s;
+  }
+}
+
+pre.highlight:hover > button {
+  opacity: 1;
+}
+
+
+
 // {% endraw %}
