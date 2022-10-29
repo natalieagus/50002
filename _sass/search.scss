@@ -242,12 +242,22 @@
   display: flex;
   width: $sp-9;
   height: $sp-9;
-  background-color: $search-background-color;
+  background-color: rgba($btn-scroll-top-bg, 0.3);
   border: 1px solid rgba($link-color, 0.3);
   border-radius: #{$sp-9 / 2};
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08);
+  // box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08);
   align-items: center;
   justify-content: center;
+  z-index: 2;
+  &:hover{
+    transition: color 0.3s;
+    background-color: rgba($btn-scroll-top-bg, 0.7);
+  }
+  &:active{
+    transition: color 0.3s;
+    background-color: rgba($btn-scroll-top-bg, 1.0);
+
+  }
 }
 
 .search-overlay {

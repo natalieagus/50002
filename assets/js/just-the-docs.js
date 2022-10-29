@@ -443,6 +443,7 @@ function searchLoaded(index, docs) {
   jtd.addEvent(document, 'click', function(e){
     if (e.target != searchInput) {
       hideSearch();
+
     }
   });
 }

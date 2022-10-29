@@ -100,30 +100,33 @@ height: 75vh;
   color: white;
 }
 
+
+
 .btnScrollToTop {
     display: flex;
     align-items: center;
     justify-content: center;
     color: $top-icon-color;       
     opacity: 0;   
-    height: 2em;
-    width: 2em;
+    width: $sp-9;
+    height: $sp-9;
     @include mq(md) {
       height: 2em;
       width: 2em;
     }
     color: black;
     background-color: rgba($btn-scroll-top-bg, 0.6);
+    border: 1px solid rgba($link-color, 0.3);
+    border-radius: #{$sp-9 / 2};
     position: fixed;
-    bottom: 2rem;
-    right: 2rem;    
+    right: $sp-4;
+    bottom: $sp-4 + 0.5rem + $sp-9; 
     border-radius: 50%; 
     font:  30px monospace; 
     cursor: pointer;     
     z-index: 2;
-    border: 0px;
     transition: opacity 1s, transform 0.5s, color 0.3s;  
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+    // box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
     &:hover{
       transition: color 0.3s;
       background-color: rgba($btn-scroll-top-bg, 1.0);
@@ -295,9 +298,11 @@ border-bottom-right-radius: 6px;
 
 .theme-toggle-button{
   display: flex;
-  height: 100%;
+  height: $sp-9;
+  width: $sp-9;
   padding: $gutter-spacing-sm;
   align-items: center;
+  justify-content: center;
   font-size: 1.5em;
   cursor: pointer;
   &.dark-button{

@@ -169,49 +169,49 @@ function highlightTocInView(){
 setTheme();
 
 
-// hide bar on scroll and show when scroll up 
-// Hide Header on on scroll down
-var didScroll;
-var lastScrollTop = 0;
-var delta = 15;
-var navbarHeight = 0;
+// // hide bar on scroll and show when scroll up 
+// // Hide Header on on scroll down
+// var didScroll;
+// var lastScrollTop = 0;
+// var delta = 15;
+// var navbarHeight = 0;
 
-$(window).scroll(function(event){
-    didScroll = true;
-});
+// $(window).scroll(function(event){
+//     didScroll = true;
+// });
 
-setInterval(function() {
-    if (didScroll) {
-        hasScrolled();
-        didScroll = false;
-    }
-}, 250);
+// setInterval(function() {
+//     if (didScroll) {
+//         hasScrolled();
+//         didScroll = false;
+//     }
+// }, 250);
 
-function hasScrolled() {
-    var st = $(this).scrollTop();
+// function hasScrolled() {
+//     var st = $(this).scrollTop();
     
-    // Make sure they scroll more than delta
-    if(Math.abs(lastScrollTop - st) <= delta)
-        return;
+//     // Make sure they scroll more than delta
+//     if(Math.abs(lastScrollTop - st) <= delta)
+//         return;
     
-    // If they scrolled down and are past the navbar, add class .nav-up.
-    // This is necessary so you never see what is "behind" the navbar.
-    if (st > lastScrollTop && st > navbarHeight){
-        // Scroll Down
-        console.log("scrolling down, hiding search input");
-        $('.search').removeClass('nav-stick')
-        $('.main-header').removeClass('nav-stick')
-    } else {
-        // Scroll Up
-        if(st + $(window).height() < $(document).height()) {
-            console.log("scrolling up, enabled search input");
-            $('.search').addClass('nav-stick');
-            $('.main-header').addClass('nav-stick');
-        }
-    }
+//     // If they scrolled down and are past the navbar, add class .nav-up.
+//     // This is necessary so you never see what is "behind" the navbar.
+//     if (st > lastScrollTop && st > navbarHeight){
+//         // Scroll Down
+//         console.log("scrolling down, hiding search input");
+//         $('.search').removeClass('nav-stick')
+//         $('.main-header').removeClass('nav-stick')
+//     } else {
+//         // Scroll Up
+//         if(st + $(window).height() < $(document).height()) {
+//             console.log("scrolling up, enabled search input");
+//             $('.search').addClass('nav-stick');
+//             $('.main-header').addClass('nav-stick');
+//         }
+//     }
     
-    lastScrollTop = st;
-}
+//     lastScrollTop = st;
+// }
    
 
 // Button to copy code blocks
@@ -245,17 +245,17 @@ function setupCopyButton() {
 // Run scripts after DOM is loaded
 window.addEventListener("DOMContentLoaded", (event) => {
     //dom is fully loaded, but maybe waiting on images & css files
-    var btnScrollToTop = document.getElementById("btnScrollToTop");
-    document.addEventListener("scroll", function () {
-        document.scrollingElement.scrollTop > 50 ? btnScrollToTop.classList.add("show") : btnScrollToTop.classList.remove("show");
-    });
+    // var btnScrollToTop = document.getElementById("btnScrollToTop");
+    // document.addEventListener("scroll", function () {
+    //     document.scrollingElement.scrollTop > 50 ? btnScrollToTop.classList.add("show") : btnScrollToTop.classList.remove("show");
+    // });
 
-    btnScrollToTop.addEventListener("click", function () {
-        document.scrollingElement.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
+    // btnScrollToTop.addEventListener("click", function () {
+    //     document.scrollingElement.scrollTo({
+    //         top: 0,
+    //         behavior: 'smooth'
+    //     });
+    // });
 
     // Auto convert bold and code inside content answer
     contentAnswers = document.getElementsByClassName("content_answer");
