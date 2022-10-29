@@ -8,7 +8,8 @@
   height: $sp-10;
   padding: $sp-2;
   transition: padding linear #{$transition-duration / 2};
-  background: $body-background-color;
+  // background: $body-background-color;
+  background-color: $sidebar-color;
 
   @include mq(md) {
     position: relative !important;

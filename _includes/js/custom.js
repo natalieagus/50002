@@ -25,12 +25,12 @@ function setClickEvent(elements){
             if (jtd.getTheme() === 'dark') {
                 jtd.setTheme('light');
                 // set both buttons to be light
-                setButtonsText(document.querySelectorAll('.toggle-theme'), '🌕')
+                setButtonsText(document.querySelectorAll('.toggle-theme'), '☼')
                 localStorage.setItem('theme', 'light')
             } else {
                 jtd.setTheme('dark');
                 // set both buttons to be dark
-                setButtonsText(document.querySelectorAll('.toggle-theme'), '🌑')
+                setButtonsText(document.querySelectorAll('.toggle-theme'), '☽︎')
                 localStorage.setItem('theme', 'dark')
             }
         });
@@ -44,9 +44,9 @@ function setThemeToggle(){
     var currentTheme = localStorage.getItem('theme');
     
     if (currentTheme == 'dark') {
-        setButtonsText(toggleThemeButtons, '🌑');
+        setButtonsText(toggleThemeButtons, '☽︎');
     } else {
-        setButtonsText(toggleThemeButtons, '🌕');
+        setButtonsText(toggleThemeButtons, '☼');
     }
 
     // Setup toggle callback 
@@ -58,18 +58,18 @@ function setThemeToggle(){
             const toggleThemeButtons = document.querySelectorAll('.toggle-theme');
             var currentTheme = localStorage.getItem('theme');
             if (currentTheme == 'dark') {
-                setButtonsText(toggleThemeButtons, '🌕')
+                setButtonsText(toggleThemeButtons, '☼')
             } else {
-                setButtonsText(toggleThemeButtons, '🌑')
+                setButtonsText(toggleThemeButtons, '☽︎')
             }
         }, 
         () => { //out
             const toggleThemeButtons = document.querySelectorAll('.toggle-theme');
             var currentTheme = localStorage.getItem('theme');
             if (currentTheme == 'dark') {
-                setButtonsText(toggleThemeButtons, '🌑')
+                setButtonsText(toggleThemeButtons, '☽︎')
             } else {
-                setButtonsText(toggleThemeButtons, '🌕')
+                setButtonsText(toggleThemeButtons, '☼')
             }
         }
         );

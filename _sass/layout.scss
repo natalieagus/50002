@@ -132,7 +132,7 @@
 
 .site-header {
   display: flex;
-  min-height: $header-height;
+  max-height: $header-height;
   align-items: center;
   font-weight: bold;
 
@@ -175,7 +175,7 @@
 .site-button {
   display: flex;
   height: 100%;
-  padding: $gutter-spacing-sm;
+  padding: $gutter-spacing-xs;
   align-items: center;
   bottom: 4rem;
   left: 4rem;

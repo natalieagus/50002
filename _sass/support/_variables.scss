@@ -185,13 +185,14 @@ $top-icon-color: black;
 // Grid system
 $gutter-spacing: $sp-6 !default;
 $gutter-spacing-sm: $sp-4 !default;
+$gutter-spacing-xs: $sp-2 !default;
 $nav-width: 264px !default;
 $nav-width-md: 248px !default;
 $nav-list-item-height: $sp-6 !default;
 $nav-list-item-height-sm: $sp-8 !default;
 $nav-list-expander-right: false;
 $content-width: 1200px !default;
-$header-height: 60px !default;
+$header-height: 50px;
 $search-results-width: $content-width - $nav-width;
 $transition-duration: 400ms;
 
