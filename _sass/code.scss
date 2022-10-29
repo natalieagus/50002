@@ -163,26 +163,31 @@ pre.highlight > button {
   position: absolute;
   right: 0rem;
   top: 0rem;
-  // opacity: 0;
+  height: 1.5rem;
+  width: 1.5rem;
   display: inline-block;
-  background-color: transparent;
+  background-color: rgba($copy-button-background-color,0.6);
+  background-image: url("../images/copy.svg"); // path relative to stylesheets which is at /assets/css
+  background-size: 60%;
+  background-position: center;
+  background-repeat: no-repeat;
   outline: 0;
   cursor: pointer;
-  padding: 4px 12px;
   font-size: 0.75rem ;
   font-weight: 500;
   line-height: 15px;
   vertical-align: middle;
-  border: 1px solid $body-text-color;
+  border: 1px solid rgba($body-text-color,0.1);
   border-radius: 6px;
   color: $body-text-color;
   &:hover {
-    background-color: rgba($copy-button-background-color,0.4);;
+    background-color: rgba($copy-button-background-color,1.0);
     transition-duration: 0.1s;
   }
-  &:focus{
+  &.done{
     transition-duration: 0s;
-    background-color: rgba($copy-button-background-color,1.0);
+    background-image: url("../images/done.svg");
+    background-color: rgba($blue-chakra-100,1.0);
   }
 }
 

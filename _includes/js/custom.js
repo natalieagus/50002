@@ -223,7 +223,6 @@ function setupCopyButton() {
         copyButton.className = "copy";
         copyButton.type = "button";
         copyButton.ariaLabel = "Copy code to clipboard";
-        copyButton.innerText = "Copy";
         copyButton.style =  "z-index: 0 !important"
 
         codeBlock.append(copyButton);
@@ -232,11 +231,12 @@ function setupCopyButton() {
         const code = codeBlock.querySelector("code").innerText.trim();
         navigator.clipboard.writeText(code);
 
-        copyButton.innerText = "Copied";
+        // copyButton.innerText = "Copied";
+        copyButton.classList.add("done")
 
         setTimeout(function () {
-            copyButton.innerText = "Copy";
-        }, 2000);
+            copyButton.classList.remove("done");
+        }, 5000);
         });
     });
 }
