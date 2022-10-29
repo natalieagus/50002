@@ -32,6 +32,34 @@ $search-background-color: $grey-dk-250;
 $table-background-color: $grey-dk-250;
 $feedback-color: darken($sidebar-color, 3%);
 
+
+$calloutsteal-000: #b7edfe;
+$calloutsteal-100: #85e1fe;
+$calloutsteal-200: #32cdfd;
+$calloutsteal-300: #11c5fc;
+
+$calloutsgreen-000: #cde9b6;
+$calloutsgreen-100: #b1dd8c;
+$calloutsgreen-200: #95d162;
+$calloutsgreen-300: #8bcd54;
+
+$calloutsred-000: #ffbdb6;
+$calloutsred-100: #ff8f83;
+$calloutsred-200: #ff6251;
+$calloutsred-300: #ff351f;
+
+$calloutsyellow-000: #fee49c;
+$calloutsyellow-100: #fed86d;
+$calloutsyellow-200: #fecb3e;
+$calloutsyellow-300: #fbb901;
+
+
+$calloutsblue-000: #e3c7f7;
+$calloutsblue-100: #ca94f0;
+$calloutsblue-200: #d783ff;
+$calloutsblue-300: #c855ff;
+
+
 figure.highlight::before {
     color: $highlight-comment !important;
     background-color: $highlight-background ;
@@ -110,3 +138,5 @@ figure.highlight::before {
   img, svg, object {
     filter: invert(0.9) hue-rotate(180deg);
   }
+
+

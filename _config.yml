@@ -105,19 +105,19 @@ color_scheme: nil
 callouts_level: quiet # or loud
 callouts:
   highlight:
-    color: yellow
+    color: calloutsyellow
   important:
     title: Important
-    color: blue
+    color: calloutsteal
   new:
     title: New
-    color: green
+    color: calloutsgreen
   note:
     title: Note
-    color: slateblue
+    color: calloutsblue
   warning:
     title: Warning
-    color: red
+    color: calloutsred
 
 plugins:
   - jekyll-seo-tag

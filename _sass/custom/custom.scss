@@ -300,6 +300,13 @@ border-bottom-right-radius: 6px;
   align-items: center;
   font-size: 1.5em;
   cursor: pointer;
+  &.dark-button{
+    background-image: url("../images/sun.svg");
+    filter: invert(1) hue-rotate(180deg);
+  }
+  &.light-button{
+    background-image: url("../images/moon.svg");
+  }
 }
 
 // .theme-toggle-button-screen-small{
