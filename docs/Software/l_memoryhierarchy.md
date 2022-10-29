@@ -4,6 +4,7 @@ permalink: /notes/memoryhierarchy
 title: Memory Hierarchy
 description: A clever way to have a large memory space at a cheap cost and minimum latency
 nav_order: 13
+parent: Software Related Topics
 ---
 
 * TOC

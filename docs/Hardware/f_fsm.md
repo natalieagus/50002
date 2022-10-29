@@ -4,6 +4,7 @@ permalink: /notes/fsm
 title: Finite State Machine
 description: Combining sequential and combinational logic devices to make a real and useful machine
 nav_order: 7
+parent: Hardware Related Topics
 ---
 
 

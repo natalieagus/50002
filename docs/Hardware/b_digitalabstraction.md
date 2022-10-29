@@ -3,6 +3,7 @@ layout: default
 nav_order: 3
 permalink: /notes/digitalabstraction
 title: Digital Abstraction
+parent: Hardware Related Topics
 description: A short knowledge on how to convert continuous voltage into discrete boolean values reliably
 ---
 

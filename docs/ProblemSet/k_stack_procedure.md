@@ -1,10 +1,10 @@
 ---
 layout: default
-permalink: /problemset/problemset6
-title: Problem Set 6
-description: Week 9 practice questions containing topics from Assembler and Compilers, Stack and Procedure
+permalink: /problemset/stackandprocedures
+title: Stack and Procedures
+description: Practice questions containing topics from Stack and Procedures
 parent: Problem Set
-nav_order: 6
+nav_order: 8
 ---
 
 * TOC
@@ -16,24 +16,9 @@ Information Systems Technology and Design
 <br>
 Singapore University of Technology and Design
 
-# Problem Set 6
+# Stack and Procedures
 {: .no_toc}
-This page contains all practice questions that constitutes the topics learned in <ins>Week 9</ins>:  **Assemblers and Compilers**, **Stack and Procedure**.
-
 Each topic's questions are grouped into **three** categories: basic, intermediate, and challenging. You are recommended to do all basic problem set before advancing further. 
-
-
-## Byte Memory Array Loading (Basic)
-The memory is loaded as a byte array `{14, 00, 3F, 60, 18, 00, 5F, 60, 00, 10, 01, 80, 1C, 00, 1F, 64, 00, 00, 00, 00, 02, 00, 00, 00, 04, 00, 00, 00, 00, 00, 00, 00}` before starting execution. 
-
-For example, this means that `MEM[0] = 0x14` and `MEM[2] = 0x3F` and so on.
-
-What is the word at memory address `0xC`? And what is the word at memory address `0x14`? 
-
-<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-<code>MEM[0xC] = 64 1F 00 1C</code>, and <code>MEM[0x14] = 00 00 00 02</code>.
-</p></div><br>
-
 
 
 ## The Remainder (Basic)

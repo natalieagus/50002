@@ -1,10 +1,10 @@
 ---
 layout: default
-permalink: /problemset/problemset8
-title: Problem Set 8
-description: Week 11 practice questions containing topics from Virtual Memory and Virtual Machine
+permalink: /problemset/virtualmemory
+title: Virtual Memory
+description: Practice questions containing topics from Virtual Memory
 parent: Problem Set
-nav_order: 8
+nav_order: 11
 ---
 
 * TOC
@@ -16,9 +16,8 @@ Information Systems Technology and Design
 <br>
 Singapore University of Technology and Design
 
-# Problem Set 8
+# Virtual Memory
 {: .no_toc}
-This page contains all practice questions that constitutes the topics learned in <ins>Week 11</ins>:  **Virtual Memory**, **Virtual Machine**.
 
 Each topic's questions are grouped into **three** categories: basic, intermediate, and challenging. You are recommended to do all basic problem set before advancing further. 
 

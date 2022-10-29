@@ -3,6 +3,7 @@ layout: default
 nav_order: 4
 permalink: /notes/cmostechnology
 title: CMOS Technology
+parent: Hardware Related Topics
 description: This notes focuses on how MOSFET works, which is the hardware used as a building block to make combinational logic devices.  
 ---
 

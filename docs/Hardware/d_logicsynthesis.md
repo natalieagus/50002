@@ -4,6 +4,7 @@ permalink: /notes/logicsynthesis
 title: Logic Synthesis
 description: A little bit of Boolean Algebra knowledge for us to synthesize logic and make functional specifications for our hardware.  
 nav_order: 5
+parent: Hardware Related Topics
 ---
 
 

@@ -4,6 +4,7 @@ permalink: /notes/stackandprocedures
 title: Stack and Procedures
 description: Managing memory and hand-assembling function calls for code reusability
 nav_order: 12
+parent: Software Related Topics
 ---
 
 * TOC

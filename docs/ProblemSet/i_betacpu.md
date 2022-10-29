@@ -1,10 +1,10 @@
 ---
 layout: default
-permalink: /problemset/problemset5
-title: Problem Set 5
-description: Week 5 practice questions containing topics from  Beta CPU Datapath
+permalink: /problemset/betacpu
+title: Beta CPU Datapath
+description: Practice questions containing topics from Beta CPU Datapath
 parent: Problem Set
-nav_order: 5
+nav_order: 6
 ---
 
 
@@ -17,13 +17,11 @@ Information Systems Technology and Design
 <br>
 Singapore University of Technology and Design
 
-# Problem Set 5
+# Beta CPU Datapath
 {: .no_toc}
-This page contains all practice questions that constitutes the topics learned in <ins>Week 5</ins>:  **Beta Datapath**.
+
 
 Each topic's questions are grouped into **three** categories: basic, intermediate, and challenging. You are recommended to do all basic problem set before advancing further. 
-
-# Beta Datapath
 
 ## $$\beta$$ Trivia (Basic)
 1.  In an unpipelined Beta implementation, when is the signal `RA2SEL` set to `1`?

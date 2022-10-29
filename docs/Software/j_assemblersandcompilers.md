@@ -4,6 +4,7 @@ permalink: /notes/assemblersandcompilers
 title: Assemblers and Compilers
 description: Improving the programmability and usability of the Beta CPU even further
 nav_order: 11
+parent: Software Related Topics
 ---
 
 * TOC

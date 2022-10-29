@@ -3,6 +3,7 @@ layout: default
 title: Basics of Information
 description: Introduction to 50.002 and a short introduction on how to represent information in base 2 notation.
 permalink: /notes/basicsofinformation
+parent: Hardware Related Topics
 nav_order: 2
 ---
 

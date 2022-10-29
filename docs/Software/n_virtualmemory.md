@@ -4,6 +4,7 @@ permalink: /notes/virtualmemory
 title: Virtual Memory
 description: Using a free part of the disk as an extension of the Memory
 nav_order: 15
+parent: Software Related Topics
 ---
 
 * TOC

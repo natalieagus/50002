@@ -4,6 +4,7 @@ permalink: /notes/virtualmachine
 title: Virtual Machine
 description: To give each process the illusion that they can operate in the whole address space and use the entire machine to itself, while in fact, we are sharing the machine among multiple processes.
 nav_order: 16
+parent: Software Related Topics
 ---
 
 * TOC

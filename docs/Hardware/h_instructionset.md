@@ -4,6 +4,7 @@ permalink: /notes/instructionset
 title: Designing an Instruction Set
 description: A gentle introduction on the concept of programmable machines and designing its blueprints which we call the instruction set architecture (ISA)
 nav_order: 9
+parent: Hardware Related Topics
 ---
 
 

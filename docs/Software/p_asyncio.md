@@ -4,6 +4,7 @@ permalink: /notes/asyncio
 title: Asynchronous Handling of IO Devices
 description: A brief introduction to interrupt-driven asynchronous handling of input output
 nav_order: 17
+parent: Software Related Topics
 ---
 
 * TOC

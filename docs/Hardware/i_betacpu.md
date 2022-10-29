@@ -4,6 +4,7 @@ permalink: /notes/betacpu
 title: Building Beta CPU
 description: In-depth study on the Beta CPU's datapath
 nav_order: 10
+parent: Hardware Related Topics
 ---
 
 * TOC

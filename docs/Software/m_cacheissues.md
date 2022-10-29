@@ -4,6 +4,7 @@ permalink: /notes/cachedesignissues
 title: Cache Design Issues
 description: Deciding the optimum cache policy on various usage scenario
 nav_order: 14
+parent: Software Related Topics
 ---
 
 * TOC
