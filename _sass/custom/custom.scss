@@ -305,12 +305,17 @@ border-bottom-right-radius: 6px;
   justify-content: center;
   font-size: 2.5em;
   cursor: pointer;
+  vertical-align: middle;
+  background-color: transparent;
+  background-size: 50%;
+  background-position: center;
+  background-repeat: no-repeat;
   &.dark-button{
-    background-image: url("../images/sun.svg");
-    filter: invert(1) hue-rotate(180deg);
+    background-image: url("../images/moon.svg");
+    // filter: invert(1) hue-rotate(180deg);
   }
   &.light-button{
-    background-image: url("../images/moon.svg");
+    background-image: url("../images/sun.svg");
   }
 }
 

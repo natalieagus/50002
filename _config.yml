@@ -108,7 +108,7 @@ callouts:
     color: calloutsyellow
   important:
     title: Important
-    color: calloutsteal
+    color: calloutspink
   new:
     title: New
     color: calloutsgreen

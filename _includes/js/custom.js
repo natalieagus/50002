@@ -13,6 +13,15 @@ function setTheme(){
     }
 }
 
+function setButtonsTheme(elements, value){
+    const classTheme = value === "light" ? "light-button" : "dark-button"
+    const removeClassTheme = value === "light" ? "dark-button" : "light-button"
+    for (const e of elements){
+        e.classList.add(classTheme)
+        e.classList.remove(removeClassTheme)
+    }
+}
+
 function setButtonsText(elements, value){
     for (var i = 0; i<elements.length; i++){
         elements[i].textContent = value;
@@ -25,12 +34,14 @@ function setClickEvent(elements){
             if (jtd.getTheme() === 'dark') {
                 jtd.setTheme('light');
                 // set both buttons to be light
-                setButtonsText(document.querySelectorAll('.toggle-theme'), '☼')
+                // setButtonsText(document.querySelectorAll('.toggle-theme'), '☼')
+                setButtonsTheme(document.querySelectorAll('.toggle-theme'), 'light')
                 localStorage.setItem('theme', 'light')
             } else {
                 jtd.setTheme('dark');
                 // set both buttons to be dark
-                setButtonsText(document.querySelectorAll('.toggle-theme'), '☽︎')
+                // setButtonsText(document.querySelectorAll('.toggle-theme'), '☽︎')
+                setButtonsTheme(document.querySelectorAll('.toggle-theme'), 'dark')
                 localStorage.setItem('theme', 'dark')
             }
         });
@@ -44,9 +55,11 @@ function setThemeToggle(){
     var currentTheme = localStorage.getItem('theme');
     
     if (currentTheme == 'dark') {
-        setButtonsText(toggleThemeButtons, '☽︎');
+        // setButtonsText(toggleThemeButtons, '☽︎');
+        setButtonsTheme(toggleThemeButtons, 'dark')
     } else {
-        setButtonsText(toggleThemeButtons, '☼');
+        // setButtonsText(toggleThemeButtons, '☼');
+        setButtonsTheme(toggleThemeButtons, 'light')
     }
 
     // Setup toggle callback 
@@ -58,18 +71,22 @@ function setThemeToggle(){
             const toggleThemeButtons = document.querySelectorAll('.toggle-theme');
             var currentTheme = localStorage.getItem('theme');
             if (currentTheme == 'dark') {
-                setButtonsText(toggleThemeButtons, '☼')
+                // setButtonsText(toggleThemeButtons, '☼')
+                setButtonsTheme(toggleThemeButtons, 'light')
             } else {
-                setButtonsText(toggleThemeButtons, '☽︎')
+                // setButtonsText(toggleThemeButtons, '☽︎')
+                setButtonsTheme(toggleThemeButtons, 'dark')
             }
         }, 
         () => { //out
             const toggleThemeButtons = document.querySelectorAll('.toggle-theme');
             var currentTheme = localStorage.getItem('theme');
             if (currentTheme == 'dark') {
-                setButtonsText(toggleThemeButtons, '☽︎')
+                // setButtonsText(toggleThemeButtons, '☽︎')
+                setButtonsTheme(toggleThemeButtons, 'dark')
             } else {
-                setButtonsText(toggleThemeButtons, '☼')
+                // setButtonsText(toggleThemeButtons, '☼')
+                setButtonsTheme(toggleThemeButtons, 'light')
             }
         }
         );
