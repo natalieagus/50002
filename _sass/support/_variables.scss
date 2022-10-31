@@ -223,6 +223,8 @@ $header-height: 60px !default;
 $search-results-width: $content-width - $nav-width;
 $transition-duration: 400ms;
 
+$stackedit-width: 250px;
+
 // Media queries in pixels
 $media-queries: (
   xs: 320px,

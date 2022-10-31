@@ -65,7 +65,7 @@ grid-template-columns: 1fr 1fr;
 grid-column: 0;
 grid-row: 1;
 display: none;
-width: 250px;
+width: $stackedit-width;
 padding: 1.5rem 0rem;
 left: 0;
 overflow: visible;

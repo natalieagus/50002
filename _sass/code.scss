@@ -51,17 +51,20 @@ a:visited code {
 // Kramdown line_numbers = true: fences have a wider gutter than with Liquid?
 
 // ```[LANG]...```
+div.highlighter-rouge{
+  overflow: hidden;
+}
+
 div.highlighter-rouge,
 div.listingblock > div.content {
   padding: $sp-3;
   margin-top: 0;
   margin-bottom: $sp-3;
-  overflow-x: auto;
+  // overflow-x: auto;
   background-color: $code-background-color;
   border-radius: $border-radius;
   box-shadow: none;
   -webkit-overflow-scrolling: touch;
-
   div.highlight,
   pre.highlight,
   code {
@@ -70,6 +73,10 @@ div.listingblock > div.content {
     border: 0;
     background-color: $code-background-color;
   }
+}
+
+pre.highlight{
+  overflow: auto;
 }
 
 // {% highlight LANG %}...{% endhighlight %},
@@ -155,11 +162,11 @@ code.language-mermaid {
 }
 
 // copy button
-pre.highlight {
+div.highlight {
   position: relative;
 }
 
-pre.highlight > button {
+div.highlight > button {
   position: absolute;
   right: 0rem;
   top: 0rem;

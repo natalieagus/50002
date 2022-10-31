@@ -233,7 +233,7 @@ setTheme();
 
 // Button to copy code blocks
 function setupCopyButton() {
-    const codeBlocks = document.querySelectorAll("pre.highlight");
+    const codeBlocks = document.querySelectorAll("div.highlight");
 
     codeBlocks.forEach(function (codeBlock) {
         const copyButton = document.createElement("button");
