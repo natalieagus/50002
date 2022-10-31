@@ -9,16 +9,8 @@ permalink: /
 * TOC
 {:toc}
 
-```m68k
-.include beta.uasm
-|| we call fact(4) first
-LD(R31, n_1, R1)	| load 4 to R1
-ADDC(R31, 1, R2)    | instantiate r
-
-check_while_fact_4: CMPLT(R31, R1, R0)	| compute whether n_1 > 0
-BNE(R0, while_true_fact_4, R31)	| if R0 != 0, go to while_true_fact_4 BNE(R0, while_true_fact_4, R31)	| if R0 != 0, go to while_true_fact_4  BNE(R0, while_true_fact_4, R31)	| if R0 != 0, go to while_true_fact_4  BNE(R0, while_true_fact_4, R31)	| if R0 != 0, go to while_true_fact_4 
-ST(R2, result_1, R31)	| store to result_1
-```
+# 50.002 Computation Structures
+{: .no_toc}
 
 ## Hello World!
 <strong>*Full stack development starts here.*</strong>
