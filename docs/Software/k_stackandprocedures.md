@@ -24,10 +24,11 @@ Singapore University of Technology and Design
  
 In the previous chapter, we learned the basics of how to naively compile C-language into $$\beta$$ assembly language. $$\beta$$ UASM provides a layer of abstraction such that we don't need to bother ourselves with the details on how to load each and every bytes of instruction onto the memory unit, or keeping up with accounting matters such as physical memory addresses (we can replace these with *labels* instead). 
 
-In this chapter, we will learn about *function call procedures*, and why we need to understand another concept called the *stacks*. Both will allow us to have reusable code fragments that are *called* as needed.
+In this chapter, we will learn about **function call procedures**, and why we need to understand another concept called the *stacks*. Both will allow us to have <span style="color:red; font-weight: bold;">reusable</span> code fragments which we normally know as **functions** that we can **call** as needed.
 
 ## [Procedures and Functions](https://www.youtube.com/watch?v=u4TETujaNuk&t=66s)
 
+### Motivation
 Consider the following declaration and implementation of function `fact`  below. It receives one argument `int n`, and returns an `int`. 
 ```cpp
 int fact(int n){
@@ -39,7 +40,11 @@ int fact(int n){
 	return r;
 }
 ```
-The function is implemented as a fixed set of procedure / instructions.  We can call it anywhere afterwards:
+
+{: .highlight}
+A function is a fixed set of procedure / instructions.  
+
+We can call it anywhere afterwards:
 ```cpp
 int result_1 = fact(4);
 int result_2 = fact(9);
@@ -47,7 +52,7 @@ int result_2 = fact(9);
 
 If we were to naively assemble this, we can translate this into the following $$\beta$$ assembly source code:
 
-```m68k
+```nasm
 .include beta.uasm
 || we call fact(4) first
 LD(R31, n_1, R1)	| load 4 to R1
@@ -81,9 +86,9 @@ n_2 : LONG(9)
 result_1 : LONG(1)
 result_2 : LONG(1)
 ```
-
-**There's obviously a few issues here:**
-1. The code is **not scalable**. What if we call the function `fact` many more times? How long the assembly code is going to be?
+### Issues without Functions
+**There are  a few issues here:**
+1. The code is **not scalable**. What if we call the function `fact` many more times as below? How long the assembly code is going to be?
 ```cpp
 int result_1 = fact(4);
 int result_2 = fact(9);
@@ -92,18 +97,20 @@ int result_4 = fact(39);
 int result_5 = fact(18);
 int result_6 = fact(99);
 ``` 
-2. There's so many **repeated**, **boilerplate** code. We are **wasting memory** (RAM) space.
-	* `while_true_fact_4` and `while_true_fact_9` is technically identical for all 3 instructions `MUL`, `SUBC`, and `BEQ`, only differ in the second argument of `BEQ`: either branching to  `check_while_fact_4` and `check_while_fact_9`.
-	* Same issue with `check_while_fact_4` and `check_while_fact_9` (the `CMPLT`, `BNE`, and `ST` instructions) <br><br>
+2. There are so many **repeated**, **boilerplate** code. We are **wasting memory** (RAM) space.
+	* `while_true_fact_4` and `while_true_fact_9` is technically **identical** for all 3 instructions `MUL`, `SUBC`, and `BEQ`, only differ in the second argument of `BEQ`: either branching to  `check_while_fact_4` and `check_while_fact_9`.
+	* Same issue with `check_while_fact_4` and `check_while_fact_9` (the `CMPLT`, `BNE`, and `ST` instructions) 
 
 3. How do we know if we can *overwrite* the existing contents on any register `Rx`? 
 
-In principle, a function:
-* Is a callable, ***reusable*** series of instructions.
-* It has a single **NAMED entry point**. It means we know the address of first instruction for this function in memory.
-* **Parameterizable** (can access or receive a predefined number of arguments).
-* Has ***local variables,*** which cannot be accessed anymore once the function returned. 
+{: .important}
+> In principle, a **function**:
+> * Is a callable, **reusable** series of instructions.
+> * Has a single **named entry point**. It means we know the address of first > instruction for this function in memory.
+> * Is **Parameterizable** (can access or receive a predefined number of arguments).
+> * Has **local variables**, which cannot be accessed anymore once the function returned. 
 
+### Return Value
 Once a function returns, the CPU needs to know how to return to the *caller*, i.e: to know where is the return address of the caller. 
 
 For example, given this simple code: 
@@ -120,70 +127,87 @@ int fact(int n){ --- (2)
 int result_1 = fact(4); --- (1) 
 int result_2 = fact(9); --- (8)
 ```
+
 We know that we need to execute `fact` twice, the first run with argument `4` and the second run with argument `9`.
-
 * The first line of instruction that is executed is labeled with (1) above. We then enter the function, executing the lines labeled as (2)  to (7) in sequence. 
-
 *  After (7), the CPU must know how to return to the caller, that is the address of instruction (1). 
-
 * Instruction (8) tells the CPU to enter the function again for the **second run**, thus executing (2) to (7) for another round, before finally stopping. 
 
 ## [Procedure Linkage and Stack](https://www.youtube.com/watch?v=u4TETujaNuk&t=549s)
-Referring to the `fact` example in the previous section, notice a few *accounting issues* that we need to address in order to have a scalable and memory efficient function calls. 
+Referring to the `fact` example in the previous section, notice a few **accounting issues** that we need to address in order to have a scalable and memory efficient function calls. 
 
-Assuming we have a single CPU, and that the instructions are loaded to the Memory Unit from address `0` and onwards sequentially, 
+{: .note-title}
+> Basic Assumption
+> 
+> Before we proceed, assume we have a single CPU, and that the instructions are loaded to the Memory Unit from address `0` and onwards sequentially, 
 
 We know that `r` and `n` are local variables within function `fact`. We can no longer access them, e.g: print them *outside* of the function. This means that we need to **clean them up** (from any storage unit) once the function returns. 
 
-We also need to establish a location where:
-* The function can always access its arguments: `4` and `9`  for the first and second run respectively. 
-* The function is expected to put the return value
+We also need to establish a system where:
+* The function can always access its **arguments**: `4` and `9`  for the first and second run respectively. 
+* The function is expected to place a return value (if any) in a **known** memory location by the caller who will then access it
 * The CPU can find the address of the caller, i.e: where instruction (8) is in memory. 
 
-### Procedure Linkage Problem 
-In summary, the procedure linkage problems that we need to solve are:
-1. We need to find a way to pass arguments into procedures
-2. Procedures need their own local variables
-3. Procedures need to be able to use the CPU registers without worrying about overwriting their original content. 
-4. Procedures might need to call other procedures, including themselves (recursion) 
+{: note-title}
+> Procedure Linkage Problem
+> 
+> These *needs* above become a problem that we need to solve if we want to have reusable segments of code. This is called the **procedure linkage problem**.
+
+The procedure linkage problems that we need to solve are:
+1. We need to find a way to **pass** arguments into procedures
+2. Procedures need their **own** local variables (it's own <span style="color:red; font-weight: bold;">scope</span>)
+3. Procedures need to be able to **use** the CPU registers **without** worrying about overwriting their original content. 
+4. Procedures might need to **call** other procedures, including themselves (recursion) 
 
 ### [Procedure Linkage Convention](https://www.youtube.com/watch?v=u4TETujaNuk&t=729s)
-These issues can be solved by establishing a kind of **procedure linkage convention**. We assume that  the following is always obeyed whenever we are executing instructions within a function:
+These issues can be solved by establishing a kind of **procedure linkage convention** which explains how a function caller and the function itself (the callee) are *linked* to each other. We assume that  the following is always obeyed whenever we are executing instructions within a function:
 * Return value is always stored at `R0`
 * Arguments can be found in a dedicated space in the Memory Unit, called the **Stack**. The address of the *top* of the stack (first unused location) can always be found in `R29`. The address of the *base* of the stack can always be found in `R27`.
-	> We label `R29` as `SP` (***Stack Pointer***), and `R27` as `BP` (***Base Pointer***). 
 *  Return address is always stored at `R28`. 
-	> We label `R28` as `LP` (***Linkage Pointer***).  
 
 
- A **caller** must obey the following **sequence** :
+{: .important-title}
+> Special Registers Label
+> 
+> We label `R29` as `SP` (***Stack Pointer***), and `R27` as `BP` (***Base Pointer***). We label `R28` as `LP` (***Linkage Pointer***). 
+
+{: .highlight}
+The function caller and the function itself (the callee) must obey a strict <span style="color:red; font-weight: bold;">procedure</span> that conforms to the procedure linkage convention. 
+
+A function **caller** <span style="color:red; font-weight: bold;">MUST</span> obey the following **sequence** :
 1. Put arguments on the **stack**
 2. Branch to the target function, leaving return address in `LP` 
 3. Remove arguments on stack upon return
 4. Obtain return value from `R0` (if any)
 
 
- A **callee** must obey the following sequence :
+A **callee** (the function itself) <span style="color:red; font-weight: bold;">MUST</span> obey the following sequence :
 1. **Perform** promised **computation**
 2. Leave result in `R0` (if any)
 3. Leave the state of all *registers* in REGFILE except `R0` **unchanged** upon returning to the caller. 
 4. Leave *stack data* **unchanged**  upon returning to the caller. 
 
+
+
 ### [The "Stack" implementation](https://www.youtube.com/watch?v=u4TETujaNuk&t=1159s)
 
 In general, a stack is a type of data structure where you can perform two essential operations: `PUSH` and `POP`.  Its principle is *last-in-first-out*. 
 
-You always add item via `PUSH` operation to the top of the stack, and can only remove the topmost item in succession via `POP` operation from the top of the stack. 
+{: note-title}
+> Stack Recap
+> 
+> You always add item via `PUSH` operation to the top of the stack, and can only remove the topmost item in succession via `POP` operation from the top of the stack. 
 
- How do we implement the stack data structure to aid our function execution?  
+How do we implement the stack data structure to aid our function execution?  
 
-We **reserve** an arbitrary block of location in our Memory Unit to be space for the stack. Illustrated below is a block of memory unit from address `0x010C` to `0x0128` reserved as our stack: 
+#### Decide the Stack Space
+We **reserve** an arbitrary (unused/free) block of location in our Memory Unit to be space for the stack. Illustrated below is a block of memory unit from address `0x010C` to `0x0128` reserved as our stack: 
 
-<img src="https://dropbox.com/s/zwaa983jxrmq78n/stack_empty.png?raw=1" class="center_seventy"  >
+<img src="https://dropbox.com/s/zwaa983jxrmq78n/stack_empty.png?raw=1" class="center_fifty"  >
 
-We have conventions as mentioned:
+We have these conventions as mentioned above:
 * `R29 (SP)` contains the address of the *top* of the stack (available location to write to). 
-* Addresses are increasing *downwards*, hence our stack *grows* *downwards*. 
+* Memory addresses are illustrated to be increasing **downwards**, hence our stack *grows* **downwards**. 
 
 We can `PUSH` (add data) to the stack via these two instructions:
 * `ADDC(SP,  4, SP)`  (increase `SP`'s content by `4` so that it points to the next line address) 
@@ -193,31 +217,43 @@ To `POP` (remove data) from the stack, we can do so via these two instructions:
 * `LD(SP , -4, Rx)` (load the content pointed by `Reg[SP]-4` to a chosen `Rx`)
 * `SUBC(SP, 4, SP)` (decrease `SP`'s content by `4` so that it points to the previous line address)
 
+
 In $$\beta$$ `uasm`, we simply create these macros for `PUSH` and `POP`: 
 * `PUSH(Rx)` : push `Reg[Rx]` onto the stack
 * `POP(Rx)`: pop the value on top of the stack to `Reg[Rx]` 
 
-And also the following macros for easier stack management:
-* `ALLOCATE(k) : ADDC(SP, 4*k, SP)`
-* `DEALLOCATE(k) : SUBC(SP, 4*k, SP)`
->  They're both used to *move* `SP` to a reserved location for the start of the stack.  
+And also the following macros for easier stack management which will be explained more later:
+* `ALLOCATE(k) : ADDC(SP, 4*k, SP)`. This moves the pointer to the top of the stack "down" (increased memory address). 
+* `DEALLOCATE(k) : SUBC(SP, 4*k, SP)`. This moves the pointer to the top of the stack "up" (decreased memory address). 
+
+{: .note-title}
+> Allocating a Stack Space
+> 
+>  The **content** of `SP` contains the address of the memory which we define as the top of the stack. `ALLOCATE` is used to *move* `Reg[SP]` to a whatever free memory location that will be used as start of the stack.  Obviously you won't want to overwrite the part of your memory containing important information like your program instructions or data with stack data. 
 
 ###  [Example of stack usage](https://www.youtube.com/watch?v=u4TETujaNuk&t=1833s)
 
-  **Allocating the stack**
+#### Allocating the stack
 Assuming the initial content of `SP` is `0`, then in order for `SP` to point to the address `0x010C` shown in the figure above, we can write:
 ```cpp
 .include beta.uasm
 
 ALLOCATE(67)
+ADDC(R31, 5, R1) | instructions 
+| other instructions 
 ```
-> `0x10C` is 268 in decimal. Since macro `ALLOCATE` will multiply the input by `4` before storing it at SP, we need to put `268/4=67` as the input to `ALLOCATE`.
 
-This is done to tell the CPU that the stack starts at address `0x010C` onwards, so that whatever content stored in the earlier addresses will not be overwritten by the stack. 
-> Otherwise, the stack will start at address 0. Typically what is stored address `0` is the **first executable instruction** (i.e: the beginning of our program). We usually don't want to overwrite any instructions. 
+{: .note}
+`0x10C` is 268 in decimal. Since macro `ALLOCATE` will multiply the input by `4` before storing it at SP, we need to put `268/4=67` as the input to `ALLOCATE`.
 
+This is done to tell the CPU that the stack **starts** at address `0x010C` onwards, so that whatever content stored in the earlier addresses will <span style="color:red; font-weight: bold;">not</span> be overwritten by the stack. 
 
- **Adding items to the stack**  
+{: new-title}
+> What if we don't `ALLOCATE`?
+> 
+> The stack will start at address 0. Typically what is stored address `0` is the **first executable instruction** (i.e: the beginning of our program). We usually don't want to overwrite any instructions. 
+
+#### Adding items to the stack  
 Suppose we put the following values: `16, 17, 18` to `R1`, `R2`, and `R3` respectively: 
 ```cpp
 ADDC(R31, 16, R1)
@@ -234,11 +270,12 @@ PUSH(R3)
 
 Upon execution of these series of instruction, the state of the stack is: 
 
-<img src="https://dropbox.com/s/h6ra945bysxu8tb/stack_3.png?raw=1" class="center_seventy"  >
+<img src="https://dropbox.com/s/h6ra945bysxu8tb/stack_3.png?raw=1" class="center_fifty"  >
 
-> Notice that the "top" of the stack is at the *bottom*, and that the stack grows *downwards* by convention. 
-
- **Heads up:** familiarize yourself and get used to tracking the "*state*" of the stack, `PC`, and all registers in the REGFILE  after executing each line of instruction . 
+{: .important}
+> Notice that the "top" of the stack is at the *bottom*, and that the stack grows *downwards* by **convention** because we illustrate larger memory addresses to be at the bottom of the diagram.
+> 
+> <span style="color:red; font-weight: bold;">Familiarize</span> yourself and get used to tracking the "*state*" of the stack, `PC`, and all registers in the REGFILE  after executing each line of instruction . 
 
 Now suppose we use `R1`, `R2`, `R3` for other stuffs and *overwrite* its values: 
 ```cpp
@@ -251,10 +288,10 @@ The **new** state of the registers are now written in red. **The stack stays the
 
 We can now say that **the stack contains the old value of the registers** `R1, R2, R3`, as shown: 
  
-<img src="https://dropbox.com/s/4v4l61monn1ktwy/stack_new.png?raw=1" class="center_seventy"  >
+<img src="https://dropbox.com/s/4v4l61monn1ktwy/stack_new.png?raw=1" class="center_fifty"  >
 
 
- **Removing items from the stack** 
+#### Removing items from the stack 
 
 To remove items from the top of the stack, we can use `POP` instruction:
 ```cpp
@@ -265,34 +302,41 @@ POP(R1)
 
 The state of the stack and the registers is therefore as shown. Notice how `POP` instructions can be used to *restore* the registers state to before as in **Step 1**. 
 
-> The remnants of data that was pushed to the stack actually stays in memory, but its rendered *irrelevant* because it can be overwritten again by other instructions (hence space is seen as *freed*). In fact, there's no such thing as **erasing** contents in the memory unit unless we explicitly write a bunch of zeroes to make it disappear. We simply always *overwrite* them. 
+{: note-title}
+> Garbage Values
+> 
+> The **remnants** of data that was pushed to the stack actually stays in memory, but its rendered *irrelevant* because it can be overwritten again by other instructions (hence space is seen as *freed*). 
+> 
+> In fact, there's no such thing as **erasing** contents in the memory unit in the physical world, unless we explicitly **write** a bunch of zeroes to make it disappear. We simply always overwrite them. It's unlike scrubbing away pencil drawings.
 
 <img src="https://dropbox.com/s/u5r91wv4dbfmxv4/stack_popped.png?raw=1"  class="center_seventy" >
 
- **Resetting the stack** 
+#### Resetting the stack 
 Finally, we reset a stack by simply changing the value `SP`. For example, we can return the state of `SP` to `0` as it was before **Step 1**. 
+
 ```cpp
 DEALLOCATE(67)
 ```
 
-> Try out these instructions in `bsim`, and observe the state of the stack and registers after executing each instruction as practice. 
+This allows whatever that was at address `0x10C` or 268 to be overwritten, effectively "clearing" the memory.
+
+{: .new-title}
+> Try!
+> 
+> There's no point staring at these assembly data. Try out these instructions in `bsim`, and observe the state of the stack and registers **after** executing **each** instruction as practice. 
 
 
 ## [Implementing Procedure Linkage Contract Using Stack](https://www.youtube.com/watch?v=u4TETujaNuk&t=1950s)
 
-Recall that:
-
- A (function) **caller** must obey the following calling sequence ,
-1. Put arguments on the **stack**
-	> Put them in **reverse order.** Last argument is pushed first. First argument is pushed last. 
+### Function Caller Procedure
+A (function) **caller** must obey the following calling sequence:
+1. Put arguments on the **stack** in <span style="color:red; font-weight: bold;">reverse order</span>, meaning that last argument is pushed first and the first argument is pushed last. 
 2. Branch to the target function, leaving return address in `LP` 
-3. Remove arguments on stack upon return
-	> Can be done using `DEALLOCATE(N)`where `N` is the number of arguments
-4. Obtain return value from `R0` (if any)
-	> For example: `ST(R0, location, Rx)`
+3. Remove arguments on stack upon return of the callee. This can be done using `DEALLOCATE(N)`where `N` is the number of arguments
+4. Obtain return value from `R0` (if any), for example: `ST(R0, location, Rx)`
 
 
-Let's use our factorial function again: 
+Let's use our factorial function to illustrate each of these steps: 
 ```cpp
 int fact(int n){
 	int r = 1;
@@ -307,20 +351,19 @@ int result_1 = fact(4) -- (first call)
 int result_2 = fact(9) -- (second call)
 ```
 
-The function `fact` is called twice, so we have two callers. 
+The function `fact` is called twice, so we have **two** callers. We can hand assemble the first caller following the caller procedure above. 
 
-We can hand assemble the first caller following the caller procedure above. 
+#### **Firstly**, Allocate some memory space for caller variables and instructions
 
-### Firstly, allocate some memory space for caller variables and instructions.
-
-To allocate memory space for variables, we can either:
-* Write them after all the instructions 
-*  Use the `.` operator to load them at the desired memory location, e.g: `0x01B0`
+To allocate memory space for **global variables**, we can either:
+* Write them below all of the instructions
+* Write them above of all the instructions, but since `PC` starts at `0`, we can't execute "variables". We need the first instruction to `BRANCH` to the address of the first line of instruction.
+* Use the `.` operator to load them at the desired memory location, e.g: `0x01B0`
 	* Define labels and its values
 	* Then, redirect the instruction back at address `0` using the `.` operator again
 
+To allocate memory space for instructions (i.e: make `SP` point to some unused memory location), we can use `ALLOCATE`. The example below shows how we can use the `.` operator to declare certain memory locations to hold the values for these **global variables**: `result_1, result_2`. 
 
-To allocate memory space for instructions (i.e: make `SP` point to some unused memory location), we can use `ALLOCATE`. 
 
 ```nasm
 .include beta.uasm 
@@ -332,7 +375,12 @@ result_2 : LONG(0)
 ALLOCATE(50) 
 ```
 
-### Secondly,  implement the calling sequence
+#### **Secondly**, Implement calling sequence
+
+{: .highlight}
+We assume that `fact` is a label that contains the address of the first instruction of the factorial function. 
+
+There are **four** parts of the calling sequence:
 ```nasm
 || Calling sequence
 ADDC(R31, 4, R1) | put 4 to R1 
@@ -351,28 +399,30 @@ ST(R0, result_1, R31)
 HALT()
 ```
 
-We assume that `fact` is a label that contains the address of the first instruction of the factorial function. 
+### Function Callee Procedures
+#### **Thirdly**, Implement callee entry sequence and function computation (body of the function)
 
-### Thirdly, implement callee entry sequence and computation (body of the function)
+{: .important-title}
+> Properties of Callee Sequences
+> 
+> A callee must adhere to the following <span style="color:red; font-weight: bold;">properties</span>: 
+> * Leave the state of all *registers* in REGFILE except `R0` **unchanged** upon returning to the caller. 
+> *  Leave *stack data* **unchanged**  upon returning to the caller. 
 
-Recall that a callee must:
-* Leave the state of all *registers* in REGFILE except `R0` **unchanged** upon returning to the caller. 
-*  Leave *stack data* **unchanged**  upon returning to the caller. 
-
-This is possible by implementing two parts: callee entry sequence and callee exit/return sequence. 
+This is possible by callee sequences into two parts: callee entry sequence and callee exit/return sequence. 
 
 The entry sequence is consisted of five steps:
 1. `PUSH(LP)` : to preserve the state of `LP` which containts the return address to the caller of this function.
 2. `PUSH(BP)`: to preserve the state of `Reg[R27]`
 3. `ADD(SP, R31, BP)`: move the content of `SP` to `BP`.  This is to set the **stack frame base** for this function call. 
-	> We have  macro for this: `MOVE(SP, BP)`
+	> We have a macro for this: `MOVE(SP, BP)`
 4. Push all registers that we will use for the computation (except `R0`)
 5. Load arguments from the stack 
 
-Afterwards, we then proceed with actually implementing the function. 
+Afterwards, we then proceed with actually implementing the function (this is the actual work). 
 
-Continuing our assembly code, writing the entry procedure is straightforward. 
-```cpp
+Continuing our assembly code, writing **Step 1 to Step 3** of the entry procedure is straightforward. 
+```nasm
 || Callee entry sequence
 fact: PUSH(LP) | (1) 
 PUSH(BP) | (2) 
@@ -382,7 +432,7 @@ MOVE(SP, BP) | (3)
 Now to figure out (4), we need to know the registers that we will use for computation of `fact`. 
 
 Recall the *implementation* of the function `fact`: 
-```cpp
+```nasm
 || Assume (value of) n in R1 and (value of) r in R2 
 check_while_fact: CMPLT(R31, R1, R0)
 BNE(R0, while_true_fact, R31)
@@ -393,17 +443,27 @@ SUBC(R1, 1, R1)
 BEQ(R31, check_while_fact, R31)	
 ```
 We can see that the registers that are used for the computation (apart from `R0`) are : `R1` and `R2`
-> `R31` is "not counted" as it is always `0` and you cannot rewrite new values into it. 
+
+{: .note-title}
+> Reminder about R31
+> 
+> You don't need to preserve the value of `R31` as it is a constant. Its value is always `0` and you cannot rewrite new values into it. 
 
 
-Therefore the next instructions for the callee should be: 
-```cpp
+Therefore **Step 4** should involve `PUSH` of any registers that will be used for this function's computation: 
+```nasm
 || (4) Push the contents of all registers we will use for the computations onto to stack to preserve its old value
 PUSH(R1) 
 PUSH(R2) 
 ```
 
-Then, we load the argument `n` onto `R1`, and put `1` in `R2`. `R1` holds the value of `n` and `R2` holds the value of `r`. 
+{: .new-title}
+> Think! 
+> 
+> Why do we need to `PUSH` (which is equivalent to preserving) the value of registers that are **about** to be used by this callee/function?
+
+
+Then in **Step 5**, we load the argument `n` onto `R1`, and put `1` in `R2`. `R1` holds the value of `n` and `R2` holds the value of `r`. 
 ```cpp
 || (5) get arguments. 
 LD(BP, -12, R1) | Note: the first argument is at memory address BP-12
@@ -412,15 +472,18 @@ ADDC(R31, 1, R2)
 
 Afterwards, we can continue with the implementation of `fact` above as it is. 
 
->  Think carefully about why the first argument is always at address pointed by `Reg[BP]-12`. This is a direct result of caller procedure and callee entry sequence (1) to (3). 
+{: .new-title}
+> Think about `Reg[BP]-12`!
+> 
+> Think carefully about why the first argument is always at address pointed by `Reg[BP]-12`. This is a direct result of caller procedure and callee entry sequence (1) to (3). 
 
-### Fourthly, implement callee exit sequence. 
+#### **Fourthly**, Implement callee exit sequence 
 
 The exit sequence is consisted of six steps:
 1. Put return value at `R0`.
 2. Restore all registers' state that were used by the function computations using `POP`, in **reverse** order. 
 3. `ADD(BP, R31, SP)`: move the content of `BP` to `SP`.  This is to set the stack pointer back to the **stack frame base** for this function call. 
-	> Remember, we need to leave the stack state as per the original state when the function returns. So whatever stuffs are added to the stack by this function must be removed. 
+	> Remember, we need to leave the stack state as per the original state when the function returns. Hence, whatever stuffs that are added to the stack by this function must be removed. 
 	> We can also use the macro for this: `MOVE(BP, SP)`
 4. `POP(BP)` : restore `Reg[BP]` to its original value
 5. `POP(LP)` : restore `Reg[LP]` to its original value -- remember, this register **contains the caller's *return* address.**
@@ -442,7 +505,12 @@ POP(LP) | (5)
 JMP(LP, R31) | (6)
 ```
 
+{: .new-title}
+> Think! 
+> 
+> Why do we need to "clear" the callee stack when it returns? 
 
+### Reusing Functions
 Now to call `fact` for the second time, we can simply write another calling sequence. **The `fact` instructions remain intact and reusable.** 
 
 Combining everything, we have:
@@ -504,13 +572,14 @@ POP(LP) | step (5)
 JMP(LP,R31) | step (6) 
 ```
 
-Run the program in `bsim` **step by step**. At each instruction, pay attention on the state of all registers, the stack, and PC. 
+{: .important}
+Once again, please <span style="color:red; font-weight: bold;">run</span> the program in `bsim` **step by step**. At each instruction, pay attention on the state of all registers, the stack, and PC. 
 
-> In this course, you are expected to mentally run each instruction line by line and give the state of all registers involved, the PC, and the stack at all times. Lots of practice is definitely needed. 
+In this course, you are expected to mentally execute each instruction line by line and give the state of all registers involved, the PC, and the stack at all times during examination. Lots of practice is definitely needed. 
 
 At the end of the program, you should see that you have each answer in the memory address `0x01B0` and `0x01B4`:
 
-<img src="https://dropbox.com/s/g7l4l0tkcyl08jj/mem_Res.png?raw=1" class="center_seventy" >
+<img src="https://dropbox.com/s/g7l4l0tkcyl08jj/mem_Res.png?raw=1" class="center_twenty" >
 
 
 ## [An example with recursion](https://www.youtube.com/watch?v=u4TETujaNuk&t=3279s)
@@ -527,7 +596,7 @@ int result_1 = fact(3);
 ```
 
 The recursive function `fact` can be hand assembled into: 
-```cpp
+```nasm
 ||| callee entry procedure
 fact: PUSH(LP)
 PUSH(BP)
@@ -588,41 +657,43 @@ DEALLOCATE(1)
 HALT()
 ```
 
-You can add `.breakpoint` in the code to allow for debugging, and observe the stack frame for each function call. 
+{: .note-title}
+> Breakpoint
+> 
+> You can add `.breakpoint` in the code to allow for debugging, and **inspect** the stack frame for each function call. 
 
-In this example, calling `fact(3)` will cause `fact(2)`, and `fact(1)`  to be called recursively. 
+In this example, calling `fact(3)` will cause `fact(2)`, and `fact(1)`  to be called **recursively**. 
 
+### Stackframe State
 The state of the stack frame *right* before `fact(3)` branching, *right* before `fact(2)` branching, *right* before `fact(1)` branching, and *right* before `fact(1)`calls its `exit_sequence` is as follows:
 
 <img src="https://dropbox.com/s/mu8aq0id2y1pir5/stack_states.png?raw=1"   >
 
-Notice several things:
-* The stack size for each callee frame is constant. 
+Notice several **properties**:
+* The **stack size** for each callee frame is **constant**. 
 	*  In this example, it is 7 **words** (1 word is 32 bits). 
 	* This is caused by 1 argument `PUSH`, two `PUSH` from callee entry sequence, and four `PUSH` of registers (to be used for computation). 
-
 * The current `BP` and `SP` (rendered in black) points to the **base** and the **top** of the stack of the *current* caller. 
-	> **Base** of the stack *is not the start* *of the stack frame*. It is defined as the location of the first item pushed into the stack by that caller after `MOVE(SP, BP)` step. 
-
-* The **location of the argument for the current callee** is always 3 lines above the location pointed by the current `BP`. 
+{: .highlight}
+**Base** of the stack *is not the start* *of the stack frame*. It is defined as the location of the first item pushed into the stack by that caller after `MOVE(SP, BP)` step. 
+* The **location of the argument for the current callee** is <span style="color:red; font-weight: bold;">always 3 words</span> above the location pointed by the current `BP`. 
 	* It is the address pointed by the *current* `BP` subtracted by 12 (bytes). 
-
 * The **return address** of the current caller is always placed *after* the argument in the stack.
 	* This is the direct result of 	`PUSH(LP)` as the first instruction in the callee entry sequence. 
 	* For example, the return address for the first `fact` call: `fact(3)` is at `0x0014` (just look at the lower 16 bits for simplicity).
 	* This is the address of instruction:  `DEALLOCATE(1) ` **(see next section to understand why this is so).** 
 
-> Again, test your understanding and sharpen your skills by mentally running each instruction one by one from the top and be aware of the current instruction, stack state, PC state, and register states **at all times.** 
+{: .important}
+Again, test your understanding and sharpen your skills by mentally running each instruction one by one from the top and be aware of the current instruction, stack state, PC state, and register states **at all times.** 
 
 ##  [Instruction Loading Address](https://www.youtube.com/watch?v=u4TETujaNuk&t=3758s)
 
-To figure out the address of each instruction, we can assume (if not given) that the address of the first instruction is at `0x0000`. 
-
+To compute the address of each instruction, we can assume (if not given) that the address of the first instruction is at `0x0000`. 
 * Recall that each $$\beta$$ instruction is 32 bits long (4 bytes).
-* Therefore, the address of subsequent instructions are always increased by 4. 
+* Therefore, the address of subsequent instructions are **always increased by 4**. 
 
 For instance, if we simply load this instruction into the memory unit starting from address `0x0000`:
-```cpp
+```nasm
 .include beta.uasm
 
 ALLOCATE(100)
@@ -643,37 +714,45 @@ MOVE(SP, BP)
 
 It will obtain the following addresses:
 
-<img src="https://dropbox.com/s/ae8mgejz3jgyavo/instr_eg.png?raw=1" class="center_seventy" >
+<img src="https://dropbox.com/s/ae8mgejz3jgyavo/instr_eg.png?raw=1" class="center_fifty" >
+
 > This screenshot is taken from `bsim` just before we branch to `fact` for the first time with argument `3`. That is why the `PC` is pointing to address `0x0010`. 
 
 
 Notice that as mentioned, the address of instruction `DEALLOCATE(1)` (macro for `SUBC(SP, 4, SP)`) is `0x0014`.
 
-### Detail: About PC
- We have learned before that `PC` register always contain the address of the *next* instruction to be executed. 
+### About the PC
+{: note}
+This section is a deep dive to appreciate the dynamic discipline of the regfile. You can skip it if you want.
 
-There's one subtle point to realise: when the `PC` is currently pointing to an address `A`, the instruction at `A` is actually already **computed** in the current cycle, but the *result* (of this computation) hasn't been stored *yet*. The result will only be stored (in some register or memory address) only in the next cycle.
+We have learned before that `PC` register always contain the address of the *next* instruction to be executed. 
 
-> Remember that memory write is synchronized with the clock. 
+There's one subtle point to realise: when the `PC` is currently pointing to an address `A`, the instruction at `A` is actually <span style="color:red; font-weight: bold;">already computed</span> computed in the current cycle, but the result (of this computation) hasn't been stored, yet. The result will only be stored (in some register or memory address) only in the next cycle.
+
+{: .note-title}
+> Dynamic Discipline of the REGFILE
+> 
+> Remember that memory write is synchronized with the clock. See [this](http://127.0.0.1:4000/50002/notes/betacpu#the-static-and-dynamic-discipline-of-the-regfile) section if you forgot. 
 
 Take for example this particular execution state in the  $$\beta$$ CPU:
 
-<img src="https://dropbox.com/s/raqf5k421kfi2i7/pc_state.png?raw=1"   >
+<img src="https://dropbox.com/s/raqf5k421kfi2i7/pc_state.png?raw=1" class="center_seventy"  >
 
-* The current content of register `PC` is `0x004`, that is where instruction: `ADDC(R31, 3, R1)` resides.
+The **current** content of register `PC` is `0x004`, that is where instruction: `ADDC(R31, 3, R1)` resides.
 
-* The output of `ADDC` **has already been computed** in this cycle, as denoted in the blue value at the output port of the ALU: `0x00000003`. 	
-	* All values in blue are computed values (in this  cycle) due to this current instruction `ADDC`.
+The **output** of `ADDC` **has already been computed** in this cycle, as denoted in the blue value at the output port of the ALU: `0x00000003`. 	
+* All values in blue are computed values (in this  cycle) due to this current instruction `ADDC`.
 
-* However, notice `Reg[R1]` still contains `0` and not the new result `3` *yet*. In this cycle, we are trying to **write** `3` into `R1`.
+However, notice `Reg[R1]` still contains `0` and not the new result `3` *yet*. In this cycle, we are still trying to **write** `3` into `R1`.
 
-* Only at the next cycle,`Reg[R1]` finally stores the new value `3`. The figure below shows the state of the $$\beta$$ CPU at the following cycle:
+Only at the next cycle,`Reg[R1]` finally stores the new value `3`. The figure below shows the state of the $$\beta$$ CPU at the following cycle:
 
-<img src="https://dropbox.com/s/qzf1rxs5rshfzeo/pc_state_2.png?raw=1"   >
+<img src="https://dropbox.com/s/qzf1rxs5rshfzeo/pc_state_2.png?raw=1" class="center_seventy"  >
 
 Therefore, what we *actually mean* when we say that the `PC` always point to the `next` instruction executed is precisely that the **result** will only be synchronized in the **next** cycle (but computation is done in the current cycle). 
 
-> Don't worry too much about it. It's just some subtle detail to appreciate. 
+{: .note}
+Don't worry too much about it. It's just some subtle detail to appreciate. 
 
 ## An Example with Multiple Arguments
 
@@ -687,7 +766,7 @@ int result = y(2, 5, 3);
 ```
 
 In order to call this function, we need to push each argument in the *reverse* order: 
-```cpp
+```nasm
 .include beta.uasm 
 . = 0x0CC
 result: LONG(0)
@@ -714,7 +793,7 @@ HALT()
 
 Then in the function `y`, we obtain the arguments sequentially, starting from `BP-12` for the first argument, `BP-16` for the second argument, and so on:
 
-```cpp
+```nasm
 ||| Callee entry sequence
 y : PUSH(LP)
 PUSH(BP)
@@ -748,9 +827,9 @@ JMP(LP, R31)
 
 ## Tough Problems
 
-The sequences that we learned don't really solve all problems. 
+The procedure linkage that we have just learned above works in general, but it doesn't really solve all problems. 
 
-<ins> Problem 1: Nested procedure definitions </ins>
+### Problem 1: Nested procedure definitions 
 
 In Python, we can define nested procedure as follows:
 ```cpp
@@ -760,12 +839,10 @@ def f(x):
 	return g
 ```
 
-This requires `g` to access *non-local variable* `x`. We would require some kind of "static-links" in stack frames. 
-
-> C avoids this problem by outlawing nested procedure declarations. 
+This requires `g` to access *non-local variable* `x`. We would require some kind of "static-links" in stack frames. The C programs avoids this problem by outlawing nested procedure declarations. 
 
 
-<ins> Problem 2: Dangling references </ins>
+### Problem 2: Dangling references
 ```cpp
 int *p; /* a pointer */ 
 int h(x) { 
@@ -777,8 +854,7 @@ h(10);
 print(*p);
 ```
 
-The C-code above will compile, but when executed, unexpected behavior can happen. 
-> Crash (segmentation fault), random stuffs being printed, etc. 
+The C-code above will compile, but when executed, unexpected behavior can happen: program crash (segmentation fault), random stuffs being printed, etc. 
 
 In C/C++, *life is harsh* and it is the responsibility of the programmer to ensure that mistakes like these do not happen. 
 
@@ -793,15 +869,10 @@ You may want to watch the post lecture videos here:
 
 The calling and callee sequence is designed such that we have a fixed convention for **linking procedures**. The data structure needed for procedure linkage is a **stack**, and it can simply be implemented using macroinstructions: `PUSH` and `POP` on some unused memory block, which address is stored in register `R29: SP`. 
 
-It is extremely important to change the content of `SP` (reserved stack pointer register) to reflect a memory address where there isn’t any important instruction or data in it.
+It is extremely important to change the content of `SP` (reserved stack pointer register) to reflect a memory address where there isn’t any important instruction or data in it. Remember that `PUSH` and `POP` each require **two clock cycles to complete**, because each of them is consisted of two atomic $$\beta$$ instructions.  
 
- Remember that `PUSH` and `POP` each require **two clock cycles to complete**, because each of them is consisted of two atomic $$\beta$$ instructions.  
+We also **reserve** two other registers: `R27: BP` and `R28: LP` for this purpose, so that we know where to get the function arguments from the stack, and return address (back to the caller). We do not use these registers `R27, R28, and R29` for other purposes. 
 
-We also **reserve** two other registers: `R27: BP` and `R28: LP` for this purpose, so that we know where to get the function arguments from the stack, and return address (back to the caller). 
-
-> We do not use these registers `R27, R28, and R29` for other purposes. 
-
-The callee has to leave *stack data* **unchanged**  upon returning to the caller, that is to clear whatever data that was put in the stack during its execution. As a result, we might find **dangling pointers:**
->  e.g: pointer that points to an address that is no longer used.  
+The callee has to leave *stack data* **unchanged**  upon returning to the caller, that is to clear whatever data that was put in the stack during its execution. As a result, we might find **dangling pointers:** pointer that points to an address that is no longer used.  
 
 when we try to access a function's local variable long after the function has returned. 
