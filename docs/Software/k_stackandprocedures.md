@@ -856,9 +856,12 @@ print(*p);
 
 The C-code above will compile, but when executed, unexpected behavior can happen: program crash (segmentation fault), random stuffs being printed, etc. 
 
-In C/C++, *life is harsh* and it is the responsibility of the programmer to ensure that mistakes like these do not happen. 
-
-Java and Python will *babysit* and protect us from these mistakes, as there's language restriction that forbids constructs that could lead to dangling references (we are also given automatic storage management, and lots of things are taken care of -- garbage collection, variables allocation, etc). 
+{: .warning-title}
+> Why is Python considered "beginner friendly"
+> 
+> With C/C++, *life is harsh* and it is the responsibility of the programmer to ensure that mistakes like these do not happen. 
+> 
+> Python on the other hand will *babysit* and protect us from these mistakes, as there's language restriction that forbids constructs that could lead to dangling references (we are also given automatic storage management, and lots of things are taken care of -- garbage collection, variables allocation, etc). 
 
 
 
@@ -873,6 +876,4 @@ It is extremely important to change the content of `SP` (reserved stack pointer 
 
 We also **reserve** two other registers: `R27: BP` and `R28: LP` for this purpose, so that we know where to get the function arguments from the stack, and return address (back to the caller). We do not use these registers `R27, R28, and R29` for other purposes. 
 
-The callee has to leave *stack data* **unchanged**  upon returning to the caller, that is to clear whatever data that was put in the stack during its execution. As a result, we might find **dangling pointers:** pointer that points to an address that is no longer used.  
-
-when we try to access a function's local variable long after the function has returned. 
+The callee has to leave *stack data* **unchanged**  upon returning to the caller, that is to clear whatever data that was put in the stack during its execution. As a result, we might find **dangling pointers:** pointer that points to an address that is no longer used when we try to access a function's local variable long after the function has returned. 
