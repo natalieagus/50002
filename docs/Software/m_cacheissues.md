@@ -22,36 +22,36 @@ Singapore University of Technology and Design
 
 ## [Overview](https://www.youtube.com/watch?v=2OARjqLK4io&t=0s)
 
-Recall that  **cache** is a small and fast (and expensive, made of `SRAM`) memory unit assembled near the CPU core, which function is to reduce the **average** time and energy required for the CPU to access some requested data `Mem[A]` located in the Main Memory (RAM). 
-> You know them commercially as the L1, L2, or L3 caches. We simplify them in this course by just referring to them as a single *cache*.
+Recall that  **cache** is a small and fast (and expensive, made of `SRAM`) memory unit assembled near the CPU core, which function is to reduce the **average** time and energy required for the CPU to access some requested data `Mem[A]` located in the Main Memory (RAM). You know them commercially as the L1, L2, or L3 caches. We simplify them in this course by just referring to them as a single level *cache*.
 
 The cache contains  a **copy** of some recently or frequently used data `Mem[A]` and its address `A`. The hardware is assembled in such a way that the CPU will always look for that particular data in the cache first, and only look for the requested information in the Physical Memory if cache `MISS` occurs (and then the cache will be updated to contain this new information). 
 
-> Note that the CPU is able to both **read** from the cache and **write** to the cache (like normal `LD` and `ST` to the RAM).
+{: .note}
+The CPU is able to both **read** from the cache and **write** to the cache (like normal `LD` and `ST` to the RAM).
 
-Without the presence of cache device, the CPU has to frequently access the RAM. Frequent `LD` and `ST` to the Physical Memory becomes the main *bottleneck* for CPU performance. This is because the time taken for a *write* and *read* in `DRAM`  is significantly longer than optimum  CPU `CLK` cycle. 
+Without the presence of cache device, the CPU has to frequently access the RAM. Frequent `LD` and `ST` to the Physical Memory becomes the main <span style="color:red; font-weight: bold;">bottleneck</span> for CPU performance. This is because the time taken for a *write* and *read* in `DRAM`  is significantly longer than optimum  CPU `CLK` cycle. 
 
-In this chapter, we will learn various cache design issues such as its (hardware) **parameters**, i.e: *block size,* cache size, *associativity*, and **management**, i.e: *write* policy and *replacement* policy.
+In this chapter, we will learn various cache design issues such as its (hardware) **parameters**: cache size, cache block size, associativity, and read/write/replacement policies.
 
 
 ## [Cache Design Issues](https://www.youtube.com/watch?v=2OARjqLK4io&t=374s)
-The cache design issues are categorised as follows:
-1.  **Associativity** : we need to determine how many *different* cache lines can one address be stored to.  It implies **choice** . Of course note that there can only be one copy of that address (tag) in the entire cache. 
-	* For DM cache, there is no choice on which cache line is used or looked up. **A 1-to-1 mapping** between each combination of the last $$k$$ bit of the query address `A` to the cache line (entry) is required. Hence, the DM cache has **no associativity**.
-	* An FA cache, as the name suggests: has **complete associativity**. We have `N` choices of cache lines in an FA cache of size `N`: any `Tag`-`Content` can reside on any cache line in FA cache. 
+There are 4 categories of cache design issues:
+1.  **Associativity**: refers to the decision on how many *different* cache lines can one address be mapped (stored) to. Of course note that there can only be one copy of that address (tag) in the entire cache. 
+	* In a DM cache, there is <span style="color:red; font-weight: bold;">no choice</span> on which cache line is used or looked up. **A 1-to-1 mapping** between each combination of the last $$k$$ bit of the query address `A` to the cache line (entry) is required. Hence, the DM cache has **no associativity**.
+	* In an FA cache, it has **complete associativity** as the name suggests. We have `N` choices of cache lines in an FA cache of size `N`: any `Tag`-`Content` can reside on any cache line in FA cache. 
 
-2.  **Replacement policy** : refers to the decision on which entry of the cache should we *replace* in the event of cache `MISS`. 
+2.  **Replacement policy**: refers to the decision on which entry of the cache should we *replace* in the event of cache `MISS`. 
 
-3.  **Block size** : refers to the problem on deciding *how many sets* of 32-bits data do we want to **write** to the cache at a time. 
+3.  **Block size**: refers to the problem on deciding *how many sets* of 32-bits data do we want to **write** to the cache at a time. 
 
-4.  **Write policy** :  refers to the decision on **when** do we *write* (updated entries) from cache to the main memory. 
+4.  **Write policy**:  refers to the decision on **when** do we *write* (updated entries) from cache to the main memory. 
 
 
 
 ## [Comparing FA and DM Cache](https://www.youtube.com/watch?v=2OARjqLK4io&t=519s)
 
   
-We compare the two designs via various metrics: 
+We compare the two designs using various metrics: 
 
 |Metric|FA Cache|DM Cache|
 |--|--|--|
@@ -67,80 +67,81 @@ We compare the two designs via various metrics:
 |**Associativity**|Fully associative, any `Tag`-`Content` can be placed on any cache line|None. Each cache line can only contain matching lower `k`-bits `TAG`|
 
 
-It is obvious that each design has its own pros and cons depending its application. FA cache is superior in certain applications where small cache size is sufficient. The DM cache suffers from severe contention when the cache size is small, but perform reasonably well on average when its size is large. 
+It is obvious that each design has its own pros and cons depending its application. FA cache is superior in certain applications where small cache size is sufficient (e.g: small programs running in a loop). The DM cache suffers from severe contention when the cache size is small, but perform reasonably well on average when its size is large. 
 
 
-## Improving Associativity 
+## Improving Associativity with NWSA Cache
 
-In this section, we will learn a new cache design called the N-way set associative (NWSA) cache, which is a *hybrid* design between FA and DM cache architecture.
+{: .new-title}
+> N-Way Set Associative Cache (NWSA)
+> 
+> An NWSA cache is a *hybrid* design between FA and DM cache architecture.
 
 ### Motivation
 
-*  Although DM cache is cheap, it suffers from the **contention** problem.
+Although DM cache is cheaper in comparison to the FA cache, it suffers from the **contention** problem. Contention mostly occurs within a certain block of addresses (called independent **hot-spots**), due to the **locality of reference** in each different address *range*.
 
-	*  Contention mostly occurs within a certain block of addresses (called independent **hot-spots**), due to the **locality of reference** in each different address *range*.
-	* For example, if instructions for Program A lies in memory address range `0x1000` to `0x1111`, and instructions for Program B lies in memory address range `0xB000` to `0xB111`,
-	* and if `k=3` in the CPU DM cache, **concurrent execution** of Program A and B will cause major **contention**. 
+{: .note-title}
+> Contention Example
+> 
+> If instructions for Program A lies in memory address range `0x1000` to `0x1111`, and instructions for Program B lies in memory address range `0xB000` to `0xB111`,
+and if `k=3` in the CPU DM cache, **concurrent execution** of Program A and B will cause major **contention**. 
 
-*  Hence, *some degree* of associativity is needed. 				
-	* Full associativity will be expensive, so we try to just have *some* of it. 
+Hence, *some degree* of associativity is needed. Full associativity will be expensive, so we try to just have *some* of it. 
 
-
-  
 
 ### [N-Way Set Associative Cache](https://www.youtube.com/watch?v=2OARjqLK4io&t=740s)
 
-
 One solution is increase the associativity of a DM cache is to build an **`N`-way set associative cache** (NWSA cache). 
-* NWSA cache will be *cheaper* to produce than FA cache (of the same storage capacity), but slightly more expensive than its full DM cache counterpart. 
+* NWSA cache will be *cheaper* to produce than FA cache (of the same storage capacity), but slightly more expensive than its full DM cache counterpart of the same size. 
 * NWSA cache has less risk of contention (proportional to the value of `N`). 
 
 The figure below illustrates the structure of an NWSA cache:
 
-<img src="https://dropbox.com/s/jbg0b7ajjcn79mg/nway.png?raw=1"    >
+<img src="https://dropbox.com/s/jbg0b7ajjcn79mg/nway.png?raw=1"  class="center_seventy"  >
 
-  
+An NWSA cache is made up of  `N` DM caches, connected in a *parallel* fashion. The cells in the same '*row*' marked in <span style="color:red; font-weight: bold;">red</span> is called as belonging in the same **set**. The cells in the same '*column*' of DM caches  is said to belong in the same **way**. Each **way** is basically a DM cache that has $$2^k$$ cache lines.
 
-*  An NWSA cache is made up of  `N` DM caches, connected in a *parallel* fashion.
+#### To Write
+Given a write address `A`, we segment it into `K`-bits lower address (excluding the LSB `00`) and `T` bits upper address. We need to first fine the **set** which this `K` bits belong to. That particular combination of `K`-bits lower address, its higher `T` bits `TAG` and its `Content` can be stored in **any** of the N cache lines in the **same** set.
 
-* The cells in the same '*row*' marked in red is called as belonging in the same **set**.
+#### To Read
+Given a query address `A`, we will need to **wait** for the device to *decode* its last `K` bits and find the right set.  Then, the device will perform a **parallel** lookup operation for all `N` cache lines same set. The lookup operation to find the cache line with the right content is done using **bitwise-comparison** with the `T` bits of the query address.
 
-* The cells in the same '*column*' of DM caches  is said to belong in the same **way**. Each **way** is basically a DM cache that has $$2^k$$ cache lines.
-
-* Given a combination of `K`-bits lower address, the higher `T` bits `TAG` and its `Content` can be stored in **any** *of the N cache lines in the same set.*
-
-*  Given a query address `A`:
-	*  we will need to wait for the device to *decode* its last `K` bits and find the right set.  		
-	* Then, the device will perform a **parallel** lookup operation for all `N` cache lines same set. 
-
-
-  
 
 ##  [Replacement Policies](https://www.youtube.com/watch?v=2OARjqLK4io&t=1069s)
 
-Cache replacement policy is required in both FA cache and NWSA cache.  In the event of cache `MISS`, we need to **replace** the *old* cache line 	`TAG`-`Content` field with this *newly requested* one. 
+Cache replacement policy is required in **both** FA cache and NWSA cache (but not DM cache).  In the event of cache `MISS`, we need to **replace**  `TAG`-`Content` field of the *old* cache line with this *newly requested* one. 
 
-> In DM cache, do we need a replacement policy? Why or why not? 
+{: new-title}
+> Think!
+> 
+> We do we not need a replacement policy for DM Cache?
 
 There are three common cache replacement strategies. Usually they're implemented **in hardware**, and carries varying degree of *overhead*.
 
-> Overhead: additional cost (time, energy, money) to maintain and implement.  
+{: .note-title}
+> Overhead
+> 
+> An overhead is an additional cost (time, energy, money) to maintain and implement that feature.
   
 ### [Least Recently Used (LRU)](https://www.youtube.com/watch?v=2OARjqLK4io&t=1132s)
 
-**The idea:** To always replace the least recently used item in the cache. 
+{: .new-title}
+> LRU
+> 
+>  Always replace the least recently used item in the cache. 
 
-**Overhead computation:** 	
-* To know which item is the least recently used, we need to **keep an ordered list** of `N` items in the cache (FA) or set *at all times*. This takes up $$\log(N)$$ bits *per cache line*. In total, there's `N` cache lines, hence we need to have some hardware of size $$N\log_2(N)$$ bits to contain the necessary information for  supporting LRU replacement policy. 
+#### Overhead
+There are two sources of overhead for LRU replacement policy:	
+* We need know which item is the **least recently used** after each read/write access. That is, we need to **keep an ordered list** of `N` items in the cache (FA) or set *at all times*. This takes up $$\log(N)$$ bits **per cache line**. If we have `N` cache lines, we have the **space complexity** of $$N\log_2(N)$$ bits to contain the necessary information for supporting LRU replacement policy. This results in a bigger and more costly cache hardware. 
+ * We also need a **complex hardware logic unit** for implementing LRU algorithm (some kind of sorting algorithm) and to re-order the LRU bits after every cache access. Such hardware unit which specialises in keeping a sorted data structure at all times with minimal computation time is very expensive. 
 
- * We also need a **complex logic unit** for implementing LRU algorithm and to re-order the LRU bits *after every cache access.* 
-
-
-**Example:** Given an FA cache of size `N=4`, and the event where we request addresses in this sequence: `0x0004,0x000C,0x0C08,0x0004,0xFF00,0xAACC` at `t=0,1,2,3,4,5` respectively.
+#### Example
+Suppose we have an FA cache of size `N=4`, and we access the following addresses in this sequence: `0x0004,0x000C,0x0C08,0x0004,0xFF00,0xAACC` at `t=0,1,2,3,4,5` respectively. We also assume that the **smallest** LRU bit indicates the **most** recently accessed data
 
 At `t=2`, the state of the FA cache with LRU as replacement policy will be:
- 
-> Assume the **smallest** LRU bit indicates the **most** recently accessed data
+
 
 | TAG |Content  | LRU |
 |--|--|--|
@@ -167,26 +168,29 @@ At `t=5`, the entry `0x000C-Mem[0x000C]` is replaced because its the *least rece
 | `0x0C08` | `Mem[0x0C08]` | 11 |
 | `0xFF00` | `Mem[0xFF00]` | 01 |
 
- The LRU bits is  updated at **every** cache **access**, regardless of whether there's a replacement or not. 
+{: .important}
+The LRU bits is  updated at **every** cache **access**, regardless of whether it triggers a replacement or not. 
   
 
 ### [Least Recently Replaced (LRR)](https://www.youtube.com/watch?v=2OARjqLK4io&t=1580s)
 
+{: .new-title}
+> LRR
+>
+>  Always replace the **oldest** recently used item in the cache, regardless of its last access time.  
+
+The LRR is essentially implemented in hardware as a **pointer** containing the index of the "oldest" item in the cache. 
   
-**The idea:** To always replace the **oldest** recently used item in the cache, *regardless of the last access time*.  
+#### Overhead
+An LRR replacement policy has comparably less overhead than LRU:	
+* We only need to know which is **oldest** cache line  in the device. 
+* If there are `N` items in the cache, we need  to have a pointer of size $$O(\log_2 N)$$ bits that can **remember** to the oldest cache line plus a simple (not as complex) logic unit to perform the LRR algorithm. 
 
-**Overhead computation:** 	
-* We need to know which is **oldest** cache line  in the device. 
-* If there are `N` items in the cache, we need  to have a pointer of size $$O(\log_2 N)$$ bits that can point to the oldest cache line.
-*  \+ (not as complex) logic unit to perform the LRR algorithm. 
-
-**Example:** (Same example as above) Given an FA cache of size `N=4`, and the event where we request addresses in this sequence: `0x0004,0x000C,0x0C08,0x0004,0xFF00,0xAACC` at `t=0,1,2,3,4,5` respectively.
-
-> Assume that we will always fill *empty* cache from the smallest index to the largest index.
+#### Example
+Suppose we have an FA cache of size `N=4`, and we request these addresses in sequence: `0x0004,0x000C,0x0C08,0x0004,0xFF00,0xAACC` at `t=0,1,2,3,4,5` respectively. Assume that we will always fill *empty* cache from the **smallest** index to the **largest** index.
 
 At`t=2`, the state of the FA cache with LRR as replacement policy will be:
- 
-> The LRR is a pointer containing the index of the "oldest" item in the cache. 
+
 
 `LRR: 00`
 
@@ -214,17 +218,22 @@ At `t=5`, the one that is replaced is `A=0x0004`, and the `LRR` pointer can be i
 
 ### [Random](https://www.youtube.com/watch?v=2OARjqLK4io&t=1765s) 
 
- **The idea:** Very simple -- to replace a random cache line.  
+{: .new-title}
+> Random Replacement
+>
+>  Always replace a random cache line.
 
-**Overhead computation:**
-* We simply need some logic unit to behave like a  random generator, and we use this to select the cache line to replace when the cache is full. 
+#### Overhead
+This policy has the *least* overhead when compared to LRR and LRU. We simply need some logic unit to behave like a random number generator, and we use this to select the cache line to replace when the cache is full. 
 
 ### [Comparing Between Strategies](https://www.youtube.com/watch?v=2OARjqLK4io&t=1795s)
 There's no one superior replacement policy. One replacement policy can be better than the other *depending on our use case* i.e: pattern of addresses enquired. 
 
-> Refer to Problem Set for various examples 
+{: .note}
+Refer to our Problem Set for various exercises with all 3 replacement policies. 
 
-**LRU** conforms to locality of reference, and is excellent when `N` is small (since it is expensive to implement). **Random** method is good when `N` is large. **LRR** is good on specific pattern of usage where we don't frequently revisit oldest cached data. 
+### Comparison
+Random replacement policy is the simplest to implement as it does not require much additional hardware overhead. However in practice, **LRU** may generally gives a better experience because it conforms to locality of reference, and is better when `N` is small (since it is expensive to implement). **LRR** is good on specific pattern of usage where we don't frequently revisit oldest cached data. Finally, **random** method is good when `N` is super large, which in turn will be too costly to implement LRU or LRR. 
 
 ## [The Cache Block Size](https://www.youtube.com/watch?v=2OARjqLK4io&t=1860s)
 
@@ -233,110 +242,114 @@ We can further improve cache performance by **increasing the capacity of each ca
 
 <img src="https://dropbox.com/s/ceamhyfon0dsofw/blocksize.png?raw=1"   class="center_seventy"  >
 
- The number of data **words** in each cache line is called the **block size** and is always a power of two.  
 
- Recall that `1 word = 32 bits`, and we address the entire word by its smallest byte address. 
+{: .new-title}
+> Cache Block Size
+> 
+> The number of **data** **words** stored in each cache line is called the **block size** and is always a power of two.  Recall that `1 word = 32 bits` in this subject, and we address the entire word by its smallest byte address. 
 
-Hence to index or address each word in the cache line, we need $$b = \log_2(B)$$ bits. In the example above, we need 2 bits to address each **column**, taken from `A[3:2]` (assuming that `A` uses byte addressing). 
+Hence to index or address each word in the cache line of block size with `B` words, we need $$b = \log_2(B)$$ bits. In the example above, we need 2 bits to address each **column**, taken from `A[3:2]` (assuming that `A` uses byte addressing). 
 
-
+### Tradeoffs
 There are tradeoffs in determining the block size of our cache, since we always fetch (and / or overwrite) `B` words -- the entire block -- together at a time: 
-
 *  **Pros**: If high locality of reference is present, there's high likelihood that the words from the same block will be required together. Fetching a large block upon the first `MISS` will be beneficial later on, thus improving the average performance. 
-
 *  **Cons**: Risk of fetching **unused** words. With a larger block size, we have to fetch more words on a cache `MISS` and the `MISS` penalty grows linearly with increasing block size if there's low locality of reference.
 
 
 ##  [Write Policies](https://www.youtube.com/watch?v=2OARjqLK4io&t=2120s)
 
-When the CPU executes a `ST` instruction, it will first write the `TAG = Address`-`Content = new content` to the cache. We will then have to decide *when* to actually update the physical memory. 
+When the CPU executes a `ST` instruction, it will first write the cache line: `TAG = Address`, `Content = new content`. We will then have to decide *when* to actually update the physical memory. Sometimes we do not need to update the physical memory at each `ST` as what was stored might only be **intermediary** or temporary values. This is where the act of "writing to cache first" instead of directly to physical memory speeds up execution. 
 
-> Sometimes we do not need to update the physical memory at each `ST` as what was stored might only be intermediary or temporary values. This is where the act of "writing to cache first" instead of directly to physical memory speeds up execution. 
-
-To update the physical memory, the CPU must first fetch the data from the cache and then write it to the physical memory. This **pauses** execution of the ongoing program as the CPU will be busy writing to the physical memory and updating it. 
+To update the physical memory, the CPU must first fetch the data from the cache to the CPU register, and then write it (with `ST` instruction) to the physical memory. This **pauses** execution of the ongoing program as the CPU will be busy writing to the physical memory and updating it. 
 
 There are three common cache write strategies. 
-
-
 ### [Write-through](https://www.youtube.com/watch?v=2OARjqLK4io&t=2174s)
 
-**The main idea:**  CPU writes are done in the cache first by setting `TAG = Address`, and `Content = new content` in an available cache line, and is also **immediately** written to the physical memory. 
+{: .new-title}
+> Write Through
+> 
+> CPU writes are done in the cache first by setting `TAG = Address`, and `Content = new content` in an available cache line, and is also **immediately** written to the physical memory. 
 
 This policy **stalls** the CPU until write to memory is complete, but memory always holds the "truth", and is never oudated.
 
 ### [Write-back](https://www.youtube.com/watch?v=2OARjqLK4io&t=2243s)
-  
-**The main idea:**: Similarly, CPU writes are done in the cache first by setting `TAG = Address`, and `Content = new content` in an available cache line, **but not immediately written to the main memory.** 
 
-The contents in the physical memory can be "*stale*" (outdated). 
+{: .new-title}
+> Write Through
+> 
+> CPU writes are done in the cache first by setting `TAG = Address`, and `Content = new content` in an available cache line, but **not** immediately written to the main memory.
 
-To support this policy, the cache needs to have a helper bit called the **dirty bit** (see next section for more information) for each cache line -- to indicate whether the corresponding copy of the content in the main memory is outdated. The CPU will write to the physical memory only if the data in cache line *needs to be replaced* and that the cache line is **dirty**. If the data is not dirty, then the cache line can simply be replaced without any writes. 
+As a <span style="color:red; font-weight: bold;">consequence</span>, the contents in the physical memory can be "*stale*" (outdated). 
 
-> There is no best overall policy. Think about the pros and cons of each policy, and think about specific cases where one policy is superior than the other. 
+To support this policy, the cache needs to have a helper bit called the **dirty** bit (see next section for more information) for each cache line. This bit indicates whether the corresponding copy of the content in the main memory is outdated. The CPU will write to the physical memory only if the data in cache line needs to be replaced and that the cache line is **dirty**. If the data is not dirty, then the cache line can simply be replaced without any writes. 
+
 
 ### [Write-behind](https://www.youtube.com/watch?v=2OARjqLK4io&t=2380s)
 
-**The main idea:**: CPU writes are also done in the cache first by setting `TAG = Address`, and `Content = new content` in an available cache line, and write to the physical memory is **immediate** but **buffered** or **pipelined**. 
+{: .new-title}
+> Write Behind
+> 
+> CPU writes are also done in the cache first by setting `TAG = Address`, and `Content = new content` in an available cache line. Afterwards, the update of the physical memory is **immediate** but **buffered** or **pipelined** using other supporting hardware. 
 
-CPU will not stall and will be executing next instructions while writes are *completed in the background.* It also needs the dirty bit indicator that will be cleared once the background write finishes. 
+This policy might require slightly complex hardware to implement as opposed to the other policies, e.g: hardware to support this pipelined update of the physical memory. CPU will not stall and will be executing next instructions while writes are completed in the background. It also needs the dirty bit indicator that will be cleared once the background write finishes. 
 
-This policy might require slightly complex hardware to implement as opposed to the other policies, e.g: the pipeline and the background, asynchronous write system. 
+It is not trivial to do this because now we require an **additional** hardware unit that is **asynchronous** to the CPU clock. It does not depend on the CPU to run and we therefore we need to consider some kind of fail-safe feature to synchronise between the CPU and this pipeline system when needed.  
+
+{: .important
+There is no best write policy. Think about the pros and cons of each policy, and think about specific cases where one policy is superior than the other. 
 
 ## [The Helper Bits](https://www.youtube.com/watch?v=2OARjqLK4io&t=2439s)
 
-The cache device may need to store not just `Tag`-`Content` per cache line, but also some "helper bits" that are used to perform some write or replacement policy, and the overall caching algorithm.  
+The cache device may need to store not just `Tag` and `Content` per cache line, but also some **helper bits** that are used to perform some write or replacement policy, and the overall caching algorithm.  
 
-###  V: **Valid Bit** 
+###  V: Valid Bit 
 
-The valid bit (either `1` or `0`) is used to indicate whether the particular cache line  contains *valid* and *important* values (valid copy of data from memory unit) and not an *invalid* or *empty* or *redundant* in value. 
+The valid bit (either `1` or `0`) is used to indicate whether the particular cache line  contains valid (means **important**) values, for example valid copy of data from memory unit and not an *invalid* or *garbage* values.
 
-> Think about it: in electronics, information is encoded in voltage. The device do not know what is the difference in usage between valid information vs invalid gibberish in a memory cell until it attempts to **compute**  its value -- which takes *time*. 
+{: .new-title}
+> Think!
+> 
+> In electronics, information is encoded in voltage. The device do not know what is the difference in usage between valid information vs invalid gibberish in a memory cell until it attempts to **compute**  its value -- which takes *time*. It does not know the difference between redundant (old) information vs new information. Therefore the valid bit is used as a quick indicator whether the content in the cache line is important or not. 
 
-> Also, it does not know the difference between redundant (old) information vs new information. Therefore the valid bit is used as a quick indicator whether the content in the cache line is important or not. 
+The cache performance can be further sped up if it is made to check (compare `TAG`) if `V = 1` for the cache line -- and skip comparison of `TAG` when `V=0` which takes longer time than a simple 1-bit comparison of `V==1`. This allows for a faster `HIT` computation in the event of cache `MISS`. 
 
-The cache performance can be further sped up if it is made to check (compare `TAG`) if `V = 1` for the cache line -- and skip comparison of `TAG` when `V=0`. 
-
-This allows for a faster `HIT` computation in the event of cache `MISS`. 
-
-**The cost**: just 1 extra storage bit per cache line. For cache lines with block size larger than 1, there's still only one `V` bit per cache line (so the entire `b` block of words are either *present* or *not present*). 
+#### Cost
+The `V` bit requires just 1 extra storage bit **per cache line**. For cache lines with block size larger than 1, there's still only one `V` bit per cache line (so the entire `b` block of words are either present or not present). 
 
 ### D: Dirty Bit
 
-  
-The dirty bit (`1` or `0`) is used to indicate whether we need to update the memory unit to reflect the new updated version in the cache. 
-
-The dirty bit is set to `1` **iff** the cache line is updated (CPU writes new values to cache) but this new value **hasn't been stored** to the physical memory. In other words, the copy in the physical memory is *outdated*. 
+The dirty bit (`1` or `0`) is used to indicate whether we need to **update** the memory unit to reflect the new updated version in the cache. The dirty bit is set to `1` <span style="color:red; font-weight: bold;">if and only if</span> the cache line is updated (CPU writes new values to cache) but this new value **hasn't been stored** to the physical memory. In other words, the copy in the physical memory is *outdated*. 
   
 
 ### LRU: Least Recently Used Bits
-
-The LRU bit is present in each cache line for FA and NWSA cache only regardless of the block size.  DM cache does not have a replacement policy. For a cache of size `N`, we need `N log N` bits per cache. 
+The LRU bit is present in **each** cache line for FA and NWSA cache only regardless of the block size (not DM cache because DM cache does not have a replacement policy). For a cache of size `N`, we need `N log N` bits per cache to store the LRU bit. 
 
 
 The helper bits can be illustrated in a diagram like below. Below we have a sample of 3WSA cache with block size of `2`:
   
 
-<img src="https://dropbox.com/s/jdzkblgoyb6dh7i/3way.png?raw=1"    >
+<img src="https://dropbox.com/s/jdzkblgoyb6dh7i/3way.png?raw=1"  >
 
-> Test your understanding: How many LRU bits are needed? 
+{: .new-title}
+> Think!
+> 
+> The diagram above iilustrates a 3-Way SA cache with 4 distinct **sets**. How many LRU bits are needed per cache line? How many LRU bits are needed in the **entire** cache hardware? 
 
  
 
-
-
 ## [Word Addressing Convention](https://www.youtube.com/watch?v=2OARjqLK4io&t=2730s)
 
-Previously, we learned that byte addressing is used by convention.
+Previously, we learned that byte addressing is used by convention. However **for ease of calculation in practice questions** and **problem sets**, we can use **WORD addressing** instead (we give an address for each word instead of each byte). 
 
-However **for ease of calculation in practice questions** and **problem sets**, we can use **word addressing** instead (we give an address for each word instead of each byte). 
-
+{: .note}
 Given a memory unit of fixed size `M`, can use 2 bits less if we were to use word addressing instead of byte addressing. 
 
 
 For DM/NWSA cache with `B` blocks and **word addressing**, we need to divide the original requested address into the same **three segments**, but we don't have the default `00` in the lowest 2 bits of the address (as when byte addressing is used) anymore: 
 
-<img src="https://dropbox.com/s/2dsjsjurxtndevq/wordbyte.png?raw=1" class="center_seventy"   >
+<img src="https://dropbox.com/s/2dsjsjurxtndevq/wordbyte.png?raw=1" class="center_fifty"   >
 
+Details:
 * Lowest`b`-bits to index each word in a cache line block. 
 * `K`-bits to index each cache line or set. 
 * Highest (remainder) `T`-bits of the original requested address to be stored in the `TAG` field.
@@ -344,68 +357,71 @@ For DM/NWSA cache with `B` blocks and **word addressing**, we need to divide the
 ## [Cache Benchmarking](https://www.youtube.com/watch?v=2OARjqLK4io&t=2885s)
 We can  compute **average cache performance** by counting how many `HIT`s  (and `MISS`) are there given `N` queries in sequence, and dividing the number of `HIT` with `N`, given its hardware specification such as block size, replacement policy, and cache size. 
 
-If the query sequences repeat itself, we can compute the number of `HIT` and `MISS` from its **steady state**. 
+If the query sequences **repeat** itself, that means we have reached the **steady state**. we can compute the number of `HIT` and `MISS` from its **steady state**. 
 
 ### Example 
 We want to measure the performance of an FA cache that has `4` cache lines with **LRR** replacement policy.
 
 Assume that the cache is initially *empty* (or contains redundant values -- nothing relevant is cached before), we let the CPU execute the following program consisted of 9 `READ` (`LD`) requests for a few *rounds*:
 
-`At t=0: 0x0014`
-`At t=1: 0x0011`
-`At t=2: 0x0022`
-`At t=3: 0x0014`
-`At t=4: 0x0043`
-`At t=5: 0x0012`
-`At t=6: 0x0014`
-`At t=7: 0x00AB`
-`At t=8: 0x0033`
+```
+At t=0: 0x0014
+At t=1: 0x0011
+At t=2: 0x0022
+At t=3: 0x0014
+At t=4: 0x0043
+At t=5: 0x0012
+At t=6: 0x0014
+At t=7: 0x00AB
+At t=8: 0x0033
+```
 
-> We repeat the same 9 input sequences again for the second "round":
+We repeat the same 9 input sequences again for the second "round":
 
-`At t=9: 0x0014`
-`At t=10: 0x0011`
-`At t=11: 0x0022`
-`At t=12: 0x0014`
-`At t=13: 0x0043`
-`At t=14: 0x0012`
-`At t=15: 0x0014`
-`At t=16: 0x00AB`
-`At t=17: 0x0033`
-...
-And repeated again, for the third "round", and so on.
+```
+At t=9: 0x0014
+At t=10: 0x0011
+At t=11: 0x0022
+At t=12: 0x0014
+At t=13: 0x0043
+At t=14: 0x0012
+At t=15: 0x0014
+At t=16: 0x00AB
+At t=17: 0x0033
+```
 
-> For ease of computation, word addressing is used (you can also tell that this is true as the addresses no longer have the suffix `00`). 
+...and repeated again, for the third "round", and so on.
 
-To benchmark this cache, we need to count how many `MISS` and `HIT` are there at the **steady state.** Hence, *we need to figure out which rounds make up the steady state.* 
+For the ease of computation, word addressing is used (you can also tell that this is true as the addresses no longer have the suffix `00`). To <span style="color:red; font-weight: bold;">benchmark</span> this cache, we need to count how many `MISS` and `HIT` are there at the **steady state.** Hence, *we need to figure out which rounds make up the steady state.* 
 
 **At the first round**, `t=0` to `t=8`, we have:
 
 `At t=0: 0x0014` $$\rightarrow$$ `MISS` (and cached)
-> Cache content after:  **`0x0014`**, `EMPTY`, `EMPTY`, `EMPTY`. 
+
+Cache content after this access:  **`0x0014`**, `EMPTY`, `EMPTY`, `EMPTY`. 
 > Oldest entry is bolded. 
 
 `At t=1: 0x0011` $$\rightarrow$$ `MISS` (and cached).
-> Cache content after:  **`0x0014`,** `0x0011`, `EMPTY`, `EMPTY`. 
+Cache content after this access:  **`0x0014`,** `0x0011`, `EMPTY`, `EMPTY`. 
 
 `At t=2: 0x0022` $$\rightarrow$$ `MISS` (and cached).
-> Cache content after:  **`0x0014`**, `0x0011`, `0x0022`, `EMPTY`. 
+Cache content after this access: **`0x0014`**, `0x0011`, `0x0022`, `EMPTY`. 
 
 `At t=3: 0x0014`$$\rightarrow$$ `HIT` 
 `At t=4: 0x0043`$$\rightarrow$$ `MISS`  (and cached)
-> Cache content after:  **`0x0014`**, `0x0011`, `0x0022`, `0x0043`. 
+Cache content after this access:  **`0x0014`**, `0x0011`, `0x0022`, `0x0043`. 
 
 `At t=5: 0x0012` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0014`)
-> Cache content after:  **`0x0011`**, `0x0022`, `0x0043`, `0x0012`. 
+Cache content after this access:  **`0x0011`**, `0x0022`, `0x0043`, `0x0012`. 
 
 `At t=6: 0x0014`$$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0011`)
-> Cache content after:  **`0x0022`**, `0x0043`, `0x0012`, `0x0014`. 
+Cache content after this access:  **`0x0022`**, `0x0043`, `0x0012`, `0x0014`. 
 
 `At t=7: 0x00AB` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0022`)
-> Cache content after:  **`0x0043`**, `0x0012`, `0x0014`, `0x00AB`. 
+Cache content after this access:  **`0x0043`**, `0x0012`, `0x0014`, `0x00AB`. 
 
 `At t=8: 0x0033` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0043`)
-> Cache content after:  **`0x0012`**, `0x0014`, `0x00AB`, `0x0033`. 
+Cache content after this access::  **`0x0012`**, `0x0014`, `0x00AB`, `0x0033`. 
 
 
 Now during the **second round**, `t=10` to `t=19`, we have the same 9 input sequences. Let's observe the result:
@@ -413,85 +429,87 @@ Now during the **second round**, `t=10` to `t=19`, we have the same 9 input sequ
 `At t=10: 0x0014` $$\rightarrow$$ `HIT` 
 
 `At t=11: 0x0011` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0012`)
-> Cache content after:  **`0x0014`**, `0x00AB`, `0x0033`, `0x0011`. 
+Cache content after this access::  **`0x0014`**, `0x00AB`, `0x0033`, `0x0011`. 
 
 `At t=12: 0x0022` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0014`)
-> Cache content after:  **`0x00AB`**, `0x0033`, `0x0011`, `0x0022`. 
+Cache content after this access:  **`0x00AB`**, `0x0033`, `0x0011`, `0x0022`. 
 
 `At t=13: 0x0014`$$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x00AB`)
-> Cache content after:  **`0x0033`**, `0x0011`, `0x0022`, `0x0014`. 
+Cache content after this access:  **`0x0033`**, `0x0011`, `0x0022`, `0x0014`. 
 
 `At t=14: 0x0043`$$\rightarrow$$ `MISS` (and cached by replacing oldest entry:`0x0033`)
-> Cache content after:  **`0x0011`**, `0x0022`, `0x0014`, `0x0043`. 
+Cache content after this access:  **`0x0011`**, `0x0022`, `0x0014`, `0x0043`. 
 
 `At t=15: 0x0012` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0011`)
-> Cache content after:  **`0x0022`**, `0x0014`, `0x0043`, `0x0012`. 
+Cache content after this access:  **`0x0022`**, `0x0014`, `0x0043`, `0x0012`. 
 
 `At t=16: 0x0014`$$\rightarrow$$ `HIT` 
 
 `At t=17: 0x00AB` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0022`)
-> Cache content after:  **`0x0014`**, `0x0043`, `0x0012`, `0x00AB`. 
+Cache content after this access:  **`0x0014`**, `0x0043`, `0x0012`, `0x00AB`. 
 
 `At t=18: 0x0033` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0014`)
-> Cache content after:  **`0x0043`**, `0x0012`, `0x00AB`, `0x0033`. 
+Cache content after this access: **`0x0043`**, `0x0012`, `0x00AB`, `0x0033`. 
 
 
 Running the cache for **another round** (the third time) at `t=19` to `t=27` with the same 9 input sequences:
 
 `At t=19: 0x0014` $$\rightarrow$$  `MISS`  (and cached by replacing oldest entry:`0x0043`) 
-> Cache content after:  **`0x0012`**, `0x00AB`, `0x0033`, `0x0014`. 
+Cache content after this access:  **`0x0012`**, `0x00AB`, `0x0033`, `0x0014`. 
 
 `At t=20: 0x0011` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0012`)
-> Cache content after:  **`0x00AB`**, `0x0033`, `0x0014`, `0x0011`. 
+Cache content after this access:  **`0x00AB`**, `0x0033`, `0x0014`, `0x0011`. 
 
 `At t=21: 0x0022` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x00AB`)
-> Cache content after:  **`0x0033`**, `0x0014`, `0x0011`, `0x0022`. 
+Cache content after this access:  **`0x0033`**, `0x0014`, `0x0011`, `0x0022`. 
 
 `At t=22: 0x0014`$$\rightarrow$$ `HIT` 
 
 `At t=23: 0x0043`$$\rightarrow$$ `MISS` (and cached by replacing oldest entry:`0x0033`)
-> Cache content after:  **`0x0014`**, `0x0011`, `0x0022`, `0x0043`. 
+Cache content after this access:  **`0x0014`**, `0x0011`, `0x0022`, `0x0043`. 
 
 `At t=24: 0x0012` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0014`)
-> Cache content after:  **`0x0011`**, `0x0022`, `0x0043`, `0x0012`. 
+Cache content after this access::  **`0x0011`**, `0x0022`, `0x0043`, `0x0012`. 
 
 `At t=25: 0x0014`$$\rightarrow$$  `MISS`  (and cached by replacing oldest entry:`0x0011`)
-> Cache content after:  **`0x0022`**, `0x0043`, `0x0012`, `0x0014`. 
+Cache content after this access:  **`0x0022`**, `0x0043`, `0x0012`, `0x0014`. 
 
 `At t=26: 0x00AB` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0022`)
-> Cache content after:  **`0x0043`**, `0x0012`, `0x0014`, `0x00AB`. 
-
+Cache content after this access:  **`0x0043`**, `0x0012`, `0x0014`, `0x00AB`. 
 
 `At t=27: 0x0033` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0043`)
-> Cache content after:  **`0x0012`**, `0x0014`, `0x00AB`, `0x0033`. 
+Cache content after this access:  **`0x0012`**, `0x0014`, `0x00AB`, `0x0033`. 
 
-If we run it again for the *fourth* round, we will have the same `HIT` and `MISS` sequences as the *second* round. This implies that the result of running it for the *fifth* round will be identical to the *third* round.
+If we run it again for the *fourth* round, we will have the <span style="color:red; font-weight: bold;">same</span> `HIT` and `MISS` sequences as the *second* round. This implies that the result of running it for the *fifth* round will be identical to the *third* round.
 
-Hence *on average* we can count the number of `HIT` for the second and third round: 3 `HIT` in total for 18 address calls. 
-
-> We ignore results from the first round because that result will never repeat itself again as we begin with empty cache only once in the beginning. 
+Hence on **average** we can count the number of `HIT` for the second and third round: 3 `HIT` in total for 18 address calls.  We ignore results from the first round because that result will never repeat itself again as we begin with empty cache only once in the beginning. 
 
 That means out of the 18 address calls, we have 15 `MISS`. The miss rate of this cache is therefore pretty high at $$83.33\%$$. 
 
-> Test yourself: If the FA cache uses LRU, will it have a better performance? i.e: less miss rate. What about when DM cache of same size (4 cache lines) is used? *Which cache design is better for this particular program running in a loop*? 
+{: .new-title}
+> Think!
+> 
+> If the FA above uses LRU policy instead, will it have a less miss rate (better performance)>. What about when DM cache of same size (4 cache lines) is used? Which cache design is better for this particular program running in a **loop**? 
 
 
 
 
 ## [The Caching Algorithm](https://www.youtube.com/watch?v=2OARjqLK4io&t=3070s)
 
-The caching algorithm computes what the cache must do in general when:
-* CPU sends a read or write request, 
-* Cache is full and it has to make room for new items when its full based on the chosen replacement policy. 
-* It needs to write updated values back to the physical memory, based on the chosen write policy. 
+The caching algorithm computes what the cache must do in general when it  encounters one of these events:
+1. CPU sends a read or write request, 
+2. Cache is full and it has to make room for new items when its full based on the chosen replacement policy. 
+3. It needs to write updated values back to the physical memory, based on the chosen write policy. 
 
-> The actual implementation of the caching algorithm is done via **hardware implementation** for fastest possible performance.  
+
+
+{: .highlight}
+The actual implementation of the caching algorithm is done via **hardware implementation** for fastest possible performance.  
 
 ### READ/LOAD request
 
-```cpp
+```yaml
 On CPU READ/LOAD request for address A:
-
 	check for A in TAG field of cache lines with V==1
 
 	if HIT: 
@@ -540,7 +558,7 @@ On CPU READ/LOAD request for address A:
 
 ### WRITE/STORE request
 
-```cpp
+```yaml
 On CPU WRITE/STORE (new_content) request to address A:
 
 	check for A in TAG field of cache lines with V==1
@@ -593,11 +611,11 @@ On CPU WRITE/STORE (new_content) request to address A:
 ## [Summary](https://www.youtube.com/watch?v=2OARjqLK4io&t=3405s)
 [You may want to watch the post lecture videos here. ](https://youtu.be/33N7Y9Iydb0)
 
-The four cache design issues discussed in this chapter are: associativity, replacement policies, write policies, and block size. There is no *golden cache design*  that suits all kinds of situations. The performance of a cache depends on its use case. 
+The **four** cache design issues discussed in this chapter are: associativity, replacement policies, write policies, and block size. There is no *golden cache design* that suits all kinds of situations. The performance of a cache depends on its use case and we need to choose our cache design wisely based on our use cases. 
 
-> For example, associativity is **less important** when `N` is large, because the risk for contention is inversely proportional to `N`. 
+For example, associativity is **less important** when `N` (size of cache) is large, because the risk for contention is inversely proportional to `N`. 
 
-We can attempt to analyse cache performance by building intuition from simple examples or using computer simulations of cache behaviors on real programs. Through various analysis with different use cases, we can fine tune and establish the basis for cache design decisions. 
+We can attempt to analyse cache performance by building intuition from simple computer simulations of cache behaviors on real programs, which we will encounter in our problem sets. Through various analysis with different use cases, we can fine tune and establish the basis for cache design decisions. 
 
 
 

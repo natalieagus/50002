@@ -300,7 +300,7 @@ The FA cache has the following generic structure:
 
 Note the presence of a device called the **tri-state buffer:**
 
-<img src="https://dropbox.com/s/hu22kodm6etknl5/tsbuffer.png?raw=1"  class="center_thirthy"    >
+<img src="https://dropbox.com/s/hu22kodm6etknl5/tsbuffer.png?raw=1"  class="center_twenty"    >
 
 It has the following truth-table:<br>
 
