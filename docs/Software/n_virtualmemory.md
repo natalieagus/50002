@@ -284,7 +284,7 @@ Also, note that the LRU bits in the TLB <span style="color:red; font-weight: bol
 
 The OS Kernel is responsible for the implementation of demand paging, and it may vary from system to system. However, the main idea of demand paging is that data is not copied from the swap space to the physical memory **until they are needed** by the CPU. 
 
-> For now, let's ignore the presence of *data cache* and TLB for the sake of simplicity in explanation. We will add it back to the picture later on. 
+For now, let's ignore the presence of *data cache* and TLB for the sake of simplicity in explanation. We will add it back to the picture later on. 
 
 When a computer is turned off, every bits of information is stored in its non-volatile memory storage (disk, NAND flash, etc). The physical memory is incapable of storing any information when it does not receive any power source.  The OS Kernel is one of the first programs that is loaded onto the physical memory when our computer is started up.  It maintains an **organised** array of pages on disk. 
 
@@ -293,9 +293,9 @@ Do not trouble yourself at this point at figuring out how *bootstrap* works, i.e
 
 The moment a request to execute a program is made,  the OS Kernel:
 1. **Allocates** and **prepares** the virtual memory space for this program on the disk's swap space, 
-	> Only a small subset, essentially the program's entry points (elf table, main function, initial stack) is put onto the physical memory, and everything **else** is loaded **later**.
+	* Only a small subset, essentially the program's entry points (elf table, main function, initial stack) is put onto the physical memory, and everything **else** is loaded **later**.
 2. And the OS Kernel **copies** contents required for execution over to this designated **swap** space from the **storage** part of the disk.
-	> This includes all *instructions* necessary for this program to run, its *stack space*, *heap space*, etc are nicely prepared by the OS Kernel before the program **begins** execution. 
+	* This includes all *instructions* necessary for this program to run, its *stack space*, *heap space*, etc are nicely prepared by the OS Kernel before the program **begins** execution. 
 
 Therefore, almost all of its `VA` initially corresponds to some location on the disk's swap space. As the process runs longer, more and more of its content (data/other instructions) are stored on RAM. 
 
@@ -506,7 +506,9 @@ As a summary, *virtual Memory* is a **memory management technique** that provide
 A small hardware called the **MMU** is created as part of the CPU board to support this technique. 
 
 Since each process is running in an **isolated** manner from one another (in its own *virtual space*, unaware of the presence of other processes), the OS **Kernel** can switch execution between programs -- giving the users an *illusion* as if these processes are running **simultaneously** with just a single CPU. The procedure that allows for this to happen seamlessly is called **rapid context switching.**
-* Context switching allows for **timesharing** among several processes, that is to share the CPU amongst multiple process executions. 
+
+{: .highlight}
+Context switching allows for **timesharing** among several processes, that is to share the CPU amongst multiple process executions. 
 
 The OS Kernel simply loads the appropriate context number and pagetable pointer when switching among processes. This way, the CPU can have access to instructions or data required to execute each process and switch executions between processes. 
 

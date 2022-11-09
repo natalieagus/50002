@@ -21,26 +21,33 @@ Singapore University of Technology and Design
 [You can find the lecture video here.](https://youtu.be/4pizOgCT11k) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
 ## [Overview](https://www.youtube.com/watch?v=4pizOgCT11k&t=0s)
-Suppose we have 10 processes running in our computer right now: Web Browser, Spotify, Telegram, etc (in fact, the number of running processes at any given time in a typical computer is more than 10). There has to be some kind of **manager** program that oversees the execution of these processes because we only have limited amount of resources: CPU cores, RAM size, cache size, etc. This **manager** program is called the Operating System. Specifically, the part of the OS that is responsible for process management is the **operating system kernel**.
+
+{: .highlight}
+The term "Virtual Machine" in this chapter does not refer to the regular commercial virtual machines like VirtualBox or VMWare Fusion. 
+
+Suppose we have 10 processes running in our computer right now: Web Browser, Spotify, Telegram, etc (in fact, the number of running processes at any given time in a typical computer is definitely more than 10 in day-to-day use, check your activity monitor or task manager to confirm). 
+
+There has to be some kind of **manager** program that oversees the execution of these processes because we only have limited amount of resources: CPU cores, RAM size, cache size, etc. This **manager** program is called the Operating System. Specifically, the part of the OS that is responsible for process management is the **operating system kernel**.
+
+The role of the OS Kernel is to provide an environment such that each **process** is under the **illusion** that it has the whole machine (I/O devices, resources like CPU and RAM) to itself, while the truth is that we are actually sharing these hardware resources amongst many processes.
 
 ### [The Operating System Kernel](https://www.youtube.com/watch?v=4pizOgCT11k&t=95s)
-The Operating System (OS) Kernel is a *special* program that is written to ***manage*** and **oversees** the execution of all other processes in system. It has the **highest privilege** in computer system, i.e: it can terminate any program, has access to all kinds of hardware resources (Physical Memory, I/O devices). 
-
-A few of its important role include *memory management*, *I/O handling*, and *process scheduling*. 
-
-> There are many other roles of the OS Kernel that is not discussed here. We will learn more about them next term. 
+The Operating System (OS) Kernel is a *special* program that is written to **manage** and **oversees** the execution of all other processes in system. It has the **highest privilege** in computer system, i.e: it can terminate any program, has access to all kinds of hardware resources (Physical Memory, I/O devices). 
 
 
-### [A Complete Process Context](https://www.youtube.com/watch?v=4pizOgCT11k&t=336s)
+A few of its important role include memory management, I/O handling, and process scheduling. There are many other roles of the OS Kernel that is not discussed here. We will learn more about them next term. 
+
+
+### [A Process Context](https://www.youtube.com/watch?v=4pizOgCT11k&t=336s)
 In the previous chapter, we learned that each process has its own *`VA` to `PA`mapping* we call as part of a process **context**, hence allowing it to run on its own *virtual memory*.
 
 Assigning a separate context for each process has two crucial benefits:
 
-1.  Allows **timesharing** among processes, hence user can multitask, i.e: switch the execution of multiple programs using a single core. 
+1.  Allows **timesharing** among processes so that user can multitask even in  a single-core system. It facilitates switching the execution of multiple programs in a single CPU core. 
 
-1.  Allows each process to run in **isolation** -- therefore every program can be written as if it has **access to all memory**, without considering where other programs reside. 
+2.  Allows each process to run in **isolation**. Every program can be **written** as if it has **access to all memory** and hardware resources, without considering where other programs **reside**. 
 
-The Kernel need to store  more information about a process (*and not just its `VA` to `PA` mapping*), so that it can *pause the execution* and *resume* any of them later on without any conflict. 
+The Kernel need to store  more information about a process (and not just its `VA` to `PA` mapping), so that it can pause any given process and resume any of them later on without any conflict. 
 
 A more complete list of components that make up a process **context** are:
 * Values of `R0, R1, ... R30`
@@ -50,20 +57,24 @@ A more complete list of components that make up a process **context** are:
 * Program (and shared code)
 * Virtual I/O devices (console, etc)
 
-In the Figure below, we illustrate `N` processes that are present in the system: `P1, P2, ..., P3` -- each having its own information: 
+In the Figure below, we illustrate `N` processes that are present in the system: `P1, P2, ..., P3` -- each having its own **context**: 
 
-> These processes are **isolated** from one another, meaning that `Pi` cannot access (or corrupt) the memory space of other process  `Pj` because each of them run on a separate virtual memory. 
+{: .note}
+These processes are **isolated** from one another, meaning that `Pi` cannot access (or corrupt) the memory space of other process  `Pj` because each of them run on a separate virtual memory. 
 
-<img src="https://dropbox.com/s/fvo6fllqrwwg2qr/context.png?raw=1"  class="center_seventy"  >
-
-
-Writing an Operating System Kernel is not a trivial task as one has to take into consideration a plethora of *issues* (security, performance, memory management, scheduling, etc). However with its presence, it makes *easier to write all other programs*. **It provides a layer of abstraction, allowing each program to run on a  *virtual machine***, devoid of any knowledge about any other processes.
+<img src="https://dropbox.com/s/fvo6fllqrwwg2qr/context.png?raw=1"  class="center_fourty"  >
 
 
-### [Building a Virtual Machine ](https://www.youtube.com/watch?v=4pizOgCT11k&t=710s)
+Writing an Operating System Kernel is not a trivial task as one has to take into consideration a plethora of issues (security, performance, memory management, scheduling, etc). However with its presence, it makes easier to write all other programs. 
 
-####  [Kernel Mode and User Mode](https://www.youtube.com/watch?v=4pizOgCT11k&t=798s)
-To support a safe *virtual machine* for each process, we need to establish the notion of **dual mode system**, that is a system that has a **Kernel Mode** (privileged mode) and a **User Mode** (non-privileged mode): 
+{: .note}
+An OS Kernel provides a layer of **abstraction**, allowing each program to run on a  **virtual machine**, devoid of any knowledge and care about any other processes.
+
+
+## [Building a Virtual Machine ](https://www.youtube.com/watch?v=4pizOgCT11k&t=710s)
+
+###  [Hardware Supported Kernel Mode and User Mode](https://www.youtube.com/watch?v=4pizOgCT11k&t=798s)
+To support a safe virtual machine for each process, we need to establish the notion of **dual mode system**, that is a system that has a **Kernel Mode** (privileged mode) and a **User Mode** (non-privileged mode): 
 
 * The OS Kernel runs in *full privilege* mode called the **Kernel Mode**, and it oversees the execution of all processes in the computer system, handles real I/O devices, and emulate virtual I/O device for each process. 
 
@@ -80,61 +91,75 @@ This is a **major benefit**: programs can be easily written as if they have *abs
 
 ## [OS Multiplexing and Context Switching](https://www.youtube.com/watch?v=4pizOgCT11k&t=1080s)
 
-  
-**Multiplexing** is a method of sharing the resources in a computer **system** for multiple running programs at the same time. The OS kernel handles the multiplexed execution of various running programs in a single CPU -- **switching between *contexts* so rapidly** -- so that for the users, the computer is seemingly able to run multiple processes in "*parallel*". 
+{: .new-title}
+> Multiplexing
+> 
+> **Multiplexing** is a method of sharing the resources in a computer **system** for multiple running programs at the same time. The OS kernel handles the multiplexed execution of various running programs in a single CPU -- **switching between *contexts* so rapidly** -- so that for the users, the computer is seemingly able to run multiple processes in "*parallel*". 
 
 The main idea of OS multiplexing is illustrated below using two processes `P1` and `P2`, sharing a single system:
 
 <img src="https://dropbox.com/s/p5r7q2uit6vbdkz/process.png?raw=1"  class="center_seventy"  >
   
-The `ARROW` illustrates the timeline of execution:
+The arrow illustrates the flow of execution in time:
 * At first, the CPU runs some task from `P1`. 
 * After some time `t`, imagine that a *timed  interrupt* (caused by other asynchronous hardware, e.g: a *timer*) occurs. This causes the CPU to execute part of the kernel program that handles such **asynchronous interrupt**, hence *pausing* the execution of `P1`.
-* This *interrupt handler* takes control of the CPU when hardware interrupt occurs, and **saves** the  current **states** (PC, Registers, etc)  of P1 to a dedicated space **(Kernel Stack)** in the Memory Unit  (*so that P1's progress is not lost and can be resumed later on*) before performing a "*context switch*":
-	1. Load the states of `P2` to the CPU (and also the required resources, mapping, etc), and
-	2. Resume the execution of `P2`. 
-> In practice, the *interrupt handler* will examine the *cause* of the asynchronous interrupt. In the event of periodic interrupt caused by a timer, the handler will delegate the task to the  **kernel scheduler** whose job is to decide *which* process to run next, and prepare the necessary information / context to load this process back into the CPU so that the selected process may resume smoothly. When the scheduler returns to the handler, the handler resumes execution of the CPU by simply setting `PC` $$\leftarrow$$ `Reg[XP] - 4`. 
+* This interrupt handler (part of the Kernel code) takes control of the CPU when hardware interrupt occurs, and **saves** the  current **context** (PC, Registers, etc)  of P1 to a dedicated space **(Kernel Stack)** in the Memory Unit  (*so that P1's progress is not lost and can be resumed later on*) before performing a **context switch**.
+* After the context switch is complete, `P2` runs and progresses for some time `t` before another *hardware interrupt* occurs. The entire context switch process is repeated to pause `P2`, resume `P1`, and so forth. 
 
-* `P2` runs and progresses for some time `t` before another *hardware interrupt* occurs. The entire context switch process is repeated to pause `P2`, resume `P1`, and so forth. 
 
-The key technology that allows for OS Multiplexing is the **asynchronous hardware interrupt.** 
+{: .note}
+Note that some books might call a process' **context** (PC, Registers, Stack, etc) as its **state** as well. 
 
-> We will simply call asynchronous interrupt as just "interrupt" for simplicity. A synchronous interrupt is called as "*trap*" instead (see the later chapters). 
+During **context switch**, two things happen:
+1. The Kernel loads the context of `P2` to the CPU (and also the required resources, mapping, etc), and
+2. Resume the execution of `P2`. 
+
+
+In practice, the interrupt handler will examine the cause of the asynchronous interrupt. In the event of **periodic** interrupt caused by a timer, the handler will delegate the task to the  **kernel scheduler** whose job is to decide which process to run next, and prepare the **necessary** information and context to load this process back into the CPU so that the selected process may resume smoothly. When the scheduler returns to the handler, the handler resumes execution of the CPU by simply setting `PC` $$\leftarrow$$ `Reg[XP] - 4`. 
+
+The key hardware that allows for OS Multiplexing is the **asynchronous hardware interrupt**. We will simply call asynchronous interrupt as just "interrupt" for simplicity. There also exist a synchronous interrupt which we call as "trap" instead (see the later chapters). 
+
+{: .note}
+The term **asynchronous** comes from the fact that the interrupt will **NOT** be synchronised with the CPU clock. It can come at any moment. Inputs that causes these async interrupts include keyboard presses, mouse clicks, and scheduler's timer. On the other hand, there are interrupts that are **sychronous** (with the CPU clock), for example **faulty instructions** will trigger a synchronous interrupt (trap). Unlike mouse clicks that can arrive at any time, execution of (faulty) instruction is **synchronous** with the CPU clock. 
   
 
 ## [Hardware Support for OS Multiplexing ](https://www.youtube.com/watch?v=4pizOgCT11k&t=1285s)
 
 To allow for proper multiplexing, four things must be supported **in the hardware level**:
 
-1.  There has to be a way to **asynchronously interrupt** a currently running program *periodically* via hardware, since that program is currently using the CPU and will not stop voluntarily. 
+1.  There has to be a way to **asynchronously interrupt** a currently running program periodically since that program is currently using the CPU and will not stop voluntarily. That means there has to be some kind of external timer system that will fire up an interrupt signal (to the Control Unit) when that current running process time quanta is up.
 
-2.  The hardware has to know how to **direct** the PC CPU to the right handler program when **interrupt** occurs. 
+2.  The hardware has to know how to **direct** the `PC` to the right handler program when **interrupt** occurs. This address is hardwired to `XAddr` in our Beta. 
 
-3.  **Two execution modes** in the system:
+3.  **Two execution modes** must be supported in the system. In our Beta CPU, this mode is signified as `PC31`. 
 	* **Kernel mode**: that allows the CPU to have ultimate access to all hardware and data, so that it can perform crucial process management tasks such as "*saving*" the states (Register contents, stack, PC, etc) of the interrupted process (to be resumed safely later on). 
 	* **User mode**: a non-privileged mode that disallow programs to corrupt illegal memory space of other programs or hijack resources.  
 
-4.  Other interrupts must be **disabled** when this process of "saving state" occurs  (otherwise data will be lost). 
+4.  Other interrupts must be **disabled** when the Kernel is saving the context (state) of an interrupted process (otherwise data will be lost). 
 
 
 ### $$\beta$$ Asynchronous Interrupt Hardware
 
 Recall the **asynchronous interrupt** datapath as shown in the figure below: 
 
-<img src="/50002/assets/contentimage/beta/irq.png"  class="center_full"/>
+<img src="/50002/assets/contentimage/beta/irq.png"  class="center_seventy"/>
 
-One of the inputs that is received by the Control Unit is `IRQ` (1-bit).  In the event of *interrupt*, the `IRQ` value will be `1`. 
+One of the inputs that is received by the Control Unit is `IRQ` (1-bit).  In the event of asynchronous interrupt, that `IRQ` value will be `1`. For instance, whenever a user clicks the mouse, or press a keyboard key, or the scheduler timer fires, `IRQ` will be set to `1`. 
+> A kernel scheduler will typically configure some system timer to fire at some interval. This timer runs **asynchronously** with the CPU, and sets the `IRQ` signal to `1` each time it fires.
 
 At each CLK cycle, the Control Unit always checks whether `IRQ` is `1` or `0`. 
+
+{: .note-title}
+> `IRQ` is Asynchronous
+> 
 > Note that `IRQ` may turn to be `1` asynchronously, e.g: in the "*middle*" of a particular CPU CLK cycle.  However the Control Unit is synchronised with CPU CLK. Therefore, this will only *trigger* an interrupt in the next CPU CLK tick. 
-* If `IRQ==0`, the Control Unit produces all control signals as dictated by `OPCODE` received.
-* Else if `IRQ==1`, the Control Unit *traps* the PC onto the interrupt handler located at `XAddr`, by setting `PCSEL` value into `100`; *so that the PC points to `XAddr` in the next clock cycle.* 
-	* At the same time, it stores the address of the *next* instruction (`PC+4`) at Register `XP` (`R30`).  
-	* `R30` is a **special register** is always used to hold the *return address* in the event of interrupt (or illegal operation) so that the system knows how to resume the interrupted program later on. 
+> * If `IRQ==0`, the Control Unit produces all control signals as dictated by `OPCODE` received.
+> * Else if `IRQ==1`, the Control Unit *traps* the PC onto the interrupt handler located at `XAddr`, by setting `PCSEL` value into `100`; *so that the PC points to `XAddr` in the next clock cycle.* 
+>	* At the same time, it stores the address of the *next* instruction (`PC+4`) at Register `XP` (`R30`).  
+> 	* `R30` is a **special register** (also labeled as Reg XP) that is **always** used to hold the *return address* in the event of interrupt (or illegal operation) so that the system knows how to resume the interrupted program later on. 
 
-A kernel scheduler will typically configure some system timer to *fire* at some interval. This timer runs **asynchronously** with the CPU, and sets the `IRQ` signal to `1` each time it *fires*.
 
-> The interrupt hardware configuration **forces** the PC CPU to execute the interrupt handler at `XAddr` in the next cycle each time the timer *fires*. 
+Beta's interrupt hardware configuration **forces** the PC CPU to execute the interrupt handler at `XAddr` in the next cycle each time the timer *fires*. 
 
 The register transfer language that describes what happens in the datapath when `IRQ==1` is:
 
@@ -146,93 +171,117 @@ If (IRQ==1 && PC31 == 0):
 
 ### [Asynchronous Interrupt Handler ](https://www.youtube.com/watch?v=4pizOgCT11k&t=1664s)
 
-The asynchronous interrupt handler is located at `XAddr`, which is usually pre-determined memory address. In $$\beta$$ CPU, `XAddr` is set at `0x8000 0008`. 
+The asynchronous interrupt handler is part of the Kernel's code which <span style="color:red; font-weight: bold;">ENTRY POINT</span> must be located at `XAddr`, which is usually pre-determined memory address. In $$\beta$$ CPU, `XAddr` is set at `0x8000 0008`. Since `XAddr` is just one word of instruction, it is typically a `BR` to another address in memory that contains the instruction for the rest of the handler. 
 
-The first few instructions of the interrupt handler saves current process states (`R0` to `R30` contents, PC state, stack, and others) in **process table**. 
+The first few instructions of the interrupt handler typically saves current process states (`R0` to `R30` contents, PC state, stack, and others) in **process table**. 
 
+{: .new-title}
+> Process Table
+> 
 > **Process table:** a Kernel data structure that stores all the states of running processes in the machine. It lives in the Kernel memory space. The kernel keeps track on which process is currently scheduled to run in the CPU. 
-<img src="https://dropbox.com/s/ypgac0w1uotc471/proctable.png?raw=1"   class="center_seventy" >
 
-Then, the handler will figure out which specific **service routine** needs to be called to *service* the interrupt, e.g: scheduler, or I/O routines. 
 
-Afterwards, the service routine returns back to this interrupt handler. The handler finally sets  `PC` $$\leftarrow$$ `Reg[XP]-4`. 
+<img src="https://dropbox.com/s/ypgac0w1uotc471/proctable.png?raw=1"   class="center_fifty" >
 
+Then, the handler will figure out which specific **service routine** needs to be called to service the interrupt, e.g: scheduler, or I/O routines. Afterwards, the service routine returns back to this interrupt handler. The handler finally sets  `PC` $$\leftarrow$$ `Reg[XP]-4`. 
+
+{: .new-title}
+> Think!
+> 
 > What is the value of `Reg[XP]-4`? 
 
-*It depends.* The **service routine** may or may not change the value of `Reg[XP]` before returning to the interrupt handler:
-* If the value of    `Reg[XP]` is unchanged, then the interrupted program resumes. 
-* Else, it means that the CPU executes *another* program.
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+It depends. The **service routine** may or may not change the value of `Reg[XP]` before returning to the interrupt handler.
 
-> In any case, `Reg[XP]-4`  contains the address of instruction that the CPU should execute when the interrupt handler returns. 
+If the value of `Reg[XP]` is unchanged, then the interrupted program resumes. Else, it means that the CPU executes another program.
+
+In any case, `Reg[XP]-4` **always** contains the address of instruction that the CPU should execute when the interrupt handler returns. 
+</p></div><br>
+
+
+
 
   
 ### [Dual Mode Hardware Support](https://www.youtube.com/watch?v=4pizOgCT11k&t=1971s)
 
-Since the OS Kernel is a program that manages the execution of all other processes in the system, it is **crucial** to *restrict* access to the Kernel for **safety reasons**.
+Since the OS Kernel is a program that manages the execution of all other processes in the system, it is **crucial** to restrict access to the Kernel for **safety reasons**. We need to prevent a normal program from jumping to the address in memory that contains Kernel code and "hack" the system.    
 
-> That is, to prevent a normal program from *jumping* to the address in memory that contains Kernel code and "*hack*" the system.    
+This **prevention** is done via **hardware**. 
 
-This **prevention** is done via hardware. 
-
+#### PC31: Kernel and User Mode
 Firstly, we need to establish some notion: 
-* We call the  MSB (most significant bit) of the PC register as the **Supervisor Bit**. 
+* We call the  **MSB** (most significant bit) of the PC register as the **Supervisor Bit**. 
 * Whenever the PC executes any code in an address where its MSB is `1`, it means that the CPU is running in the **Kernel Mode**. 
 * Otherwise, if the MSB of the content in PC Register MSB is 0, the CPU is said to be running in the **User Mode**.
 
+#### Kernel and User Space
 That means we can divide the physical memory address space into two sections: 
 * **User space**: Addresses which MSB is `0`: from `0x0000 0000` to `0x7FFF FFFF`
 * **Kernel space**: Addresses which MSB is `1`: from `0x8000 0000` to `0xFFFF FFFF`.
 
-Kernel program and kernel data (privileged information, data structures, etc) are stored in the Kernel space. The rest of the program in the system live in the user space. 
+Kernel program and kernel data (privileged information, data structures, etc) are stored in the **kernel space**. The rest of the program in the system live in the **user space**. 
 
-With this notion, it is easy to enforce restricted access to the kernel space:
-* Programs running in user mode (`PC31 == 0`) can never *branch* or *jump* to instructions in the kernel space.
-	> Computations of next instruction address in`BEQ`, `BNE`, and `JMP` cannot change `PC31` value from `0` to `1`. 
-* Programs runing in user mode (`PC31 == 0`) can never *load*/*store* to data from/to the kernel space.
-	 > Computations of addresses in `LD`, `LDR` and `ST` ignores the MSB. 
-* Entry to the kernel mode can only be done via restricted entry points. In $$\beta$$, there are only three entry points:
-	* Interrupts (setting PC to `Xaddr: 0x8000 0008`), 
-	* Illegal operations (setting PC to `ILLOP: 0x8000 0004`), or
-	* Reset (setting PC to `RESET: 0x8000 0000`)
+#### User Mode Restrictions
+With this notion, it is easy to enforce restricted access to the kernel space.
+
+##### Restricted Branch
+Programs running in user mode (`PC31 == 0`) can **never** branch or jump to instructions in the kernel space. Computations of next instruction address in`BEQ`, `BNE`, and `JMP` cannot change `PC31` value from `0` to `1`. 
+
+##### Restricted Memory Access
+Programs runing in user mode (`PC31 == 0`) can never load/store to data from/to the kernel space. Computations of addresses in `LD`, `LDR` and `ST` **ignores** the MSB. 
+
+##### Restricted Kernel Mode Entry
+
+Entry to the kernel mode can only be done via restricted entry points. In $$\beta$$, there are only **three** entry points:
+1. Interrupts (setting PC to `Xaddr: 0x8000 0008`), 
+2. Illegal operations (setting PC to `ILLOP: 0x8000 0004`), or
+3. Reset (setting PC to `RESET: 0x8000 0000`)
 
 
 ### [Reentrancy](https://www.youtube.com/watch?v=4pizOgCT11k&t=2045s)
 
-When the CPU is in the kernel mode (`PC31 == 1`), i.e: handling an interrupt -- it is important to consider whether or not we should allow interrupts to occur. Handlers which are interruptible are called **re-entrant**.
+When the CPU is in the kernel mode (`PC31 == 1`), i.e: handling an interrupt, it is important to consider whether or not we should allow **more interrupts** to occur. 
 
-In $$\beta$$ CPU, handlers are **not re-entrant.** Interrupts are **disabled** when it is in kernel mode:
-* `IRQ` signal is ignored in the hardware when `PC31 == 1`
+{: .highlight}
+Handlers which are interruptible are said to be **re-entrant**.
 
-> This means that while user programs are interruptible, kernel programs are not. 
+$$\beta$$ CPU's handlers are set to be **non re-entrant**. Interrupts are **disabled** when it is in kernel mode and `IRQ` signal is <span style="color:red; font-weight: bold;">ignored</span> in the hardware when `PC31 == 1`.
 
-The reason behind disabling interrupt while being in the Kernel mode is to prevent the Kernel from corrupting itself. 
+This means that while user programs are interruptible, kernel programs are **not**. The reason behind disabling interrupt while being in the Kernel mode is to prevent the Kernel from **corrupting** itself. 
 
-> Consider the scenario where the interrupt handler is in the middle of saving program states. Allowing another interrupt to occur in the middle of a save might cause data corruption. 
+{: .new-title}
+> Why?
+> 
+> Consider the scenario where the interrupt handler is in the middle of saving program states. Allowing another interrupt to occur in the middle of a save might cause data **loss** (corruption). 
 
-The drawback to an uninterruptible kernel is that there's no way to get the system to work again if the kernel is buggy and runs into an infinite loop, except via hard reset. The kernel program has to be written very carefully so as not to contain such bugs. 
+The **drawback** to an uninterruptible kernel is that there's no way to get the system to work again if the kernel is buggy and runs into an infinite loop, except via hard reset. **The kernel program has to be written very carefully so as not to contain such bugs**. In practice, kernel bugs exists and we often know this as [*kernel panic* or the *blue screen of death*](https://en.wikipedia.org/wiki/Kernel_panic). 
 
 
-### Timer Example
-In this section, we illustrate an example of how a basic Kernel Scheduler works with the support of hardware. 
+### Implementation of Timer
 
-Consider a $$\beta$$ computer having a 16-bit counter (*hardware*) with frequency of 50 Hz that runs **asynchronously** with the CPU. This counter will be used as a timer for process scheduling. 
+{: .warning}
+This section is written for those who are curious about how exactly our Kernel scheduler works with the Hardware Timer and perform context switching. If you're not comfortable with hardware (basically our 1D project), you may skip this section. 
 
-Upon start-up, the Kernel can set the IRQ signal to point to the an arbitrary bit of the counter (assume that the pointer's output is passed through a rising-edge detector so IRQ is `1` for 1 CPU clock cycle during a rising edge only).
+To support timesharing, there has to be some sort of mechanism that will periodically interrupts the execution of an ongoing process so that another process can be swapped in. For instance, if we have a single core CPU and two running processes P1 and P2, we would like to run P1 for `n` clock cycles, and then *pausing it*. Afterwards, the Kernel scheduler will run P2 for another `n` clock cycles before pausing P2 as well and resume the execution of P1. This round robin scheduling will be repeated until one of the processes terminate. If `n` is small and the CPU clock frequency is large enough, there will be the illusion that P1 and P2 (to the eyes of the user) runs in the single core CPU **simultaneously**. 
 
-For example, if it points to the `4`$$^{th}$$ bit:
-* The value of the `4`$$^{th}$$ bit of the counter changes every $$0.02 \times 2^{3}$$ = 0.16 seconds because it takes 0.02 seconds for the counter to increase by 1. 
-* There's 0.32 seconds between rising edges. 
+{: .highlight}
+**Rapid context switching** between P1 and P2 gives the illusion of **parallel execution**. This phenomenon is called **concurrency**.
 
-This means that the `IRQ` value will be `1` **once** every 0.32 seconds. 
+In this section, we illustrate an example of how a basic Kernel Scheduler works with the support of the timer hardware. A timer is commonly implmented as an `M`-bit counter (a separate hardware unit) with frequency of `Y` Hz that runs **asynchronously** with the CPU. This counter will be used as a timer for process scheduling. For example, suppose we have a `16`-bit counter with frequency of `50`Hz. This timer is **connected** to the `IRQ` line of the CPU. 
+
+The Kernel typically can set the `IRQ` signal to point to the any arbitrary bit of the counter (but we need more hardware to "clean" this counter signal, read below). 
+
+{: .warning}
+There's one more detail: we can't let the `IRQ` signal to **always** point to the `n`th bit of the counter because it will cause `IRQ` to be `1` for **more than 1 CPU clock cycle**. Let's do an example: suppose we have a CPU running on 100Hz clock, and a timer with 50Hz clock (so the timer is asynchronous of the CPU), and we select the `IRQ` to always point to the **5th** bit of the timer. This 5th bit of the timer will alternate between `0` and `1` every 16 cycles (or 0.32s). This means that the IRQ signal will be `1` for the first time after 16 cycles of the timer clock (0.32s), and it will **remain** `1` for *another* 0.32s before turning `0`. We do <span style="color:red; font-weight: bold;">not</span> what IRQ signal for 0.32s, that's 32 cycles of the CPU clock! We only want it to be `1` just **ONCE**, exactly just for 1 cycle of the CPU clock. As a result, we need to pass the 5th bit of the timer into a rising **edge detector** driven with the CPU clock before connecting it to the `IRQ` line of the CPU. 
+
+With the rising edge detector, it means that the `IRQ` value will be `1` **once** every 0.64 seconds. 
 
 
 If at first the CPU is executing instructions of Program `P1`:
-
-1.  After 0.32 seconds, `IRQ` turns to `1`. This triggers an interrupt, and the control signals will cause the PC will execute the interrupt handler instruction at `XAddr` in the next cycle (and saving the *supposed* *next* instruction at `Reg[XP]`). 
-
+1.  After 0.64 seconds, `IRQ` turns to `1`. This triggers an interrupt, and the control signals will cause the PC will execute the interrupt handler instruction at `XAddr` in the next cycle (and saving the *supposed* *next* instruction at `Reg[XP]`). 
 2. The handler at `XAddr` must *save register states*, branch to the *scheduler*, and resume the program after the scheduler returns. Note that `Reg[XP]` may or may not be the same as when *before* `BR(scheduler_handler, LP)` is executed. 
    
-```cpp
+```nasm
 X_addr : ST(R0, save_location) || save register states at an allocated address
 ST(R1, save_location+4)
 ST(R2, save_location+8)
@@ -252,42 +301,48 @@ LD(save_location+30*4, R30)
 SUBC(XP, 4, XP) || Reduce XP by 4 to re-execute the instruction that was interrupted by the timer
 JMP(XP)  || Resume execution
 ```
-> Although not written,  `save_location` is a label, representing an address to store P1's states. 
 
- Observation:  in this simple example, the handler is written such that it *always branches to the scheduler*. In practice, there are many kinds of hardware interrupts (not just from a timer) that needs to be handled differently depending on its *type*. We will have a hands-on experience about this in Lab 8, and also in the next term. 
+Although not written,  `save_location` is a label, representing an address to store P1's states. 
+
+{: .highlight-title}
+> Observation
+> 
+> In this simple example, the handler is written such that it *always branches to the scheduler*. In practice, there are many kinds of hardware interrupts (not just from a timer) that needs to be handled differently depending on its *type*. We will have a hands-on experience about this in Lab 8, and also in the next term. 
   
 
 
 
-## [Trap](https://www.youtube.com/watch?v=4pizOgCT11k&t=2120s)
+## [Synchronous Interrupt: Trap and Exception](https://www.youtube.com/watch?v=4pizOgCT11k&t=2120s)
+Both Trap and Exception falls under **synchronous interrupt** category. This is a situation when the CPU executes a **faulty** instruction. This include illegal operations (instructions with `OPCODE` that doesn't correspond to the ISA), and **exceptions**: division by zero, invalid memory access, invalid transfer of control (`BR/JMP`).  
 
-A trap, is type of **synchronous interrupt** caused by an *exceptional* condition when the CPU executes an instruction, such as illegal operations, division by zero, invalid memory access, system calls etc. 
+Executing any of these faulty instructions caused any process running in user mode to **trap** itself into the kernel mode because the `PC` will be directed to execute the trap handler (e.g: `PC` $$\leftarrow$$ `ILLOP`). This handler is part of the Kernel code, and it will examine the cause of the trap. It will also perform the appropriate action that will "handle" this faulty event: e.g: crash (terminate) the calling process or other services. 
 
-This results in a switch to kernel mode via trap handler (e.g: `PC` $$\leftarrow$$ `ILLOP`). The handler will examine the cause of the trap, and perform the appropriate action before (*if possible*) returning control to the originating process. 
+### Trap
 
-> If it is not possible to return control to the originating processes, then the Kernel may choose to terminate it. 
+{: .new-title}
+> Definition
+> 
+> A user process may intentionally execute an **illegal instruction** to **trap** itself to the kernel mode and gain access to its **services**. This is also known as making a **Supervisor Call** or a **System Call**. Control to the trap-calling process will be return after the requested service is completed. We will learn more about this next term. 
 
-User processes do not have *privileged* access, meaning that they *do not directly control the use of* any hardware (I/O) devices, such as getting keyboard input, mouse click, perform disk saves, etc, *without the help of the OS Kernel program*. 
+I/O devices **are actually shared** among all processes in the system, but  their programs are written with complete disregard for other processes in the memory. Therefore, user processes may utilise **traps** to synchronously interrupt themselves, and *legally* switch to the Kernel mode whenever they need access to the I/O devices (or other kernel services).  
 
-> This is because hardware devices **are actually shared** among all processes in the system, but  their programs are written with complete disregard for other processes in the memory. 
-
-Therefore, user processes may utilise **traps** to synchronously interrupt themselves, and *legally* switch to the Kernel mode whenever they need access to the I/O devices (or other kernel services).  
+User processes do not have *privileged* access, meaning that they do not directly control the use of* any hardware (I/O) devices, such as getting keyboard input, mouse click, perform disk saves, etc. It needs to **trap** itself to the Kernel program and execute **specific** parts of the Kernel code to obtain access to these I/O devices. 
 
 
- The event of transferring control of the CPU to OS Kernel synchronously / voluntarily when a process needs Kernel's services is known as the **system call** (a.k.a: **SVC**, or **supervisor call**). This can be done by leaving the index of the requested service at `Reg[R0]` and executing a specific *illegal operation*.  
+As said above, the event of transferring control of the CPU to OS Kernel synchronously / voluntarily when a process needs Kernel's services is known as the **system call** (a.k.a: **SVC**, or **supervisor call**). This can be done by leaving the index of the requested service at `Reg[R0]` and executing a specific illegal operation (an instruction with `OPCODE` not corresponding to any other instruction in the ISA). In `bsim`, this `OPCODE` is chosen to be `1`. 
 
-> There are many types of Kernel services, one of them includes read/write access from/to the I/O devices. They are typically *indexed*, and the process needs to leave the index of the needed system call in `Reg[R0]` before trapping itself to the Kernel Program. We will learn about Kernel services next term. 
+There are many types of Kernel services, one of them includes read/write access from/to the I/O devices. They are typically indexed, and the process needs to leave the index of the needed system call in `Reg[R0]` before trapping itself to the Kernel Program. 
 
 The datapath in the event of *illegal operation* is:
 
-<img src="/50002/assets/contentimage/beta/illop.png"  class="center_full"/>
+<img src="/50002/assets/contentimage/beta/illop.png"  class="center_seventy"/>
 
 During this event, 
 * Control unit sets `PCSEL = 011`, and saves `PC+4` into `Reg[XP]`
-* The PC will execute the instruction at location `ILLOP` in the *next cycle* where the illegal operation handler resides.   
-* The *illop* handler will  look at `Reg[R0]` and invoke the right *service routine* to provide the requested service. 
+* The PC will execute the instruction at location `ILLOP` in the next cycle where the illegal operation handler resides.   
+* The illop handler will  look at `Reg[R0]` and invoke the right service routine to provide the requested service. 
 	* Upon returning, the service routine will put its return the result in `Reg[R0]`. 
-* The *illop* handler resumes the execution of the originating process:
+* The illop handler resumes the execution of the originating process:
 	* `Reg[XP] = Reg[XP] -4`
 	* `JMP[XP]`
 
@@ -298,12 +353,15 @@ One common scenario where a process running in user mode needs the Kernel servic
 ```cpp
 int c;
 c = getchar();
+printf("%s", c);
 ```
 
-The function  `getchar` contains several instructions that perform a **supervisor call** in order to fetch any character input from the keyboard. When translated into assembly, the supervisor call is made by *trapping* the process into the *illop* handler, thus **transferring** CPU control to the Kernel so that it can fetch any character input from the keyboard, and **resuming** the process execution after the task is done. 
-> The process stores the character input left at `Reg[R0]` by the Kernel into memory location `c`. 
+The function  `getchar` contains several instructions that perform a **supervisor call** in order to fetch any character input from the keyboard. When translated into **assembly**, the supervisor call is made by trapping the process into the illop handler, thus **transferring** CPU control to the Kernel so that it can fetch any character input from the keyboard. The process execution can be **resumed** only after the  `getchar` task is done. That is why we notice that our process "hangs" (didn't execute the next `print` line until a user entered an input with a return carriage). 
 
-  
+Finally, this C process stores the character input left at `Reg[R0]` by the Kernel into memory location `c`. 
+
+### Exceptions
+The details about exceptions are out of this syllabus, and you will learn more about this next term. The major difference between Exceptions and Trap is that Exceptions are caused by **truly** faulty instructions and the program causing these exceptions are typically <span style="color:red; font-weight: bold;">terminated</span> by the Kernel. We commonly understand this phenomenon as "crashing" programs.
 
   
 
@@ -314,9 +372,9 @@ In summary, we have learned how the presence of OS Kernel and hardware support p
 
 The Kernel **manages**  the execution of all processes, as well as all I/O devices, and provides **services** to all these processes. There are two ways to transfer CPU control between user programs to kernel programs:
 * Firstly, is through **asynchronous interrupt**: `IRQ` is set to `1` 
-* Secondly, is through **s	ynchronous interrupt**: when the process generates an **exception** hence **trapping** itself to the handler and enters Kernel mode. 
+* Secondly, is through **synchronous interrupt**: when the process generates an **exception** hence **trapping** itself to the handler and enters Kernel mode. 
 
 During either case of interrupt, `PC+4` is stored at `Reg[XP]` so that the system knows how to resume the process later on. 
 
-In $$\beta$$ ISA, the Kernel is **non-preemptive** (the CPU cannot be interrupted while in Kernel Mode). It is designed as such to prevent security breach, data loss if it traps into itself while still being in the Kernel Mode, etc. However, careful writing and construction of the Kernel program is required. 
+The $$\beta$$ Kernel that you will encounter in the [supplementary lab](http://127.0.0.1:4000/50002/lab/lab6) is **non-reentrant** (the CPU cannot be interrupted while in Kernel Mode). It is a simple Kernel. In practice, most modern [UNIX Kernels are reentrant](https://www.oreilly.com/library/view/understanding-the-linux/0596002130/ch01s06.html). Careful writing and construction of the Kernel program is required. 
 
