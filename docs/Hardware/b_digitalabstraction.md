@@ -93,10 +93,10 @@ Therefore, one can say that **a combinational logic device always obeys the stat
 
 Consider two digital devices connected in series as shown in the figure below. These devices are called a **buffer**, meaning that they pass the same bit over (if it receives a low voltage, it will produce a low voltage and vice versa). If we were to *naively decide* that any voltage below $$V_{low}$$=`0.5V` as digital bit `0`, and any voltage above $$V_{high}$$=`2.5V` as digital bit `1`, then our device **may violate the static discipline.** 
 
->*Why is this so?*
+**Why?**
 
 
-<img src="https://dropbox.com/s/9lejkhiqx50ga8y/p4.png?raw=1"  class="center_seventy" >
+<img src="https://dropbox.com/s/9lejkhiqx50ga8y/p4.png?raw=1"  class="center_fourty" >
 
 This explanation can be made clear with the following example. Suppose we supply 0.5V and Device 1 is able to produce also 0.5V, which means digital bit . 
 * However, the problem is that a *wire*, that connects two or more combinational devices together is susceptible to **noise**. 
