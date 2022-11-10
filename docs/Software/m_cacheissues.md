@@ -295,7 +295,7 @@ This policy might require slightly complex hardware to implement as opposed to t
 
 It is not trivial to do this because now we require an **additional** hardware unit that is **asynchronous** to the CPU clock. It does not depend on the CPU to run and we therefore we need to consider some kind of fail-safe feature to synchronise between the CPU and this pipeline system when needed.  
 
-{: .important
+{: .important}
 There is no best write policy. Think about the pros and cons of each policy, and think about specific cases where one policy is superior than the other. 
 
 ## [The Helper Bits](https://www.youtube.com/watch?v=2OARjqLK4io&t=2439s)
