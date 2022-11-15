@@ -29,7 +29,7 @@ Each topic's questions are grouped into **three** categories: basic, intermediat
 
 The behavior of a 1-input 1-output device is measured by hooking a voltage source to its input and measuring the voltage at the output for several different input voltages, resulting in the following VTC plot,
 
-<img src="https://dropbox.com/s/t6na36ox8r8osef/Q1.png?raw=1"   class="center_seventy"     >
+<img src="https://dropbox.com/s/t6na36ox8r8osef/Q1.png?raw=1"   class="center_fifty"     >
 
 We're interested in whether this device can serve as a legal combinational device that obeys the **static discipline**. For this device, obeying the static discipline means that,
 
@@ -58,12 +58,12 @@ When answering the questions below, assume that all voltages are constrained to 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 <ol type="1">
 <li> No. From the plot, it can be seen that **Vout** can never reach below 0.5V. If **Vol** is chosen to be 0V, then the device doesn't satisfy the static discipline anymore.
-</li><br>
-<li> 0.5V. That is the lowest amount of **Vout** that the device can produce.</li><br>
-<li> We can choose $$V_{OL} = 0.5V$$ from the graph, since the device is capable of producing such low voltage. With NM of 0.5V, that means that: $$V_{IL} = V_{OL} + 0.5V = 1V$$
-From the graph, we can also choose $$V_{OH} = 4V$$ 
-as the part with the highest gain in the middle of the graph can most probably be the forbidden zone. Therefore, $$V_{IH} = V_{OH} - 0.5V= 3.5V$$</li><br>
-<li>This device is an inverter, since a high input produces a low output and vice versa.</li></ol></p></div><br>
+</li>
+<li> 0.5V. That is the lowest amount of **Vout** that the device can produce.</li>
+<li> We can choose: $$V_{OL} = 0.5V$$ from the graph, since the device is capable of producing such low voltage. With NM of 0.5V, that means that: $$V_{IL} = V_{OL} + 0.5V = 1V$$
+From the graph, we can also choose: $$V_{OH} = 4V$$ 
+as the part with the highest gain in the middle of the graph can most probably be the forbidden zone. Therefore, $$V_{IH} = V_{OH} - 0.5V= 3.5V$$</li>
+<li>This device is an **inverter**, since a **high** input produces a **low** output and vice versa.</li></ol></p></div><br>
 
   
   
@@ -75,7 +75,7 @@ as the part with the highest gain in the middle of the graph can most probably b
 
 **(a).** The following graph plots the VTC for a device with one input and one output. **Can this device be used** as a combinational device in logic family with 0.75 noise margins?
 
-<img src="https://dropbox.com/s/q363sc7ov84ww45/Q2.png?raw=1"    class="center_seventy"    >
+<img src="https://dropbox.com/s/q363sc7ov84ww45/Q2.png?raw=1"    class="center_fifty"    >
 
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
@@ -86,16 +86,16 @@ No. This device gain is not more than 1, hence it cannot be used as a combinatio
 
 *Hint: you may want to start by choosing NM to be 0.5V for ease of computation.*
 
-<img src="https://dropbox.com/s/j8e2aii7x6cjtv2/Q3.png?raw=1"     class="center_seventy"   >
+<img src="https://dropbox.com/s/j8e2aii7x6cjtv2/Q3.png?raw=1"     class="center_fifty"   >
 
 
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 (B) and (C) cannot be used as inverter (combinational device) as its gain is less than 1. 
 <br><br>
-For (A), choose NM = 0.5V, then $$V_{OL} = 1V, V_{IL} = 1.5V, V_{IH} = 5V, V_{OH} = 5.5V$$
+For (A), choose NM = 0.5V, then: $$V_{OL} = 1V, V_{IL} = 1.5V, V_{IH} = 5V, V_{OH} = 5.5V$$
 <br><br>
-For (D), choose NM = 0.5V, then $$V_{OL} = 0.5V, V_{IL} = 1V, V_{IH} = 5, V_{OH}= 5.5V$$
+For (D), choose NM = 0.5V, then: $$V_{OL} = 0.5V, V_{IL} = 1V, V_{IH} = 5, V_{OH}= 5.5V$$
 </p></div><br>
 
 ## Static Discipline (Basic)
@@ -106,7 +106,7 @@ For (D), choose NM = 0.5V, then $$V_{OL} = 0.5V, V_{IL} = 1V, V_{IH} = 5, V_{OH}
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 We have a valid <strong>low</strong> output, but that doesnt mean that we have a valid <strong>low</strong> input. However we know for sure that input cannot be higher than **Vih** because static discipline requires the output to be higher than **Voh** if this is the case for a buffer. 
 <br><br>
-Hence, the only thing we can infer is that$$V_{IN} < V_{IH}$$ (means input voltage is either a valid low or an invalid value).
+Hence, the only thing we can infer is that:$$V_{IN} < V_{IH}$$ This means input voltage can **either** be a valid low *or* an invalid value.
 </p></div><br>
 
 **(b).** Now consider an inverter. Suppose we set its input to some voltage $$V_{IN}$$, wait for the device to reach a steady state, then measure the voltage on its output Vout, and find $$V_{OUT} > V_{OH}$$. **What can we deduce about the value of $$V_{IN}$$?**
@@ -116,7 +116,7 @@ Hence, the only thing we can infer is that$$V_{IN} < V_{IH}$$ (means input volta
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 We have a valid <strong>high</strong> output, but that doesnt mean that we have a valid <strong>low</strong> input. <strong>Static discipline</strong> states that <i>given a valid input, the device is always able to give a valid output,</i> but it does not mean that the reverse is true, i.e: invalid input does <strong>NOT</strong> have to give out invalid output.
 <br><br>
-However we do know for sure that the <i>input cannot be higher than</i> **Vih** because static discipline requires the output to be lower than **Vol** if this is the case for an inverter. Hence, the only thing we can infer is that $$V_{IN} < V_{IH}$$ (means input voltage is either a valid low or an invalid value).
+However we do know for sure that the <i>input cannot be higher than</i> **Vih** because static discipline requires the output to be lower than **Vol** if this is the case for an inverter. Hence, the only thing we can infer is that: $$V_{IN} < V_{IH}$$ This means input voltage can **either** be a valid low *or* an invalid value.
 </p></div><br>
 
  
@@ -125,7 +125,7 @@ However we do know for sure that the <i>input cannot be higher than</i> **Vih** 
 
 Take a look at the figure below.
  
-<img src="https://dropbox.com/s/kuplff553g8jdff/vtc.png?raw=1"      class="center_seventy"  >
+<img src="https://dropbox.com/s/kuplff553g8jdff/vtc.png?raw=1"      class="center_fifty"  >
 
 Which of the following specification(s) **does not obey** the static discipline? Select all that apply.
 
