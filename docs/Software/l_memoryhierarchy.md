@@ -76,7 +76,7 @@ $$\begin{matrix}
 
 An SRAM cell can be made up of **6-transistors** as shown in the figure below. It is also commonly called as the **6T-SRAM** cell
 
-<img src="https://dropbox.com/s/u1acx3abx3102pn/read_sram.png?raw=1"   class="center_fifty"   >
+<img src="https://dropbox.com/s/u1acx3abx3102pn/read_sram.png?raw=1"   class="center_fourty"   >
 
 Each cell stores **one** bit. The *loop* formed by two inverters can ***store*** a single bit for **as long as they are powered**. SRAM is a **volatile** memory device since it can only retain information when powered.
 
@@ -102,14 +102,14 @@ To write to an SRAM cell, we do:
 
 In this example, the value of the cell is written to be `0`. 
 
-<img src="https://dropbox.com/s/kf6fk970dffm00z/write_sram.png?raw=1"  class="center_fifty"   >
+<img src="https://dropbox.com/s/kf6fk970dffm00z/write_sram.png?raw=1"  class="center_fourty"   >
 
 
 ### [Dynamic Random-Access Memory (DRAM)](https://www.youtube.com/watch?v=m5_u3sQ9bXo&t=844s)
 
  A single DRAM cell is capable of storing 1-bit of data by using just *single NFET* and a *single capacitor* **when powered**. It is also commonly called as **1T-DRAM** cell. DRAM is also a volatile memory device. 
  
-<img src="https://dropbox.com/s/4wovmxsgb7896vd/dram.png?raw=1"   class="center_fifty"   >
+<img src="https://dropbox.com/s/4wovmxsgb7896vd/dram.png?raw=1"   class="center_fourty"   >
 
 #### To Read
 To read from a DRAM cell, we do:
@@ -134,7 +134,7 @@ These refresh cycles cause DRAM to be ***significantly slower*** than SRAM, alth
 ### Application
 In practice, our computers' physical memory (RAM) uses DRAM technology. We typically use 8 GB, 16 GB, and 32 GB in consumer grade PCs at the time this document is written (year 2023). Our CPU **cache** uses SRAM technology. We usually see the following specs when we shop for a CPU. The column "cache" refers to CPU cache which is commonly built using SRAMs. 
 
-<img src="{{ site.baseurl }}/assets/images/l_memoryhierarchy/2022-11-07-09-47-10.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}/assets/images/l_memoryhierarchy/2022-11-07-09-47-10.png"  class="center_fourty"/>
 
 
 
@@ -199,7 +199,7 @@ To **decode** an address, we can split the address into higher `N` address bits 
 
 <img src="https://dropbox.com/s/kc5atqtnyuo5dg7/decoding.png?raw=1"  class="center_seventy"   >
 
-We often read hundreds of bits in parallel as there may be more than 1 CPU core in the system that can request a multitude of memory access operations simultaneously. For example, one *row* might contains hundreds of bit lines, and the lower `M` address bits will select which of group of 32 bits (or 64 bits, depending on the ISA) we want to read. 
+We often read **hundreds** of bits in parallel as there may be more than 1 CPU core in the system that can request a multitude of memory access operations simultaneously. For example, one *row* might contains hundreds of bit lines, and the lower `M` address bits will select which of group of 32 bits (or 64 bits, depending on the ISA) we want to read. 
 
 
 ## [The Memory Hierarchy Idea](https://www.youtube.com/watch?v=m5_u3sQ9bXo&t=1391s)
@@ -298,7 +298,7 @@ The FA cache has the following generic structure:
 * `DATA` contains all bits of `Mem[A]`.
 	> It will be 32 bits of data and 32 bits of address for $$\beta$$ CPU. 
 
-Note the presence of a device called the **tri-state buffer:**
+Note the presence of a device called the [**tri-state buffer**](https://www.youtube.com/watch?v=fRq6WACpsVo):
 
 <img src="https://dropbox.com/s/hu22kodm6etknl5/tsbuffer.png?raw=1"  class="center_twenty"    >
 
