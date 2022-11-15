@@ -51,7 +51,7 @@ Initially, there are 101 choices. The information that Bob gave Alice narrows do
 Initially, there are `101x101` choices. Pressing two letter keys consecutively (might be repeated) narrows down the choices onto `26x26`. 
 <br>
 Hence the information given is: <br>
-$$\log_2(101\times101) - \log_2(26\times26) = 3.916$$.
+$$\log_2(101\times101) - \log_2(26\times26) = 3.916$$
 </p></div><br>
 
 
@@ -74,7 +74,7 @@ Now someone in your class won "the first to join ISTD" prize. Answer the followi
   
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-If we are given the student ID, we effectively know who the winner is. We instantly narrow down our pool of winner candidates from 100 students into just 1 student, hence the bits of information given is: $$\log_2(100)$$.
+If we are given the student ID, we effectively know who the winner is. We instantly narrow down our pool of winner candidates from 100 students into just 1 student, hence the bits of information given is: $$\log_2(100)$$
 </p></div><br>
 
 **(b.)** If you are told the student ID of the last 33 students who joined ISTD, how much **information** did you receive in bits?
@@ -94,7 +94,7 @@ Similarly, there are 51 males in ISTD. Hence, we are given the following bits of
 **(d.)** If you are told that the student who won the "first to join ISTD prize" is above 19 years old instead, how much **information** did you receive in bits?
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-Our candidates are narrowed down into: $$31 + 19 = 50$$ students instead since there are 50 students who are above 19 years old. The amount of information given is $$\log_2(100) - \log_2(50)$$ bits.
+Our candidates are narrowed down into: $$31 + 19 = 50$$ students instead since there are 50 students who are above 19 years old. The amount of information given in bits is: $$\log_2(100) - \log_2(50)$$
 </p></div><br>
 
 **(e.)** If you are told that the student who won the "first to join ISTD prize" hated a final exam and is below 19 years old, how much **information** did you receive in bits?
@@ -102,7 +102,7 @@ Our candidates are narrowed down into: $$31 + 19 = 50$$ students instead since t
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 There are 51-31 = 20 male students that are below 19 years old. There are also 30 female students that are below 19 years old. Since there are only 4 people who like exam, and 2 of them are above 19 years old, there's only 2 students who are below 19 years old and like exam as well. 
 <br><br>
-Hence our candidates are further narrowed into 48 students after knowing that the person does not like exam. This gives us $$\log_2(100 ) - \log_2(48)$$ bits of information.
+Hence our candidates are further narrowed into 48 students after knowing that the person does not like exam. This gives us the following bits of information: $$\log_2(100 ) - \log_2(48)$$
 </p></div><br>
 
 
@@ -112,7 +112,7 @@ Hence our candidates are further narrowed into 48 students after knowing that th
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 Originally, we have 8 options: M=8. The option is narrowed down into 3, hence N = 3. In total, we have:
-$$\begin{aligned} I = \log_2 \left(\frac{1}{N/M}\right) = \log_2 \left(\frac{1}{3/8}\right) \text{ bits of information}.
+$$\begin{aligned} I = \log_2 \left(\frac{1}{N/M}\right) = \log_2 \left(\frac{1}{3/8}\right) \text{ bits}
 \end{aligned}$$
 </p></div><br>
   
@@ -120,7 +120,7 @@ $$\begin{aligned} I = \log_2 \left(\frac{1}{N/M}\right) = \log_2 \left(\frac{1}{
 **(b.)** You're given a standard deck of 52 playing cards that you start to turn face up, card by card. So far as you know, they're in completely random order. How many **new bits of information** do you get when the **first** card is flipped over? The **fifth** card? The **last** card? Note that the goal is to know what card(s) has/have been flipped. 
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-The first card has: $$\log_2 52$$ bits of information. The fifth card has: $$\log_2 48$$ bits of information. The last card has 0 bits of information.
+The first card has the following bits of information: $$\log_2 52$$ The fifth card has the following bits of information: $$\log_2 48$$The last card has 0 bits of information.
 </p></div><br>
   
 
@@ -136,7 +136,7 @@ The first card has: $$\log_2 52$$ bits of information. The fifth card has: $$\lo
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 Originally, we have 8 unknown bits, that is: $$N=2^8$$ choices. We can obtain X by flipping any one bit in Y. Since there are 8 bits, there are 8 possibilities for X by flipping each bit in Y. Therefore after given Y, we are down to: $$M=8$$ choices, each having 1 bit that's different for X. We can say that we have been given:
-$$\begin{aligned} I = \log_2 \left(\frac{1}{M/N}\right) = \log_2 \left(\frac{1}{8/2^8}\right) = 5 \text{ bits of information}. \end{aligned}$$
+$$\begin{aligned} I &= \log_2 \left(\frac{1}{M/N}\right) \\ &= \log_2 \left(\frac{1}{8/2^8}\right) \\&= 5 \text{ bits}\end{aligned}$$
 </p></div><br>
 
   
@@ -145,7 +145,7 @@ $$\begin{aligned} I = \log_2 \left(\frac{1}{M/N}\right) = \log_2 \left(\frac{1}{
 
   
 
-After spending the afternoon in the dentist's chair, Ben has invented a new language called DDS made up entirely of vowels (the only sounds he could make with someone's hand in his mouth). The DDS alphabet consists of the five letters: A, E, I, U, O, which occur with the following probabilities,
+After spending the afternoon in the dentist's chair, Ben has invented a new language called `DDS` made up entirely of vowels (the only sounds he could make with someone's hand in his mouth). The `DDS` alphabet consists of the five letters: A, E, I, U, O, which occur with the following probabilities,
 
 |Letter|Probability|
 |--|--|
@@ -158,7 +158,7 @@ After spending the afternoon in the dentist's chair, Ben has invented a new lang
 If you're told that the first letter of the message is "A", **give an expression for the number of bits of information you have received.**
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-Recall that the information received is inversely proportional to the probability of that choice occurring, and to quantify the information in terms of bits, we take $$\log_2\left(\frac{1}{\text{probability of that choice occurring}}\right)$$
+Recall that the information received is inversely proportional to the probability of that choice occurring, and to quantify the information in terms of bits, we take: $$\log_2\left(\frac{1}{\text{probability of that choice occurring}}\right)$$
 Hence the expression is:
 $$I = \log_2 \frac{1}{p(A)}$$
 </p></div><br> 
@@ -198,9 +198,9 @@ There are **2^(32)** different values.
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 <ol type="1">
-<li><code>0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</code></li>
-<li><code>0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</code></li>
-<li><code>1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</code></li>
+<li><code>0000 0000 0000 0000 0000 0000 0000 0000</code></li>
+<li><code>0111 1111 1111 1111 1111 1111 1111 1111</code></li>
+<li><code>1000 0000 0000 0000 0000 0000 0000 0000</code></li>
 </ol></p></div><br>
 
 **(c.)** What are the **decimal values** for the most positive and the most negative number that can be represented by this signed 32-bit machine?
@@ -219,7 +219,7 @@ The most positive value in decimal: 2147483647. The most negative value in decim
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 <ol type="1">
 <li><code>0x 0000 0025</code></li>
-<li> We begin by converting 32768 (positive) number to Hex: <code>0x 0000 8000</code>. Then we take the 1's complement of this value. <br>Note: transform the hex to binary first and flip the bits, then transform back to hex: <code>0x FFFF 7FFF</code>, and finally +1 : <code>0x FFFF 8000</code>.</li>
+<li> We begin by converting 32768 (positive) number to Hex: <code>0x 0000 8000</code>. Then we take the 1's complement of this value. <br>Note: transform the hex to binary first and flip the bits, then transform back to hex: <code>0x FFFF 7FFF</code>, and finally add it by 1: <code>0x FFFF 8000</code>.</li>
 <li> <code>0x DEAD BEEF</code></li></ol></p></div><br>
 
 
@@ -235,7 +235,7 @@ The most positive value in decimal: 2147483647. The most negative value in decim
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 <ol type="1">
 <li> <code>001101 + 001010 = 010111</code></li>
-<li> 18 is <code>010010</code>. -18 is <code>101110</code>. Hence, <code>001111 + 101110 = 111101</code>.</li>
+<li> 18 is <code>010010</code>.<br>-18 is <code>101110</code>.<br>Hence, <code>001111 + 101110 = 111101</code>.</li>
 <li><code>011011 + 111010 = 010101</code></li></ol></p></div><br>
 
 
@@ -251,7 +251,7 @@ A group of five friends are playing a game that requires them to generate random
   
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-The maximum number you can get from summing 10 dice throws is 60, and the minimum is 10. Therefore you have 51 possible combinations, which require: $$\log_2(51)$$ bits to represent. Rounding up, this results in <strong>6 bits</strong>.
+The maximum number you can get from summing 10 dice throws is 60, and the minimum is 10. Therefore you have 51 possible combinations, which require: $$\log_2(51) \text{ bits}$$Rounding up, this results in <strong>6 bits</strong>.
 </p></div><br>
 
   
@@ -260,7 +260,7 @@ The maximum number you can get from summing 10 dice throws is 60, and the minimu
 
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-Each dice throw can result in any number between 1 to 6, which requires: $$\log_2(6)$$ bits to encode. Three dice throws give you: $$3 * \log_2(6) = 7.755$$ bits.
+Each dice throw can result in any number between 1 to 6, which requires: $$\log_2(6)$$ bits to encode. Three dice throws give you: $$3 * \log_2(6) = 7.755 \text{ bits}$$
 </p></div><br>
 
   
@@ -269,9 +269,7 @@ Each dice throw can result in any number between 1 to 6, which requires: $$\log_
 
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-With the same idea as the previous part, the last dice throws solve the mystery on whether we will get number 1, 2, 3, 4, 5, or 6. Hence we are given: $$\log_2(6)=2.585$$ bits from the last throw.
-<br><br>
-<i>Note that this is significantly different from the bits of information that has been given to us so far. The nine dice throws have given us: $$9*\log_2(6)$$ bits of information. The last nice throws give us another: $$\log_2(6)$$ bits of information. Please pay close attention to the wording of the question.</i>
+With the same idea as the previous part, the last dice throws solve the mystery on whether we will get number 1, 2, 3, 4, 5, or 6. Hence we are given: $$\log_2(6)=2.585 \text{ bits}$$ from the last throw. Note that this is significantly different from the bits of information that has been given to us so far. The nine dice throws have given us: $$9*\log_2(6) \text{ bits}$$The last nice throws give us another: $$\log_2(6) \text{ bits}$$Please pay close attention to the wording of the question.
 </p></div><br>
 
 
@@ -346,11 +344,11 @@ Let:
 $$\begin{aligned} (-A) &= -A - 1 + 1\\ &= (-1 - A) + 1 \end{aligned}$$
 In this case, ZZZ is: $$(-1-A)$$ 
 
-Now, let's say we have 8 bit number. We can represent -1 using all 1's : <code>1111 1111</code>. Then, lets represent A arbitrarily as <code>a7 a6 a5 a4 a3 a2 a1 a0</code>, where $$a_i$$ can be 0 or 1. 
+Now, let's say we have 8 bit number. We can represent -1 using all 1's : <code>1111 1111</code>. Then, lets represent A arbitrarily as <code>a7 a6 a5 a4 a3 a2 a1 a0</code>, where `ai` can be 0 or 1. 
 <br><br>
-Subtracting -1 with A will flip the bits of A, such that if $$a_i = 0$$ then $$1 - a_i = 1$$ and if $$a_i = 1$$ then $$1- a_i = 0$$
+Subtracting -1 with A will flip the bits of A, such that if `ai == 0` then `(1 - ai) == 1` and if `ai == 1` then `(1-ai) == 0`.
 
-Hence, we can rewrite the above into,
+Hence, we can rewrite the above into:
 $$\begin{aligned}
 (-A) &= \text{bitwise NOT } A + 1
 \end{aligned}$$
