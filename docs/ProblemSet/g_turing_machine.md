@@ -26,7 +26,7 @@ Singapore University of Technology and Design
 Each topic's questions are grouped into **three** categories: basic, intermediate, and challenging. You are recommended to do all basic problem set before advancing further. 
 
 {: .note}
-The amount of practice problems in this set is smaller than usual because the topics learned this week is mainly to **set up** the knowledge required for the following week. Please head to the next problem set for more practice problem.* 
+The amount of practice problems in this set is smaller than usual because the topics learned this week is mainly to **set up** the knowledge required for the following week. Please head to the next problem set for more practice problem.
 
 ## Ben's Turing Machine (Basic)
 
@@ -51,15 +51,15 @@ Unfortunately, the Universal FSM will have some fixed number (N) of states built
 
 
 ## FSM in TM (Intermediate)
-We encode the state of a Turing machine into 2 bits, the value that is read (input) from and written (output) onto the infinite tape into 2 bits, and the output move on the tape (left or right) into 1 bit. How many different finite state machines are there to control such a Turing machine? 
+We encode the state of a Turing machine into `2` bits, the value that is read (input) from and written (output) onto the infinite tape into `2` bits, and the output move on the tape (left or right) into 1 bit. How many different finite state machines are there to control such a Turing machine? 
 
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 From the explanation above, we have:
 <ul>
-<li> **s = 2**</li>
-<li> **i = 2**</li>
-<li> **o = 3**</li>
+<li> `s = 2`</li>
+<li> `i = 2`</li>
+<li> `o = 3`</li>
 </ul>
 We can enumerate this many FSMs given s, o, and i bits: $$2^{(s+o)2^{s+i}}$$ 
 Hence the answer to this question is: $$2^{80}$$
@@ -70,18 +70,18 @@ Hence the answer to this question is: $$2^{80}$$
 
 ## Running a Turing Machine (Basic)
 
-You are given a Turing machine (TM) with three states `(S0, S1, S2)` and a `HALT` state and the following state transition diagram and state table. The TM operates by reading and then moving either left (“L”) or right (“R”) on an infinite tape. **Note that the question defined it as we move the machine here (move the arrow), and not move the tape.**
+You are given a Turing machine (TM) with three states `(S0, S1, S2)` and a `HALT` state and the following state transition diagram and state table. The TM operates by reading and then moving either left (`L`) or right (`R`) on an infinite tape. **Note that the question defined it as we move the machine here (move the arrow), and not move the tape.**
 
-The tape is used to encode a binary number with three symbols, “0”, “1” and “\_”, where “\_” is used to signal the **beginning** and **end** of the number. For instance, the binary number “1011” is represented on the tape as `_,1,0,1,1,_` (*most significant bit on the left*).
+The tape is used to encode a binary number with three symbols, `0`, `1` and `_`, where `_` is used to signal the **beginning** and **end** of the number. For instance, the binary number `1011` is represented on the tape as `_,1,0,1,1,_` (**most** significant bit on the **left**).
 
-<img src="https://dropbox.com/s/4s0rvpzhm6twih9/tmqns.png?raw=1" class="center_seventy" >
+<img src="https://dropbox.com/s/4s0rvpzhm6twih9/tmqns.png?raw=1" class="center_fifty" >
 
 
 If the tape is in the initial configuration `_,1,0,1,1,_`:
-* and the Turing machine starts in **state `S0`**, 
-* reading at the tape position of the `0`, 
+* The Turing machine starts in **state `S0`**, 
+* And it is currently reading (pointing  to) the tape containing the `0`, 
 
-...what is the state transition sequence that the machine is going to execute (including the start state S0) until it meets a `HALT`?
+What is the **state transition sequence** that the machine is going to execute (including the start state `S0`) until it meets a `HALT`?
 
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
@@ -100,13 +100,14 @@ The final tape configuration is: <code>_,1,1,0,0,_</code>  It is obvious that th
 
 ## Edge Detector Machine (Intermediate)
 
-The figure below shows a particular tape state *before* and *after* a Turing Machine that does *edge detection* is executed for 12 steps (12 clock cycles). 
+The figure below shows a particular tape state *before* and *after* a Turing Machine that does edge detection is executed for 12 steps (12 clock cycles). 
 
-Indicate **which of the following Turing Machine specification** [A], [B], [C], [D], [E] shown below is/are able to produce the "after" tape state *in exactly 12 cycles.
+Indicate which of the following Turing Machine specification: `[A]`, `[B]`, `[C]`, `[D]`, `[E]` shown below is/are able to produce the tape state **after** exactly **12** cycles.
 
-<img src="https://dropbox.com/s/isangqp3fexcao5/edgeDetectorTM.png?raw=1" class="center_seventy" >
+<img src="https://dropbox.com/s/isangqp3fexcao5/edgeDetectorTM.png?raw=1" class="center_fifty" >
 
-* **Specification 1**: 
+* Specification `[A]`: <br>
+
 	$$\begin{matrix}
 	S_i & \text{Input} & S_{i+1} & \text{Output} & \text{Move Tape}\\
 	\hline
@@ -119,7 +120,8 @@ Indicate **which of the following Turing Machine specification** [A], [B], [C], 
 	\hline
 	\end{matrix}$$<br><br>
 
-* **Specification 2**: 
+* Specification `[B]`: <br>
+
 	$$\begin{matrix}
 	S_i & \text{Input} & S_{i+1} & \text{Output} & \text{Move Tape}\\
 	\hline
@@ -130,7 +132,8 @@ Indicate **which of the following Turing Machine specification** [A], [B], [C], 
 	\hline
 	\end{matrix}$$<br><br>
 
-* **Specification 3**: 
+* Specification `[C]`: <br>
+
 	$$\begin{matrix}
 	S_i & \text{Input} & S_{i+1} & \text{Output} & \text{Move Tape}\\
 	\hline
@@ -141,7 +144,8 @@ Indicate **which of the following Turing Machine specification** [A], [B], [C], 
 	\hline
 	\end{matrix}$$<br><br>
 
-* **Specification 4**: 
+* Specification `[D]`: <br>
+
 	$$\begin{matrix}
 	S_i & \text{Input} & S_{i+1} & \text{Output} & \text{Move Tape}\\
 	\hline
@@ -154,7 +158,8 @@ Indicate **which of the following Turing Machine specification** [A], [B], [C], 
 	\hline
 	\end{matrix}$$<br><br>
 
-* **Specification 5**: 
+* Specification `[E]`: <br> 
+
 	$$\begin{matrix}
 	S_i & \text{Input} & S_{i+1} & \text{Output} & \text{Move Tape}\\
 	\hline
@@ -169,9 +174,9 @@ Indicate **which of the following Turing Machine specification** [A], [B], [C], 
 
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-<strong>Specification 1</strong> and <strong>Specification 3</strong> produces the same output tape as shown above, given the initial tape content and the Turing Machine's start state (and location). We can run the machine five times with each specifications to obtain the answer, but the faster way is to observe them based on the functionality:
+<strong>Specification `[A]`</strong> and <strong>Specification `[C]`</strong> produces the **same** output tape as shown above, given the initial tape content and the Turing Machine's start state (and location). We can run the machine five times with each specifications to obtain the answer, but the faster way is to observe them based on the functionality:
 <ul>
-<li> To detect an edge, there's no need to "re-read" previous input. Therefore <strong>Specification 5</strong> is definitely wrong (we only need to move the tape in one direction). </li>
-<li> We only output <code>1</code> once on the occurence of an edge, so the specification shall not output too many <code>1</code>s. You can then start to suspect whether <strong>Specification 2</strong> and <strong>4</strong> are true, and quickly eliminate them from the pool of possible answers.  </li>
+<li> To detect an edge, there's no need to "re-read" previous input. Therefore <strong>Specification `[E]`</strong> is definitely wrong (we only need to move the tape in one direction). </li>
+<li> We only output <code>1</code> once on the occurence of an edge, so the specification shall not output too many <code>1</code>s. You can then start to suspect whether <strong>Specification `[B]`</strong> and <strong>`[D]`</strong> are true, and quickly eliminate them from the pool of possible answers.</li>
 </ul>
 </p></div><br>
