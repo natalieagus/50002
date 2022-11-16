@@ -33,10 +33,10 @@ Each topic's questions are grouped into **three** categories: basic, intermediat
 2. In an unpipelined Beta implementation, when executing a `BR(foo,LP)` instruction to call procedure `foo`, what should `WDSEL` should be set to?
 
 	<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-	<code>BR(foo,LP)</code> is a <i>macro</i> for <code>BEQ(R31,foo,LP)</code>. All <code>BNE/BEQ</code> instructions save the address of the following instruction in the specified destination register (<code>LP</code> in the example instruction). So <code>WDSEL</code> should be set <code>0</code>, selecting the output of the <code>PC+4</code> logic as the data to be <strong>written into the register file.</strong>
+	<code>BR(foo,LP)</code> is a **macro** for <code>BEQ(R31,foo,LP)</code>. All <code>BNE/BEQ</code> instructions save the address of the following instruction in the specified destination register (<code>LP</code> in the example instruction). So <code>WDSEL</code> should be set <code>0</code>, selecting the output of the <code>PC+4</code> logic as the data to be <strong>written into the register file.</strong>
 	</p></div><br>
 
-3. The **minimum clock period** of the unpipelined Beta implementation is determined by the *propagation* *delays* of the datapath elements and the amount of time it takes for the **control signals to become valid**. **Which** of the following select signals should become valid first in order to ensure the smallest possible clock period: `PCSEL, RA2SEL, ASEL, BSEL, WDSEL, WASEL`?
+3. The **minimum clock period** of the unpipelined Beta implementation is determined by the *propagation* *delays* of the datapath elements and the amount of time it takes for the **control signals to become valid**. Which of the following select signals should become valid first in order to ensure the smallest possible clock period: `PCSEL, RA2SEL, ASEL, BSEL, WDSEL, WASEL`?
 	
 	<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 	To ensure the <strong>smallest</strong> possible clock period <code>RA2SEL</code> should become valid first. The <code>RA2SEL</code> mux must produce a <strong>stable register address</strong> before the register file can do its thing. All other control signals affect logic that operates <strong>after</strong> the required register values have been accessed, so they don't have to be valid until <i>later</i> in the cycle.
@@ -59,7 +59,7 @@ LD(R0,B,R1) -- (3)
 MULC(R1,17,R1) -- (4)
 ST(R1,B,R0)  -- (5)
 ```
-Finally, **what is the result stored in R0?**
+Finally, what is the result stored in `R0`?
 
 
 
@@ -87,7 +87,7 @@ Explanation:
 <li>  <strong>Line 4:</strong> The content of register <code>R1</code> is multiplied by 17 and stored back at register <code>R1</code>.</li>
 <li>  <strong>Line 5:</strong> Store / copy the content of register R1 to the memory unit with address <code>EA</code>: <code>EA</code>= <code>B</code> + content of register <code>R0</code>.</li>
 </ul>
-The result of <code>R0</code> is the content of memory address I: <code>Mem[I]</code> multiplied by 4.
+The result of <code>R0</code> is the content of memory address `I`: <code>Mem[I]</code> multiplied by 4.
 </p></div><br>
 
 ## Non $$\beta$$ Architecture Benchmarking (Basic)
@@ -104,29 +104,29 @@ z & 60 Mhz & 3.0\\
 
 You are going to choose the machine which will execute your benchmark program the fastest, so you compiled and ran the benchmark on the three machines and counted the total instructions executed:
 
-1.  $$x$$: `3,600,000` instructions executed
+1.  `x`: `3,600,000` instructions executed
 
-1.  $$y$$: `1,900,000` instructions executed
+1.  `y`: `1,900,000` instructions executed
 
-1. $$z$$: `4,200,000` instructions executed
+1. `z`: `4,200,000` instructions executed
   
 
 Based on the above data, **which machine would you choose?**
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 First we find out the time taken to execute those instructions:
-<ul>
-<li> $$x: \frac{3.6M}{40M / 2} = 0.18s$$ </li> 
-<li> $$y: \frac{1.9M} {100M / 10} = 0.19s$$ </li> 
-<li> $$z: \frac{4.2M}{60M / 3} = 0.21s$$  </li> 
-</ul>
-From the result above, **x** is the fastest machine. Hence we choose **x**.
+
+$$x: \frac{3.6M}{40M / 2} = 0.18s$$  
+$$y: \frac{1.9M} {100M / 10} = 0.19s$$  
+$$z: \frac{4.2M}{60M / 3} = 0.21s$$   
+
+From the result above, `x` is the fastest machine. Hence we choose `x`.
 </p></div><br>
   
 ## Clumsy Lab Assistant (Basic)
 Notta Kalew, a somewhat fumble-fingered lab assistant, has deleted the opcode field from the following table describing the control logic of an unpipelined Beta processor.
 
-<img src="https://dropbox.com/s/hr0j3m2pmgbhvot/Q1.png?raw=1"  >
+<img src="https://dropbox.com/s/hr0j3m2pmgbhvot/Q1.png?raw=1" class="center_fifty" >
 
   
 
@@ -145,19 +145,20 @@ Notta Kalew, a somewhat fumble-fingered lab assistant, has deleted the opcode fi
 3. Notta has noticed the following C code fragment appears frequently in the benchmarks:
 	
 ```cpp
-int *_p; /_* Pointer to integer array *_/_
-_int i,j; /_* integer variables *_/_
+int *_p; /* Pointer to integer array */
+int i,j; /* integer variables */
 
-_..._
+...
 
-_j = p[i]; /_* access ith element of array */
+j = p[i]; /* access ith element of array */
 ```
 
 The pointer variable `p` contains the *address* of a **dynamically allocated** array of integers. The value of `p[i]` is stored at the address `Mem[p +4i]` where `p` and `i` are locations containing the values of the corresponding C variables. On a conventional Beta this code fragment is translated to the following instruction sequence:
 
 ```cpp
 LD(...,R1)     /* R1 contains p, the array base address */
-LD(...,R2)     /* R2 contains I, the array index */    ...
+LD(...,R2)     /* R2 contains I, the array index */    
+...
 SHLC(R2,2,R0)  /* compute byte-addressed offset = 4*i */
 ADD(R1,R0,R0)  /* address of indexed element */
 LD(R0,0,R3)    /* fetch p[i] into R3 */
@@ -170,7 +171,7 @@ SHLC(R2,2,R0)  /* compute byte-addressed offset = 4*i */
 LDX(R0,R1,R3)  /* fetch p[i] into R3 */
 ```
 	
-Give a ***register-transfer language description*** for the `LDX` instruction. 
+Give a **register-transfer language** description for the `LDX` instruction. 
 
 <div cursor="pointer" class="collapsible">Show Answer</div>
 <div class="content_answer">
@@ -185,16 +186,16 @@ Give a ***register-transfer language description*** for the `LDX` instruction.
 </div>
 </p></div><br>
 
-4. Using a table like the one above specify the control signals for the LDX opcode.
+Using a table like the one above specify the control signals for the `LDX` opcode.
 
-	<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-	$$\begin{matrix}
-	PCSEL & RA2SEL & ASEL & BSEL& WDSEL & ALUFN & WR & WERF & WASEL \\
-	\hline
-	0 & 0 & 0 & 0 & 2 & ADD & 0 & 1 & 0 \end{matrix}$$
-	</p></div><br>
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+$$\begin{matrix}
+PCSEL & RA2SEL & ASEL & BSEL& WDSEL & ALUFN & WR & WERF & WASEL \\
+\hline
+0 & 0 & 0 & 0 & 2 & ADD & 0 & 1 & 0 \end{matrix}$$
+</p></div><br>
 
-5. It occurs to Notta that adding an `STX` instruction would probably be useful too. Using this new instruction, `p[i] = j` might compile into the following instruction sequence:
+It occurs to Notta that adding an `STX` instruction would probably be useful too. Using this new instruction, `p[i] = j` might compile into the following instruction sequence:
 
 ```cpp
 SHLC(R2,2,R0)  /* compute byte-addressed offset = 4*i */
@@ -215,20 +216,21 @@ PC <- PC + 4</code></pre></div>
 
 It's evident that we need to perform <strong>3 register reads,</strong> but the Beta's register file has only <strong>2 read ports.</strong> Thus we need to add a <strong>third read port</strong> to the register file.
 <br><br>
-Incidentally, adding a third read port would eliminate the need for the <code>RA2SEL</code> mux because we <i>no longer need to choose between <code>Rb</code> and <code>Rc</code></i>, since each register field has its own read port.
+Incidentally, adding a third read port would eliminate the need for the <code>RA2SEL</code> mux because we no longer need to choose between <code>Rb</code> and <code>Rc</code>, since each register field has its own read port.
 </p></div><br>
 
 
 ## New Beta Instruction (Basic)
 1. Write the register transfer language below corresponds to the instruction with the following control signal:
    
-	<img src="https://dropbox.com/s/ysf5rtc0d9mwsil/ctrlnew.png?raw=1" width="40%" height="20%">
+	<img src="https://dropbox.com/s/ysf5rtc0d9mwsil/ctrlnew.png?raw=1" class="center_ten">
 
 	<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 	<div class="class=language-cpp highlighter-rouge">
 	<div class="highlight">
-	<pre class="highlight"><code>Reg[Rc] <-- (PC+4)+4*SXT(C) 
-	PC <-- PC + 4</code></pre></div>
+	<pre class="highlight">
+	<code>Reg[Rc] <-- (PC+4)+4*SXT(C) 
+	     PC <-- PC + 4</code></pre></div>
 	</div>
 	</p></div><br>
 
@@ -251,7 +253,9 @@ Given the following C-code:
 if (a != 0){ 
 	b = 3;
 }  
-(other code....)
+
+// other instructions
+....
 ```
 
 where `a`, `b` are variables that have been initialised in the earlier part of the code (not shown). If we were to implement the following C-code using the Beta instruction set, we must do this in at least **two** cycles:
@@ -264,7 +268,7 @@ label_continue: (other code)
 
 where `Ra`, `Rb` are assumed to be registers **containing** values `a` and `b`.
 
-The `ALU` in this particular  Beta however, implements *five* new functions on top of the standard functions: `“B”, “NOTA”, “NOTB”, “TRUE”, “FALSE”`. 
+The `ALU` in this particular  Beta however, implements *five* new functions on top of the standard functions: `“B”, “NOT-A”, “NOT-B”, “TRUE”, “FALSE”`. 
 
 Due to this, your classmate suggested that we can actually do this in **one** cycle by modifying the `Control Unit` to accept  this **new instruction** called `MCNZ` (move constant if not zero) instead:
 
@@ -300,14 +304,14 @@ You suspected that your Beta CPU is faulty, in particular, these two components:
 
 Your friend came up with several short test programs. You want to select one of these programs to run in the faulty Beta, but you don't want to waste your time loading and running multiple programs and would like to select one that can **detect both faults**. Which of the following program(s) can detect **both faults?**
 
-*Meaning that :*
-1.  The values in the `PC` / Registers in Regfile / Memory Unit will be *different* from a working Beta CPU if these programs were to be executed in this faulty Beta. 
-   
-2.  You can be 100% sure the discrepancy is caused by **both** `RA2SEL` signal or `ASEL` mux faulty.
-    
-3.  Programs that can only detect the `RA2SEL` signal faulty but not `ASEL` multiplexer faulty (or vice versa) is **not acceptable**. 
+{: .note-title}
+> Further Notes
+> 
+> 1.  The values in the `PC` / Registers in Regfile / Memory Unit will be *different* from a working Beta CPU if these programs were to be executed in this faulty Beta. 
+> 2.  You can be 100% sure the discrepancy is caused by **both** `RA2SEL` signal or `ASEL` mux faulty.
+> 3.  Programs that can only detect the `RA2SEL` signal faulty but not `ASEL` multiplexer faulty (or vice versa) is **not acceptable**. 
 
-*You can assume that the initial content of all registers are `0`.* 
+You can assume that the initial content of all registers are `0`.
 
 **Program 1**:
 ```cpp
@@ -390,10 +394,10 @@ For each of the statements below, indicate whether they're True or False and pro
 * **Statement 3:** We can never perform `LD` and `ST`  to any two independent addresses in a *single cycle* (even if the memory unit supports it) by just modifying the **control unit** of the Beta. In other words, we need to modify the datapath of the Beta in order to do this. 
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-<strong>Statement 1 is False</strong>. We can have <code>ADDC(R0, -32768, R0)</code> but we cant have <code>SUBC(R0, 32768, R0)</code> as the most positive number that a signed 16-bit can represent is <code>32768</code>.
+<strong>Statement 1 is <span style="color:red; font-weight: bold;">False</span></strong>. We can have <code>ADDC(R0, -32768, R0)</code> but we cant have <code>SUBC(R0, 32768, R0)</code> as the most positive number that a signed 16-bit can represent is <code>32768</code>.
 <br>
 <br>
-<strong>Statement 2 is False</strong>. <code>Ra</code> contains 32-bit of data, so we can set <code>PC</code> to be pointing to <i>any</i> address in the memory (4GB of address space) with <code>JMP(Ra)</code>. However, <code>BEQ</code> only covers <code>32768 times 4</code> (above <code>PC+4</code>) + <code>32768 times 4</code> (*below and inclusive of <code>PC+4</code>*) bytes of address space.
+<strong>Statement 2 is <span style="color:red; font-weight: bold;">False</span></strong>. <code>Ra</code> contains 32-bit of data, so we can set <code>PC</code> to be pointing to <i>any</i> address in the memory (4GB of address space) with <code>JMP(Ra)</code>. However, <code>BEQ</code> only covers <code>32768 times 4</code> (above <code>PC+4</code>) + <code>32768 times 4</code> (*below and inclusive of <code>PC+4</code>*) bytes of address space.
 <br>
 <br>
 <strong>Statement 3 is True</strong>. The output of the <code>ALU</code> supplies a <strong>single</strong> address for both load and store to the memory unit. </p></div><br>
@@ -462,15 +466,16 @@ Program 2, 4, and 5 can successfully <strong>detect</strong> this faulty. All of
 ## Quality Control (Intermediate)
 One Beta manufacturer is having quality-control problems with their design. In particular, they've had reliability issues with various device connections that are circled in the diagram below.
 
-<img src="https://dropbox.com/s/i71imaa2toxsnk7/betafault.png?raw=1"  >
+<img src="https://dropbox.com/s/i71imaa2toxsnk7/betafault.png?raw=1" class="center_seventy"  >
 
-Your job is to **write some test programs** to help determine if a machine is fault-free. Assume that when a device connection is "faulty," the indicated **bus or signal** is always **producing** "0" instead of the *expected value*.
+Your job is to **write some test programs** to help determine if a machine is fault-free. Assume that when a device connection is <span style="color:red; font-weight: bold;">faulty</span>, the indicated **bus or signal** is always **producing** `0` instead of the *expected value*.
 
 **For each** of the circled connections, **write an instruction sequence** that when executed for a **specified number of cycles** will leave the following result in `R0`: 
 *  `1` in `R0` if the connection was working.
 * Other values in `R0` if the connection was faulty. 
 
-*You can assume that all registers are reliably set to 0 before each sequence is executed.*
+{: .note}
+You can assume that all registers are reliably set to 0 before each sequence is executed. There's many possible answers, they aren't unique.
 
 Give your instruction sequence for each of the six indicated faults and briefly **explain** how each sequence detects the fault and produces something besides `1` in `R0` when the fault is present:
 * **Fault A:** Input 1 of `PCSEL` mux has a value of `0` instead of `PC+4+4*SEXT(C)`.
@@ -481,7 +486,7 @@ Give your instruction sequence for each of the six indicated faults and briefly 
 * **Fault F:** Input 0 of `WDSEL` mux has a value of `0` instead of `PC+4`.
 
 
-<i>Note: there's many alternate answers. They aren't unique.</i> 
+
 
 **Fault A:** Input 1 of `PCSEL` mux has a value of `0` instead of `PC+4+4*SEXT(C)`.
 <div cursor="pointer" class="collapsible">Show Answer</div>
