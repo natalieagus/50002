@@ -26,17 +26,17 @@ Each topic's questions are grouped into **three** categories: basic, intermediat
 The diagram below illustrates the FSM diagram of a machine that has the same purpose. The circle that is bolded signifies the starting state. 
 
 State whether the following is *true or false* and explain your answer:
-* **Statement 1:** *"Diagram A illustrates a Mealy machine."*
-* **Statement 2:** *"Diagram B can be further minimized."*
+* **Statement 1:** "Diagram A illustrates a Mealy machine."
+* **Statement 2:** "Diagram B can be further minimized."
 
 What is the *purpose* of these FSMs?
 
-<img src="https://dropbox.com/s/ssyur5zn29v5rsq/fsmmeally.png?raw=1" class="center_seventy"  >
+<img src="https://dropbox.com/s/ssyur5zn29v5rsq/fsmmeally.png?raw=1" class="center_fifty"  >
 
 
 <div  cursor="pointer"  class="collapsible">Show Answer</div>  <div  class="content_answer">
 <p>
-<strong>Statement 1</strong> is <i>false</i> because the machine in Diagram A has its output that depends only on its state. <strong>Statement 2</strong> is <i>true</i>, we can minimise it into just two states because <code>S1</code> and <code>S2</code> are <strong>equivalent</strong>. 
+<strong>Statement 1</strong> is <span style="color:red; font-weight: bold;">false</span> because the machine in Diagram A has its output that depends only on its state. <strong>Statement 2</strong> is **true**, we can minimise it into just two states because <code>S1</code> and <code>S2</code> are <strong>equivalent</strong>. 
 <br><br>
 The purpose of both machines is to detect the presence of an edge and output a <code>1</code> <strong>once</strong> for the cycle where the edge happens, and <code>0</code> otherwise.
 </p>
@@ -44,7 +44,7 @@ The purpose of both machines is to detect the presence of an edge and output a <
 
 Your friend plot the timing diagram of the machine in Diagram A and obtain the following output:
 
-<img src="https://dropbox.com/s/cws3uke3gekty4k/plotfsm.png?raw=1"  class="center_seventy">
+<img src="https://dropbox.com/s/cws3uke3gekty4k/plotfsm.png?raw=1"  class="center_fifty">
 
 Assume that the machine starts at `S0`. While referring to the FSM diagram up above, write the current state that occurs at instances `[A], [B], [C],` and `[D]` respectively. 
 
@@ -72,42 +72,46 @@ Unfortunately the design notes for the P3 are *incomplete*. Using the specificat
 <img src="https://dropbox.com/s/1ww80s7vpxznf1k/Q1%202.png?raw=1" class="center_seventy">
 
 When done,
-*  Each state in the transition diagram should be assigned a 2-bit state name S1S0 (note that in this design the state name is not derived from the combination that opens the lock),
-
+*  Each state in the transition diagram should be assigned a 2-bit state name `S1S0` (note that in this design the state name is not derived from the combination that opens the lock),
 *  The arcs leaving each state should be mutually exclusive and collectively exhaustive,
-
 *  The value for UNLOCK should be specified for each state, and the truth table should be completed.
 
-Also, **what is the combination of the lock**? 
-
-
+Also, **what** is the **combination** of the lock? 
 
 <div  cursor="pointer"  class="collapsible">Show Answer</div>  <div  class="content_answer">
 <p>
 This state machine is a <strong>Moore machine</strong>. The completed state transition diagram and truth table is as follows:
 <br>
-<img src="https://dropbox.com/s/nstfdu7qea4dozo/Q2%202.png?raw=1">
+<img src="https://dropbox.com/s/nstfdu7qea4dozo/Q2%202.png?raw=1"  class="center_seventy">
 <br>
 The combination for the lock is <code>100</code>.
 </p></div>
 
 ## Constructing an FSM (Basic)
 
-Construct a "divisible-by-3" FSM that accepts a binary number entered one bit at a time, most significant bit first, and indicates with a *light* if the number entered so far is divisible by 3. Answer the following questions:
+Construct a **divisible-by-3** FSM that accepts a binary number entered **one** bit at a time. The most significant bit entered first, and the FSM should indicate with an output light (1 bit) if the number entered so far is divisible by 3. 
 
-1.  Draw a state transition diagram for your FSM indicating the initial state and for which states the light should be turned on. *Hint: the FSM has 3 states.*
+{: .new-title}
+> Hint
+> 
+> The FSM has 3 states.
+
+
+Answer the following questions:
+
+1.  Draw a state transition diagram for your FSM indicating the initial state and for which states the light should be turned on. 
 	<div  cursor="pointer"  class="collapsible">Show Answer</div>  <div  class="content_answer">
 	<p>
 
-	If the value of the number entered so far is N, then if digit b is entered next, the value of the new number N' is 2N + b. Using this fact:
+	If the **value** of the number entered so far is `N`, then if digit `b` is entered next, the value of the new number `N'` is `2N + b`. Using this fact:
 	<ul>
-	<li>  If N is 0 mod 3 then for some p, N = 3p + 0. After the digit b is entered, N' = 6p + b. So N' is b mod 3.</li>
-	<li>  If N is 1 mod 3 then for some p, N = 3p + 1. After the digit b is entered, N' = 6p + 2 + b. So N' is b+2 mod 3.</li>
-	<li>  If N is 2 mod 3 then for some p, N = 3p + 2. After the digit b is entered, N' = 6p + 4 + b. So N' is b+1 mod 3.</li>
+	<li>  If `N mod 3 == 0` then for some integer `p`,` N = 3p + 0`. After the digit b is entered, `N' = 6p + b`. So `N'` is `b mod 3`.</li>
+	<li>  If `N mod 3 == 1` then for some integer `p`, `N = 3p + 1`. After the digit b is entered, `N' = 6p + 2 + b`. So `N'` is `b+2 mod 3`.</li>
+	<li>  If `N mod 3 == 2` then for some integer `p`, `N = 3p + 2`. After the digit b is entered, `N' = 6p + 4 + b`. So `N'` is `b+1 mod 3`.</li>
 	</ul>
-	<br>This leads to the following transition diagram where each state corresponds to each of the possible values of N mod 3.
+	<br>This leads to the following transition diagram where each state corresponds to each of the possible values of `N mod 3`.
 	<br>
-	<img src="https://dropbox.com/s/kp3njg0hbw6kwwb/FSMqn.png?raw=1"  >
+	<img src="https://dropbox.com/s/kp3njg0hbw6kwwb/FSMqn.png?raw=1" class="center_fifty" >
 	<br>
 	</p></div>
 
@@ -150,7 +154,7 @@ Construct a "divisible-by-3" FSM that accepts a binary number entered one bit at
 
 Consider the schematic of a machine as follows, which function is to: *detect a sequence of three or more consecutive 1’s, and output: 1 after three or more consecutive 1’s, or 0 otherwise.*
 
-<img src="https://dropbox.com/s/nx1s0kw3iu0cvqz/Q6.png?raw=1" class="center_seventy" >
+<img src="https://dropbox.com/s/nx1s0kw3iu0cvqz/Q6.png?raw=1" class="center_fifty" >
 
 Let's analyse the circuit by answering the questions below:
 1. If the circuit has an **initial** state of `AB=00`, and the input at `t=0` is `x=0`, what will the immediate next state be?
@@ -214,7 +218,7 @@ Let's analyse the circuit by answering the questions below:
 
 	<div  cursor="pointer"  class="collapsible">Show Answer</div>  <div  class="content_answer">
 	<p>
-	The clock period has to satisfy the <strong>feedback</strong> path (t2 timing constraint), that is made up with **tpd** of the <code>dff</code>,  **tpd** of the <code>AND</code> gate,  **tpd** of the <code>OR</code> gate, plus **ts** of the register. This adds up to <code>2+2+2+1 = 7ns</code>. Hence the maximum frequency is $$\frac{1}{(7*10^{-9})}$$ <code>= 142.9MHz</code>.
+	The clock period has to satisfy the <strong>feedback</strong> path (t2 timing constraint), that is made up with **tpd** of the <code>dff</code>,  **tpd** of the <code>AND</code> gate,  **tpd** of the <code>OR</code> gate, plus **ts** of the register. This adds up to <code>2+2+2+1 = 7ns</code>. Hence the maximum frequency is:$$\frac{1}{(7*10^{-9})}= 142.9MHz$$.
 	</p>
 	</div><br>
 
@@ -228,16 +232,15 @@ Let's analyse the circuit by answering the questions below:
 
 Take a look at the following State Machine circuitry:
 
-<img src="https://dropbox.com/s/d8o2nhv1ugouf2g/Q3.png?raw=1"  class="center_seventy">
+<img src="https://dropbox.com/s/d8o2nhv1ugouf2g/Q3.png?raw=1"  class="center_fifty">
 
 The device `A2` has the following schematic:
 
-<img src="https://dropbox.com/s/9e2jzfrwtjto34p/Q4.png?raw=1" class="center_seventy">
-
+<img src="https://dropbox.com/s/9e2jzfrwtjto34p/Q4.png?raw=1" class="center_thirty">
 
 It is made out of this device we call `A000R` with **tcd** = `1ns`, and **tpd** = `3ns` with the following schematic:
 
-<img src="https://dropbox.com/s/55rj88ehoozyo6y/Q5.png?raw=1" class="center_seventy">
+<img src="https://dropbox.com/s/55rj88ehoozyo6y/Q5.png?raw=1" class="center_thirty">
 
 The truth table for `A000R` is as follows: 
 
@@ -259,10 +262,9 @@ $$
 
 The timing specifications for other devices in the state machine is:
 *  The Mux has the following time specification: **tcd** = `1ns`, and **tpd** = `2ns`.
-
 * The Registers has the following time specification: **tcd** = `2ns`, **tpd** = `5ns`, **ts** = `2ns`, **th** = `2ns`.
 
-Both `A1` and `A2` are **combinational** logic that contains `A000R` only. Unfortunately, the design for `A1` is *missing*. We only know that `A1` uses only `A000R` to compute the output and the next state function **and that A1 has the same **tpd** as A2**. The other information that we have is that the output of `A1`, `X[2:0]` is a sequence of decimal, `[1, 2, 3, ... ]` in the *binary* form, i.e. `[001, 010, 011, ...]`.
+Both `A1` and `A2` are **combinational** logic that contains `A000R` only. Unfortunately, the design for `A1` is missing. We only know that `A1` uses only `A000R` to compute the output and the next state function and that `A1` has the same **tpd** as `A2`. The other information that we have is that the output of `A1`, `X[2:0]` is a sequence of decimal, `[1, 2, 3, ... ]` in the binary form, i.e. `[001, 010, 011, ...]`.
 
 Answer the following questions:
 1. How many bits should the constant `Z1` have?
@@ -274,7 +276,7 @@ Answer the following questions:
 2. How many bits should the constant `Z2` have?
 	<div  cursor="pointer"  class="collapsible">Show Answer</div>  <div  class="content_answer">
 	<p>
-	<strong>1 bit</strong>. The number of bits of each input to a combinational logic device such as <code>A1</code> <i>does not depend on anything else or other inputs.</i>
+	<strong>1 bit</strong>. The number of bits of each input to a combinational logic device such as <code>A1</code> does not depend on anything else or other inputs.
 	</p></div><br>
 
 3. What is the decimal value of `Z1`?
@@ -298,7 +300,7 @@ Answer the following questions:
 6. What is the minimum clock period in nanosecond?
 	<div  cursor="pointer"  class="collapsible">Show Answer</div>  <div  class="content_answer">
 	<p>
-		The <i>longest</i> path that the clock period has to satisfy is <code>R1 -> A1 -> A2 -> Z1 -> R2</code>. Hence we need to consider the **tpd** of all devices in its path (except <code>R2</code>) plus **ts** of <code>R2: 5+9+9+2+2 = 27ns</code>.
+		The longest path that the clock period has to satisfy is <code>R1 -> A1 -> A2 -> Z1 -> R2</code>. Hence we need to consider the **tpd** of all devices in its path (except <code>R2</code>) plus **ts** of <code>R2: 5+9+9+2+2 = 27ns</code>.
 	</p></div><br>
 
 7. What is the minimum **tcd** of `A1` in nanosecond such that **th** of input (`Z2`) can be 0?
@@ -319,13 +321,13 @@ Answer the following questions:
 	When <code>RESET</code> is <code>1</code>, the output of <code>R1</code> will be <code>000</code>. Hence the value of <code>X[2:0]</code> will be <code>001</code>..
 	</p></div><br>
 
-10. When X's output is sequences of value `[1, 2, 3, ...]`, what is the value of `RESET`?
+10. When `X`'s output is sequences of value `[1, 2, 3, ...]`, what is the value of `RESET`?
 	<div  cursor="pointer"  class="collapsible">Show Answer</div>  <div  class="content_answer">
 	<p>
-	<code>RESET</code> has to be <code>0</code> to enable the <i>addition</i> of the previous value of X to take effect, and form a new value of X in the next clock cycle.
+	<code>RESET</code> has to be <code>0</code> to enable the <i>addition</i> of the previous value of `X` to take effect, and form a new value of `X` in the next clock cycle.
 	</p></div><br>
 
-Now, suppose that at time `t=0`, `RESET` signal is changed from `1` to `0`, and `X` becomes `001`. From then on, `RESET` remains 0:
+Now, suppose that at time `t=0`, `RESET` signal is changed from `1` to `0`, and `X` becomes `001`. From then on, `RESET` remains `0`:
 
 1. What is the decimal value of `O[2:0]` at time `t = 0`?
 	<div  cursor="pointer"  class="collapsible">Show Answer</div>  <div  class="content_answer">
@@ -352,25 +354,25 @@ Now, suppose that at time `t=0`, `RESET` signal is changed from `1` to `0`, and 
 ## FSM Possibility (Basic)
 
 
-We saw that certain functions, such as parentheses checking, cannot be performed by any finite state machine. **Which of the following can be performed by an FSM?** 
+We saw that certain functions, such as parentheses checking, cannot be performed by any finite state machine. Which of the following can be performed by an FSM? 
 
-Assume, in each case, that the device is to take a series of `0`s and `1`s that represent the digits of a binary number entered *left-to-right*. 
+Assume, in each case, that the device is to take a series of `0`s and `1`s that represent the digits of a binary number entered <span style="color:red; font-weight: bold;">left to right</span>. 
 
-1. The device is to have a **single** output, which is 1 only under this specific condition: *when the last 277 digits entered have been alternate `1`s and `0`s.*
+1. The device is to have a **single** output, which is 1 only under this specific condition: when the last `277` digits entered have been alternate `1`s and `0`s.
 	<div  cursor="pointer"  class="collapsible">Show Answer</div>  <div  class="content_answer">
 	<p>
-	<strong>Yes</strong>. It is a bit tedious for 277 digits, but you should be able to sketch FSM for 3 or 4 digits.
+	<strong>Yes</strong>. It is a bit tedious for `277` digits, but you should be able to sketch FSM for 3 or 4 digits.
 	</p></div><br>
 
 
-1. The device is to have a **single** output, which is 1 only under this specific condition: *when more 0s than 1s have been entered*.
+1. The device is to have a **single** output, which is 1 only under this specific condition: when more 0s than 1s have been entered.
 
 	<div  cursor="pointer"  class="collapsible">Show Answer</div>  <div  class="content_answer">
 	<p>
 	<strong>No</strong>. Requires unbounded counting.
 	</p></div><br>
 
-1. The device is to have a **single** output, which is 1 only under this specific condition: *when the number entered thus far is **divisible** by 3.*
+1. The device is to have a **single** output, which is 1 only under this specific condition: when the number entered thus far is **divisible** by 3.
 
 	<div  cursor="pointer"  class="collapsible">Show Answer</div>  <div  class="content_answer">
 	<p>
@@ -378,7 +380,7 @@ Assume, in each case, that the device is to take a series of `0`s and `1`s that 
 	</p></div><br>
 
 
-1. The device is to have a **single** output, which is 1 only under this specific condition: *when an odd number of 1s and and even number of 0s have been entered.*
+1. The device is to have a **single** output, which is 1 only under this specific condition: when an odd number of 1s and and even number of 0s have been entered.
 
 	<div  cursor="pointer"  class="collapsible">Show Answer</div>  <div  class="content_answer">
 	<p>
