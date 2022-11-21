@@ -396,7 +396,7 @@ Recall that **the contamination delay is the period of output validity after the
 The first two cases are called tc **fall**, while the latter two cases are called tc **rise**. The name rise or fall depends on whether the **output** is about to fall or rise. 
 
 {: .note}
-**Output **remaining** at valid `1`** means to maintain output voltage value above Voh, while *input at valid `1`* means to receive input voltage value above Vih. The same applies for valid `0` on both input and output. Revise the lecture on [Digital Abstraction](https://natalieagus.github.io/50002/notes/digitalabstraction) if you're still confused about this concept of valid `0` and `1`. 
+The statement: "Output **remaining** at valid `1`" means to maintain output voltage value above Voh, while *input at valid `1`* means to receive input voltage value above Vih. The same applies for valid `0` on both input and output. Revise the lecture on [Digital Abstraction](https://natalieagus.github.io/50002/notes/digitalabstraction) if you're still confused about this concept of valid `0` and `1`. 
 
 
 The truth table of the `nand2` gate is as follows:
@@ -432,7 +432,8 @@ t_{cd} &= \min(t_{c_{RISE}}, t_{c_{FALL}})
 \end{aligned}
 $$
 
-> Pause and ensure you understand how the formulas above are derived. 
+{: .important}
+Ensure you understand how the formulas above are derived before proceeding. 
 
 ### Propagation Delay
 Similarly, **the propagation delay is the period of output invalidity after the inputs have become valid**. 
@@ -524,7 +525,7 @@ For many consumer products, designs are tested in the range of 0°C to 100°C. W
 **Record** down your findings.  You will need this information for Checkoff 6 and 7. Please zoom in at least 4-5 times before doing this to get a clearer picture of the signals. 
 
 
-Based on your experiment, if a 2019 Intel Core i9 processor is rated to run correctly at 2.3 GHz at 100°C, how many % more can you clock it and still have it run correctly at room temperature (assuming tpd is the parameter that determines “correct” computer behavior)?  This is why you can usually get away with **overclocking** your CPU—it’s been rated for operation under much more **severe** environmental conditions than you’re probably running it at!
+Based on your experiment, if a 2019 Intel Core i9 processor is rated to run correctly at 2.3 GHz at 100°C, how many % more can you clock it and still have it run correctly at room temperature (assuming tpd is the parameter that determines “correct” computer behavior)? This is why you can usually get away with **overclocking** your CPU—it’s been rated for operation under much more **severe** environmental conditions than you’re probably running it at!
 
 ## Task G: CMOS Logic Gate Design
 
@@ -546,7 +547,22 @@ A |  B |  C | F(A,B,C)
 {: .highlight}
 **Write** your answer in the space provided under inside `lab1_submit.jsim`. Your solution should contain <span style="color:red; font-weight: bold;">NO</span> more than 8 MOSFETs.
 
-<img src="/50002/assets/contentimage/lab1/7.png"  class="center_thirty" />
+```cpp
+.include "nominal.jsim"
+.include "lab1checkoff.jsim"
+
+.subckt F A B C Z
+* BEGIN ANSWER
+* NOT F CMOS circuitry: Pullup
+
+
+* NOT F CMOS circuitry: Pulldown
+
+* Inverter
+
+*END ANSWER
+.ends
+```
 
 * Open `lab1_submit.jsim` and write your answer there:
 * There should be three parts to your answer
@@ -558,7 +574,7 @@ A |  B |  C | F(A,B,C)
 <img src="/50002/assets/contentimage/lab1/8.png"  class=" center_fifty"/>
 <br>
 * You will need to **understand** the output plot, and the meaning of each line of instruction in the answer to be able to excel in the Lab Quiz. 
-* Click on the green tick button on the right hand corner of the plot window. A message as such should appear, which means that all values produced by your circuit is as expected:
+* Click on the green tick button on the right hand corner of the plot window. A message as such should appear and brings you happiness. This means that all values produced by your circuit is as expected and passes the test:
 <br><br>
 <img src="/50002/assets/contentimage/lab1/6.png"  class=" center_fifty"/>
 
