@@ -24,7 +24,7 @@ Each topic's questions are grouped into **three** categories: basic, intermediat
 
 ## RAM Hardware (Basic)
 Take a look at the following memory cells. The rightmost bit line corresponds to the LSB, and the leftmost bit line corresponds to the MSB.
-<img src="https://dropbox.com/s/472uv0zpzuuwtyf/ramtech.png?raw=1"  >
+<img src="https://dropbox.com/s/472uv0zpzuuwtyf/ramtech.png?raw=1" class="center_fifty"  >
 
 1. Are these cells made up of SRAM or DRAM? 
 	<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
@@ -99,7 +99,7 @@ The following is a sequence of address references given as **word** addresses (g
 
 1. If a cache access requires **one** clock cycle and handling cache misses stalls the processor for an additional **five** cycles, which of the following cache hit rates comes **closest** to achieving an **average** memory access of 2 cycles?
 	<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-	2 cycle average access = (1 cycle for cache) + (1 - hit rate)(5 cycles stall). This means hit rate = 80%.
+	2 cycle average access = (1 cycle for cache) + (1 - hit rate) * (5 cycles stall). This means the hit rate is **80%**.
 	</p></div><br>
 
 2. Why is **LRU** an effective cache replacement strategy?
@@ -109,7 +109,7 @@ The following is a sequence of address references given as **word** addresses (g
 
 3. What would be the reasons behind improved caching performance when increasing the block size of a cache?
 	<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-	Increased block size means that more words are fetched when filling a cache line after a miss on a particular location. If this leads to increased performance, then the nearby words in the block must have been accessed by the program later on, ie, the program is exhibiting locality of reference.
+	Increased block size means that more words are fetched when filling a cache line after a miss on a particular location. If this leads to increased performance, then the nearby words in the block must have been accessed by the program later on, ie, the program is exhibiting **locality of reference**.
 	</p></div><br>
 
 
@@ -119,10 +119,10 @@ A student has miswired the address lines going to the memory of an unpipelined $
 
 1. Explain why the miswiring doesn’t affect the operation of the machine.
 	<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-	Since the Beta reverses the order of the 30 bit address in the same manner for each memory access, the Beta will use the same reversed address to access a particular memory location for both stores and loads. Thus, the operation of the machine will not be affected. </p></div><br>
+	Since the Beta reverses the order of the 30 bit address in a **consistent** manner for all memory access related instructions, it will **still** be able to utilise the **reversed** address as per normal. Thus, the operation of the machine will not be affected. </p></div><br>
 
 2. The student now replaces the memory in his miswired $$\beta$$ with a supposedly higher performance unit that contains both a fast fully associative cache and the same memory as before. The reversed wiring still exists between the $$\beta$$ and this new unit. To his surprise, the new unit does not significantly improve the performance of his machine. In desperation, the student then fixes the reversal of his address lines and the machine’s performance improves tremendously. **Explain why this happens.**
 	<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-	Caches take advantage of locality of reference by reading in an entire block of related data at one time, thereby reducing main memory accesses. By reversing the order of the 30 bit address, locality of the memory addresses is disrupted. The low-order bits that would normally place related data close to one another are instead the high-order bits and related data is more spread out through the main memory. This reduction in locality reduces cache performance significantly. When the student fixes the address line reversal problem, locality of the memory is restored, and the cache can perform as intended
+	Caches take advantage of **locality of reference** by reading in an entire block of related data at one time, thereby reducing main memory accesses. By reversing the order of the 30 bit address, locality of the memory addresses is disrupted. The low-order bits that would normally place related data close to one another are instead the high-order bits and related data is more **spread** out through the main memory. This reduction in locality reduces cache performance significantly. When the student fixes the address line reversal problem, locality of the memory is restored, and the cache can perform as intended
 	</p></div><br>
 

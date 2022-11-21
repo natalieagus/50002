@@ -33,7 +33,7 @@ int f(int a, int b){
 ```
 
 The above C-code compiles to the following Beta assembly code:
-```cpp
+```nasm
 F:	PUSH(LP)
 	PUSH(BP)
 	MOVE(SP, BP)
@@ -47,7 +47,7 @@ LL01: BNE(R2, LL02)			| #2
 	  SUB(R0, R1, R0)
 	  PUSH(R1)
 	  PUSH(R0)
-	  BR(F, LP)				| #3
+	  BR(F, LP)			| #3
 	  DEALLOCATE(2)
 
 LL02: POP([5a])
@@ -111,7 +111,7 @@ int gcd(int a,int b) {
 ```
 The C compiler has compiled this procedure into the following code for an unpipelined Beta processor:
 
-```cpp 
+```nasm
 gcd: PUSH (LP) 
 PUSH (BP) 
 MOVE (SP, BP) 
@@ -146,7 +146,7 @@ POP (LP)
 JMP (LP)
 ```
 
-Answer the following questions. **For convenience sake, although all data is in 32-bit format, for this answer, we omit the leading zeroes**.
+Answer the following questions. **For convenience sake, although all data is in 32-bit format we omit writing the leading zeroes**.
 
 1. The program above contains the instruction `LD(BP,-16,R1)`. Explain what the compiler was trying to do when it generated this instruction.
 	<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
@@ -182,7 +182,7 @@ Answer the following questions. **For convenience sake, although all data is in 
 	</p></div><br>
 	
 During execution of `gcd(28,70)`, the Beta processor is halted and the contents of portions of the stack are found to contain the following: 
-<img src="https://dropbox.com/s/z954a19n78di4od/1.png?raw=1" class="center_seventy" >
+<img src="https://dropbox.com/s/z954a19n78di4od/1.png?raw=1" class="center_thirty" >
 
 
 
@@ -221,7 +221,7 @@ During execution of `gcd(28,70)`, the Beta processor is halted and the contents 
 **Part 1:**
 
 As a warm-up, hand assemble the following instructions:
-```cpp
+```nasm
 ADDC(R1,128,R7)
 LD(R11,-4,R0)
 ST(R0,-4,R11)
@@ -253,8 +253,8 @@ int f(int x, int *y){
 	}
 	return a;
 }
-```
-```cpp
+
+
 int main(int argc, char **argv){
 	int z[5]={1,2,3,4,5};
 	int r1, r2;
@@ -263,8 +263,12 @@ int main(int argc, char **argv){
 }  
 ```  
 
-Refering to the C code in Part 2, state whether each of the following is stored in the: stack, data, or code part of the memory. Disclaimer: this question is a **legacy question**, you will not be tested how C compiles as this is not part of our current syllabus.
-> Note: *Data* is a space in the memory dedicated for global variables, static variables (initialized and uninitialized).  Dynamically allocated variables are stored in another segment called the "heap". Memory management is also language specific, but the general idea is pretty much the same. We will learn more about this in the next term.
+Refering to the C code in Part 2, state whether each of the following is stored in the: stack, data, or code part of the memory. 
+
+{: .warning-title}
+> Disclaimer
+> 
+> This question is a **legacy question**, you will not be tested how C compiles as this is not part of our current syllabus. In short, **data** is a space in the memory dedicated for global variables, static variables (initialized and uninitialized).  Dynamically allocated variables are stored in another segment called the **heap**. Memory management is also language specific, but the general idea is pretty much the same. We will learn more about this in the next term.
 
 * Where is **z** stored?
 * Where is **x** stored?
@@ -287,7 +291,7 @@ Value of `R1` = 6 and `R2`= 8 after the program finishes.
 **Part 3:**
 
 When the above C code is compiled into byte code, it is equivalent to the following assembly code:  
-```cpp
+```nasm
 f: 
  PUSH(LP)  
  PUSH(BP)  
