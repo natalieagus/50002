@@ -3,7 +3,7 @@ layout: default
 permalink: /fpga/fpga_4
 title: FPGA Tutorial for Adults
 description: Getting Good with FPGA - Building Beta CPU
-parent: Labs
+parent: FPGA
 nav_order:  4
 ---
 
