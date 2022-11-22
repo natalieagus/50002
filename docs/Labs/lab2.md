@@ -183,15 +183,15 @@ We use `clk1`, `clk2`, and `clk3` to create signals for `A`, `B`, and `Ci` using
 Then we plug in `A`, `B`, and `Ci` signals to FA, getting its output: `S`, and `Co`. Afterwards, we plot them (the last 5 lines). 
 
 
-Once you are somewhat confident that your circuit works properly, go to `lab2_submit.jsim` and click the **Fast Transient Analysis** (not device level simulation!) button. A window as such should pop up:
+Once you are somewhat confident that your circuit works properly, go to `lab2_submit.jsim` and click the **Fast Transient Analysis** (not device level simulation!) button. A waveform window as such should pop up:
 
-<img src="/50002/assets/contentimage/lab2/12.png"  class="center_seventy"/>
+<img src="/50002/assets/contentimage/lab2/12.png"  class="center_full"/>
 
 This plot represents all signals produced by `s[4:0]` given various `a` and `b` values as time progresses (time is the x-axis). You can **zoom** in to see the plots better. 
 
 Click on the top right hand corner green tick button to check if all values are as expected. If everything works correctly, this window should pop up and brings you happiness:
 
-<img src="/50002/assets/contentimage/lab2/13.png"  class=" center_center_fiftyseventy"/>
+<img src="/50002/assets/contentimage/lab2/13.png"  class=" center_fifty"/>
 
 
 ## Appendix
