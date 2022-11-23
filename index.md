@@ -43,7 +43,7 @@ We ask you to be patient and **bear with us** as you go through this Term. Lots 
 Before you read this section, see our [roadmap](https://natalieagus.github.io/50002/notes/roadmap) first.
 
 From that you can obtain the bird's eyeview of 50.002. Then let's briefly go through possible job prospects that you can have should you equip yourselves with the knowledge of **how computers work**.
-> Yes, there are more jobs out there than web developers.
+> *Yes, there are more Computer Science related jobs out there than web developers*.
 
 ### System Security Engineer
 If you're planning to take [50.044](https://istd.sutd.edu.sg/undergraduate/courses/50044-system-security) in the future and work in system security related field, pay great attention to 50.002. As a system security expert, you're expected to protect the security of users, individual computer systems, including personal computers, smart cards and embedded platforms. You **need** to know how digital systems are made and work down to the hardware level before even beginning to protect it. 
