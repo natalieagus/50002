@@ -23,7 +23,7 @@ Singapore University of Technology and Design
 This Lab will be used in 50.005 Computer System Engineering in Term 5 (Week 1-2) to gently bridge your knowledge from the last 3 weeks of 50.002 to the first 2 weeks of 50.005. You are free to read around if you'd like to get started early. 
 
 ## Starter Code
-Download the following file and place it inside your `/50002/` folder. This is what you're going to open and modify or study for this lab, then submit (unless otherwise stated):
+The following files inside your `/50002/` folder are what you're going to use for this lab:
 - [`tinyOS_submit.uasm` ](https://www.dropbox.com/s/t6zhpy30cx0o8fe/tinyOS_submit.uasm?dl=1)
 
 
@@ -46,11 +46,11 @@ The lecture notes on [Virtual Machine](https://natalieagus.github.io/50002/notes
 ## Introduction: The Tiny OS
 `tinyOS_submit.uasm` is a program that implements a minimal Kernel supporting a simple **timesharing** system. Use BSim to load this file, assemble, and then run `tinyOS_submit.uasm`. The following prompt should appear in the console pane of the BSim Display Window:
 
-<img src="/50002/assets/contentimage/lab6/1.png"  class=" center_full"/>
+<img src="/50002/assets/contentimage/lab6/1.png"  class=" center_seventy"/>
 
 As you type, each character is echoed to the console and when you hit **return** the whole sentence is translated into Pig Latin and written to the console:
 
-<img src="/50002/assets/contentimage/lab6/2.png"  class=" center_full"/>
+<img src="/50002/assets/contentimage/lab6/2.png"  class=" center_seventy"/>
 
 The hex number `0x000711BC` written out in the screenshot above as part of the prompt is a **count** of the **number of times** one of the user-mode processes (**Process 2**) has been **scheduled** while you typed in the sentence or leave the program idling.
 
@@ -302,7 +302,8 @@ P0Stack:
 
 `Send()` implements a **bounded buffer synchronized** through the use of **semaphores** . It is not required for you now to fully understand what *semaphore* is, except that it is a service provided by the Kernel so that two isolated processes running on a Virtual Machine can **communicate** and **synchronize**. 
 
-> You can read Appendix 1 below for more details. 
+{: .note}
+You can read [Appendix 1](https://natalieagus.github.io/50002/lab/lab6#appendix-1-kernel-semaphore) below for more details. 
 
 ```cpp
 
@@ -439,7 +440,7 @@ Recall that **only user-mode programs** can be **interrupted**. Interrupts signa
 
 The original `tinyOS_submit.uasm` prints out “Illegal interrupt” and then halts if a mouse interrupt is received:
 
-<img src="/50002/assets/contentimage/lab6/3.png"  class=" center_full"/>
+<img src="/50002/assets/contentimage/lab6/3.png"  class=" center_seventy"/>
 
 **Change** this behavior by:
 1. Adding an interrupt handler that **stores** the click information in a new kernel memory location and then,
@@ -463,7 +464,7 @@ Insert a `.breakpoint` instruction right before the `JMP(XP)` at the end of your
 
 If things are working correctly the simulation should **stop** at the breakpoint and you can **examine** the kernel memory location where the mouse info was stored to verify that it is correct. In the sample below, we name the memory location as `Mouse_State`, and the value in the red box signifies the coordinates of the mouse click made in the console pane. 
 
-<img src="/50002/assets/contentimage/lab6/4.png"  class=" center_full"/>
+<img src="/50002/assets/contentimage/lab6/4.png"  class=" center_seventy"/>
 
 Continuing execution (click the “Run” button in the toolbar at the top of the window) should return to the interrupted program. **When you’re done remember to remove the breakpoint.**
 
@@ -502,19 +503,19 @@ SVC_UUO:
 ### Testing Your Implementation
 Once your `Mouse()` implementation is complete, add a `Mouse()` instruction **just after P2Start**.  If things are working correctly, this user-mode process should now **hang** and `Count3` should **not** be incremented even if you type in several sentences (i.e., the prompt should always be “00000000>”).  
 
-<img src="/50002/assets/contentimage/lab6/5.png"  class=" center_full"/>
+<img src="/50002/assets/contentimage/lab6/5.png"  class=" center_seventy"/>
 
 * Now click the mouse once over the console pane and then type more sentences  
 * The prompt should read `00000001>`
 
-<img src="/50002/assets/contentimage/lab6/6.png"  class=" center_full"/>
+<img src="/50002/assets/contentimage/lab6/6.png"  class=" center_seventy"/>
 
 When you are done, remember to **remove** the `Mouse()` instruction you added.
 
 ## Task C: Add fourth user-mode process P3 that reports mouse clicks
 In this task, we would have to **modify** the **kernel** to add support for a **fourth user-mode process**. Add user-mode code for the new process that calls `Mouse()` and then prints out a message of the form:
 
-<img src="/50002/assets/contentimage/lab6/7.png"  class=" center_full"/>
+<img src="/50002/assets/contentimage/lab6/7.png"  class=" center_seventy"/>
 
 Each click message **should** appear on its own line (i.e., it should be preceded and followed by a newline character). You can use `WrMsg()` and `HexPrt()` to send the message; see the code for **Process 0 **for an example of how this is done. Write the instruction for P3 below P2:
 
@@ -562,7 +563,7 @@ Using **semaphores**, **coordinate** the operation of the user-mode processes so
 ### Testing your implementation
 Start typing in a **sentence**, then **click** the mouse. The click message should be printed **after** the translation and the following prompt has been printed.
 
-<img src="/50002/assets/contentimage/lab6/8.png"  class=" center_full"/>
+<img src="/50002/assets/contentimage/lab6/8.png"  class=" center_seventy"/>
 
 ### Hints
 
@@ -648,7 +649,11 @@ P0RdCh: GetKey()		| read next character,
     ...
 ```
 
-> Fun fact: P0 doesn't have to confirm until P3 has finished its one round of execution (printing of x, y coordinate) before restarting to `BR(P0Read)` because we **know** that the round robin scheduler will **surely** execute P3 for a round once P0 calls `Yield()`. Thanks to the scheduler's round robin policy and long enough quanta dedicated for each process, there won't be the undesirable condition whereby P0 `Yield()` immediately returns execution to P0 again, **before** P3 resumes and then `Signal` the `MouseSemaphore` the **second** time (because it hasn't been cleared by P3 that hasn't progressed!). 
+{: .new-title}
+> Fun Fact
+> 
+> P0 doesn't have to confirm until P3 has finished its one round of execution (printing of x, y coordinate) before restarting to `BR(P0Read)` because we **know** that the round robin scheduler will **surely** execute P3 for a round once P0 calls `Yield()`. Thanks to the scheduler's round robin policy and long enough quanta dedicated for each process, there won't be the undesirable condition whereby P0 `Yield()` immediately returns execution to P0 again, **before** P3 resumes and then `Signal` the `MouseSemaphore` the **second** time (because it hasn't been cleared by P3 that hasn't progressed!). 
+>
 > If this happens, `MouseSemaphore` value might accidentally be increased to 2 and we might have a future `Click` message printed out at the same time **while** typing some messages at the console, violating the condition required for this Part 4. To fix this, we might have to check that a new mouse click is *actually made* in `CheckMouseH` by storing the *previous* history of mouse click at all times. 
 
 If all three parts are working correctly the appropriate message should be printed out whenever you click the mouse over the console pane as shown in the screenshot above. You may find it necessary to use `.breakpoint` commands to debug your user-mode code.
@@ -656,7 +661,7 @@ If all three parts are working correctly the appropriate message should be print
 ## Appendix 1: Kernel Semaphore
 A semaphore is a **variable**  used to **control access** to a common resource by multiple processes. In other words, it is a **variable** controlled by the Kernel to allow two or more processes to synchronise. The semaphore can be seen as a generalised mutual exclusion (mutex) lock. It is implemented at the kernel level, meaning that its **execution** (`WaitH`, and `SignalH`) requires the **calling** process to change into the **kernel** mode. 
 
-> In its simplest form, it can be thought of as a data structure that contains a guarded integer that represents the number of resources available for the pool of processes that require it. 
+In its simplest form, it can be thought of as a data structure that contains a guarded integer that represents the number of resources available for the pool of processes that require it. 
 
 The instructions in `tinyOS_submit.uasm` that implements Semaphore is as follows:
 
@@ -678,4 +683,5 @@ SignalH:LD(r3,0,r0)		| Fetch semaphore value.
 	BR(I_Rtn)		| and return to user.
 ```
 
-> Note that unlike real-world applications, this lab does **not** actually have **physical** separation in the **memory** between Kernel  and User **space** in memory (although it has dual **mode** to prevent interrupts in Kernel mode) due to simplification. We can still perform a `LD` to Kernel variables in User Mode in this lab. 
+{: .note}
+Unlike real-world applications, this lab does **not** actually have **physical** separation in the **memory** between Kernel  and User **space** in memory (although it has dual **mode** to prevent interrupts in Kernel mode) due to simplification. We can still perform a `LD` to Kernel variables in User Mode in this lab. 

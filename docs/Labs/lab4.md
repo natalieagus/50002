@@ -21,7 +21,7 @@ Modified by: Kenny Choo, Natalie Agus, Oka Kurniawan (2021)
 # Lab 4: Beta Processor
 {: .no_toc}
 ## Starter Code
-The following files inside your `/50002/` folder are what you're going to open and modify or study for this lab, then submit (unless otherwise stated):
+The following files inside your `/50002/` folder are what you're going to use for this lab:
 - `lab4_pc.jsim` 
 - `lab4_regfile.jsim` 
 - `lab4_control.jsim` 
@@ -34,35 +34,32 @@ The lecture notes on [Building the Beta CPU](https://natalieagus.github.io/50002
 
 This lab will reinforce your understanding on how the Beta CPU works, and all data paths for OP, OPC, Control Transfer, and Memory Access operations. 
 
-<br>Related sections in [Designing an Instruction Set](https://natalieagus.github.io/50002/notes/instructionset):	
+Related sections in [Designing an Instruction Set](https://natalieagus.github.io/50002/notes/instructionset):	
 * [The Von Neumann model](https://natalieagus.github.io/50002/notes/instructionset#the-von-neumann-model): CPU, Memory, IO
 * [Programmability of a Von Neumann Machine](https://natalieagus.github.io/50002/notes/instructionset#programmability-of-a-von-neumann-machine): basics of programmable control systems (using control signals like `OPCODE` to activate different data paths in the Beta CPU). 
 * [Beta ISA Format](https://natalieagus.github.io/50002/notes/instructionset#beta-isa-format)
 * [Beta Instruction Encoding](https://natalieagus.github.io/50002/notes/instructionset#beta-instruction-encoding)
 
 
-<br> Related sections in [Beta CPU](https://natalieagus.github.io/50002/notes/betacpu):	
+Related sections in [Beta CPU](https://natalieagus.github.io/50002/notes/betacpu):	
 * [OP datapath](https://natalieagus.github.io/50002/notes/betacpu#op-datapath)
 * [OPC datapath](https://natalieagus.github.io/50002/notes/betacpu#opc-datapath)
 * [Memory Access datapath](https://natalieagus.github.io/50002/notes/betacpu#memory-access-datapath)
-* This lab will help you to familiarise yourselves with all Beta instructions
 * [Control transfer datapath](https://natalieagus.github.io/50002/notes/betacpu#control-transfer-datapath)
 * [Exception handling](https://natalieagus.github.io/50002/notes/betacpu#exception-handling)
-* By the end of this lab, you should know how to build the schematic of the entire Beta CPU based on its [ISA](https://natalieagus.github.io/50002/notes/instructionset#the-beta-instruction-set-architecture) (blueprint) 
-
-
+* By the end of this lab, you should know how to build the schematic of the entire Beta CPU based on its [ISA](https://natalieagus.github.io/50002/notes/instructionset#the-beta-instruction-set-architecture) (blueprint). This lab will also help you to familiarise yourselves with core Beta instructions
 
 ## Introduction
-The goal of this lab is to build a fully functional Beta Processor. It is a huge device, and to make it more bearable we shall modularise it into four major components:
+The goal of this lab is to build a **fully** functional Beta Processor and simulate it in JSim. It is a huge device, and to make it more bearable we shall modularise it into four major components:
 * (Task A) **PC** Unit: containing the PC register and all necessary components to support the ISA
 * (Task B) **REGFILE** Unit: containing 32 32-bit registers, WASEL, and RA2SEL mux, plus circuitry to compute Z
 * (Task C) **CONTROL** Unit: containing the ROM and necessary components to produce all Beta control signals given an `OPCODE`
-* **ALU+WDSEL** Unit: containing the ALU and WDSEL, ASEL, BSEL muxes (given to you)
+* **ALU+WDSEL** Unit: containing the ALU and WDSEL, ASEL, BSEL muxes (**given to you**)
 * (Task D) Assemble the entire Beta CPU using all subcomponents above
  
-<img src="/50002/assets/contentimage/lab4/beta_lab.png"  class="center_full"/><br>
+<img src="/50002/assets/contentimage/lab4/beta_lab.png"  class="center_seventy"/><br>
 
-The signals indicated in red refers to external **`INPUT`** to our Beta, supplied by the **Memory Unit** defined in our checkoff file:`lab4checkoff.jsim`. The signals indicated in yellow<>  refers to our Beta's **`OUTPUT`** to the **Memory Unit** defined in `lab4checkoff.jsim`.  
+The signals indicated in red refers to external **`INPUT`** to our Beta, supplied by the **Memory Unit** defined in our checkoff file:`lab4checkoff.jsim`. The signals color coded in yellow refers to our Beta's **`OUTPUT`** to the **Memory Unit** defined in `lab4checkoff.jsim`.  
 
 ## Bus unit
 There exist the `bus` unit inside `stdcell.jsim` that will come in handy to duplicate certain nodes for you with a different name. It is defined as such:
@@ -80,45 +77,48 @@ Xbusab a[31:0] b[31:0] bus
 Then you can utilise node `b[31:0]` afterwards. 
 
 ## Memory Unit
-The Memory Unit is broken into two sections for clarity: 
+The Memory Unit is broken into two sections for ease of explanation: 
 * the **instruction** memory and 
 * the **data** memory
 
+{: .note}
+In practice, the *data* segment of the memory and the *instruction* segment of the memory is only **logically** segregated. They still share the same physical device we know as **RAM**. 
+
 The schematic of the memory unit is as follows:
 
-<img src="/50002/assets/contentimage/beta/memory.png"  class="center_full"/>
+<img src="/50002/assets/contentimage/beta/memory.png"  class="center_seventy"/>
 
-These two will be supplied by `lab4checkoff.jsim`, a file inside `50002`; you just need to set the Beta to supply the appropriate signals to each unit.
+These two will be supplied by `lab4checkoff.jsim`. You just need to set the Beta such that it can supply the appropriate signals to each port of the memory unit.
 
 ### Instruction Memory
-The input to the instruction memory supplied by the Beta is: **instruction address** (`ia[31:0]`). This contains the address of the next instruction to be executed.
+The input to the instruction memory supplied by the Beta is: **instruction address** (`ia[31:0]`). This contains the address of the next instruction to be executed. This will cause the instruction memory to output the following for the Beta CPU: **instruction data** (`id[31:0]`) from `lab4checkoff.jsim`.
 
-This will cause the instruction memory to output the following for the Beta CPU: **instruction data** (`id[31:0]`) from `lab4checkoff.jsim`.
-
-> Note: After the appropriate **propagation delay**, the memory unit will supply the Beta with the contents of its memory location specified by `ia[31:0]`.
+{: .note}
+The instruction memory unit receives input address `ia[31:0]` and outputs instruction data `id[31:0]`. After a certain **propagation delay**, the memory unit will supply the Beta with the **contents** of address `ia[31:0]`. We symbolically illustrate this **content** as `Mem[EA]`, where `EA = ia[31:0]`.
 
 ### Data Memory
 The Beta CPU can **read** or **write** to the Data Memory. 
 
-#### Read
+#### Memory Read
 The Data Memory Unit receives **two** input from the Beta:
 * data memory address (`ma[31:0]`). This is the address of data memory location where we want to read (load) from or write (store) to. 
 * memory output enable (`moe`).  This is set to `1` when the Beta wants the memory to **fetch** the data  at the memory location specified by `ma[31:0]`. Otherwise it is set to `0`, causing `ma[31:0]` to be `0x00000000`.
 
 When the Beta wants to **load** (read) data from the memory, it needs to supply the above two things to the memory unit. Supplying the two things above will cause the data memory to output the following for the Beta CPU: memory read data (`mrd[31:0]`). 
 
-#### Write
+#### Memory Write
 If the Beta wants to **store** (write) data to the memory, it needs to supply two signals to the data memory:
 * memory write data (`mwd[31:0]`) -- the 32-bit data to be stored to the memory unit, and,
 * memory write enable (`wr`).  Set to 1 when the Beta wants to store into the memory location specified by `ma[31:0]` at the **end** of the current cycle.  
 
-<div class="orangebox"><div class="custom_box">**WARNING**: for this lab, the signal `wr`  should **ALWAYS** have a **valid** logic value (either 1 or 0) at the **RISING** edge of `CLK` otherwise the contents of the memory will be erased. If signal `wr` is 1, the data  `mwd[31:0]` will be written into memory at the **end** of the current cycle. Otherwise, the data at` mwd[31:0]` will be **ignored**.  </div></div><br>
+{: .warning}
+For this lab, the signal `wr`  should **ALWAYS** have a **valid** logic value (either 1 or 0) at the **RISING** edge of `CLK` otherwise the contents of the memory will be erased. If signal `wr` is 1, the data  `mwd[31:0]` will be written into memory at the **end** of the current cycle. Otherwise, the data at` mwd[31:0]` will be **ignored**. 
 
 ## Task A: PC Unit
 ### PC Unit Schematic
 Here is the suggested PC Unit schematic that you can implement. Note the input and output nodes. This will come in very useful when creating the modules for your `jsim subckt`. 
 
-<img src="/50002/assets/contentimage/lab4/pcunit.png"  class="center_full"/>
+<img src="/50002/assets/contentimage/lab4/pcunit.png"  class="center_seventy"/>
 
 
 Open `lab4_pc.jsim` and observe that the module interface has been provided for you. **We follow the PC Unit Schematic** above for the declaration of the input and output (they are **positional arguments**):
@@ -131,16 +131,24 @@ Your job is to fill up each blanks between `BEGIN ANSWER` and `END ANSWER`
 
 ### PCSEL Multiplexers
 
-<div class="yellowbox"><div class="custom_box">**Write** your answer in the space provided under `5-to-1 PCSEL mux` section inside `lab4_pc.jsim`. Read on to find out how to fill it up.</div></div><br>
+{: .highlight}
+**Write** your answer in the space provided under `5-to-1 PCSEL mux` section inside `lab4_pc.jsim`. Read on to find out how to fill it up.
 
-<img src="/50002/assets/contentimage/lab4/3.png"  class=" center_fifty"/>
+```cpp
+**** 5-to-1 PCSEL mux *****
+* BEGIN ANSWER
 
-The 32-bit 5-to-1 PC multiplexer (mux) selects the value to be loaded into the PC at the next rising edge of the clock depending on the `PCSEL` control signal. 
 
-Since the parts library doesn’t have any 5-input multiplexers, you will have to construct the logic that selects the next PC using other components (mux2 and mux4) and adjust the control logic accordingly (see schematic above).  
+* END ANSWER
+****************************
+```
 
-<div class="redbox"><div class="custom_box">Be **VERY VERY CAREFUL**  when plugging in the control signals for mux4 unit. Please read the stdcell documentation **CAREFULLY** (see Appendix 3)</div></div><br>
-In short, here's the declaration:
+The 32-bit 5-to-1 PC mux **selects** the value to be loaded into the `PC` register at the next rising edge of the clock depending on the `PCSEL` control signal. Since the parts library `stdcell.jsim` does <span style="color:red; font-weight: bold;">not</span> have any 5-input multiplexers, you will have to construct the logic that selects the next PC using other components (mux2 and mux4) and adjust the control logic accordingly (see schematic above).  
+
+{: .warning}
+Be **very very careful**  when plugging in the control signals for mux4 unit. Please read the `stdcell` documentation **carefully** (see [Appendix 3](https://natalieagus.github.io/50002/lab/lab4#appendix-3-standard-cells))
+
+In particular, the documentation of `mux4`:
 ```cpp
 Xid S0 S1 d0 d1 d2 d3 z mux4
 ```
@@ -153,28 +161,30 @@ S0 | S1| z
 0 | 1 | d2
 1 | 1 | d3
 
-Hence the **order** of `S0` and `S1` matters very much. <>
+The **order** of `S0` and `S1` input signals matters very much. 
 
-`XAdr` and `ILLOP` in the Beta diagram in our lecture notes represents constant addresses used when the Beta services an interrupt (triggered by IRQ) or executes an instruction with an illegal or unimplemented opcode.  For this assignment assume that XAdr=8 and ILLOP=4 and we will make sure the first three locations of main memory contain BR instructions that branch to code which handle reset, illegal instruction traps and interrupts respectively. In other words, the first three locations of main memory contain:
+#### `XAddr` and `ILLOP`
+`XAddr` and `ILLOP` in the Beta diagram in our lecture notes represents **constant** addresses used when the Beta services an interrupt (triggered by IRQ) or executes an instruction with an illegal or unimplemented opcode.  For this assignment assume that `XAddr = 0x00000008` and `ILLOP = 0x00000004` and we will make sure the first three locations of main memory contain BR instructions that branch to code which handle reset, illegal instruction traps and interrupts respectively. In other words, the first three locations of main memory contain:
 
 ```cpp
 Mem[0x80000000] = BR(reset_handler)
 Mem[0x80000004] = BR(illop_handler)
 Mem[0x80000008] = BR(interrupt_handler)
 ```
-We have given you the nodes for constant `0x80000008`  and `0x80000004` called `XAddr[31:0]` and `ILLOP[31:0]`, please utilise that. 
+We have given you the nodes for constant `0x80000008`  and `0x80000004` called `XAddr[31:0]` and `ILLOP[31:0]`. **Please utilise that**. 
 
-You also have to force the lower two bits of inputs going into the PC+4, PC+4+4*SXTC, and JT port of the mux to be `0b00`. You can do this with appropriate wiring.<>
+#### Lower Two Bits of `PC`
+You also have to **force** the lower two bits of inputs going into the PC+4, PC+4+4*SXTC, and JT port of the mux to be `0b00` because the memory is byte addressable but the Beta obtains one word of data/instructions at each clock cycle. You can do this with appropriate wiring.
 
 Example: 
 
 ```cpp
 Xmux_unit control_signal#32 input_signal_a[31:2] 0#2 input_signal_b[31:2] 0#2 output_signal[31:0] mux2
 ```
-* In the example above, we create 32 bit 2-to-1 multiplexers, so we have to duplicate the `control_signal` 32 times 
-* Instead of using all 32 bits of  `input_signal_a[31:0]`, we can just use the upper 30 bits, and append the lower two bits with two zeros using `0#2`. 
-* The same is done for the second input signal to the mux: `input_signal_b[31:2] 0#2`
-* JSim will automatically segment each signals to create 32 2-to-1 muxes. It is equivalent to writing:
+
+In the example above, we create 32 bit 2-to-1 multiplexers, so we have to **duplicate** the `control_signal` 32 times  Instead of using all 32 bits of  `input_signal_a[31:0]`, we can just use the upper 30 bits, and append the lower two bits with two zeros using `0#2`. 
+
+The same is done for the second input signal to the mux: `input_signal_b[31:2] 0#2`. JSim will **automatically segment** each signals to create 32 2-to-1 muxes. It is equivalent to writing:
 
 ```cpp
 Xmux_unit31 control_signal input_signal_a31 input_signal_b31 output_signal31 mux2
@@ -187,42 +197,76 @@ Xmux_unit0 control_signal 0 0 output_signal0 mux2
 
 
 ### RESET Multiplexer
-<div class="yellowbox"><div class="custom_box">**Write** your answer in the space provided under `RESET mux` and `PC Register` sections inside `lab4_pc.jsim`. Read on to find out how to fill it up.</div></div><br>
+{: .highlight}
+**Write** your answer in the space provided under `RESET mux` and `PC Register` sections inside `lab4_pc.jsim`. Read on to find out how to fill it up.
 
-<img src="/50002/assets/contentimage/lab4/4.png"  class=" center_fifty"/>
+```cpp
+**** RESET mux *************
+* BEGIN ANSWER
 
-Remember we need to add a way to set the PC to zero on `reset`.  We use a two-input 32-bit mux that selects `0x80000000` when the RESET signal is asserted, and the output of the PCSEL mux when RESET is not asserted. We will use the RESET signal to force the PC to zero during the first clock period of the simulation.
 
-We have given you the nodes for constant `0x80000000` called `RESET[31:0]`, please utilise that. 
+* END ANSWER
+****************************
+```
+
+Remember that we need to add a way to set the PC to zero on `RESET`.  We use a two-input 32-bit mux that selects `0x80000000` when the RESET signal is asserted, and the output of the PCSEL mux when RESET is not asserted. We will use the RESET signal to force the PC to zero during the first clock period of the simulation.
+
+We have given you the nodes for constant `0x80000000` called `RESET[31:0]`, **please utilise that**. 
 
 ### 32-bit PC Reg
-The PC is a separate **32-bit register** that can be built using the `dreg` component from the standard cell library<>, see [Appendix](https://natalieagus.github.io/50002/lab/lab4#appendix-3-standard-cells).  
-> You should include hardware for the **bottom two bits** of the PC even though they are always 0 anyway in this simulation; this will make debugging traces easier to interpret.
+The PC is a separate **32-bit register** that can be built using the `dreg` component from the standard cell library, see [Appendix](https://natalieagus.github.io/50002/lab/lab4#appendix-3-standard-cells).  
 
 
 ### Increment-by-4
-Conceptually, the increment-by-4 circuit is just a 32-bit adder with one input wired to the constant 4. You can reuse the 32-bit FA circuit that you have created in Lab 3. However, it is possible to build a much smaller circuit if you design an adder **optimized** knowing that one of its inputs is `0x00000004` constant.
+Conceptually, the increment-by-4 circuit is just a 32-bit adder with one input wired to the constant 4. You can reuse the 32-bit FA circuit that you have created in Lab 3. However, it is possible to build a much **smaller** circuit if you design an adder **optimized** knowing that one of its inputs is `0x00000004` constant.
 
 We have given you the nodes for constant `4` called `FOUR[31:0]` and implemented the add-4 unit for you as follows in `lab4_pc.jsim`: 
 
-Please study the code as it will help you implement the shift-add-4 unit next.
+```cpp
+**** add-4 unit ************ 
+Xincrement4 ia[31:0] FOUR[31:0] increment_4[31:0] adder32
+* set supervisor bit to be equal to ia31
+XPC41 ia31 PC_431 bus 
+XPC42 increment_4[30:2] PC_4[30:2] bus 
+* set lower to bits to 0b00
+XPC43 0#2 PC_4[1:0] bus 
+****************************
+```
+
+Please study the unit above as it will help you implement the shift-add-4 unit next.
 
 ### Shift-and-add
 The branch-offset adder **adds** PC+4 to the 16-bit offset encoded in the instruction `id[15:0]`. You can use `adder32` again here. The offset is **sign-extended** to 32-bits and multiplied by 4 in preparation for the addition.  Both the sign extension and shift operations can be done with appropriate wiring—no gates required!
 
-<div class="yellowbox"><div class="custom_box">**Write** your answer in the space provided under `shift add unit` inside `lab4_pc.jsim`.</div></div><br>
+{: .highlight}
+**Write** your answer in the space provided under `shift add unit` inside `lab4_pc.jsim`.
 
-<img src="/50002/assets/contentimage/lab4/6.png"  class=" center_fifty"/>
+```cpp
+**** shift add unit ********
+* BEGIN ANSWER
+
+
+* END ANSWER
+****************************
+```
 
 ### Supervisor Bit
-The high-order bit of the PC is dedicated as the **“Supervisor”** bit (see section 6.3 of the **Beta Documentation**). The `LDR` instruction **ignore** this bit, treating it as if it were *zero*. The `JMP` instruction is allowed to clear the Supervisor bit or leave it unchanged, but cannot set it, and **no other instructions may have any effect on it**. Only `reset`, `exceptions` and `interrupts` cause the Supervisor bit to become **set**.<> This has the following implications for your Beta design:
+The high-order bit of the PC is dedicated as the **supervisor** bit (see section 6.3 of the **Beta Documentation**). 
+* The `LDR` instruction **ignores** this bit, treating it as if it were *zero*. 
+* The `JMP` instruction is allowed to clear the Supervisor bit or leave it unchanged, but <span style="color:red; font-weight: bold;">cannot set</span> it, 
+* **No other instructions may have any effect on it**
 
-1. `0x80000000`, `0x80000004` and `0x80000008` are loaded into the PC during `reset`, `ILLOP` and `IRQ` respectively.   This is the only way that the supervisor bit gets set.  Note that after reset the Beta starts execution in supervisor mode.
+{: .note-title}
+> Setting the Supervisor Bit
+>  
+> Only `RESET`, `exceptions` (`ILLOP`) and `interrupts` (`XAddr`) cause the Supervisor bit of the Beta `PC` to become **set**.
+
+This has the following three implications for your Beta design:
+
+1. `0x80000000`, `0x80000004` and `0x80000008` are loaded into the PC during `reset`, `ILLOP` and `IRQ` respectively.   This is the only way that the supervisor bit gets set.  Note that after `reset` the Beta starts execution in supervisor mode. This is equivalent to when a regular computer is starting up.
 
 2. **Bit 31** of the `PC+4` and **branch-offset** inputs to the **PCSEL** mux should be connected to the highest bit of the PC Reg output, `ia31`; i.e., the value of the supervisor bit doesn’t change when executing most instructions. 
     * Please ensure your answer in shift-and-add section takes this into account. 
-    * We gave a sample implementation under add-4 unit:
-    <img src="/50002/assets/contentimage/lab4/7.png"  class=" center_full"/>
 
 3. You’ll have to add logic to **bit 31** of the `JT` input to the **PCSEL** mux to ensure that JMP instruction can only **clear** or **leave the supervisor bit unchanged**. Here’s a table showing the new value of the supervisor bit after a `JMP` as function of JT31 and the current value of the supervisor bit (PC31): <br>
 
@@ -232,10 +276,19 @@ The high-order bit of the PC is dedicated as the **“Supervisor”** bit (see s
     1 | 0 | 0
     1 | 1 | 1
 
-<div class="yellowbox"><div class="custom_box">**Write** your answer in the space provided under `JMP mux` inside `lab4_pc.jsim`.</div></div><br>
 
-<img src="/50002/assets/contentimage/lab4/8.png"  class=" center_fifty"/>
+{: .highlight}
+**Write** your answer in the space provided under `JMP mux` inside `lab4_pc.jsim`.
 
+```cpp
+***** JMP mux *************
+* BEGIN ANSWER
+
+
+
+* END ANSWER
+****************************
+```
 
 ### Testing 
 You can uncomment the headers inside `lab4_pc.jsim` and run the **gate-level** simulation:
@@ -248,21 +301,29 @@ You can uncomment the headers inside `lab4_pc.jsim` and run the **gate-level** s
 
 You should see the plot window pops up as such:
 
-<img src="/50002/assets/contentimage/lab4/9.png"  class="center_full"/>
+<img src="/50002/assets/contentimage/lab4/9.png"  class="center_seventy"/>
 
 Study the output to ensure that you have the intended signals. You can click on the tick button, and if there's no error you shall see the following verification window for the pc unit: 
 
-<img src="/50002/assets/contentimage/lab4/20.png"  class=" center_seventy"/>
+<img src="/50002/assets/contentimage/lab4/20.png"  class=" center_fifty"/>
 
-<div class="redbox"><div class="custom_box">It is VERY IMPORTANT to test all **datapath** before proceeding to the next section, that is to fix all bugs pertaining to your pc unit if any.</div></div><br>
+{: .important}
+It is **very important** to test all PC **datapath** before proceeding to the next section, that is to fix all bugs pertaining to your pc unit if any. 
 
-**IMPORTANT:** comment back the header and the test instructions after you are done. The file `lab4_pc.jsim` should only contain the definition of your pc unit subcircuit only. We will import it later inside `lab4_beta.jsim`.<>
+After you're satisfied with testing, comment out the headers and the test instructions. The file `lab4_pc.jsim` should only contain the definition of your pc unit subcircuit **only**. We will import it later inside `lab4_beta.jsim`.
+
+```cpp
+* .include "nominal.jsim"
+* .include "stdcell.jsim"
+* .include "lab4_adder.jsim"
+* .include "lab4_testpc.jsim"
+```
 
 ## Task B: REGFILE Unit
 ### REGFILE Unit Schematic
 Here is the suggested REGFILE Unit schematic that you can implement. 
 
-<img src="/50002/assets/contentimage/lab4/regfileunit.png"  class="center_full"/>
+<img src="/50002/assets/contentimage/lab4/regfileunit.png"  class="center_seventy"/>
 
 
 Open `lab4_regfile.jsim` and observe that the module interface has been provided for you. **We follow the Regfile Unit Schematic** above for the declaration of the input and output (they are **positional arguments**):
@@ -271,16 +332,26 @@ Open `lab4_regfile.jsim` and observe that the module interface has been provided
 ...
 .ends
 ```
-Again, your job is to fill up each blanks between `BEGIN ANSWER` and `END ANSWER`
+
+{: .note}
+Your job is to fill up each blanks between `BEGIN ANSWER` and `END ANSWER`
 
 ### WASEL and RA2SEL Mux
 You will need a mux controlled by `RA2SEL` to select the **correct** address for the B read port. The 5-bit 2-to-1 **WASEL** multiplexer determines the write address for the register file. 
 
 We have provided the address for `Reg XP` for you, that is the 5-bit constant `30`: `0b11110`. Please utilise that in your implementation. 
 
-<div class="yellowbox"><div class="custom_box">**Write** your answer in the space provided under `RA2SEL mux` and `WASEL mux` sections inside `lab4_regfile.jsim`.</div></div><br>
+{: .highlight}
+**Write** your answer in the space provided under `RA2SEL mux` and `WASEL mux` sections inside `lab4_regfile.jsim`.
 
-<img src="/50002/assets/contentimage/lab4/10.png"  class=" center_fifty"/>
+```cpp
+**** RA2SEL mux ************
+* BEGIN ANSWER
+
+
+* END ANSWER
+****************************
+```
 
 
 
@@ -295,32 +366,74 @@ Xregfile
 + $memory width=32 nlocations=31
 ```
 
-> See **Appendix 2** at the end of this handout for a more complete description of how to use the `$memory` JSim component.
+See [**Appendix 2**](https://natalieagus.github.io/50002/lab/lab4#appendix-2-using-the-jsim-memory-component) at the end of this handout for a more complete description of how to use the `$memory` JSim component.
 
 Note that the memory component **doesn’t know** that location `31` of the register file should always read as `0x00000000`, so you’ll have to add **additional** logic around the memory that makes this happen.  You can use **muxes** or `ANDs` to force the register data for each read port to “0” when the port address = 0b11111 (i.e., R31). 
 
-<div class="yellowbox"><div class="custom_box">**Write** your answer in the space provided under `Regfile memory` section inside `lab4_regfile.jsim`.</div></div><br>
+{: .highlight}
+**Write** your answer in the space provided under `Regfile memory` section inside `lab4_regfile.jsim`.
 
-<img src="/50002/assets/contentimage/lab4/11.png"  class=" center_fifty"/>
+```cpp
+**** Regfile memory ********
+* BEGIN ANSWER
 
-> Recall that the RA1/RD1 port output producing `ra[31:0]` is also wired directly to the `JT` inputs of the `PCSEL` multiplexer (remember we already  **force** the low-order two bits to zero and to add supervisor bit logic to bit 31 in the PCSEL Unit, so we do not have to do it here anymore).
+* END ANSWER
+
+* R31 checker for RD1 
+* BEGIN ANSWER
+
+* END ANSWER
+
+* RD1 mux
+* BEGIN ANSWER
+
+* END ANSWER
+
+* R31 checker for RD2 
+* BEGIN ANSWER
+
+* END ANSWER
+
+* RD2 mux
+* BEGIN ANSWER
+
+* END ANSWER
+****************************
+```
+
+The `RA1`/`RD1` port output producing `ra[31:0]` is also wired directly to the `JT` inputs of the `PCSEL` multiplexer. Remember we already  **force** the low-order two bits to zero and to add supervisor bit logic to bit 31 in the PCSEL Unit, so we do not have to do it here anymore.
 
 ### Z Logic
 Z logic can be added to the output of the RA1/RD1 port of the register file memory above. The value of Z must be `0b1` if and only if `ra[31:0]` is `0x00000000`. Z must be `0b0` otherwise. This is exactly a `NOR` logic, but we do not have a 32-bit NOR gate. Hence we can use  a fan-in OR gates and place an `inverter` at the end as shown in the schematic above. 
 
-<div class="yellowbox"><div class="custom_box">**Write** your answer in the space provided under `Z computation` section inside `lab4_regfile.jsim`.</div></div><br>
+{: .highlight}
+**Write** your answer in the space provided under `Z computation` section inside `lab4_regfile.jsim`.=
 
-<img src="/50002/assets/contentimage/lab4/12.png"  class=" center_fifty"/>
+```cpp
+**** Z computation *********
+* BEGIN ANSWER
+
+* END ANSWER
+****************************
+```
 
 ### mwd[31:0] Output
 Finally, connect the output of the `RD2` port of the register file memory above to produce `mwd[31:0]`. You can use the `bus` connection provided inside `stdcell` as explained above. For instance, if the output of the `RD2` port of your regfile memory is called `rb[31:0]`, we can create `mwd[31:0]` as such:
+
 ```cpp
 Xmwdout mwd[31:0] rb[31:0] bus
 ```
 
-<div class="yellowbox"><div class="custom_box">**Write** your answer in the space provided under `mwd[31:0] output` section inside `lab4_regfile.jsim`.</div></div><br>
+{: .highlight}
+**Write** your answer in the space provided under `mwd[31:0] output` section inside `lab4_regfile.jsim`.
 
-<img src="/50002/assets/contentimage/lab4/13.png"  class=" center_fifty"/>
+```cpp
+**** mwd[31:0] output ******
+* BEGIN ANSWER
+
+* END ANSWER
+****************************
+```
 
 
 ### Testing 
@@ -332,19 +445,20 @@ You can uncomment the headers inside `lab4_regfile.jsim` and run the gate-level 
 .include "lab4_testregfile.jsim"
 ```
 
-<img src="/50002/assets/contentimage/lab4/23.png"  class="center_full"/>
+<img src="/50002/assets/contentimage/lab4/23.png"  class="center_seventy"/>
 
 If everything works as expected, you should see the following message when you click the green tick:
 
-<img src="/50002/assets/contentimage/lab4/24.png"  class=" center_seventy"/>
+<img src="/50002/assets/contentimage/lab4/24.png"  class=" center_fifty"/>
 
-**IMPORTANT:** comment back the header and the test instructions after you are done. The file `lab4_regfile.jsim` should only contain the definition of your pc unit subcircuit only. We will import it later inside `lab4_beta.jsim`.<>
+{: .important}
+Comment out the header and the test instructions after you are done. The file `lab4_regfile.jsim` should only contain the definition of your pc unit subcircuit only. We will import it later inside `lab4_beta.jsim`.
 
 ## Task C: CONTROL Unit
 ### CONTROL Unit Schematic
 Here is the suggested **CONTROL** Unit schematic that you can implement. 
 
-<img src="/50002/assets/contentimage/lab4/controlunit.png"  class="center_full"/>
+<img src="/50002/assets/contentimage/lab4/controlunit.png"  class="center_seventy"/>
 
 Open `lab4_control.jsim` and observe that the module interface has been provided for you. **We follow the Control Unit Schematic** above for the declaration of the input and output (they are **positional arguments**):
 ```cpp
@@ -352,10 +466,13 @@ Open `lab4_control.jsim` and observe that the module interface has been provided
 ...
 .ends
 ```
-Again, your job is to fill up each blanks between `BEGIN ANSWER` and `END ANSWER`
+
+Fill up each blanks between `BEGIN ANSWER` and `END ANSWER`
 
 ### ROM
-The control logic should be tailored to generate the control signals your logic requires, which may differ from what’s shown in the diagram above. Note that a ROM can be built by specifying a memory with just one read port; the ROM contents are set up using the contents keyword in the netlist description of the memory. For example, the netlist for a ROM that uses the `opcode` field of the instruction to lookup the values for 18 control signals (they are **positional!**) looks like:
+The control logic should be tailored to generate the control signals your logic requires, which may differ from what’s shown in the diagram above. Note that a ROM can be built by specifying a memory with just **one** read port; the ROM contents are set up using the contents keyword in the netlist description of the memory. 
+
+For example, the netlist for a ROM that uses the `opcode` field of the instruction to lookup the values for 18 control signals (they are **positional!**) looks like:
 
 ```cpp
 Xrom vdd 0 0 id[31:26] 			// one read port
@@ -367,7 +484,7 @@ Xrom vdd 0 0 id[31:26] 			// one read port
 + )
 ```
 
-Some of the signals can connect directly to the appropriate logic, e.g., `ALUFN[5:0]` can connect directly to the **ALUFN** inputs of your **ALU**. That's why they're named directly to match the terminals of `CONTROL_UNIT` subckt. The rest with the `_cu` or `_temp` suffix needs further processing. 
+Some of the signals can connect directly to the appropriate logic, e.g., `ALUFN[5:0]` can connect directly to the **ALUFN** inputs of your **ALU**. That's why they're named directly to match the terminals of `CONTROL_UNIT` subckt. The rest with the `_cu` or `_temp` suffix illustrated in the diagramneeds further processing. 
 
 We have already provided you with the bare Control Unit ROM as shown in the schematic above. Further processing for control signals: `PCSEL, wasel, wdsel, werf, wr` are needed. 
 
@@ -393,11 +510,20 @@ BNE `011110` | 1 | `000`
 
 If you are using a ROM-based implementation, you can make `Z` an additional address input to the ROM (**doubling** its size).  A more economical implementation might use external logic to modify the value of the PCSEL signals as defined in our schematic above. 
 
-<div class="yellowbox"><div class="custom_box">**Write** your answer in the space provided under `Branch check` section inside `lab4_control.jsim`.</div></div><br>
+{: .highlight}
+**Write** your answer in the space provided under `Branch check` section inside `lab4_control.jsim`.
 
-<img src="/50002/assets/contentimage/lab4/15.png"  class=" center_fifty"/>
+```cpp
+**** Branch check **********
+* BEGIN ANSWER
 
-Please follow the schematic slowly and ensure that you understand that the branch-check unit implements the logic shown in the table above. 
+
+* END ANSWER
+****************************
+```
+
+{: .note}
+Please follow the schematic carefully and ensure that you understand that the branch-check unit implements the logic shown in the table above. 
 
 
 
@@ -413,9 +539,17 @@ When `IRQ` signal is 1 and the Beta is in “user mode” (PC31 is zero), an **i
 
 Note that you’ll also want to add logic to **reset** the Beta; at the very least when **reset** is asserted you’ll need to force the PC to `0x80000000` and ensure that `WR` is 0 (to prevent your initialized main memory from being overwritten).
 
-<div class="yellowbox"><div class="custom_box">**Write** your answer in the space provided under `IRQ handling` section inside `lab4_control.jsim`.</div></div><br>
+{: .highlight}
+**Write** your answer in the space provided under `IRQ handling` section inside `lab4_control.jsim`.
 
-<img src="/50002/assets/contentimage/lab4/16.png"  class=" center_fifty"/>
+```cpp
+****  IRQ handling *********
+* BEGIN ANSWER
+
+
+* END ANSWER
+****************************
+```
 
 ### Testing 
 Similarly, you can uncomment the headers and the given test signals inside `lab4_control.jsim` and run the test jig to make sure that the datapath works properly. 
@@ -426,13 +560,14 @@ Similarly, you can uncomment the headers and the given test signals inside `lab4
 .include "lab4_testcontrol.jsim"
 ``` 
 
-<img src="/50002/assets/contentimage/lab4/21.png"  class="center_full"/>
+<img src="/50002/assets/contentimage/lab4/21.png"  class="center_seventy"/>
 
 The following window should show up when everything in the control unit works as expected:
 
 <img src="/50002/assets/contentimage/lab4/22.png"  class=" center_seventy"/>
 
-**IMPORTANT:** comment back the header and the test instructions after you are done. The file `lab4_control.jsim` should only contain the definition of your pc unit subcircuit only. We will import it later inside `lab4_beta.jsim`.<>
+{: .important}
+Comment out the header and the test instructions after you are done. The file `lab4_control.jsim` should only contain the definition of your pc unit subcircuit only. We will import it later inside `lab4_beta.jsim`.<>
 
 
 ## ALU + WDSEL Unit
@@ -441,9 +576,9 @@ This unit is fairly straightforward to implement. **In fact, it is so easy and w
 ### ALU+WDSEL Unit Schematic
 Here is the suggested **ALU + WDSEL** Unit schematic that we implement: 
 
-<img src="/50002/assets/contentimage/lab4/aluwdselunit.png"  class="center_full"/>
+<img src="/50002/assets/contentimage/lab4/aluwdselunit.png"  class="center_seventy"/>
 
-Open `lab4_aluwdsel.jsim` and observe that the module interface has been provided for you. **We follow the ALU+WDSEL Unit Schematic** above for the declaration of the input and output (they are **positional arguments**):
+Open `lab4_aluwdsel.jsim` and observe that the module interface has been provided for you. We follow the ALU+WDSEL Unit Schematic above for the declaration of the input and output (they are **positional arguments**):
 ```cpp
 .subckt ALUWDSEL_UNIT ia31 id[15:0] ra[31:0] rb[31:0] PC_4[31:0] PC_4_SXTC[31:0] ASEL BSEL ALUFN[5:0] WDSEL[1:0] mrd[31:0] ma[31:0] WDSEL_OUT[31:0]
 
@@ -460,7 +595,8 @@ Also, **Bit 31** of the branch-offset input to the ASEL mux should be set to `0`
 ### WDSEL Mux
 **Bit 31** of the PC+4 input to the **WDSEL** mux should connect to the highest bit of the PC Reg output, `ia31`, saving the current value of the supervisor whenever the value of the PC is saved by a branch instruction or trap.
 
-> Please study the circuitry inside `lab4_aluwdsel.jsim` before proceeding to the next section.
+{: .note}
+Please study the circuitry inside `lab4_aluwdsel.jsim` before proceeding to the next section.
 
 ## Task D: Assemble Completed Beta
 Open `lab4_beta.jsim` and notice that it should have these .include statements:
@@ -495,11 +631,12 @@ and the following subcircuit definition:
 .ends
 ```
 
-<div class="yellowbox"><div class="custom_box">Write your answer in the space given. The answer in this file should literally just contain **FOUR LINES**, each line to initialize each unit. The input and output of each unit declared in its `.subckt` definition is designed nicely such that they fit as-is. Refer to the block-diagram under the Introduction section if you forgot the interface for each subcircuit.  </div></div><br>
+{: .highlight}
+Write your answer in the space given. The answer in this file should literally just contain **FOUR LINES**, each line to initialize each unit. The input and output of each unit declared in its `.subckt` definition is designed nicely such that they fit as-is. Refer to the block-diagram under the Introduction section if you forgot the interface for each subcircuit. 
 
 The complete schematic of the Beta is (you might want to open this image in another tab):
 
-<img src="/50002/assets/contentimage/lab4/betalab.png"  class="center_full"/>
+<img src="/50002/assets/contentimage/lab4/betalab.png"  class="center_seventy"/>
 
 Note the addition of the IRQ (interrupt request) input. Your design will be tested at a cycle time of 100ns.  The reset signal is asserted for the first clock edge and then deasserted to start the program running.  This implementation of the Beta subcircuit has the following terminals:
 
@@ -554,28 +691,37 @@ Virq irq 0 pwl(0ns 0v, 1001ns 0v,
 +)
 ```
 
+{: .new-title}
+> Beta Tester Source Code
+> 
 > The source for the test program can be found [here](https://www.dropbox.com/s/sjtm2mxsu1pc65o/lab4.uasm?dl=1), a file called `lab4.uasm.` You don't need to read this if you don't wish to. 
 
-The checkoff program attempts to exercise all the features of the Beta architecture. If this program completes successfully, it enters a two-instruction loop at locations `0x3C4` and `0x3C8`.  It reaches `0x3C4` for the first time on cycle `277`.
+The **checkoff** program attempts to exercise all the features of the Beta architecture. If this program completes successfully, it enters a two-instruction loop at locations `0x3C4` and `0x3C8`.  It reaches `0x3C4` for the first time on cycle `277`.
 
 `lab4checkoff.jsim` will **VERIFY** that the instruction address (`ia[31:0]`), memory address (`ma[31:0]`),  memory write data (`mwd[31:0]`) and the memory control signals (`moe`, `wr`) have the correct values each cycle.  
 
 You should see a window popped up as such after running the simulation. 
 Click the green tick on the upper right corner to see if you get all supposed output. 
-<img src="/50002/assets/contentimage/lab4/18.png"  class=" center_full"/>
+<img src="/50002/assets/contentimage/lab4/18.png"  class=" center_seventy"/>
 
 If all expected values are correct, you should see the following window pops up after you click the tick sign:
-<img src="/50002/assets/contentimage/lab4/19.png"  class=" center_seventy"/>
+<img src="/50002/assets/contentimage/lab4/19.png"  class=" center_fifty"/>
 
-**IMPORTANT**: Ensure that you comment out any custom test circuit in the other `lab4_[component].jsim` files and comment out all header includes. Else you will be met with **duplicate device name** error if you attempt to import the same module twice in two different .jsim files.<>
+{: .important}
+Ensure that you comment out any custom test circuit in the other `lab4_[component].jsim` files and comment out all header includes. Else you will be met with **duplicate device name** error if you attempt to import the same module twice in two different .jsim files.
 
+### Rising Clock Edge Check
+The check is made just before the **rising** clock edge, i.e., after the current instruction has been fetched and executed, but just **before** the result is written into the register file.  Note that `ma[31:0]` is the **output** of the ALU, so these checks can verify that all instructions are working correctly.  
 
-The check is made just before the rising clock edge, i.e., after the current instruction has been fetched and executed, but just before the result is written into the register file.  Note that `ma[31:0]` is the **output** of the ALU, so these checks can verify that all instructions are working correctly.  
+{: .warning}
+If you get a verification error, check the instruction that has just finished executing at the time reported in the error message – the Beta has executed that instruction incorrectly for some reason. Trace back which datapath caused the error. For instance, if ia[31:0] gives the error, that gives you a clue that maybe your PC datapath is incorrect, or whatever instruction that comes **before** this was executed incorrectly.
 
-<div class="redbox"><div class="custom_box">If you get a verification error, check the instruction that has just finished executing at the time reported in the error message – the Beta has executed that instruction incorrectly for some reason. Trace back which datapath caused the error. For instance, if ia[31:0] gives the error, that gives you a clue that maybe your PC datapath is incorrect, or whatever instruction that comes **before** this was executed incorrectly.</div></div><br>
+### Final Tips
+Almost **nobody’s** design executes the checkoff program correctly the first time!  To understand what went wrong, you’ll need to retrieve the error code and compare it with the table given at the beginning of `lab4.uasm`.  The table will indicate at what label the program detected an error; for example if the error code is 0x288, then the checkoff program detected an error in the code just before label “bool1” in the program.  Looking through lab4.uasm, you can locate the “bool1” label and see what results the program expected.  
 
-> Almost **nobody’s** design executes the checkoff program correctly the first time!  To understand what went wrong, you’ll need to retrieve the error code and compare it with the table given at the beginning of `lab4.uasm`.  The table will indicate at what label the program detected an error; for example if the error code is 0x288, then the checkoff program detected an error in the code just before label “bool1” in the program.  Looking through lab4.uasm, you can locate the “bool1” label and see what results the program expected.  Now look at the waveforms of your Beta executing the same code and you can usually track down the error in your design.
-> It will take some effort to debug your design, but stick with it!  If you’re stuck, get help from your fellow students or the course staff.  When it works, congratulate yourself: the design of a complete CPU at the gate-level is a significant accomplishment.  Of course, now the fun is just beginning—there are undoubtedly many ways you can make improvements, both large and small.  Good luck!
+Now look at the waveforms of your Beta executing the same code and you can usually track down the error in your design.
+
+It will take some considerable effort to debug your design, but stick with it!  If you’re stuck, get help from your fellow students or the course staff.  When it works, congratulate yourself: the design of a complete CPU at the gate-level is a significant accomplishment.  Of course, now the fun is just beginning—there are undoubtedly many ways you can make improvements, both large and small.  Good luck!
 
 ## Appendix 1: The cycle time of your Beta
 If your design contains any **registers** or **memories**, JSim will report the “minimum observed setup time” at the end of each simulation run.   
@@ -586,9 +732,13 @@ If your design contains any **registers** or **memories**, JSim will report the 
 For a Beta design, the **reported** device is almost **always** the register file. This makes sense since the last signals to settle should be `WDATA[31:0]`, the data inputs to the register file.
 
 Since the tests are run with a clock period of **100ns**, this tells us that we could have reduced the clock period to (100 – 85.235 + tMEM SETUP)ns and still expect the test program to run **correctly**.  We can look at the waveform plots to determine what instruction had just finished executing at time 5.2us – that’s the instruction whose execution we’d have to speed up in order to reduce the cycle time of our Beta. 
-> Typically the worst-case execution time comes from either CMPxx or LD instructions (why?).
 
-Using this technique, investigate where the **critical** path(s) are in your Beta design and work to make them as short as possible.  To get the **fastest** possible cycle time you’ll probably need to implement some of your control signals (e.g., `RA2SEL`) using logic gates rather than a ROM.  Given that we might have to make **three memory accesses** in a **single** cycle (instruction fetch + register file access + data memory access = 10ns total assuming a 1024-location main memory), we won’t be able to do better than **100Mhz** clock rates unless we **pipeline** our implementation.
+{: .new-title}
+> CMP and LD
+>
+> Typically the **worst**-case execution time comes from either CMPxx or LD instructions (why?).
+
+Using this technique, investigate where the **critical** path(s) are in your Beta design and work to make them as short as possible.  To get the **fastest** possible cycle time you’ll probably need to implement some of your control signals (e.g., `RA2SEL`) using logic gates rather than a ROM.  Given that we might have to make **three memory accesses** in a **single** cycle (instruction fetch + register file access + data memory access = 10ns total assuming a 1024-location main memory), we won’t be able to do better than **100Mhz** clock rates unless we [**pipeline** our Beta implementation](https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c15/).
 
 
 
@@ -602,10 +752,11 @@ Xid ports… $memory width=w nlocations=nloc options…
 ```
 
 The **width** and **nlocations** properties **must** be supplied: 
-* w specifies the width of each memory location in bits and must be between 1 and 32. 
-* nloc specifies the number of memory locations and must be between 1 and $$2^{20}$$.  
+* `w` specifies the width of each memory location in bits and must be between 1 and 32. 
+* `nloc` specifies the number of memory locations and must be between 1 and $$2^{20}$$.  
 
-> All the ports of a memory access the same internal storage, but each port operates independently.  
+{: .important}
+All the ports of a memory access the same internal storage, but each port operates **independently**.  
 
 Each port specification is a list of nodes:
 
@@ -613,7 +764,7 @@ Each port specification is a list of nodes:
 oe clk wen a[naddr-1] … a[0] d[w-1] … d[0]
 ```
 
-where:
+Where:
 * `oe` is the **output enable** input for a **READ** port.  
   * When 1, data is driven onto the data pins;  
   * When 0, the output pins are not driven by this memory port.  
@@ -636,7 +787,7 @@ where:
 * `d[w-1] … d[0]` are the **data inputs/tristate outputs**, listed **most** significant bit first.
 
 
-By specifying one of the following options it is possible to specify the initial contents of a memory (if not specified, the memory is initialized to all X’s):
+By **specifying** one of the following options it is possible to specify the initial contents of a memory (if not specified, the memory is initialized to all X’s):
 
 * `file="filename"`: The memory is initialized, location-by-location, from bytes in the file.  
   * Data is assumed to be in a **binary** **little-endian format**, using `ceiling(w/8)` bytes of file data per memory location.  
@@ -644,57 +795,54 @@ By specifying one of the following options it is possible to specify the initial
   * When all the bits in a memory location have been filled, any bits remaining in the current file byte are *discarded* and then the process **continues** with the **NEXT** memory location.  
     * In particular, the “.bin” files produced by BSim can be used to initialize JSim memories.  
 
-  > For example, the following statement would create a **1024**-location 32-bit memory with **three** ports: 2 **READ** ports and 1 one **WRITE** port.  The memory is initialized from the BSim output file “foo.bin”.
+  {: .new-title}
+  > Example
+  > 
+  > The following statement would create a **1024**-location 32-bit memory with **three** ports: 2 **READ** ports and 1 one **WRITE** port.  The memory is initialized from the BSim output file “foo.bin”.
 
-```cpp
-Xmem
-+ vdd 0 0 ia[11:2] id[31:0]    // (read) instruction data
-+ vdd 0 0 ma[11:2] mrd[31:0]   // (read) program data (LDs)
-+ 0 clk wr ma[11:2] mwd[31:0]  // (write) program data (STs)
-+ $memory width=32 nlocations=1024
-+ file="foo.bin"
-```
-
+  ```cpp
+  Xmem
+  + vdd 0 0 ia[11:2] id[31:0]    // (read) instruction data
+  + vdd 0 0 ma[11:2] mrd[31:0]   // (read) program data (LDs)
+  + 0 clk wr ma[11:2] mwd[31:0]  // (write) program data (STs)
+  + $memory width=32 nlocations=1024
+  + file="foo.bin"
+  ```
 
 * `contents=( data… )`
   * The memory is initialized, **location**-by-**location**, from the data values given in the list.  
   * The **least significant bit** (bit 0) of a value is used to initialize bit 0 of a memory location, bit 1 of a value is used to initialize bit 1 of a memory location, and so on.  
   * For example, to enter the short test program ADDC(R31,1,R0); ADDC(R31,2,R1); ADD(R0,R1,R2) one might specify:
 
-```cpp
-Xmem
-+ vdd 0 0 ia[11:2] id[31:0]    // (read) instruction data
-+ vdd 0 0 ma[11:2] mrd[31:0]   // (read) program data (LDs)
-+ 0 clk wr ma[11:2] mwd[31:0]  // (write) program data (STs)
-+ $memory width=32 nlocations=1024
-+ contents=(0xC01F0001 0xC03F0002 0x80400800)
-```
+  ```cpp
+  Xmem
+  + vdd 0 0 ia[11:2] id[31:0]    // (read) instruction data
+  + vdd 0 0 ma[11:2] mrd[31:0]   // (read) program data (LDs)
+  + 0 clk wr ma[11:2] mwd[31:0]  // (write) program data (STs)
+  + $memory width=32 nlocations=1024
+  + contents=(0xC01F0001 0xC03F0002 0x80400800)
+  ```
 
 
 Initialized memories are **useful** for modeling ROMs (e.g., for **control logic**) or simply for loading programs into the main memory of your Beta.  
 
-> One caveat: if the memory has a **write** port and sees a **rising** clock edge with its **write enable** not equal to 0 and with one or more of the address bits undefined (i.e., with a value of “X”), the *entire* contents of the memory will also become undefined.  
-> So you should **make sure that the write enable for a write port is set to 0 by your reset logic before the first clock edge**, or else your initialization will be useless.
+{: .important-title}
+> Caveat
+> 
+> The memory has a **write** port and sees a **rising** clock edge with its **write enable** not equal to 0 and with one or more of the address bits undefined (i.e., with a value of “X”), the *entire* contents of the memory will also become undefined. Hence you should **make sure that the write enable for a write port is set to 0 by your reset logic before the first clock edge**, or else your initialization will be useless.
 
 The following options can be used to specify the electrical and timing parameters for the memory.  For this lab, these should NOT be specified and the default values should be used.
-
 * `tcd`=seconds: the contamination delay in seconds.  Default value = 20ps.
-
 * `tpd`=seconds: the propagation delay in seconds.  This is how long it takes for changes in the address or output enable terminals to be reflected in the values driven by the data terminals.  Default value is determined from the number of locations:
-
-    <img src="/50002/assets/contentimage/lab4/1.png"  class=" center_seventy"/><br>
-
+    <img src="/50002/assets/contentimage/lab4/1.png"  class=" center_fourty"/><br>
 * `tr`=seconds_per_farad: the output rise time in seconds per farad of output load.  Default value is 1000, i.e., 1 ns/pf.
-
 * `tf`=seconds_per_farad: the output fall time in seconds per farad of output load.  Default value is 500, i.e., 0.5 ns/pf.
-
 * `cin`=farads: input terminal capacitance in farads.  Default value = 0.05pf.
-
 * `cout`=farads: output terminal capacitance in farads.  Default value = 0pf (additional tPD due to output terminal loading is already included in default tPD).
 
 The size of a memory is determined by the sum of the sizes of the various memory building blocks shown in the following table:
 
-<img src="/50002/assets/contentimage/lab4/2.png"  class="center_full"/>
+<img src="/50002/assets/contentimage/lab4/2.png"  class="center_fifty"/>
 
 ## Appendix 3: Standard Cells
 
