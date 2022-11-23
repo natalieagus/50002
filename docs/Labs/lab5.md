@@ -20,8 +20,9 @@ Modified by: Kenny Choo, Natalie Agus, Oka Kurniawan (2021)
 
 # Lab 5: Assembly Language
 {: .no_toc}
+
 ## Starter Code
-The following files inside your `/50002/` folder are what you're going to open and modify or study for this lab, then submit (unless otherwise stated):
+The following files inside your `/50002/` folder are what you're going to use for this lab:
 - `lab5_submit.uasm`
 
 ## Related Materials
@@ -34,12 +35,12 @@ The lecture notes on [Stack and Procedures](https://natalieagus.github.io/50002/
   - Converting C code into Beta assembly with procedure contract
   - In particular, to implement callee entry sequence and exit sequence
 
-By the end of this lab, you should have a deeper understanding in how compilers work in transforming *functions* in high-level languages into *procedures* in assembly, and linking them together during runtime. 
+By the end of this lab, you should have a deeper understanding in how compilers work in transforming **functions** in high-level languages into **procedures** in assembly, and linking them together during runtime. 
 
 ## Introduction
 In this lab you will have the opportunity to write your first Beta assembly language program. Your task is to write a scoring subroutine for the game of **“Moo”**, a numeric version of [Mastermind®](https://en.wikipedia.org/wiki/Mastermind_(board_game)). 
 
-In **Moo**, you try to guess the secret 4-digit number. 
+In **Moo**, you will try to guess the secret 4-digit number. 
 * Each guess is **scored** with a count of **“bulls”** and **“cows”**. 
 * Each **“bull”** means that one of the digits in the guess matches both the **value** and **position** of a digit in the secret number. 
 * Each **“cow”** is a correctly guessed digit but its position in the guess *doesn’t match* the position in the secret. 
@@ -70,16 +71,18 @@ In addition to this handout, there are some other useful documents that will hel
 ## Making Moo
 
 The expected subroutine (function) should take **two** arguments: 
-1. the **secret** word: `a`  (32 bits)
-2. the **test** word: `b` (32 bits)
+1. A **secret** word: `a`  (32 bits)
+2. A **test** word: `b` (32 bits)
  
 
-The secret and test words contain four **4-bit digits** packed into the **LOW** order 16 bits of the word.  For example, if secret word was `1234`, it would be encoded as `a = 0x00001234` where “0x” indicates hexadecimal (base 16) notation.  If the guess word was 1344, it will be encoded as `b = 0x00001344`. 
-> Even though 4 bits are used to encode each digit (`0` to `F`), the words will only contain the digits `0` through `9` per digit. 
+The secret and test words contain four **4-bit digits** packed into the **LOW** order 16 bits of the word.  
+
+For example, if secret word was `1234`, it would be encoded as `a = 0x00001234` where “0x” indicates hexadecimal (base 16) notation.  If the guess word was 1344, it will be encoded as `b = 0x00001344`. Even though 4 bits are used to encode each digit (`0` to `F`), the words will only contain the digits `0` through `9` per digit. 
 
 It should **return** an **integer** encoding the number of bulls and cows as (16*bulls) + cows. 
 - For instance if `a = 0x00001234` and `b = 0x00001344`, 
-- The return value is `0x00000021` 
+- This results in 2 **bulls** and 1 **cow**
+- Hence, the return value is `0x00000021` 
 - The last four bits represents the value of **cows**, and bit 4 to 8 represents the value of **bulls**. 
 
 ### An Approach in C
@@ -143,12 +146,12 @@ int count_bull_cows(int a, int b) {
 ## Testing Moo
 The test jig uses our **usual** convention for subroutine calls: 
 * The two arguments are pushed on the stack in **REVERSE** order (i.e., the first argument is the last one pushed on the stack) and,
-* Control is **transferred** to the *beginning* of the Moo subroutine, leaving the **return** address in register `LP`. 
-* The result should be returned in `R0`.
+* Control is **transferred** to the **beginning** of the Moo subroutine, leaving the **return** address in register `LP`. 
+* The result (bulls and cows values) should be returned in `R0`.
 
 Your code should use the following template. It is already given in `lab5_submit.uasm`. Be sure to **include** the **last TWO lines** since they **allocate** space for the stack used by the test jig when calling your program:
 
-```cpp
+```nasm
 .include beta.uasm
 .include lab5checkoff.uasm
 
@@ -193,25 +196,26 @@ StackBase:
 	.=.+0x1000		| Reserve space for stack
 ```
 
-> Note: you are recommended to use the registers above for each variables. 
+{: .note}
+You are recommended to use the registers above for each variables. 
 
 Using BSim, assemble your subroutine using the assemble tool. 
 
-<img src="/50002/assets/contentimage/lab5/1.png"  class=" center_full"/>
+<img src="/50002/assets/contentimage/lab5/1.png"  class=" center_seventy"/>
 
 If the assembly completes without errors, BSim will bring up the display window and you can execute the test jig (which will call your subroutine) using the **run**  or **single-step**  tools:
 
-<img src="/50002/assets/contentimage/lab5/2.png"  class=" center_full"/>
+<img src="/50002/assets/contentimage/lab5/2.png"  class=" center_seventy"/>
 
 The test jig will try 32 different test values and type out any error messages on the tty console at the bottom of the display window.  Successful execution will result in the following printout at the BSim console:
 
-<img src="/50002/assets/contentimage/lab5/3.png"  class=" center_full"/>
+<img src="/50002/assets/contentimage/lab5/3.png"  class=" center_seventy"/>
 
-Unlike in JSim, **DO NOT** press the green tick. The **success** checkoff message is sufficient to know that your program works fine for submission. If there exist an error, such message will be printed out:
+Unlike in JSim, <span style="color:red; font-weight: bold;">DO NOT</span> press the green tick. The **success** checkoff message is sufficient to know that your program works fine for submission. If there exist an error, such message will be printed out:
 
-<img src="/50002/assets/contentimage/lab5/4.png"  class=" center_full"/>
+<img src="/50002/assets/contentimage/lab5/4.png"  class=" center_seventy"/>
 
-It will give you a clue that the bug probably exist at the compoutation of **bulls**, and you can trace your code by adding `.breakpoint` so that the execution will pause at that line:
+The error message will give you a clue about your bug. The example above shows that the output should be `0` bulls and `0` cows, but your code computes `4` bulls instead. You can trace your code by adding `.breakpoint` along your computation of bulls so that the execution will pause at that line. For instance, adding such `.breakpoint` will pause the beta execution there.  You can then **inspect** each register content and stack content slowly by running each instructions thereafter **step by step**:
 
 ```cpp
 	SHLC(R1,4,R1)		|bulls = bulls << 4
@@ -219,16 +223,14 @@ It will give you a clue that the bug probably exist at the compoutation of **bul
 	ADD(R1,R2,R0)		|bulls + cow = R0
 ```
 
-...and you can **inspect** each register content and stack content slowly by running each instructions afterwards **step by step**:
-
-<img src="/50002/assets/contentimage/lab5/5.png"  class=" center_full"/>
+<img src="/50002/assets/contentimage/lab5/5.png"  class=" center_seventy"/>
 
 ## Implementation and Debug Notes
 
-### .breakpoint
+### `.breakpoint`
 If you want to examine the execution state of the Beta at a particular point in your program, insert the assembly directive `.breakpoint` at the point where you want the simulation to **halt**.   You can **restart** your program by clicking the **run** button, or you can click **single-step button** to step through your program **instruction-by-instruction**.  
 
-> You can insert as many `.breakpoints` in your program as you would like.
+You can insert as many `.breakpoints` in your program as you would like. This works the same way as breakpoints in [regular debuggers](https://code.visualstudio.com/docs/python/debugging).
 
 ### Usage of Registers
 If your subroutine uses registers other than `R0`, remember that they have to be **restored** to their **ORIGINAL** values **before** returning to the caller. The usual technique is to `PUSH` their value onto the stack right after the instructions of the entry sequence and `POP` those values back into the registers in the **REVERSE** order just before starting the exit sequence.
@@ -245,8 +247,7 @@ Assuming you have used the subroutine entry sequence shown above, the **FIRST** 
 
 
 ### Beta Macros
-The instruction macro `CMOVE(constant,Rx)` is useful for **loading** small numeric constants into a register.  
-> For example, assuming that the variable `mask` has been assigned to `R11`, the C statement `mask = 0xF` can be implemented in a single instruction:` CMOVE(0xF,R11)`.
+The instruction macro `CMOVE(constant,Rx)` is useful for **loading** small numeric constants into a register.  For example, assuming that the variable `mask` has been assigned to `R11`, the C statement `mask = 0xF` can be implemented in a single instruction:` CMOVE(0xF,R11)`.
 
 ### If Statements
 The `CMP` instructions and `BEQ/BNE` are useful for compiling C “if” statements.  For example, assuming `atry` has been assigned to `R7`, the C fragment:
@@ -257,9 +258,9 @@ if (atry != 0xF) {
     }
 ```
 
-...can be compiled into the following instruction sequence:
+It can be compiled into the following instruction sequence:
 
-```cpp
+```nasm
       CMPEQC(R7,0xF,R0)     | R0 is 1 if atry==0xF, 0 otherwise
       BNE(R0,endifatry)             | so branch if R0 is not zero
       … statements if the condition is true…
@@ -280,7 +281,7 @@ for (inits; tests; afters) {
 
 Note that the body of the loop is **executed** as long as the `tests` are `true`. The above can be compiled into the following instruction sequence:
 
-```cpp
+```nasm
       … code for inits …
       BR(endfor32) | go to the test 
 for32:
@@ -296,7 +297,6 @@ endfor32:
 Here's a brief summary of C operators:
 
 ```cpp
-
 =	assignment
 ==	equality test (use CMPEQ, CMPEQC)
 !=	inequality test (use CMPEQ, CMPEQC, reverse sense of branch)
