@@ -23,17 +23,17 @@ Singapore University of Technology and Design
 {: .no_toc}
 This document introduces the steps on how we can create **basic** **sequential logic modules**, that is any module that utilises `dff` (D flip-flops). 
 
-*You are recommended to read this document only after you have understood  Week 3 materials, namely the **synchronous logic** and **FSM**.* 
+{: .note}
+You are recommended to read this document only after you have understood  Week 3 materials, namely the **synchronous logic** and **FSM**.
 
 The Alchitry Au board comes with **100MHz** on-board clock. When used properly, connections defined in the `always` block of sequential logic modules is set by default to **receive new set of values** at *every* **positive clock edge**. It is imperative for dynamic discipline to be satisfied within a clock period. Designs that fail to pass timing but are used anyway will result in unpredictable output. 
 
 ## Sequential Logic Module
 
-<br><img src="https://dropbox.com/s/7ynz6v0w3u95zud/counter.png?raw=1" class="center_seventy"  ><br>
+<br><img src="https://dropbox.com/s/7ynz6v0w3u95zud/counter.png?raw=1" class="center_fifty"  ><br>
 
 Above is a sample schematic of a simple sequential logic module. Assuming the D Flip-Flop `R1` is triggered at each positive clock edge, then:
 * The combinational logic unit applies some function $$f$$ to its input `QR1`.
-
 * At the first cycle, the value loaded to `R1` is `INIT`, and hence at the signal at `CL out` = $$f($$`INIT`$$)$$
 * At the second cycle, we apply $$f$$ again, resulting in `CL out` = $$f(f($$`INIT`$$))$$, and so on. 
 * We need to ensure that dynamic discipline is obeyed, meaning that $$t1$$ and $$t2$$ timing constraints are satisfied. 
