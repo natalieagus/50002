@@ -1,7 +1,7 @@
 ---
 layout: default
 permalink: /fpga/programmable_machine
-title: Creating a Programmable Machine
+title: Designing a Programmable Datapath 
 description: This document shows an example on how you can create a programmable data path for a simple game idea that might be useful for your 1D project. 
 parent: FPGA
 nav_order:  5

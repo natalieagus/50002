@@ -21,9 +21,9 @@ Singapore University of Technology and Design
 
 # Debugging the FPGA
 {: .no_toc}
-This document is written to guide you with debugging the FPGA using Alchitry Lab's debug feature. That said, there's nothing wrong using outputs such as the LEDS or 7-segment display to debug. Use which ever method you prefer.
+This document is written to guide you with debugging the FPGA using **Alchitry Lab's builtin debug feature**. That being said, there's nothing wrong using outputs such as the LEDS or 7-segment display to debug. Use whichever method you prefer.
 
-## Capture Signals
+
 ### Debug Project
 Start by selecting the `Debug Project` (bug looking icon) in the toolbar.
 
@@ -31,16 +31,16 @@ Start by selecting the `Debug Project` (bug looking icon) in the toolbar.
 
 
 ### Select Signals
-Select the signals you would like to capture during debugging by ticking the respective checkboxes.
+Select the signals you would like to capture during debugging by ticking the respective checkboxes. Here are two sample scenarios:
 
-> Example to debug FSM current state (`0`-indexed in output)
+Example to debug `FSM` current state (`0`-indexed in output):
 
-<img src="/50002/assets/contentimage/debug_fpga/game_fsm.png"  class="center_full"/>
+<img src="/50002/assets/contentimage/debug_fpga/game_fsm.png"  class="center_seventy"/>
 
 
-> Example to debug REGFILE read addresses and output
+**Example** to debug `REGFILE` read addresses and output:
 
-<img src="/50002/assets/contentimage/debug_fpga/regfile.png"  class="center_full"/>
+<img src="/50002/assets/contentimage/debug_fpga/regfile.png"  class="center_seventy"/>
 
 ### Build Project
 Build the project by clicking on `Debug`.
