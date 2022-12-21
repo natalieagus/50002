@@ -4,7 +4,7 @@ permalink: /lab/lab6
 title: (Ungraded) Tiny OS
 description: Tiny OS Lab handout covering topics from Virtual Machine, Asynchronous IO Handling, Kernel, and OS Services
 parent: Labs
-nav_order:  6
+nav_order:  7
 ---
 
 * TOC

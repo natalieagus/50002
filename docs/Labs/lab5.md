@@ -4,7 +4,7 @@ permalink: /lab/lab5
 title: Lab 5 -  Assembly Language
 description: Lab 5 handout covering topics from Stack and Procedure
 parent: Labs
-nav_order:  5
+nav_order:  6
 ---
 
 * TOC

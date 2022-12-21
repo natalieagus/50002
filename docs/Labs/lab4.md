@@ -4,7 +4,7 @@ permalink: /lab/lab4
 title: Lab 4 - Beta Processor
 description: Lab 4 handout covering topics from Beta Datapath
 parent: Labs
-nav_order:  4
+nav_order:  5
 ---
 
 * TOC

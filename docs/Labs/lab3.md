@@ -4,7 +4,7 @@ permalink: /lab/lab3
 title: Lab 3 - Arithmetic Logic Unit
 description: Lab 3 handout covering topics from Logic Synthesis, and Designing an Instruction Set
 parent: Labs
-nav_order:  3
+nav_order:  4
 ---
 
 * TOC
