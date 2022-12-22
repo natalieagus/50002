@@ -587,7 +587,7 @@ Refer to this arrangement of the AND gate with the dipswitch:
 
 <img src="{{ site.baseurl }}/assets/images/mhp/MHP-pulldown_bb.png"  class="center_seventy"/>
 
-When we switch ON both of the dip switches, There's a direct connection between the battery (+) terminal to pin 1 (1A) and pin 2 (1B). We are essentially supplying ****HIGH VOLTAGE**** values at pin 1 (1A) and pin 2 (1B). It will then produce **HIGH VOLTAGE** output at 1Y. 
+When we switch ON both of the dip switches, There's a direct connection between the battery (+) terminal to pin 1 (1A) and pin 2 (1B). We are essentially supplying **HIGH VOLTAGE** values at pin 1 (1A) and pin 2 (1B). It will then produce **HIGH VOLTAGE** output at 1Y. 
 
 
 {: .important-title}
