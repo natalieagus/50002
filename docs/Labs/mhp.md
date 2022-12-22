@@ -545,7 +545,7 @@ You will find that the LED <span style="color:red; font-weight: bold;">will not<
 
 If your LED remains ON even after you off one of the dipswitches, try touching the input wires with your finger ⚡️ to close the circuit and observe what happens. Don't worry, it's not harmful. 
 
-Now test yourself. Refer to the diagram below to answer the question.
+Now it's time for some recap and **test** yourself. Refer to the diagram below to answer the question.
 
 <img src="{{ site.baseurl }}/assets/images/mhp/MHP_NAND_OPEN.png"  class="center_seventy"/>
 
