@@ -486,7 +486,7 @@ If you have a **valid** LOA in Week 1 during your lab session, you may ask the T
 
 When we do normal additions with two independent inputs in base 10, we actually do not only add two things together but *three*, because of the **carry over** from the previous digit. We call this the **carry in**. See this illustration below:  
 
-<img src="{{ site.baseurl }}/assets/images/mhp/mhp-addition.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/assets/images/mhp/mhp-addition.png"  class="center_thirty"/>
 
 Right now, our 1-bit half adder does not handle addition of the two existing inputs with the Carry Out (and hence the name: *half* adder). In a full adder, the addition with the carry out is considered (we cann this carry in). 
 
