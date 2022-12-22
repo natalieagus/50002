@@ -613,11 +613,11 @@ We can express the **logic** behind 1-bit full adder using a **boolean expressio
 $$
 \begin{align}
 A + B \quad &(\text{Input A OR-ed with Input B})\\ 
-A \cdot B \quad &\text{or } AB \quad (\text{Input A AND-ed with Input B})\\
+A \cdot B \quad \text{or } AB \quad &(\text{Input A AND-ed with Input B})\\
 A \oplus B  \quad &(\text{Input A XOR-ed with Input B}) \\
 \overline{A} \quad &(\text{INVERT Input A}) \\
 \overline{A + B} \quad &(\text{Input A NOR-ed with Input B})\\ 
-\overline{A \cdot B}  \quad \text{or} \overline{AB} \quad &(\text{Input A NAND-ed with Input B})\\
+\overline{A \cdot B}  \quad \text{or} \quad  \overline{AB} \quad &(\text{Input A NAND-ed with Input B})\\
 \overline{A \oplus B}  \quad &(\text{Input A XNOR-ed with Input B}) \\
 \overline{A + B + C} \quad &(\text{3 inputs A, B, and C NOR-ed together})\\ 
 \end{align}
