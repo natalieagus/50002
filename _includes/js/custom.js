@@ -375,7 +375,3 @@ function setMouseUpListener(){
         }
     });
 }
-
-
-
-
