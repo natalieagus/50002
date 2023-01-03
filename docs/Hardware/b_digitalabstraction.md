@@ -160,9 +160,7 @@ The image below shows the VTC of a **buffer**: a *low* $$V_{in}$$ gives a *low* 
 > What will the VTC of an inverter look like? 
 
 
-The purpose of plotting a VTC (*typically obtained from device measurements, i.e: we supply input voltages at intervals and measure the output*) helps us to **determine** whether or not a digital device **can be used** as a combinational logic device. 
-
-> In other words, to find out if we can find a set of four voltage specifications: $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, and $$V_{ih}$$ for the device so that **the device obeys the static discipline**.
+The purpose of plotting a VTC (*typically obtained from device measurements, i.e: we supply input voltages at intervals and measure the output*) is to help us to **determine** whether or not a digital device **can be used** as a combinational logic device. In other words, we obtain the VTC so that we can find a set of four voltage specifications: $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, and $$V_{ih}$$ for the device so that **the device obeys the static discipline**.
 
 Explanation of the VTC figure above:
 - The red zone is called the **forbidden zone**. It is formed by the four voltage specifications: $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, and $$V_{ih}$$ that we set for the entire system. <br>
