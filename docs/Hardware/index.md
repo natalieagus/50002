@@ -9,6 +9,7 @@ nav_order: 18
 # 50.002 Hardware Related Topics 
 {: .no_toc}
 
+These topics are taught before the recess week. They are **tested** during our Midterm examination. Below we list the **learning objectives** of each topic. 
 
 ## [Basics of Information](https://natalieagus.github.io/50002/notes/basicsofinformation)
 * model information in terms of bits

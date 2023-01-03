@@ -9,6 +9,8 @@ nav_order: 19
 # 50.002 Software Related Topics
 {: .no_toc}
 
+These topics are taught after the recess week. They are **tested** during our Final examination. Below we list the **learning objectives** of each topic. 
+
 ## [Software Abstraction & Assembly Language](https://natalieagus.github.io/50002/notes/assemblersandcompilers)
 * explain the concept of software abstraction 
 * write more complex programs using Beta Assembly language in bsim, utilising labels and macros
