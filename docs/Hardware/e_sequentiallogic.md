@@ -120,15 +120,12 @@ We address these problems in the next two sections.
 The *dynamic discipline* is a contract that is made to address the **first** problem above: the possibility of **storing invalid information** in the memory device. It is imperative to never violate the dynamic discipline to ensure any sequential logic circuits to work properly.
 
 The dynamic discipline states that there are **two timing** **requirements for the input signal supplied at D**, named as $$T_{setup}$$ and $$T_{hold}$$, which lengths are:
-1. $$T_{setup}$$ = *approximately* $$2 \times t_{pd}$$  of the components that make up the D-latch.
+1. $$T_{setup}$$ is defined as  the minimum amount of time that the voltage on wire D needs to be valid/stable **BEFORE** the **clock edge changes from `1` to  `0`** (turning from `write` mode to `memory` mode).
+2. $$T_{hold}$$ is defined as the minimum amount of time that the voltage on wire D needs to be valid/stable **AFTER** the **clock edge reaches a valid  `0` from a previous `1`**.
 
-1. $$T_{hold}$$ =  *approximately* $$t_{pd}$$   of the components that make up the D-latch.
-
-$$T_{setup}$$ is defined as  the minimum amount of time that the voltage on wire D needs to be valid/stable **BEFORE** the **clock edge changes from `1` to  `0`** (turning from `write` mode to `memory` mode).
-
-
-$$T_{hold}$$ is defined as the minimum amount of time that the voltage on wire D needs to be valid/stable **AFTER** the **clock edge reaches a valid  `0` from a previous `1`**.
-
+{: .note}
+$$T_{setup}$$ is *approximately* measured as $$2 \times t_{pd}$$  of the <span style="color:red; font-weight: bold;">components that make up the D-latch</span>. $$T_{hold}$$ is *approximately* measured as  $$t_{pd}$$ of the components that make up the D-latch. This $$t_{pd}$$ is <span style="color:red; font-weight: bold;">not</span> the same as the $$t_{pd}$$ of the entire sequential logioc circuit ([see section below](https://natalieagus.github.io/50002/notes/sequentiallogic#t_pd-and-t_cd-of-sequential-logic-vs-combinational-logic-devices))
+  
 As explained in the previous notes,  $$t_{pd}$$ is the propagation delay of the combinational logic devices (components) that make up a D-latch, e.g: a multiplexer, which has a $$t_{pd}$$ value. The multiplexer can be made using a handful NAND gates. To clarify, this $$t_{pd}$$ is the propagation delay of that multiplexer or  components (combinational logic devices) that are used to make up a D-latch.
 
 {: .new-title}
