@@ -25,7 +25,7 @@ The file  `lab1_submit.jsim` provided inside your `/50002/` folder are what you'
 ## Related Class Materials
 The lecture notes on [Digital Abstraction](https://natalieagus.github.io/50002/notes/digitalabstraction) and [CMOS Technology](https://natalieagus.github.io/50002/notes/cmostechnology) are closely related to this lab.
 
-**Task A and Task B:** Studying the effect of MOSFET “ON” and MOSFET “OFF”. 
+**Task 1 and Task 2:** Studying the effect of MOSFET “ON” and MOSFET “OFF”. 
 <br>Related Notes: **CMOS Technology**
   * [Types of MOSFETs](https://natalieagus.github.io/50002/notes/cmostechnology#types-of-mosfets)
   * [Switching PFET and NFET ON and OFF](https://natalieagus.github.io/50002/notes/cmostechnology#switching-nfets-and-pfets-onoff)
@@ -33,20 +33,14 @@ The lecture notes on [Digital Abstraction](https://natalieagus.github.io/50002/n
   * Highly depends on the MOSFET’s conductivity 
   * An “OFF” MOSFET isn’t always 100% off, there exist leaky current
 
-**Task C and Task D:** finding optimal VTC 
+**Task 3 and Task 4:** finding optimal VTC 
 <br>Related Notes: **Digital Abstraction**
   * [VTC Section](https://natalieagus.github.io/50002/notes/digitalabstraction#voltage-transfer-characteristic-function-vtc)
   * [Voltage Specifications and Noise Margin ](https://natalieagus.github.io/50002/notes/digitalabstraction#voltage-specifications-and-noise-margin)
   * Realise that we can optimise the noise margin by optimising the MOSFET material 
   * Understand why static discipline is important, and how we can analyse VTC to choose the best MOSFET design
 
-**Task E and Task F:** tcd and tpd 
-<br>Related Notes: **CMOS Technology**
-* [Timing Specifications of Combinational Logic Devices](https://natalieagus.github.io/50002/notes/cmostechnology#timing-specifications-of-combinational-logic-devices)
-* Actually measure tpd and tcd from raw plots (input and output timing of a given gate or circuitry) to understand *by heart*  **why** we need these timing specifications to obey static discipline
-* This is on the contrary to classroom exercises where we give you the tpd and tcd of each gate and simply do the math to compute the tpd and tcd of a given circuit
-
-**Task G:** logic synthesis and CMOS circuit
+**Task 5:** logic synthesis and CMOS circuit
 <br>Related Notes: **Logic Synthesis**
 * [Translating between truth table and boolean equation ](https://natalieagus.github.io/50002/notes/logicsynthesis#straightforward-logic-synthesis)
 * [Creating CMOS circuit from the given boolean equation](https://natalieagus.github.io/50002/notes/logicsynthesis#logic-synthesization-with-cmos), consisting of pull-up and pull-down parts then inverting the overall output.
@@ -73,7 +67,7 @@ Each icon has the following meaning:
 More explanation will be provided as we progress through the lab.
 
 
-## Part 1: Characterising MOSFETs (45 mins)
+## Part 1: Characterising MOSFETs 
 
 {: .note-title}
 > Purpose: Obtain VTC of NFET
@@ -170,7 +164,7 @@ The waveform window has several other buttons on its toolbar:
 You can **zoom** and **pan** over the traces in the waveform window using the controls found along the bottom edge of the waveform display. The scrollbar at the bottom of the waveform window can be used to scroll through the waveforms. To recentre the waveform about a particular point, place the cursor at that position and press `c`.
 
 
-### Task A: MOSFET “on” Effective Sheet Resistance 
+### Task 1: MOSFET “on” Effective Sheet Resistance 
 
 To get a sense of how well the channel of a turned-on MOSFET conducts, let us estimate the **effective resistance** of the channel while the MOSFET is in the linear conduction region.  We’ll use the `Vgs = 5V` curve (the **upper-most plot** in the window).  The equation at the linear region is given by:
 
@@ -198,7 +192,7 @@ Since `W/L = 2` for the device you measured, it conducts twice as much current a
 {: .highlight}
 **Record** down the value for the effective channel sheet resistance you calculated from that measurement.  You need this information to get Checkoff 1. You can access the Checkoffs 1 to 7 for Lab 1 through eDimension.  
 
-### Task B: MOSFET “off” Leakage Current 
+### Task 2: MOSFET “off” Leakage Current 
 Now let us see how well the MOSFET turns “off.”  We would assume a MOSFET that is "off" should have 0 `Ids`. 
 
 Take some **measurements** of `Ids` at various points along the `Vgs` = 0V curve (the bottom-most plot in the window). Notice that they are <span style="color:red; font-weight: bold;">not</span> zero!  
@@ -217,7 +211,7 @@ Make a measurement of `Ids` when `Vgs` = 0V **and** `Vds` = 2.5V.
  **Record** down the estimated discharge time.  You will need this information for Checkoff 2.  
 
 
-## Part 2: Noise Immunity (45 mins)
+## Part 2: Noise Immunity 
 
 ### Setup and Introduction
 
@@ -225,7 +219,7 @@ Make a measurement of `Ids` when `Vgs` = 0V **and** `Vds` = 2.5V.
 Create a **new file** and name it `task_cf.jsim`, and paste the following code. The following JSim netlist shows you how to define your own circuit elements using the `.subckt` statement:
 
 ```cpp
-* circuit for Lab#1, Task C thru F
+* circuit for Lab#1, Task 3 and 4
 .include "nominal.jsim"
 
 * 2-input NAND: inputs are A and B, output is Z
@@ -324,7 +318,7 @@ We’ll need to keep the PN junctions in the source and drain diffusions **rever
 
 
 
-### Task C: Optimising Noise Margins 
+### Task 3: Optimising Noise Margins 
 To **maximize both noise margins** we want to have the <span style="color:red; font-weight: bold;">transition</span> in the voltage transfer characteristic (VTC) of the `nand2` gate **centered halfway** between ground and the power supply voltage (3.3V) 
 
 {: .new-title}
@@ -359,10 +353,10 @@ One possible way to center the VTC transition is to adjust the size of the NFET 
 **Record** down the `SW` value you found.  You will need this information for Checkoff 3.
 
 
-### Task D: Finding Noise Immunity 
+### Task 4: Finding Noise Immunity 
 
 {: .important}
-Keep the `SW` value you found in Task C for the rest of this lab!
+Keep the `SW` value you found in Task 3 for the rest of this lab!
 
 The **noise immunity** of a gate is the **smaller** of the low noise margin (Vil - Vol) and the high noise margin (Voh - Vih).  If we specify Vol = 0.3V and Voh = 3.0V, what is the largest possible noise immunity we could specify and still have the “improved” NAND gate of part (C) be a legal member of the logic family?
   	
@@ -376,7 +370,7 @@ The **noise immunity** of a gate is the **smaller** of the low noise margin (Vil
  
 {: .note}
 Make these measurements using your “improved” `nand2` gate that has the centered VTC, i.e., with the updated widths for the PFETS.
-
+<!-- 
 ## Part 3: Contamination and Propagation delays (45 mins)
 
 Now that we have the MOSFETs ratioed properly to **maximize noise immunity**, let’s measure the contamination time (tc) and propagation time (tp) of the `nand2` gate. 
@@ -525,9 +519,9 @@ For many consumer products, designs are tested in the range of 0°C to 100°C. W
 **Record** down your findings.  You will need this information for Checkoff 6 and 7. Please zoom in at least 4-5 times before doing this to get a clearer picture of the signals. 
 
 
-Based on your experiment, if a 2019 Intel Core i9 processor is rated to run correctly at 2.3 GHz at 100°C, how many % more can you clock it and still have it run correctly at room temperature (assuming tpd is the parameter that determines “correct” computer behavior)? This is why you can usually get away with **overclocking** your CPU—it’s been rated for operation under much more **severe** environmental conditions than you’re probably running it at!
+Based on your experiment, if a 2019 Intel Core i9 processor is rated to run correctly at 2.3 GHz at 100°C, how many % more can you clock it and still have it run correctly at room temperature (assuming tpd is the parameter that determines “correct” computer behavior)? This is why you can usually get away with **overclocking** your CPU—it’s been rated for operation under much more **severe** environmental conditions than you’re probably running it at! -->
 
-## Task G: CMOS Logic Gate Design
+## Part 3: CMOS Logic Gate Design
 
 As the final part of this lab, your mission is to create and test a CMOS circuitry that implements the function $$F(A,B,C) = C + A·B$$ using NFETs and PFETs. The truth table for F is shown below:
 
@@ -563,7 +557,7 @@ A |  B |  C | F(A,B,C)
 *END ANSWER
 .ends
 ```
-
+**Steps:**
 * Open `lab1_submit.jsim` and write your answer there:
 * There should be three parts to your answer
   * The pullup circuitry
@@ -574,7 +568,8 @@ A |  B |  C | F(A,B,C)
 <img src="/50002/assets/contentimage/lab1/8.png"  class=" center_fifty"/>
 <br>
 * You will need to **understand** the output plot, and the meaning of each line of instruction in the answer to be able to excel in the Lab Quiz. 
-* Click on the green tick button on the right hand corner of the plot window. A message as such should appear and brings you happiness. This means that all values produced by your circuit is as expected and passes the test:
+
+Click on the green tick button on the right hand corner of the plot window. A message as such should appear and brings you happiness. This means that all values produced by your circuit is as expected and passes the test:
 <br><br>
 <img src="/50002/assets/contentimage/lab1/6.png"  class=" center_fifty"/>
 

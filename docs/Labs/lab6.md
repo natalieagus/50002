@@ -408,7 +408,7 @@ P0Read:	Wait(Prompt)		| Wait until P1 has caught up...
     ...
 ```
 
-## Task A: Add mouse interrupt handler
+## Part A: Add mouse interrupt handler
 When you **click** the mouse over the **console pane**, BSim generates an **interrupt**, forcing the PC to `0x800000010` and saving `PC+4` of the interrupted instruction in the `XP` register. 
 
 Note that as mentioned in the section above, the Beta in this lab implements a **vectored interrupt** scheme where different types of interrupts force the PC to different addresses (rather than having all interrupts for the PC to `0x80000008` like we did for our basic Beta Processor in the previous lab). The following table shows how different exceptions are mapped to PC values:
@@ -469,7 +469,7 @@ If things are working correctly the simulation should **stop** at the breakpoint
 Continuing execution (click the “Run” button in the toolbar at the top of the window) should return to the interrupted program. **When you’re done remember to remove the breakpoint.**
 
 
-## Task B: Add Mouse() Supervisor Call
+## Part B: Add Mouse() Supervisor Call
 
 Now our job is to **retrieve** the mouse click coordinates that is stored in the Kernel variable `Mouse_State` in the sample screenshot above. Implement a `Mouse()` supervisor call that returns the coordinate information from the most recent mouse click (i.e., the information stored by the mouse interrupt handler).
 

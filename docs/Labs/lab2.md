@@ -28,7 +28,7 @@ The following files inside your `/50002/` folder are what you're going to use fo
 ## Related Class Materials
 The lecture notes on **[CMOS technology](https://natalieagus.github.io/50002/notes/cmostechnology)** and **[logic synthesis](https://natalieagus.github.io/50002/notes/logicsynthesis)** are closely related to this lab.
 
-**Task A:** Building XOR and XNOR gate using PFETs and NFETs
+**Task 1:** Building XOR and XNOR gate using PFETs and NFETs
 <br>Related sections in the notes:	
 * [Logic Synthesis](https://natalieagus.github.io/50002/notes/logicsynthesis):
   * [N-input gates](https://natalieagus.github.io/50002/notes/logicsynthesis#n-input-gates) (other gates you can use to build a FA)
@@ -36,7 +36,7 @@ The lecture notes on **[CMOS technology](https://natalieagus.github.io/50002/not
 * [CMOS Technology](https://natalieagus.github.io/50002/notes/cmostechnology):
   * [Understand why the C in CMOS is necessary](https://natalieagus.github.io/50002/notes/cmostechnology#complementary-mos-circuitry): to prevent short circuit; the PU and PD cannot both be ON. 
 
-**Task B:** Build 1-bit Full Adder using gates you built in Task 1
+**Task 2:** Build 1-bit Full Adder using gates you built in Task 1
 <br>Related sections in the notes: ([logic synthesis](https://natalieagus.github.io/50002/notes/logicsynthesis))
 * [Sum-of-products](https://natalieagus.github.io/50002/notes/logicsynthesis#sum-of-products) (you can build a FA using AND, OR, and INV gates)
 * [Universal gates](https://natalieagus.github.io/50002/notes/logicsynthesis#universal-gates) (you can build a FA using NANDs only or NORs only)
@@ -47,7 +47,7 @@ Your mission this week is to design and test a CMOS circuit that performs additi
 
 <img src="/50002/assets/contentimage/lab2/1.png"  class="center_thirty"/>
 
-## Task A: Building Logic Gates XOR and XNOR (50 mins)
+## Task 1: Building Logic Gates XOR and XNOR (50 mins)
 
 Since logic gates are used to implement the logic for the full adder, a good place to start is to:
 * Build your own gate library (e.g., inverter, 2-input `nand`, 2-input `nor`, `inv`, 2-input `xnor`, 2-input `xor`), 
@@ -86,7 +86,7 @@ It’s much easier to debug your circuit module-by-module rather than as one big
 .ends
 ```
 
-## Task B: Simple 1-bit Adder (30 mins)
+## Task 2: Simple 1-bit Adder (30 mins)
 Let’s start a simple **1-bit full-adder** module before proceeding to create a 4-bit Ripple-Carry adder. Later we will discuss higher performance adder architectures you can use in the implementation of the Beta (the computer central processing unit we will be designing in later labs).
 
 The full adder module has **3 inputs** (`A`, `B`, and `Ci`) and **2 outputs** (`S` and `Co`). The logic equations and truth tables for `S` and `Co` are shown below.

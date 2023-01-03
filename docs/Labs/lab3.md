@@ -28,12 +28,12 @@ The following files inside your `/50002/` folder are what you're going to use fo
 ## Related Class Materials
 The lecture notes on [Logic Synthesis](https://natalieagus.github.io/50002/notes/logicsynthesis) and [Designing an Instruction Set](https://natalieagus.github.io/50002/notes/instructionset) are closely related to this lab. 
 
-**Task A:** Design the ALU Components (Part 1-4) and **Task B:** Studying a Multiplier Design
+**Part A:** Design the ALU Components (Task 1-4) and **Part B:** Studying a Multiplier Design
 <br>Related sections in the notes: **[Logic Synthesis](https://natalieagus.github.io/50002/notes/logicsynthesis)**	
 * [N-input gates](https://natalieagus.github.io/50002/notes/logicsynthesis#n-input-gates) (all kinds of gates to produce the logic of each component in the ALU)
 * [Special combinational logic devices](https://natalieagus.github.io/50002/notes/logicsynthesis#special-combinational-logic-devices) (multiplexer with 1 or 2 selectors, and combining multiplexers together to form an even bigger one)
 
-**Task C:** Combine each combinational element in Task A and B to form an ALU
+**Part C:** Combine each combinational element in Part A and Part B to form an ALU
 <br>Related sections in the notes: **Designing an Instruction Set**
 * [Basics of programmable control systems](https://natalieagus.github.io/50002/notes/instructionset#an-example-of-a-basic-programmable-control-system) (using control signals like ALUFN to **perform different operations (`ADD`, `SHIFT`, `MUL`, etc)** between two **32-bit** inputs A and B in the same ALU circuit -- no hardware modification needed). 
 
@@ -48,12 +48,12 @@ In this lab, we will build the **arithmetic and logic unit (ALU)** for the Beta 
 > Arithmetic Logic Unit (ALU)
 > 
 > The ALU is a **combinational** logic device that has two **32-bit inputs** (which we will call “A” and “B”) and produces one **32-bit output**. 
-> We will start by designing each piece of the ALU as a separate circuit (Task A and B), each producing its own 32-bit output. 
-> We will then combine these outputs into a single ALU result (Task C).
+> We will start by designing each piece of the ALU as a separate circuit (Part A and B), each producing its own 32-bit output. 
+> We will then combine these outputs into a single ALU result (Part C).
 
 Before we begin, there are a few more JSim tricks provided as [Appendix](https://natalieagus.github.io/50002/lab/lab3#appendix-jsim-tricks) in this handout that you have to know to make it easier to build such a huge programmable device. 
 
-## Task A: Design the ALU Components
+## Part A: Design the ALU Components
 The arithmetic logic unit is the **heart** of **CPU**; it is responsible for all sorts of **logic computations**. The basic family of operations that a general-purpose ALU should have include: 
 * **Addition/subtraction** for basic arithmetic computation
 * **Comparison** for branching purposes 
@@ -72,7 +72,7 @@ The ALUFN signals used to **control** the operation of the ALU circuitry use an 
 
 
 
-### Part 1: Adder and Subtractor
+### Task 1: Adder and Subtractor
 Design an **adder/subtractor** unit that operates on 32-bit two’s complement (**SIGNED**) inputs (`A[31:0]`, `B[31:0]`) and generates a 32-bit output (`S[31:0]`) + 3-bit *other* output signal (`Z, V, N`).  
 
 It will be useful to generate three other output signals to be used by the comparison logic in Part B: 
@@ -164,7 +164,7 @@ Use the waveforms to <span style="color:red; font-weight: bold;">debug</span> yo
   * This might give you some clues about which **datapath** caused the error. 
 
 
-### Part 2: Compare Unit
+### Task 2: Compare Unit
 Design a 32-bit compare unit that generates one of two constants (`0` or `1`) depending on the `ALUFN` control signals (used to select the comparison to be performed) and the `Z`, `V`, and `N` outputs of the adder/subtractor unit.  
 
 Clearly the high order 31 bits of the output are **always zero** (use that connection to connect `0` in JSim to zero `cmp[31:1]`).  The least significant bit of the output is determined by the answer to the **comparison** being performed.
@@ -210,7 +210,7 @@ Here’s the detailed schematic of the compare unit:
 **********************************
 ```
 
-### Part 3: Boolean Unit
+### Task 3: Boolean Unit
 
 Design a **32-bit Boolean unit** for the Beta’s logic operations.  One implementation of a 32-bit boolean unit uses a **32 copies of a 4-to-1 multiplexer** where `ALUFN0`, `ALUFN1`, `ALUFN2`, and `ALUFN3` **hardcode** the operation to be performed, and `Ai` and `Bi` are hooked to the multiplexer **`SELECT`** inputs.  This implementation can produce any of the 16 2-input Boolean functions; but we will only be using 4 of the possibilities: `AND`, `OR`, `XOR`, and `A`. 
 
@@ -259,7 +259,7 @@ In total, you should utilise 32 4-to-1 multiplexers to build the boolean unit. *
 **********************************
 ```
 
-### Part 4: Shifter
+### Task 4: Shifter
 Design a **32-bit shifter** that implements `SRA`, `SHR` and `SHL` instructions.  
 * The `A[31:0]` input supplies the data to be shifted  
 * The **low-order** 5 bits of the `B[4:0]`  are used as the **shift count** (i.e., from 0 to 31 bits of shift)
@@ -333,7 +333,7 @@ Finally, we can combine all three shifters together to form the total shifter ou
 **********************************
 ```
 
-## Task B: Studying the Multiplier
+## Part B: Studying the Multiplier
 Open `lab3_mult.jsim` and realise that this file contains the circuitry for a **multiplier unit**. 
 
 The goal of this section is to study this particular combinational multiplier that accepts 32-bit operands (`A`, `B`) and produces a 32-bit output.  **Multiplying two 32-bit numbers produces a 64-bit product;** the result we’re looking for is **just the low-order 32-bits of the 64-bit product.**
@@ -382,7 +382,7 @@ This test file includes test cases for:
 > 
 > Combinational multipliers implemented as described above are pretty slow!  There are many design tricks we can use to speed things up – see the appendix on “Computer Arithmetic” in any of the editions of **Computer Architecture: A Quantitative Approach** by John Hennessy and David Patterson (Morgan Kauffmann publishers).
 
-## Task C: Assembling the ALU
+## Part C: Assembling the ALU
 
 Combine the outputs of the finished **adder**, **multiplier** (given), **compare**, **boolean** and **shift** units to produce a single `ALU` output: `ALU[31:0]`.  The simplest approach is to use a 4-way 32-bit multiplexer as shown in the schematic below:
 

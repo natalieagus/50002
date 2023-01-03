@@ -51,11 +51,11 @@ Related sections in [Beta CPU](https://natalieagus.github.io/50002/notes/betacpu
 
 ## Introduction
 The goal of this lab is to build a **fully** functional Beta Processor and simulate it in JSim. It is a huge device, and to make it more bearable we shall modularise it into four major components:
-* (Task A) **PC** Unit: containing the PC register and all necessary components to support the ISA
-* (Task B) **REGFILE** Unit: containing 32 32-bit registers, WASEL, and RA2SEL mux, plus circuitry to compute Z
-* (Task C) **CONTROL** Unit: containing the ROM and necessary components to produce all Beta control signals given an `OPCODE`
+* (Part A) **PC** Unit: containing the PC register and all necessary components to support the ISA
+* (Part B) **REGFILE** Unit: containing 32 32-bit registers, WASEL, and RA2SEL mux, plus circuitry to compute Z
+* (Part C) **CONTROL** Unit: containing the ROM and necessary components to produce all Beta control signals given an `OPCODE`
 * **ALU+WDSEL** Unit: containing the ALU and WDSEL, ASEL, BSEL muxes (**given to you**)
-* (Task D) Assemble the entire Beta CPU using all subcomponents above
+* (Part D) Assemble the entire Beta CPU using all subcomponents above
  
 <img src="/50002/assets/contentimage/lab4/beta_lab.png"  class="center_seventy"/><br>
 
@@ -114,7 +114,7 @@ If the Beta wants to **store** (write) data to the memory, it needs to supply tw
 {: .warning}
 For this lab, the signal `wr`  should **ALWAYS** have a **valid** logic value (either 1 or 0) at the **RISING** edge of `CLK` otherwise the contents of the memory will be erased. If signal `wr` is 1, the data  `mwd[31:0]` will be written into memory at the **end** of the current cycle. Otherwise, the data at` mwd[31:0]` will be **ignored**. 
 
-## Task A: PC Unit
+## Part A: PC Unit
 ### PC Unit Schematic
 Here is the suggested PC Unit schematic that you can implement. Note the input and output nodes. This will come in very useful when creating the modules for your `jsim subckt`. 
 
@@ -319,7 +319,7 @@ After you're satisfied with testing, comment out the headers and the test instru
 * .include "lab4_testpc.jsim"
 ```
 
-## Task B: REGFILE Unit
+## Part B: REGFILE Unit
 ### REGFILE Unit Schematic
 Here is the suggested REGFILE Unit schematic that you can implement. 
 
@@ -454,7 +454,7 @@ If everything works as expected, you should see the following message when you c
 {: .important}
 Comment out the header and the test instructions after you are done. The file `lab4_regfile.jsim` should only contain the definition of your pc unit subcircuit only. We will import it later inside `lab4_beta.jsim`.
 
-## Task C: CONTROL Unit
+## Part C: CONTROL Unit
 ### CONTROL Unit Schematic
 Here is the suggested **CONTROL** Unit schematic that you can implement. 
 
@@ -598,7 +598,7 @@ Also, **Bit 31** of the branch-offset input to the ASEL mux should be set to `0`
 {: .note}
 Please study the circuitry inside `lab4_aluwdsel.jsim` before proceeding to the next section.
 
-## Task D: Assemble Completed Beta
+## Part D: Assemble Completed Beta
 Open `lab4_beta.jsim` and notice that it should have these .include statements:
 
 ```cpp
