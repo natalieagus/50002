@@ -69,21 +69,26 @@ Anything that is between the low and high threshold value is called the invalid 
   
 <img src="https://dropbox.com/s/6uo61vk9yze1aot/Volt.png?raw=1"  class="center_seventy"    >
 
-> The values of operating voltage in practice is commonly set to be 0.3V for low voltage and 3.3V for high voltage. 
+{: .note}
+The values of operating voltage in practice is commonly set to be 0.3V for low voltage and 3.3V for high voltage. 
   
 ## [The Static Discipline](https://www.youtube.com/watch?v=xkVIr8jrtX0&t=634s)
 The static discipline is one of the **contracts** bound for all logical elements making up a digital system. The static discipline is stated as follows:
 
   
-
-> **A digital system must be able to produce a valid output (for the next device connected at its output terminal) according to its specification if it is given a valid input.**
+{: .important}
+**A digital system must be able to produce a valid output (for the next device connected at its output terminal) according to its specification if it is given a valid input.**
 
 This contract **guarantees** the behavior for each processing block in a system, so that a set of such interconnected devices may work properly (are able to pass and compute valid information at the end of the chain of connections). This is necessary so that the system has a **predictable behavior.**
 
-> **However this doesn't mean that the opposite is true**. A device that receives invalid input *does NOT always have to* produce invalid output. **We cannot determine the output of the combinational logic device IF invalid input is given**. Recall that you need to add a **pulldown** resistor at each input for your Mini Hardware Project to give a valid `0` when the switch is **open**. That is because without the pulldown resistor, the input will not be connected to anything (open wire) and this will supply an **invalid input**, resulting in an **undetermined or unpredictable** output for your MHP. In a nutshell, we don't care much and cannot define or guarantee the behaviour of the combinational device if it receives invalid input -- it may or may not produce a valid output.
-
-
+{: .highlight}
 Therefore, one can say that **a combinational logic device always obeys the static discipline**. 
+
+<span style="color:red; font-weight: bold;">However this doesn't mean that the opposite is true.</span>
+
+A device that receives invalid input *does NOT always have to* produce invalid output. **We cannot determine the output of the combinational logic device IF invalid input is given**. Recall that you need to add a **pulldown** resistor at each input for your Mini Hardware Project to give a valid `0` when the switch is **open**. That is because without the pulldown resistor, the input will not be connected to anything (open wire) and this will supply an **invalid input**, resulting in an **undetermined or unpredictable** output for your MHP. In a nutshell, we don't care much and cannot define or guarantee the behaviour of the combinational device if it receives invalid input -- it may or may not produce a valid output.
+
+
 
 
   
@@ -112,19 +117,29 @@ Hence, we need to account for the presence of some light **noise**. Instead of n
   
 <img src="https://dropbox.com/s/pt0n36pmy9ncyc6/Volt_2.png?raw=1"     >
 
->    The *noise margin* adds as a **precaution** against external disturbances (noise). 
+{: .new-title}
+> Why do we need to have a noise margin?
+> 
+> The *noise margin* adds as a **precaution** against external disturbances (noise). 
 
 Below are the explanations necessary to understand the figure above:
 1.  $$V_{ol}$$ (voltage output low) and $$V_{oh}$$ (voltage output high) is the voltage that **your system** outputs, depending on whether your system is outputting bit `0` or `1`. The output of this system is going to be received by another system after traversing through some wire.
 2.  $$V_{il}$$ (voltage input low) or $$V_{ih}$$ (voltage input high) is the voltage that **your system** receives as **input** from another system.
 3.  The **absolute difference** between $$V_{ol}$$ and $$V_{il}$$ is called the **low bit noise margin**, and the **absolute difference** between $$V_{oh}$$ and $$V_{ih}$$ is called the **high bit noise margin**.
-	> Noise margin is formally defined as the **maximum** voltage amplitude of *extraneous* (erronous) signal that can be added to the noise-free input level *without* causing a drastic change in the output voltage and that it is still within the valid logic level. 
-4.  The **noise immunity** (like an "overall" or "effective" noise margin) is the ***minimum*** between the high bit noise margin and the low bit noise margin.
-5.  $$V_{ol}$$ is **less** than $$V_{il}$$, because we would want to have some *buffer* against noise. A device always outputs a lower voltage value to signify digital bit `0``0` and accepts a slightly higher low-voltage value as digital bit `0``0`. The same logic applies for the higher region as well, as $$V_{oh}$$ is greater than $$V_{ih}$$
-6.  In our previous case earlier, if $$V_{ol}$$ is set to be `0.5V`, and $$V_{il}$$ is set to be `0.6V`, then *Device 2*  will be able to **tolerate** up to `0.1V` of noise (if any). Therefore, `0.55V` in our example above is still '*seen*' as a valid bit `0` when it arrives at the input terminal of Device 2, thus making Device 1 ***obeys the static discipline.***
+
+{: .note}
+Low-bit/high-bit noise margin is formally defined as the **maximum** voltage amplitude of *extraneous* (erronous) signal that can be added to the noise-free input level *without* causing a drastic change in the output voltage and that it is still within the valid logic level. 
+
+### Noise Immunity
+The **noise immunity** (like an "overall" or "effective" noise margin) is the ***minimum*** between the high bit noise margin and the low bit noise margin.
 
 
-Once **set and chosen,** these four voltage specifications: $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, and $$V_{ih}$$ are to be obeyed by every digital **device in an entire combinational logic circuit**.
+Note that the value of $$V_{ol}$$ is **less** than $$V_{il}$$, because we would want to have some *buffer* (margin) against noise. A device always outputs a lower voltage value to signify digital bit `0``0` and accepts a slightly higher low-voltage value as digital bit `0``0`. The same logic applies for the higher region as well, as $$V_{oh}$$ is greater than $$V_{ih}$$
+
+In our previous case earlier, if $$V_{ol}$$ is set to be `0.5V`, and $$V_{il}$$ is set to be `0.6V`, then *Device 2*  will be able to **tolerate** up to `0.1V` of noise (if any). Therefore, `0.55V` in our example above is still '*seen*' as a valid bit `0` when it arrives at the input terminal of Device 2, thus making Device 1 ***obeys the static discipline.***
+
+
+Once **set and chosen,** these four voltage specifications: $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, and $$V_{ih}$$ are to be obeyed by every digital **device in an entire combinational logic circuit**, e.g: your computer. Think of it like some sort of *operating standard* across all components in your digital system.
 
   
 
@@ -132,12 +147,16 @@ Once **set and chosen,** these four voltage specifications: $$V_{ol}$$, $$V_{oh}
 
 The VTC is a **plot** between the input voltage ($$V_{in}$$) to a digital system/device vs the output voltage ($$V_{out}$$) of this digital system.
 
->  VTC **does not** tell us how fast the device is. It just captures the static behavior of the device and tells us what *kind* of device it is.
+{: .warning}
+VTC **does not** tell us how fast the device is. It just captures the static behavior of the device and tells us what *kind* of device it is.
 
 The image below shows the VTC of a **buffer**: a *low* $$V_{in}$$ gives a *low* $$V_{out}$$ and vice versa. 
 
 <img src="https://dropbox.com/s/vod5ltqh4kq9119/vtcbuffer.png?raw=1"   width="60%" alt ="Figure 4"/>
 
+{: .new-title}
+> Think!
+> 
 > What will the VTC of an inverter look like? 
 
 
@@ -189,6 +208,9 @@ In this chapter, we have learned about the digital abstraction, that is how can 
 
 In the next chapter, we will learn about the **MOSFET** (transistor), that is one of the smallest component (building block) that makes up a digital device, and how we can use them to form a proper combinational logic elements we call **gates**. These **gates** can be  used to form an even larger **combinational circuits** such as the **adder**, **shifter**, etc, and an even larger one such as the **Arithmetic Logic Unit** (you will build them in Lab 2 and 3). 
 
-> Each larger device will provide greater level of *abstraction*.  
+Each larger device will provide greater level of *abstraction*:
+* At first we have MOSFETs (transistors) that we can use to make **logic gates**. Once we are using logic gates, we **abstract** away the details about our transistors.
+* We can then use logic gates to make more complex logic units like ROMs, microcontrollers, multiplexers, registers, and CPU. Realise that once we have a CPU, we **abstract** away the details about our little logic gates. 
+* Once we have a CPU, we can create an assembler to help us program an operating system in assembly. We can create more useful programs like compilers to help us create programs easily in higher level language. This is how abstraction works: we create smaller components and use them together so that we can do our job (as programmers) easily. 
 
 Therefore, it is imperative that each  combinational logic device / component, no matter how small, **must** conform to the static discipline and the established four voltage specifications (that must be chosen such that it fits with their VTC) so that the larger system can work as intended. 
