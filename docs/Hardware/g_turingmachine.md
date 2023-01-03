@@ -60,7 +60,7 @@ There exists  a **HALT** state where you reach the end-state, and of course a **
 Referring to the figure above, we know that the start state is $$S_0$$, and as shown the black arrow is reading an input: $$1$$.
 
 Then look at the **functional** specification table to know where to go next.
-- **Step 1**: From** the **diagram**, our **current** state is $$S_0$$ and input is $$1$$. 
+- **Step 1**: From the **diagram**, our **current** state is $$S_0$$ and input is $$1$$. 
   - From the **table**, this corresponds to the **first** row -- it tells us that we can write $$1$$ to the tape,
 - **Step 2**: And then *move the **tape*** to the *right* (or equivalently move the **arrow** to the *left*).
 

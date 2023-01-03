@@ -366,7 +366,10 @@ The **violation of dynamic discipline** may put our feedback loop at some voltag
 
 Since there is **no lower bound** on $$\|V_{out} - V_m\|$$, then there is **no upper bound** for the settling time of eventual $$V_{out}$$ value. 
  
-**In other words, we cannot completely avoid the metastable state**. 
+
+{: .important}
+In summary, we cannot completely avoid the metastable state. 
+
 > If an SL device enters the metastable state, it *might* eventually settle to a valid zero... or a valid one, but there is no guarantee when this will happen. It may take a second,  or it may take forever to settle. 
 > 
 The only thing we can do is to **minimise** the metastable state's probability from happening. We can do that by introducing more **delays** between the first 'upstream' Flip-Flop and the CL devices downstream in the **hopes** that the signal will somehow settle towards either end before reaching the CL, as illustrated here:
