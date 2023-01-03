@@ -67,7 +67,7 @@ Each icon has the following meaning:
 More explanation will be provided as we progress through the lab.
 
 
-## Part 1: Characterising MOSFETs 
+## Part A: Characterising MOSFETs 
 
 {: .note-title}
 > Purpose: Obtain VTC of NFET
@@ -190,7 +190,7 @@ When reporting the effective *channel* resistance, it’s useful to report the *
 Since `W/L = 2` for the device you measured, it conducts twice as much current and has half the channel resistance as a device with `W/L = 1`, so you need to double the channel resistance you computed above in order to estimate the effective channel sheet resistance.
 
 {: .highlight}
-**Record** down the value for the effective channel sheet resistance you calculated from that measurement.  You need this information to get Checkoff 1. You can access the Checkoffs 1 to 7 for Lab 1 through eDimension.  
+**Record** down the value for the effective channel sheet resistance you calculated from that measurement.  
 
 ### Task 2: MOSFET “off” Leakage Current 
 Now let us see how well the MOSFET turns “off.”  We would assume a MOSFET that is "off" should have 0 `Ids`. 
@@ -211,7 +211,7 @@ Make a measurement of `Ids` when `Vgs` = 0V **and** `Vds` = 2.5V.
  **Record** down the estimated discharge time.  You will need this information for Checkoff 2.  
 
 
-## Part 2: Noise Immunity 
+## Part B: Noise Immunity 
 
 ### Setup and Introduction
 
@@ -371,7 +371,7 @@ The **noise immunity** of a gate is the **smaller** of the low noise margin (Vil
 {: .note}
 Make these measurements using your “improved” `nand2` gate that has the centered VTC, i.e., with the updated widths for the PFETS.
 <!-- 
-## Part 3: Contamination and Propagation delays (45 mins)
+## Part C: Contamination and Propagation delays (45 mins)
 
 Now that we have the MOSFETs ratioed properly to **maximize noise immunity**, let’s measure the contamination time (tc) and propagation time (tp) of the `nand2` gate. 
 
@@ -521,7 +521,7 @@ For many consumer products, designs are tested in the range of 0°C to 100°C. W
 
 Based on your experiment, if a 2019 Intel Core i9 processor is rated to run correctly at 2.3 GHz at 100°C, how many % more can you clock it and still have it run correctly at room temperature (assuming tpd is the parameter that determines “correct” computer behavior)? This is why you can usually get away with **overclocking** your CPU—it’s been rated for operation under much more **severe** environmental conditions than you’re probably running it at! -->
 
-## Part 3: CMOS Logic Gate Design
+## Part C: CMOS Logic Gate Design
 
 As the final part of this lab, your mission is to create and test a CMOS circuitry that implements the function $$F(A,B,C) = C + A·B$$ using NFETs and PFETs. The truth table for F is shown below:
 
