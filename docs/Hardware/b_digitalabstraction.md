@@ -188,7 +188,7 @@ If you can satisfy the condition highlighted above, then it means that the devic
 	$$\max\text{Gain}\approx \frac{V_{oh} - V_{ol}}{ V_{ih} - V_{il}}$$
 
 
-1.  If  absolute `Gain` $$>1$$, then there is a **finite, positive** noise margin. If absolute `Gain`$$=1$$, then there's **zero** noise margin. It is *impossible* to have absolute `Gain` $$<1$$ and still have the four Voltage specifications $$V_{ol}$$ < $$V_{il}$$ < $$V_{ih}$$ < $$V_{oh}$$.
+	If  absolute `Gain` $$>1$$, then there is a **finite, positive** noise margin. If absolute `Gain`$$=1$$, then there's **zero** noise margin. It is *impossible* to have absolute `Gain` $$<1$$ and still have the four Voltage specifications $$V_{ol}$$ < $$V_{il}$$ < $$V_{ih}$$ < $$V_{oh}$$.
 	  
 	  > You might want to ponder a little and convince yourself why the statement above is true. 
 
@@ -197,7 +197,9 @@ If you can satisfy the condition highlighted above, then it means that the devic
 2. The device has a  **Non-linear `Gain`**, meaning that `Gain`  is a **function** of `Vin` and therefore the *gradient* along the *entire* curve varies. 
 	* The VTC curve for a combinational logic device should not be **entirely** made of a single, constant gradient like the shape of a plot from a basic line equation, but rather more towards an "S" (or mirrored S) shape.
 
-	> In other words, if both characteristics above aren't satisfied in the VTC curve, then it is not the VTC of a combinational logic device.
+
+{: .important}
+If both characteristics above aren't satisfied in the VTC curve, then it is <span style="color:red; font-weight: bold;">not</span> the VTC of a combinational logic device.
 
 ## [Summary](https://www.youtube.com/watch?v=xkVIr8jrtX0&t=1290s)
 [You may want to watch the post lecture videos here.](https://youtu.be/3OoeuqWDhns)
