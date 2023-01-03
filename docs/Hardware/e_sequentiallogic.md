@@ -191,21 +191,6 @@ Notice two further behaviors in the Flip-Flop:
 You can also make the slave latch to be the one that receives the inverted CLK signal, and the value at Q reflects the input at D at each **falling edge** of the CLK. The name "edge-triggered" comes from the fact that the **output at port Q**  of the slave **changes** only when the CLK edge changes (in our case, at every rising *edge*). 
 
 
-## [$$t_{pd}$$ and $$t_{cd}$$ of Sequential Logic vs Combinational Logic Devices](https://www.youtube.com/watch?v=HlizelEp4Yc&t=2974s)
-
-In the previous chapter, we learned about the definition $$t_{CD}$$ and $$t_{PD}$$ for combinational logic (CL) devices, and how to compute these values. For **sequential logic (SL) devices**, i.e: circuits with Flip-Flops and CLs combined, these timings mean as follows:
-1. $$t_{CD}$$ of a Flip-Flop (or sequential logic devices) is the time taken for an **invalid** CLK input (**not input to the sequential logic circuit**),    as a result of *transition* from  `0` to `1`, to produce an **invalid** *final* output of the SL (Sequential Logic) device. 
-1. $$t_{PD}$$ of a Flip-Flop (or sequential logic devices) is the time taken for **valid `1`** CLK input (**again, not input to the sequential logic circuit**), to produce a **valid** *final* output of the SL device. 
-
-
-### Subtle Difference
-Note the **subtle difference** between the $$t_{PD}$$ and $$t_{CD}$$ of a combinational vs a sequential device. 
-
-In **combinational** devices, there is **no input CLK** and units with *feedback* paths like the Flip Flops involved. $$t_{PD}$$ of a combinational device is the time measured from the moment a **valid** input is fed to the circuit to the moment it produces a **valid** output of the circuit, and $$t_{CD}$$ is the time measured from the moment an **invalid** input is fed to the circuit to the moment it produces an **invalid** output.
-
-However in **sequential** logic devices, our **input**  will be the **CLK** and not the *"user"* input, and in particular only are concerned with the **CLK transition from `0` to `1`**, where the D Flip-Flop "captures" a new input value. 
-  
-
 ## [Flip-Flop Timing Constraint](https://www.youtube.com/watch?v=HlizelEp4Yc&t=3458s)
 
   
@@ -281,6 +266,23 @@ The propagation or contamination delays of a Flip-Flop is not considered a logic
   
 
 **See [this supplementary document](https://dropbox.com/s/gi4r2ea1tdv5x4d/Seq_Logic_Timing_Extras_2020.pdf?dl=1) to know more about timing computations for sequential logic device.**
+
+
+## [$$t_{pd}$$ and $$t_{cd}$$ of Sequential Logic vs Combinational Logic Devices](https://www.youtube.com/watch?v=HlizelEp4Yc&t=2974s)
+
+In the previous chapter, we learned about the definition $$t_{CD}$$ and $$t_{PD}$$ for combinational logic (CL) devices, and how to compute these values. For **sequential logic (SL) devices**, i.e: circuits with Flip-Flops and CLs combined, these timings mean as follows:
+1. $$t_{CD}$$ of a Flip-Flop (or sequential logic devices) is the time taken for an **invalid** CLK input (**not input to the sequential logic circuit**),    as a result of *transition* from  `0` to `1`, to produce an **invalid** *final* output of the SL (Sequential Logic) device. 
+1. $$t_{PD}$$ of a Flip-Flop (or sequential logic devices) is the time taken for **valid `1`** CLK input (**again, not input to the sequential logic circuit**), to produce a **valid** *final* output of the SL device. 
+
+
+### Subtle Difference
+Note the **subtle difference** between the $$t_{PD}$$ and $$t_{CD}$$ of a combinational vs a sequential device. 
+
+In **combinational** devices, there is **no input CLK** and units with *feedback* paths like the Flip Flops involved. $$t_{PD}$$ of a combinational device is the time measured from the moment a **valid** input is fed to the circuit to the moment it produces a **valid** output of the circuit, and $$t_{CD}$$ is the time measured from the moment an **invalid** input is fed to the circuit to the moment it produces an **invalid** output.
+
+However in **sequential** logic devices, our **input**  will be the **CLK** and not the *"user"* input, and in particular only are concerned with the **CLK transition from `0` to `1`**, where the D Flip-Flop "captures" a new input value. 
+  
+
 
 ## [Synchronization with Input](https://www.youtube.com/watch?v=HlizelEp4Yc&t=4980s)
 
