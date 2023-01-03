@@ -125,7 +125,7 @@ The term **asynchronous** comes from the fact that the interrupt will **NOT** be
 
 ## [Hardware Support for OS Multiplexing ](https://www.youtube.com/watch?v=4pizOgCT11k&t=1285s)
 
-To allow for proper multiplexing, four things must be supported **in the hardware level**:
+To allow for proper multiplexing, **four** things must be supported **in the hardware level**:
 
 1.  There has to be a way to **asynchronously interrupt** a currently running program periodically since that program is currently using the CPU and will not stop voluntarily. That means there has to be some kind of external timer system that will fire up an interrupt signal (to the Control Unit) when that current running process time quanta is up.
 
@@ -145,7 +145,8 @@ Recall the **asynchronous interrupt** datapath as shown in the figure below:
 <img src="/50002/assets/contentimage/beta/irq.png"  class="center_seventy"/>
 
 One of the inputs that is received by the Control Unit is `IRQ` (1-bit).  In the event of asynchronous interrupt, that `IRQ` value will be `1`. For instance, whenever a user clicks the mouse, or press a keyboard key, or the scheduler timer fires, `IRQ` will be set to `1`. 
-> A kernel scheduler will typically configure some system timer to fire at some interval. This timer runs **asynchronously** with the CPU, and sets the `IRQ` signal to `1` each time it fires.
+
+Part of a Kernel program is a **scheduler** that will typically configure some system timer to fire at some interval. This timer runs **asynchronously** with the CPU, and sets the `IRQ` signal to `1` each time it fires.
 
 At each CLK cycle, the Control Unit always checks whether `IRQ` is `1` or `0`. 
 
@@ -204,9 +205,9 @@ In any case, `Reg[XP]-4` **always** contains the address of instruction that the
   
 ### [Dual Mode Hardware Support](https://www.youtube.com/watch?v=4pizOgCT11k&t=1971s)
 
-Since the OS Kernel is a program that manages the execution of all other processes in the system, it is **crucial** to restrict access to the Kernel for **safety reasons**. We need to prevent a normal program from jumping to the address in memory that contains Kernel code and "hack" the system.    
+Since the OS Kernel is a program that manages the execution of all other processes in the system, it is **crucial** to restrict access to the Kernel for **safety reasons**. We need to prevent a normal program from jumping to the address in memory that contains Kernel code and <span style="color:red; font-weight: bold;">compromise</span> the system.    
 
-This **prevention** is done via **hardware**. 
+This **prevention** is done via **hardware**. The few sections below summarise how CPU hardware prevents access to restricted *Kernel* space (the memory region where the Kernel program resides).
 
 #### PC31: Kernel and User Mode
 Firstly, we need to establish some notion: 
@@ -238,7 +239,10 @@ Entry to the kernel mode can only be done via restricted entry points. In $$\bet
 3. Reset (setting PC to `RESET: 0x8000 0000`)
 
 
-### [Reentrancy](https://www.youtube.com/watch?v=4pizOgCT11k&t=2045s)
+## Additional Sections
+These sections are not tested and are written solely to complete the knowledge.
+
+### [Reentrancy](https://www.youtube.com/watch?v=4pizOgCT11k&t=2045s) 
 
 When the CPU is in the kernel mode (`PC31 == 1`), i.e: handling an interrupt, it is important to consider whether or not we should allow **more interrupts** to occur. 
 
