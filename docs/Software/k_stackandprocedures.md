@@ -193,12 +193,14 @@ A **callee** (the function itself) <span style="color:red; font-weight: bold;">M
 
 In general, a stack is a type of data structure where you can perform two essential operations: `PUSH` and `POP`.  Its principle is *last-in-first-out*. 
 
-{: note-title}
+{: .note-title}
 > Stack Recap
 > 
 > You always add item via `PUSH` operation to the top of the stack, and can only remove the topmost item in succession via `POP` operation from the top of the stack. 
 
 How do we implement the stack data structure to aid our function execution?  
+
+
 
 #### Decide the Stack Space
 We **reserve** an arbitrary (unused/free) block of location in our Memory Unit to be space for the stack. Illustrated below is a block of memory unit from address `0x010C` to `0x0128` reserved as our stack: 
@@ -302,7 +304,7 @@ POP(R1)
 
 The state of the stack and the registers is therefore as shown. Notice how `POP` instructions can be used to *restore* the registers state to before as in **Step 1**. 
 
-{: note-title}
+{: .note-title}
 > Garbage Values
 > 
 > The **remnants** of data that was pushed to the stack actually stays in memory, but its rendered *irrelevant* because it can be overwritten again by other instructions (hence space is seen as *freed*). 
@@ -325,6 +327,18 @@ This allows whatever that was at address `0x10C` or 268 to be overwritten, effec
 > 
 > There's no point staring at these assembly data. Try out these instructions in `bsim`, and observe the state of the stack and registers **after** executing **each** instruction as practice. 
 
+### The activation stack
+
+When you use a debugger, notice how there exist something called the `call stack`:
+
+<img src="{{ site.baseurl }}/assets/images/k_stackandprocedures/2023-01-03-13-26-47.png"  class="center_seventy"/>
+
+This is also known as the **activation stack**. Within the activation stack, we have many **activation records** (one per function).
+
+{: .important-title}
+> Activation Stack and Activation Record
+> 
+> The **activation stack** is where the **run time environment** of the program keeps track of **all** the functions that have been called. It stores many **activation records**, which store all the necessary information about a function call, including parameters, local variables, return values, location currently being executed in the function, etc. An activation record is **pushed** into the stack when a procedure is called and it is **popped** when the control returns to the caller function.
 
 ## [Implementing Procedure Linkage Contract Using Stack](https://www.youtube.com/watch?v=u4TETujaNuk&t=1950s)
 

@@ -63,6 +63,7 @@ Other notable components of $$M$$:
 * A multiplier unit symbolised as `*`
 
 ### Control FSM A
+
 {: .highlight-title}
 > Control FSM
 > 
