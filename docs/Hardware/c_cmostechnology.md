@@ -37,7 +37,8 @@ In this chapter, we are learning a particular component called the **MOSFET** th
 
 *Metal-oxide semiconductor field effect transistors* (MOSFET, or shortened as FETs) is the main material that is used to make our combinational device. The basic schematic of a transistor is shown in the figure below. 
 
-> MOSFETS are **four** terminal voltage-controlled **switches**.  
+{: .highlight}
+MOSFETS are **four** terminal voltage-controlled **switches**.  
 
 Current flows between the diffusion terminals (source and drain) if the voltage on the gate terminal is large enough to create a conducting channel (in pink) and the mosfet is on. Otherwise, the conducting channel does not form and the mosfet is off: the diffusion terminals are not connected.
 
@@ -221,11 +222,11 @@ Hence, **it is very important for a CMOS circuit to contain  complementary pull-
 
 The main building blocks of the CMOS complements is summarized as below:
 
->   A combinational logic circuit can be made by connecting two NFETs in **series** as a pull-down circuit, and two PFETs in **parallel** as a pull-up circuit . 
 
 <img src="https://dropbox.com/s/y9o0f8qba2ura21/cmoscomp.png?raw=1"      >
 
-  
+{: .note}  
+A combinational logic circuit can be made by connecting two NFETs in **series** as a pull-down circuit, and two PFETs in **parallel** as a pull-up circuit . 
 
 
 For example, the following is a CMOS circuitry for a NAND gate: 
@@ -266,7 +267,9 @@ As practice, you can try to trace what happens when `A=0, B=0`, and when `A=1,  
 
 Notice how the circuitry in the previous section is called **NAND**. The name comes from this particular **functional specification** (truth table) of the combinational logic circuit. 
 
->    A combinational device with multiple inputs but **only one output** is called a **logic gate** .
+
+{: .highlight}
+A combinational device with multiple inputs but **only one output** is called a **logic gate** .
 
 The NAND gate is just one of many possible gates that we will encounter in this course. We will learn that in the next notes. 
 
@@ -280,9 +283,10 @@ Recall that combinational devices have timing specifications that tells us the u
 
 So far we haven't discussed about this term called *propagation delay*, which is *specification* that a combinational logic device must have.
 
-The propagation delay, denoted as $$t_{pd}$$ is defined as follows:
-
->    Assume the output of a device is initially invalid. The propagation delay is the time taken for the device to produce a **valid** output, measured the moment it was given a **valid** input. 
+{: .important-title}
+> Propagation Delay
+> 
+> Assume the output of a device is initially invalid. The propagation delay, denoted as $$t_{pd}$$ is defined as the time taken for the device to produce a **valid** output, measured the moment it was given a **valid** input. 
 
 The effective $$t_{pd}$$ of an entire circuit is the **maximum** *cumulative* propagation delay *over all paths from inputs to outputs* in the combinational logic circuit. 
 
@@ -298,8 +302,10 @@ The intuition behind why  t$$_{pd}$$ is calculated as the *maximum cumulative pr
 
 Another timing specification that is typically measured an indicated on a combinational logic device is the contamination delay.
 
-The contamination delay  denoted as $$t_{cd}$$ is defined as follows:
->    Assume the output of a device is initially valid. The contamination delay is the time taken for the device to produce an **invalid** output, measured  from the moment it was given an **invalid** input. 
+{: .important-title}
+> Contamination Delay
+>
+> Assume the output of a device is initially valid. The contamination delay  denoted as $$t_{cd}$$ is defined as time taken for the device to produce an **invalid** output, measured  from the moment it was given an **invalid** input. 
 
 The effective $$t_{cd}$$ of an entire circuit is the **minimum** *cumulative* contamination delay over *all paths from inputs to outputs* in the combinational logic circuit. 
 
@@ -333,6 +339,6 @@ Knowing how long the combinational device takes to react (at most) tells us how 
 
 We can assemble a few FETs to implement any truth table or Boolean functions (we will learn this more in next chapter), hence creating combinational logic devices. A specific type of combinational logic devices that has one output bit is called as **gate**. There are many types of gates, depending on the Boolean function that's realised. Then, an even larger combinational logic circuits (that realises more complicated Boolean functions) can be created by assembling many of these gates together. 
 
-> You will try this in Lab 2, where you are tasked to build an combinational logic circuit called the **adder**. 
+> You will try this in Lab Adder, where you are tasked to build an combinational logic circuit called the **adder**. 
 
 
