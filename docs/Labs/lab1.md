@@ -371,65 +371,134 @@ The **noise immunity** of a gate is the **smaller** of the low noise margin (Vil
 {: .note}
 Make these measurements using your “improved” `nand2` gate that has the centered VTC, i.e., with the updated widths for the PFETS.
 
+## Part C: Contamination and Propagation delays 
 
-## Part C: CMOS Logic Gate Design
+Now that we have the MOSFETs ratioed properly to **maximize noise immunity**, let’s measure the contamination time (tc) and propagation time (tp) of the `nand2` gate. 
 
-As the final part of this lab, your mission is to create and test a CMOS circuitry that implements the function $$F(A,B,C) = C + A·B$$ using NFETs and PFETs. The truth table for F is shown below:
+{: .warning-title}
+> tcd and tpd
+> 
+> The contamination delay, **tcd**, for the `nand2` gate will be a **lower** bound for all the tc measurements we make. Similarly, the propagation delay, **tpd**, for the `nand2` gate will be an **upper** bound for all the tP measurements. 
+
+### Contamination Delay
+Recall that **the contamination delay is the period of output validity after the inputs have become invalid**. That means there are **four** scenarios, depending on the combination of input and output values:
+1. The period of output remaining at valid `1` (before falling to valid `0` eventually) after input that was previously at valid `1` has turned invalid 
+2. The period of output remaining at valid `1` (before falling to valid `0` eventually) after input that was previously at valid `0` has turned invalid 
+3. The period of output remaining at valid `0` (before rising to valid `1` eventually) after input that was previously at valid `1` has turned invalid 
+4. The period of output remaining at valid `0` (before rising to valid `1` eventually) after input that was previously at valid `0` has turned invalid 
+
+The first two cases are called tc **fall**, while the latter two cases are called tc **rise**. The name rise or fall depends on whether the **output** is about to fall or rise. 
+
+{: .note}
+The statement: "Output **remaining** at valid `1`" means to maintain output voltage value above Voh, while *input at valid `1`* means to receive input voltage value above Vih. The same applies for valid `0` on both input and output. Revise the lecture on [Digital Abstraction](https://natalieagus.github.io/50002/notes/digitalabstraction) if you're still confused about this concept of valid `0` and `1`. 
 
 
-A |  B |  C | F(A,B,C)
----------|----------|---------|---------
-0 | 0 | 0 | 0
-0 | 0 | 1 | 1
-0 | 1 | 0 | 0
-0 | 1 | 1 | 1
-1 | 0 | 0 | 0
-1 | 0 | 1 | 1
-1 | 1 | 0 | 1
-1 | 1 | 1 | 1
+The truth table of the `nand2` gate is as follows:
 
-### Submission
-{: .highlight}
-**Write** your answer in the space provided under inside `lab1_submit.jsim`. Your solution should contain <span style="color:red; font-weight: bold;">NO</span> more than 8 MOSFETs.
+a | b| z
+---------|----------|---------
+0 | 0 | 1
+0 | 1 | 1 
+1 | 0 | 1 
+1 | 1 | 0
+
+Therefore the computation of tc **fall** and tc **rise** for `nand2` gate is: 
+<br>
+
+$$
+\begin{aligned}
+t_{c_{FALL}} &= \text{time elapsed from when input > Vil to when output < Voh}\\
+t_{c_{RISE}} &= \text{time elapsed from when input < Vih to when output > Vol}\\
+t_{cd} &= \min(t_{c_{RISE}}, t_{c_{FALL}})
+\end{aligned}
+$$
+
+**tc fall** is computed based on the third row of the `nand2` truth table. We first set the input at valid `0`, so we have the output at valid `1`. Then, we shall *increase* the input value to eventually no longer be valid `0` (> Vil) and compute the period of time where the output still remains at valid `1` (before eventually falling). The same logic applies for **tc rise**. 
+
+The computation of tc **fall** and tc **rise** is **not the same** for all gates. For instance, the computation for the two values for a **buffer** is:
+<br>
+
+$$
+\begin{aligned}
+t_{c_{FALL}} &= \text{time elapsed from when input < Vih to when output < Voh}\\
+t_{c_{RISE}} &= \text{time elapsed from when input > Vil to when output > Vol}\\
+t_{cd} &= \min(t_{c_{RISE}}, t_{c_{FALL}})
+\end{aligned}
+$$
+
+{: .important}
+Ensure you understand how the formulas above are derived before proceeding. 
+
+### Propagation Delay
+Similarly, **the propagation delay is the period of output invalidity after the inputs have become valid**. 
+
+That means there are **four** scenarios, depending on the combination of input and output values:
+1. The period of output turning to valid `0` (from being in valid `1` previously) after the input has become a valid `1` 
+2. The period of output turning to valid `0` (from being in valid `1` previously) after the input has become a valid `0` 
+3. The period of output turning to valid `1` (from being in valid `0` previously) after the input has become a valid `1` 
+4. The period of output turning to valid `1` (from being in valid `0` previously) after the input has become a valid `0` 
+
+The first two cases are called tp **fall**, while the latter two cases are called tp **rise**.
+
+Therefore the computation of tp **fall** and tp **rise** for `nand2` gate is: 
+
+$$
+\begin{aligned}
+t_{p_{FALL}} &= \text{time elapsed from when input }\geq \text{Vih to when output} \leq \text{ Vol}\\
+t_{p_{RISE}} &= \text{time elapsed from when input }\leq \text{Vil to when output} \geq \text{ Voh}\\
+t_{pd} &= \max(t_{p_{RISE}}, t_{p_{FALL}})
+\end{aligned}
+$$
+
+
+Following standard practice, we’ll choose the logic thresholds as follows:
+* Vol = 10% of power supply voltage = .3
+* Vil  = 20% of power supply voltage = .6
+* Vih  = 80% of power supply voltage = 2.6
+* Voh = 90% of power supply voltage = 3V
+
+{: .warning-title}
+Review the lecture on <a href="https://natalieagus.github.io/50002/notes/cmostechnology">CMOS Technology</a> to refresh your understanding on propagation delay and contamination delay. This is **VERY** important especially for Week 3 materials.  
+
+#### Generating test signal
+The final thing that we have to prepare to plot a VTC is to generate a test signal. You can use a voltage source with either a pulse or piecewise linear waveform to generate test signals for your circuit.  Here’s how to enter them in your netlist:
+        	
+```cpp
+Vid output 0 pulse(val1 val2 td tr tf pw per)
+```
+
+This statement produces a periodic waveform with the following shape:
+
+<img src="/50002/assets/contentimage/lab1/5.png"  class="center_fifty"/>
+
+### Task 5: Measuring tpd and tcd
+Replace the netlist fragment from Task C with the following test circuit that will let us measure various delays:
 
 ```cpp
-.include "nominal.jsim"
-.include "lab1checkoff.jsim"
+* test jig for measuring tcd and tpd
+Xdriver vin nin inv
+Xtest vdd nin nout nand2
+Cload nout 0 .02pf
+Vin vin 0 pulse(3.3,0,5ns,.1ns,.1ns,4.8ns)
+   	
+Vol vol 0 0.3v   // make measurements easier!
+Vil vil 0 0.6v
+Vih vih 0 2.6v
+Voh voh 0 3.0v
 
-.subckt F A B C Z
-* BEGIN ANSWER
-* NOT F CMOS circuitry: Pullup
-
-
-* NOT F CMOS circuitry: Pulldown
-
-* Inverter
-
-*END ANSWER
-.ends
+.tran 15ns
+.plot vin
+.plot nin nout vol vil vih voh
 ```
-**Steps:**
-* Open `lab1_submit.jsim` and write your answer there:
-* There should be three parts to your answer
-  * The pullup circuitry
-  * The pulldown circuitry
-  * The inverter at the drain of not F CMOS circuitry to produce back F 
-* Run it on jsim using the **FAST TRANSIENT ANALYSIS** button: 
-<br><br>
-<img src="/50002/assets/contentimage/lab1/8.png"  class=" center_fifty"/>
-<br>
-* You will need to **understand** the output plot, and the meaning of each line of instruction in the answer to be able to excel in the Lab Quiz. 
 
-Click on the green tick button on the right hand corner of the plot window. A message as such should appear and brings you happiness. This means that all values produced by your circuit is as expected and passes the test:
-<br><br>
-<img src="/50002/assets/contentimage/lab1/6.png"  class=" center_fifty"/>
+{: .note}
+Make these measurements using your “improved” nand2 gate from Task C that has the centered VTC, i.e., with the updated widths for the PFETs.
 
+We use an **inverter** (`inv`) to drive the `nand2` input since we would normally expect the test gate to be driven by the output of another gate (there are some subtle timing effects that we’ll miss if we drive the input directly with a voltage source).  Run the simulation with the “**device-level simulation**” button and measure the contamination and propagation delays for both the rising and falling output transitions.  You will meet such waveforms: 
 
-The files `nominal.jsim` and `lab1checkoff.jsim` contains the necessary circuitry to generate the appropriate input waveforms to test your circuit.  It includes a `.tran` statement to run the simulation for the appropriate length of time and a few .plot statements which will display the input and output waveforms for your circuit.
+<img src="/50002/assets/contentimage/lab1/11.png"  class="center_seventy no-invert"/><br>
 
-
-
-{: .new-title}
-> Hints
-> 
-> Remember that only NFETs should be used in **pulldown** circuits and only PFETs should be in **pullup** circuits. Using six MOSFETs, we implement the complement of F as one large CMOS (complementary MOS) gate and then use the remaining two MOSFETs to **invert** the output of your large gate. Refer to the lecture on [CMOS Technology](https://natalieagus.github.io/50002/notes/cmostechnology) to understand how you can construct the circuit using complementary MOSFETs. 
+You will need to zoom in on the transitions in order to make an accurate measurement. Combine your answers for tc rise, tc fall, tp rise, and tp fall as described above to produce estimates for tcd and tpd.
+ 
+{: .highlight}
+**Record** down the contamination tcd and propagation tpd delays for both the rising and falling output transitions and fill in the respective questions on eDimension. Please **zoom** in at least 4-5 times before doing this to get a clearer picture of the signals.  
