@@ -212,6 +212,7 @@ Select **all** statements that are **TRUE**.
 - [x] VDD can be 3V and GND can be 0V
 - [ ] VDD can be 0V and GND can be 3V 
 - [x] VDD can be 6V and GND can be 1V 
+- [ ] VDD can be 1V and GND can be 6V
 
 </div>
 
