@@ -83,7 +83,7 @@ $$
 > 
 > Ensure that you can assemble the circuit above and get your LED lit up before proceeding. 
 
-**Why the LED lights up?**
+**Why does the LEDs light up?**
 
 Let's do some quick recap. The battery's (+) terminal is connected to the LED's longer leg (after passing the resistor) and the battery's (-) terminal is connected to the LED's shorter leg, thereby closing the circuit. The LED lights up because there exists a potential difference between the battery's (+) terminal and the battery's (-) terminal, and there exist current flowing within the closed circuit which dissipates power (to light up the LED). 
 
