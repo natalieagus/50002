@@ -502,3 +502,26 @@ You will need to zoom in on the transitions in order to make an accurate measure
  
 {: .highlight}
 **Record** down the contamination tcd and propagation tpd delays for both the rising and falling output transitions and fill in the respective questions on eDimension. Please **zoom** in at least 4-5 times before doing this to get a clearer picture of the signals.  
+
+## Epilogue
+
+For many consumer products, designs are tested in the **range** of 0°C to 100°C. We can have JSim simulate our test circuit at a different temperature by adding a `.temp` control statement to the netlist. Normally JSim simulates the circuit at room temperature (25°C), but we can simulate the circuit at, say, 100°C by adding the following code to our netlist:
+
+```cpp
+.temp 100
+```
+
+{: .new-title}
+> Think!
+>
+> Do you think the values of tcd will *increase* at 100°C? What about the values of tcd? 
+
+If for example, we have the following measurements:
+* At 25°C, tcd = 0.1s and tpd = 0.2s
+* At 100°C, tcd = 0.25s and tpd = 0.3s
+
+Which values, at 25°C or 100°C will you use to record the device tpd specs? What about for tcd? 
+
+> If a 2019 Intel Core i9 processor is rated to run correctly at 2.3 GHz at 100°C, how many % more can you clock it (faster) and still have it run correctly at room temperature (assuming tpd is the parameter that determines “correct” computer behavior)? This is why you can usually get away with overclocking your CPU—it’s been rated for operation under much more severe environmental conditions than you’re probably running it at! 
+
+
