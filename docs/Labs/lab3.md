@@ -22,8 +22,10 @@ Modified by: Kenny Choo, Natalie Agus, Oka Kurniawan (2021)
 {: .no_toc}
 ## Starter Code
 The following files inside your `/50002/` folder are what you're going to use for this lab:
-- `lab3_alu.jsim` 
+- `lab3_alu_submit.jsim` 
 - `lab3_mult.jsim` (for study only, no submission of this file is required)
+
+Please submit all `*_submit.jsim` files by the due date (see course calendar), and do the lab questionnaire in eDimension as usual. 
 
 ## Related Class Materials
 The lecture notes on [Logic Synthesis](https://natalieagus.github.io/50002/notes/logicsynthesis) and [Designing an Instruction Set](https://natalieagus.github.io/50002/notes/instructionset) are closely related to this lab. 
@@ -112,7 +114,7 @@ Here’s the detailed schematic of the adder. Please **label** the nodes yoursel
 <img src="/50002/assets/contentimage/lab3/adder.png"  class=" center_seventy"/>
 
 {: .highlight}
-**Write** your answer in the space provided inside `lab3_alu.jsim`, and include `lab3adder.jsim` header to test your adder32 unit only. You can <span style="color:red; font-weight: bold;">comment</span> out `lab3checkoff.jsim` for the time being. 
+**Write** your answer in the space provided inside `lab3_alu_submit.jsim`, and include `lab3adder.jsim` header to test your adder32 unit only. You can <span style="color:red; font-weight: bold;">comment</span> out `lab3checkoff.jsim` for the time being. 
 
 ```cpp
 **********************************
@@ -185,7 +187,7 @@ Here’s the detailed schematic of the compare unit:
 
 #### Test
 {: .highlight}
-**Write** your answer in the space provided inside `lab3_alu.jsim`. We have created a test jig to test your compare unit: `lab3_testcompare.jsim`. Remember to comment the rest of the test jigs, and only use the compare test jig to test this unit.
+**Write** your answer in the space provided inside `lab3_alu_submit.jsim`. We have created a test jig to test your compare unit: `lab3_testcompare.jsim`. Remember to comment the rest of the test jigs, and only use the compare test jig to test this unit.
 
 ```cpp
 .include "nominal.jsim"
@@ -234,7 +236,7 @@ Here’s the detailed schematic of the Boolean unit:
 In total, you should utilise 32 4-to-1 multiplexers to build the boolean unit. **Please use [JSim iterator](https://natalieagus.github.io/50002/lab/lab3#jsim-iterators) explained in the appendix for this!**
 
 {: .highlight}
-**Write** your answer in the space provided inside `lab3_alu.jsim`. We’ve created a test jig to test your boolean unit: `lab3_testboolean.jsim`. Use it to test that your boolean unit works properly. 
+**Write** your answer in the space provided inside `lab3_alu_submit.jsim`. We’ve created a test jig to test your boolean unit: `lab3_testboolean.jsim`. Use it to test that your boolean unit works properly. 
 
 ```cpp
 .include "nominal.jsim"
@@ -309,7 +311,7 @@ Finally, we can combine all three shifters together to form the total shifter ou
 
 
 {: .highlight}
-**Write** your answer in the space provided inside `lab3_alu.jsim`. We have created a test jig to test your shift unit: `lab3_testshifter.jsim`. Use it to test that your shifter unit works properly. 
+**Write** your answer in the space provided inside `lab3_alu_submit.jsim`. We have created a test jig to test your shift unit: `lab3_testshifter.jsim`. Use it to test that your shifter unit works properly. 
 
 ```cpp
 .include "nominal.jsim"
@@ -395,7 +397,7 @@ Combine the outputs of the finished **adder**, **multiplier** (given), **compare
 Note that the `Z`, `V`, and `N` signals from the adder/subtractor unit are <span style="color:red; font-weight: bold;">included</span> in the terminal list for the alu subcircuit (counted as ALU’s output). **You should also have these signals as the ALU output for your 1D Project**. While these signals are not needed when using the ALU as part of the Beta, they are included here to make it easier for the test jig to pinpoint problems with your circuit.
 
 {: .highlight}
-**Write** your answer in the space provided inside `lab3_alu.jsim`. When you’ve completed your design, you can use `lab3checkoff.jsim` to test your ALU implementation including the multiplier. 
+**Write** your answer in the space provided inside `lab3_alu_submit.jsim`. When you’ve completed your design, you can use `lab3checkoff.jsim` to test your ALU implementation including the multiplier. 
 
 
 ```cpp

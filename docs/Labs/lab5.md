@@ -25,6 +25,8 @@ Modified by: Kenny Choo, Natalie Agus, Oka Kurniawan (2021)
 The following files inside your `/50002/` folder are what you're going to use for this lab:
 - `lab5_submit.uasm`
 
+Please submit all `*_submit.jsim` files by the due date (see course calendar), and do the lab questionnaire in eDimension as usual. 
+
 ## Related Materials
 The lecture notes on [Stack and Procedures](https://natalieagus.github.io/50002/notes/stackandprocedures) is closely related for this lab. Related sections include:
 - Background on [procedure linkage and stack](https://natalieagus.github.io/50002/notes/stackandprocedures#procedure-linkage-and-stack): 

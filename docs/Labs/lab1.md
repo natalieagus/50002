@@ -19,8 +19,9 @@ Singapore University of Technology and Design
 Modified by: Kenny Choo, Natalie Agus, Oka Kurniawan (2021)
 # Lab 1: CMOS
 {: .no_toc}
-## Starter Code
-The file  `lab1_submit.jsim` provided inside your `/50002/` folder are what you're going to open and modify or study for this lab, then submit (unless otherwise stated). You also need to head to edimension to answer a bunch of **questionnaire** there for this lab. 
+
+{: .highlight}
+There's no code submission for this lab. Simply answer the questionnaire in eDimension Week 2. 
 
 ## Related Class Materials
 The lecture notes on [Digital Abstraction](https://natalieagus.github.io/50002/notes/digitalabstraction) and [CMOS Technology](https://natalieagus.github.io/50002/notes/cmostechnology) are closely related to this lab.

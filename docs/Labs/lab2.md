@@ -21,9 +21,11 @@ Modified by: Kenny Choo, Natalie Agus, Oka Kurniawan (2021)
 {: .no_toc}
 ## Starter Code
 The following files inside your `/50002/` folder are what you're going to use for this lab:
-- `lab2_submit.jsim` 
+- `lab2_cmos_submit.jsim`  (TODO)
+- `lab2_adder4_submit.jsim` 
 - `lab2_debug.jsim` (for debugging only, no submission required)
 
+Please submit all `*_submit.jsim` files by the due date (see course calendar), and do the lab questionnaire in eDimension as usual. 
 
 ## Related Class Materials
 The lecture notes on **[CMOS technology](https://natalieagus.github.io/50002/notes/cmostechnology)** and **[logic synthesis](https://natalieagus.github.io/50002/notes/logicsynthesis)** are closely related to this lab.
@@ -54,7 +56,7 @@ Since logic gates are used to implement the logic for the full adder, a good pla
 * Test them individually, then
 * Use them to implement your design.  
 
-We have given you a headstart by implementing 2-input `nand`, 2-input `nor`, and `inv` for you inside `lab2_submit.jsim`. Now you just need to implement 2-input `xnor` and 2-input `xor` gates. 
+We have given you a headstart by implementing 2-input `nand`, 2-input `nor`, and `inv` for you inside `lab2_adder4_submit.jsim`. Now you just need to implement 2-input `xnor` and 2-input `xor` gates. 
 
 ### XOR and XNOR Gate Schematic
 It’s much easier to debug your circuit module-by-module rather than as one big lump.  XOR/XNOR can be challenging gates to design; here’s one suggestion for how they might be implemented. Use PFET with specs: SW as 4 and SL as 1, and NFET with specs: SW as 2 and SL as 1. 
@@ -64,7 +66,7 @@ It’s much easier to debug your circuit module-by-module rather than as one big
 <img src="/50002/assets/contentimage/lab2/3.png"  class=" center_fourty"/>
 
 {: .highlight}
-**Write** your xnor and xor circuitry inside `lab2_submit.jsim`. <br>
+**Write** your xnor and xor circuitry inside `lab2_adder4_submit.jsim`. <br>
 
 ```cpp
 * 2-input xor: input is a and b, output is z
@@ -106,7 +108,7 @@ C_{o}  &= A \cdot B + A \cdot C_{i} + B \cdot C_i
 > `S` is typically implemented using two cascaded 2-input XOR gates. You can use three 2-input NANDs and one 3-input NAND to implement `Co` (remember that by De Morgan’s Law, two cascaded NANDs are logically equivalent to a cascade of AND/OR).
 
 {: .highlight}
-**Write** your answer inside `lab2_submit.jsim`.
+**Write** your answer inside `lab2_adder4_submit.jsim`.
 
 ```cpp
 * FA: 1-bit Full Adder circuit
@@ -129,7 +131,7 @@ A possible schematic for the 4-bit adder is shown below:
 
 <img src="/50002/assets/contentimage/lab2/6.png"  class=" center_seventy"/>
 
-We have implemented this part for you inside `lab2_submit.jsim`. Please study it. 
+We have implemented this part for you inside `lab2_adder4_submit.jsim`. Please study it. 
 
 ```cpp
 .subckt ADDER4 a3 a2 a1 a0 b3 b2 b1 b0 s4 s3 s2 s1 s0
@@ -156,13 +158,13 @@ clk7  	period = 640ns
 clk8  	period = 1280ns
 ```
 
-For example, to completely test all possible input combinations for a 2-input gate, you could connect `clk1` and `clk2` to the two inputs and simulate for `20ns`. See `lab2_debug.jsim` file for example. You can open `lab2_debug.jsim` and click the **Fast Transient Analysis** button. Comment out the line `.include "lab2checkoff.jsim"` in `lab2_submit.jsim` if you want to plot these **debug plots** instead of the **checkoff plots**. Don't forget to uncomment back this line for your final submission.
+For example, to completely test all possible input combinations for a 2-input gate, you could connect `clk1` and `clk2` to the two inputs and simulate for `20ns`. See `lab2_debug.jsim` file for example. You can open `lab2_debug.jsim` and click the **Fast Transient Analysis** button. Comment out the line `.include "lab2checkoff.jsim"` in `lab2_adder4_submit.jsim` if you want to plot these **debug plots** instead of the **checkoff plots**. Don't forget to uncomment back this line for your final submission.
 
 Below is a screenshot on the contents of `lab2_debug.jsim`:
 
 ```cpp
 .include "8clocks.jsim"
-.include "lab2_submit.jsim"
+.include "lab2_adder4_submit.jsim"
 
 Xdriver1 clk1 a inv
 Xdriver2 clk2 b inv
@@ -183,7 +185,7 @@ We use `clk1`, `clk2`, and `clk3` to create signals for `A`, `B`, and `Ci` using
 Then we plug in `A`, `B`, and `Ci` signals to FA, getting its output: `S`, and `Co`. Afterwards, we plot them (the last 5 lines). 
 
 
-Once you are somewhat confident that your circuit works properly, go to `lab2_submit.jsim` and click the **Fast Transient Analysis** (not device level simulation!) button. A waveform window as such should pop up:
+Once you are somewhat confident that your circuit works properly, go to `lab2_adder4_submit.jsim` and click the **Fast Transient Analysis** (not device level simulation!) button. A waveform window as such should pop up:
 
 <img src="/50002/assets/contentimage/lab2/12.png"  class="center_full"/>
 

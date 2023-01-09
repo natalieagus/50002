@@ -22,12 +22,13 @@ Modified by: Kenny Choo, Natalie Agus, Oka Kurniawan (2021)
 {: .no_toc}
 ## Starter Code
 The following files inside your `/50002/` folder are what you're going to use for this lab:
-- `lab4_pc.jsim` 
-- `lab4_regfile.jsim` 
-- `lab4_control.jsim` 
+- `lab4_pc_submit.jsim` 
+- `lab4_regfile_submit.jsim` 
+- `lab4_control_submit.jsim` 
 - `lab4_aluwdsel.jsim` (for study only, no submission of this file is required)
-- `lab4_beta.jsim` 
+- `lab4_beta_submit.jsim` 
 
+Please submit all `*_submit.jsim` files by the due date (see course calendar), and do the lab questionnaire in eDimension as usual. 
 
 ## Related Class Materials
 The lecture notes on [Building the Beta CPU](https://natalieagus.github.io/50002/notes/betacpu), and [Designing an Instruction Set](https://natalieagus.github.io/50002/notes/instructionset) are closely related to this lab. 
@@ -121,7 +122,7 @@ Here is the suggested PC Unit schematic that you can implement. Note the input a
 <img src="/50002/assets/contentimage/lab4/pcunit.png"  class="center_seventy"/>
 
 
-Open `lab4_pc.jsim` and observe that the module interface has been provided for you. **We follow the PC Unit Schematic** above for the declaration of the input and output (they are **positional arguments**):
+Open `lab4_pc_submit.jsim` and observe that the module interface has been provided for you. **We follow the PC Unit Schematic** above for the declaration of the input and output (they are **positional arguments**):
 ```cpp
 .subckt PC_UNIT clk reset id[15:0] PCSEL[2:0] ra[31:0] ia[31:0] PC_4_SXTC[31:0] PC_4[31:0]
 ...
@@ -132,7 +133,7 @@ Your job is to fill up each blanks between `BEGIN ANSWER` and `END ANSWER`
 ### PCSEL Multiplexers
 
 {: .highlight}
-**Write** your answer in the space provided under `5-to-1 PCSEL mux` section inside `lab4_pc.jsim`. Read on to find out how to fill it up.
+**Write** your answer in the space provided under `5-to-1 PCSEL mux` section inside `lab4_pc_submit.jsim`. Read on to find out how to fill it up.
 
 ```cpp
 **** 5-to-1 PCSEL mux *****
@@ -198,7 +199,7 @@ Xmux_unit0 control_signal 0 0 output_signal0 mux2
 
 ### RESET Multiplexer
 {: .highlight}
-**Write** your answer in the space provided under `RESET mux` and `PC Register` sections inside `lab4_pc.jsim`. Read on to find out how to fill it up.
+**Write** your answer in the space provided under `RESET mux` and `PC Register` sections inside `lab4_pc_submit.jsim`. Read on to find out how to fill it up.
 
 ```cpp
 **** RESET mux *************
@@ -220,7 +221,7 @@ The PC is a separate **32-bit register** that can be built using the `dreg` comp
 ### Increment-by-4
 Conceptually, the increment-by-4 circuit is just a 32-bit adder with one input wired to the constant 4. You can reuse the 32-bit FA circuit that you have created in Lab 3. However, it is possible to build a much **smaller** circuit if you design an adder **optimized** knowing that one of its inputs is `0x00000004` constant.
 
-We have given you the nodes for constant `4` called `FOUR[31:0]` and implemented the add-4 unit for you as follows in `lab4_pc.jsim`: 
+We have given you the nodes for constant `4` called `FOUR[31:0]` and implemented the add-4 unit for you as follows in `lab4_pc_submit.jsim`: 
 
 ```cpp
 **** add-4 unit ************ 
@@ -239,7 +240,7 @@ Please study the unit above as it will help you implement the shift-add-4 unit n
 The branch-offset adder **adds** PC+4 to the 16-bit offset encoded in the instruction `id[15:0]`. You can use `adder32` again here. The offset is **sign-extended** to 32-bits and multiplied by 4 in preparation for the addition.  Both the sign extension and shift operations can be done with appropriate wiring—no gates required!
 
 {: .highlight}
-**Write** your answer in the space provided under `shift add unit` inside `lab4_pc.jsim`.
+**Write** your answer in the space provided under `shift add unit` inside `lab4_pc_submit.jsim`.
 
 ```cpp
 **** shift add unit ********
@@ -278,7 +279,7 @@ This has the following three implications for your Beta design:
 
 
 {: .highlight}
-**Write** your answer in the space provided under `JMP mux` inside `lab4_pc.jsim`.
+**Write** your answer in the space provided under `JMP mux` inside `lab4_pc_submit.jsim`.
 
 ```cpp
 ***** JMP mux *************
@@ -291,7 +292,7 @@ This has the following three implications for your Beta design:
 ```
 
 ### Testing 
-You can uncomment the headers inside `lab4_pc.jsim` and run the **gate-level** simulation:
+You can uncomment the headers inside `lab4_pc_submit.jsim` and run the **gate-level** simulation:
 ```cpp
 .include "nominal.jsim"
 .include "stdcell.jsim"
@@ -310,7 +311,7 @@ Study the output to ensure that you have the intended signals. You can click on 
 {: .important}
 It is **very important** to test all PC **datapath** before proceeding to the next section, that is to fix all bugs pertaining to your pc unit if any. 
 
-After you're satisfied with testing, comment out the headers and the test instructions. The file `lab4_pc.jsim` should only contain the definition of your pc unit subcircuit **only**. We will import it later inside `lab4_beta.jsim`.
+After you're satisfied with testing, comment out the headers and the test instructions. The file `lab4_pc_submit.jsim` should only contain the definition of your pc unit subcircuit **only**. We will import it later inside `lab4_beta_submit.jsim`.
 
 ```cpp
 * .include "nominal.jsim"
@@ -326,7 +327,7 @@ Here is the suggested REGFILE Unit schematic that you can implement.
 <img src="/50002/assets/contentimage/lab4/regfileunit.png"  class="center_seventy"/>
 
 
-Open `lab4_regfile.jsim` and observe that the module interface has been provided for you. **We follow the Regfile Unit Schematic** above for the declaration of the input and output (they are **positional arguments**):
+Open `lab4_regfile_submit.jsim` and observe that the module interface has been provided for you. **We follow the Regfile Unit Schematic** above for the declaration of the input and output (they are **positional arguments**):
 ```cpp
 .subckt REGFILE_UNIT clk wasel ra2sel werf id[25:11] WDSEL_OUT[31:0] ra[31:0] rb[31:0] mwd[31:0] z
 ...
@@ -342,7 +343,7 @@ You will need a mux controlled by `RA2SEL` to select the **correct** address for
 We have provided the address for `Reg XP` for you, that is the 5-bit constant `30`: `0b11110`. Please utilise that in your implementation. 
 
 {: .highlight}
-**Write** your answer in the space provided under `RA2SEL mux` and `WASEL mux` sections inside `lab4_regfile.jsim`.
+**Write** your answer in the space provided under `RA2SEL mux` and `WASEL mux` sections inside `lab4_regfile_submit.jsim`.
 
 ```cpp
 **** RA2SEL mux ************
@@ -371,7 +372,7 @@ See [**Appendix 2**](https://natalieagus.github.io/50002/lab/lab4#appendix-2-usi
 Note that the memory component **doesn’t know** that location `31` of the register file should always read as `0x00000000`, so you’ll have to add **additional** logic around the memory that makes this happen.  You can use **muxes** or `ANDs` to force the register data for each read port to “0” when the port address = 0b11111 (i.e., R31). 
 
 {: .highlight}
-**Write** your answer in the space provided under `Regfile memory` section inside `lab4_regfile.jsim`.
+**Write** your answer in the space provided under `Regfile memory` section inside `lab4_regfile_submit.jsim`.
 
 ```cpp
 **** Regfile memory ********
@@ -407,7 +408,7 @@ The `RA1`/`RD1` port output producing `ra[31:0]` is also wired directly to the `
 Z logic can be added to the output of the RA1/RD1 port of the register file memory above. The value of Z must be `0b1` if and only if `ra[31:0]` is `0x00000000`. Z must be `0b0` otherwise. This is exactly a `NOR` logic, but we do not have a 32-bit NOR gate. Hence we can use  a fan-in OR gates and place an `inverter` at the end as shown in the schematic above. 
 
 {: .highlight}
-**Write** your answer in the space provided under `Z computation` section inside `lab4_regfile.jsim`.=
+**Write** your answer in the space provided under `Z computation` section inside `lab4_regfile_submit.jsim`.=
 
 ```cpp
 **** Z computation *********
@@ -425,7 +426,7 @@ Xmwdout mwd[31:0] rb[31:0] bus
 ```
 
 {: .highlight}
-**Write** your answer in the space provided under `mwd[31:0] output` section inside `lab4_regfile.jsim`.
+**Write** your answer in the space provided under `mwd[31:0] output` section inside `lab4_regfile_submit.jsim`.
 
 ```cpp
 **** mwd[31:0] output ******
@@ -437,7 +438,7 @@ Xmwdout mwd[31:0] rb[31:0] bus
 
 
 ### Testing 
-You can uncomment the headers inside `lab4_regfile.jsim` and run the gate-level simulation to verify that your unit works perfectly:
+You can uncomment the headers inside `lab4_regfile_submit.jsim` and run the gate-level simulation to verify that your unit works perfectly:
 
 ```cpp
 .include "nominal.jsim"
@@ -452,7 +453,7 @@ If everything works as expected, you should see the following message when you c
 <img src="/50002/assets/contentimage/lab4/24.png"  class=" center_fifty"/>
 
 {: .important}
-Comment out the header and the test instructions after you are done. The file `lab4_regfile.jsim` should only contain the definition of your pc unit subcircuit only. We will import it later inside `lab4_beta.jsim`.
+Comment out the header and the test instructions after you are done. The file `lab4_regfile_submit.jsim` should only contain the definition of your pc unit subcircuit only. We will import it later inside `lab4_beta_submit.jsim`.
 
 ## Part C: CONTROL Unit
 ### CONTROL Unit Schematic
@@ -460,7 +461,7 @@ Here is the suggested **CONTROL** Unit schematic that you can implement.
 
 <img src="/50002/assets/contentimage/lab4/controlunit.png"  class="center_seventy"/>
 
-Open `lab4_control.jsim` and observe that the module interface has been provided for you. **We follow the Control Unit Schematic** above for the declaration of the input and output (they are **positional arguments**):
+Open `lab4_control_submit.jsim` and observe that the module interface has been provided for you. **We follow the Control Unit Schematic** above for the declaration of the input and output (they are **positional arguments**):
 ```cpp
 .subckt CONTROL_UNIT z reset irq ia31 id[31:26] asel bsel ra2sel alufn[5:0] moe wdsel[1:0] wasel werf wr pcsel[2:0] 
 ...
@@ -491,7 +492,7 @@ We have already provided you with the bare Control Unit ROM as shown in the sche
 ### WR 
 We do need to be careful with the write enable signal for main memory (WR) which needs to be **valid** even before the first instruction is fetched from memory. WR is an input to the main memory, and recall that ALL inputs need to be VALID (0 is also a valid value!) in order for the main memory to give a valid output data. You should include some additional logic that forces `wr` to `0b0` when `reset=1`. the signal XWR from the ROM needs to combine appropriately with `reset` to form WR. 
 
-We have provided the `reset` mux to handle this in `lab4_control.jsim`:
+We have provided the `reset` mux to handle this in `lab4_control_submit.jsim`:
 ```cpp
 * reset mux 
 Xresetmux reset wr_temp 0 wr_cu mux2 
@@ -511,7 +512,7 @@ BNE `011110` | 1 | `000`
 If you are using a ROM-based implementation, you can make `Z` an additional address input to the ROM (**doubling** its size).  A more economical implementation might use external logic to modify the value of the PCSEL signals as defined in our schematic above. 
 
 {: .highlight}
-**Write** your answer in the space provided under `Branch check` section inside `lab4_control.jsim`.
+**Write** your answer in the space provided under `Branch check` section inside `lab4_control_submit.jsim`.
 
 ```cpp
 **** Branch check **********
@@ -540,7 +541,7 @@ When `IRQ` signal is 1 and the Beta is in “user mode” (PC31 is zero), an **i
 Note that you’ll also want to add logic to **reset** the Beta; at the very least when **reset** is asserted you’ll need to force the PC to `0x80000000` and ensure that `WR` is 0 (to prevent your initialized main memory from being overwritten).
 
 {: .highlight}
-**Write** your answer in the space provided under `IRQ handling` section inside `lab4_control.jsim`.
+**Write** your answer in the space provided under `IRQ handling` section inside `lab4_control_submit.jsim`.
 
 ```cpp
 ****  IRQ handling *********
@@ -552,7 +553,7 @@ Note that you’ll also want to add logic to **reset** the Beta; at the very lea
 ```
 
 ### Testing 
-Similarly, you can uncomment the headers and the given test signals inside `lab4_control.jsim` and run the test jig to make sure that the datapath works properly. 
+Similarly, you can uncomment the headers and the given test signals inside `lab4_control_submit.jsim` and run the test jig to make sure that the datapath works properly. 
 
 ```cpp
 .include "nominal.jsim"
@@ -567,7 +568,7 @@ The following window should show up when everything in the control unit works as
 <img src="/50002/assets/contentimage/lab4/22.png"  class=" center_seventy"/>
 
 {: .important}
-Comment out the header and the test instructions after you are done. The file `lab4_control.jsim` should only contain the definition of your pc unit subcircuit only. We will import it later inside `lab4_beta.jsim`.<>
+Comment out the header and the test instructions after you are done. The file `lab4_control_submit.jsim` should only contain the definition of your pc unit subcircuit only. We will import it later inside `lab4_beta_submit.jsim`.<>
 
 
 ## ALU + WDSEL Unit
@@ -599,14 +600,14 @@ Also, **Bit 31** of the branch-offset input to the ASEL mux should be set to `0`
 Please study the circuitry inside `lab4_aluwdsel.jsim` before proceeding to the next section.
 
 ## Part D: Assemble Completed Beta
-Open `lab4_beta.jsim` and notice that it should have these .include statements:
+Open `lab4_beta_submit.jsim` and notice that it should have these .include statements:
 
 ```cpp
 .include "nominal.jsim"
 .include "stdcell.jsim"
-.include "lab4_control.jsim"
-.include "lab4_pc.jsim"
-.include "lab4_regfile.jsim"
+.include "lab4_control_submit.jsim"
+.include "lab4_pc_submit.jsim"
+.include "lab4_regfile_submit.jsim"
 .include "lab4_aluwdsel.jsim"
 .include "lab4_adder.jsim"
 .include "lab4_alu.jsim"
