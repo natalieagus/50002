@@ -208,7 +208,7 @@ Make a measurement of `Ids` when `Vgs` = 0V **and** `Vds` = 2.5V.
 * So if our MOSFET switch controls access to the storage capacitor, you can see we will need to refresh the capacitor’s charge at fairly frequent intervals. 
 
 {: .highlight}
- **Record** down the estimated discharge time.  You will need this information for Checkoff 2.  
+ **Record** down the estimated discharge time and head to eDimension to answer the related question.
 
 
 ## Part B: Noise Immunity 
@@ -350,7 +350,7 @@ One possible way to center the VTC transition is to adjust the size of the NFET 
 * Report the integral width that comes closest to having the curves intersect at 1.65V.
 
 {: .highlight}
-**Record** down the `SW` value you found.  You will need this information for Checkoff 3.
+**Record** down the `SW` value you found and head to eDimension to answer the related question.
 
 
 ### Task 4: Finding Noise Immunity 
@@ -361,7 +361,7 @@ Keep the `SW` value you found in Task 3 for the rest of this lab!
 The **noise immunity** of a gate is the **smaller** of the low noise margin (Vil - Vol) and the high noise margin (Voh - Vih).  If we specify Vol = 0.3V and Voh = 3.0V, what is the largest possible noise immunity we could specify and still have the “improved” NAND gate of part (C) be a legal member of the logic family?
   	
 {: .highlight}
-**Record** down the noise immunity value.  You will need this information for Checkoff 4. 
+**Record** down the noise immunity value and head to eDimension to answer the related question.
 
 **Hint:** 
 * To measure the **low** noise margin, use the VTC to determine what VIN has to be in order for VOUT to be 3V, and then subtract VOL (0.3V) from that number. 
