@@ -560,7 +560,7 @@ shuffleAnswers: false
 ---
 
 #### NAND output value
-Refer to the diagram above. Suppose that initially we connected Pin 12 (4A) to the GND, and the orange LED **was** ON. Now, we remove that connection as shown in the diagram. Will the LED stays ON or be OFF? Select **all** that apply. 
+Refer to the diagram above. Suppose that initially we connected Pin 12 (4A) to the GND, and the orange LED **was** ON. Now, we remove that connection. Pin 12 (4A) is plugged out and the wire is not connected to anywhere else, remain open as shown in the diagram. Will the LED stays ON or be OFF? Select **all** that apply. 
 
 - [x] ON
 - [x] OFF
