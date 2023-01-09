@@ -133,13 +133,15 @@ The **output** is represented by the <span style="color:orange; font-weight: bol
 
 ### Terminologies
 
+
 #### Digital value `1`
-When the LED is ON, it means that pin 3 (1Y) supplies a **high voltage** (which results in current flowing through the LED and power dissipated to light up the bulb). Let's name this **HIGH VOLTAGE** condition as **digital value `1`**. In other words, we say that pin 3 (1Y) supplies digital value `1` to the LED if the LED is lit up. 
+
+<span style="color:red; font-weight: bold;">For the purpose of this lab</span>, when the LED is ON, it means that pin 3 (1Y) supplies a **high voltage** (which results in current flowing through the LED and power dissipated to light up the bulb). Let's name this **HIGH VOLTAGE** condition as **digital value `1`**. In other words, we say that pin 3 (1Y) supplies digital value `1` to the LED if the LED is lit up. 
 
 The LED itself is just a "tool" that we use to read the voltage value of pin 3 (1Y). If the voltage is HIGH enough, our LED is ON. Otherwise, our LED is OFF. We <span style="color:red; font-weight: bold;">dont really care</span> about the actual voltage value of pin 3 (1Y), only that it is a **HIGH VOLTAGE**: <span style="color:red; font-weight: bold;">higher than the lowest voltage in the circuit</span>, which is the battery's (-) terminal.
 
 #### Digital value `0`
-Similarly, when the LED is OFF (at least to the naked eye), it means that pin 3 (1Y) supplies a **low voltage**. It does not necessarily mean that it is 0V, but **low enough** in comparison to the highest voltage point in the entire circuit which is the battery's (+) terminal.  In other words, we say that pin 3 (1Y) supplies digital value `0` to the LED if the led is **not** lit up.
+Similarly, <span style="color:red; font-weight: bold;">for the purpose of this lab</span>, when the LED is OFF (at least to the naked eye), it means that pin 3 (1Y) supplies a **low voltage**. It does not necessarily mean that it is 0V, but **low enough** in comparison to the highest voltage point in the entire circuit which is the battery's (+) terminal.  In other words, we say that pin 3 (1Y) supplies digital value `0` to the LED if the led is **not** lit up.
 
 Again, we <span style="color:red; font-weight: bold;">don't really care</span> about the actual low voltage of pin 3 (1Y). 
 
@@ -186,16 +188,16 @@ shuffleAnswers: false
 #### LED OFF
 If an LED connected at pin 3 (1Y) is not lit up (OFF), which statement(s) is/are true about pin 3 (1Y)? Select **all** that applies. 
 
-- [x] pin 3 (1Y) supplies digital value `0`
-- [ ] pin 3 (1Y) supplies digital value `1`
+- [x] pin 3 (1Y) supplies digital value `0` as per this lab's specs
+- [ ] pin 3 (1Y) supplies digital value `1` as per this lab's specs
 - [x] pin 3 (1Y) supplies LOW voltage value (low enough in comparison to VDD)
 - [ ] pin 3 (1Y) supplies HIGH voltage value (high enough in comparison to GND)
 
 #### LED ON
 If an LED connected at pin 3 (1Y) is **lit up** (ON), which statement(s) is/are true about pin 3 (1Y)? Select **all** that applies. 
 
-- [ ] pin 3 (1Y) supplies digital value `0`
-- [x] pin 3 (1Y) supplies digital value `1`
+- [ ] pin 3 (1Y) supplies digital value `0` as per this lab's specs
+- [x] pin 3 (1Y) supplies digital value `1` as per this lab's specs
 - [ ] pin 3 (1Y) supplies LOW voltage value (low enough in comparison to VDD)
 - [x] pin 3 (1Y) supplies HIGH voltage value (high enough in comparison to GND)
 
