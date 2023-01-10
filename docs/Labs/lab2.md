@@ -21,7 +21,7 @@ Modified by: Kenny Choo, Natalie Agus, Oka Kurniawan (2021)
 {: .no_toc}
 ## Starter Code
 The following files inside your `/50002/` folder are what you're going to use for this lab:
-- `lab2_cmos_submit.jsim`  (TODO)
+- `lab2_cmos_submit.jsim`
 - `lab2_adder4_submit.jsim` 
 - `lab2_debug.jsim` (for debugging only, no submission required)
 
@@ -30,7 +30,12 @@ Please submit all `*_submit.jsim` files by the due date (see course calendar), a
 ## Related Class Materials
 The lecture notes on **[CMOS technology](https://natalieagus.github.io/50002/notes/cmostechnology)** and **[logic synthesis](https://natalieagus.github.io/50002/notes/logicsynthesis)** are closely related to this lab.
 
-**Part A:** Building XOR and XNOR gate using PFETs and NFETs
+**Part A:** Logic synthesis and CMOS circuit
+<br>Related Notes: **Logic Synthesis**
+* [Translating between truth table and boolean equation](https://natalieagus.github.io/50002/notes/logicsynthesis#straightforward-logic-synthesis)
+* [Creating CMOS circuit from the given boolean equation](https://natalieagus.github.io/50002/notes/logicsynthesis#logic-synthesization-with-cmos), consisting of pull-up and pull-down parts then inverting the overall output.
+
+**Part B:** Building XOR and XNOR gate using PFETs and NFETs
 <br>Related sections in the notes:	
 * [Logic Synthesis](https://natalieagus.github.io/50002/notes/logicsynthesis):
   * [N-input gates](https://natalieagus.github.io/50002/notes/logicsynthesis#n-input-gates) (other gates you can use to build a FA)
@@ -38,8 +43,8 @@ The lecture notes on **[CMOS technology](https://natalieagus.github.io/50002/not
 * [CMOS Technology](https://natalieagus.github.io/50002/notes/cmostechnology):
   * [Understand why the C in CMOS is necessary](https://natalieagus.github.io/50002/notes/cmostechnology#complementary-mos-circuitry): to prevent short circuit; the PU and PD cannot both be ON. 
 
-**Part B:** Build 1-bit Full Adder using gates you built in Part A
-<br>Related sections in the notes: ([logic synthesis](https://natalieagus.github.io/50002/notes/logicsynthesis))
+**Part C:** Build 1-bit Full Adder using gates you built in Part B
+<br>Related Notes: **Logic Synthesis**
 * [Sum-of-products](https://natalieagus.github.io/50002/notes/logicsynthesis#sum-of-products) (you can build a FA using AND, OR, and INV gates)
 * [Universal gates](https://natalieagus.github.io/50002/notes/logicsynthesis#universal-gates) (you can build a FA using NANDs only or NORs only)
 * Realise that there’s more than ONE way to construct a FA circuit. There’s no one *right or best* circuit. 
@@ -49,7 +54,73 @@ Your mission this week is to design and test a CMOS circuit that performs additi
 
 <img src="/50002/assets/contentimage/lab2/1.png"  class="center_thirty"/>
 
-## Part A: Building Logic Gates XOR and XNOR
+Before we do this, let's practice on your Logic Gate Design.
+
+## Part A: CMOS Logic Gate Design
+
+In this section, your mission is to create and test a CMOS circuitry that implements the function $$F(A,B,C) = C + A·B$$ using NFETs and PFETs. The truth table for F is shown below:
+
+
+A |  B |  C | F(A,B,C)
+---------|----------|---------|---------
+0 | 0 | 0 | 0
+0 | 0 | 1 | 1
+0 | 1 | 0 | 0
+0 | 1 | 1 | 1
+1 | 0 | 0 | 0
+1 | 0 | 1 | 1
+1 | 1 | 0 | 1
+1 | 1 | 1 | 1
+
+
+{: .highlight}
+**Write** your answer in the space provided  inside `lab2_cmos_submit.jsim`. Your solution should contain <span style="color:red; font-weight: bold;">NO</span> more than 8 MOSFETs.
+
+```cpp
+.include "nominal.jsim"
+.include "lab2cmoscheckoff.jsim"
+
+.subckt F A B C Z
+* BEGIN ANSWER
+* NOT F CMOS circuitry: Pullup
+
+
+* NOT F CMOS circuitry: Pulldown
+
+* Inverter
+
+*END ANSWER
+.ends
+```
+
+**Steps:**
+* Open `lab2_cmos_submit.jsim` and write your answer there:
+* There should be three parts to your answer
+  * The pullup circuitry
+  * The pulldown circuitry
+  * The inverter at the drain of not F CMOS circuitry to produce back F 
+* Run it on jsim using the **FAST TRANSIENT ANALYSIS** button: 
+<br><br>
+<img src="/50002/assets/contentimage/lab1/8.png"  class=" center_fifty"/>
+<br>
+* You will need to **understand** the output plot, and the meaning of each line of instruction in the answer to be able to excel in the Lab Quiz. 
+
+Click on the green tick button on the right hand corner of the plot window. A message as such should appear and brings you happiness. This means that all values produced by your circuit is as expected and passes the test:
+<br><br>
+<img src="/50002/assets/contentimage/lab1/6.png"  class=" center_fifty"/>
+
+
+The files `nominal.jsim` and `lab2cmoscheckoff.jsim` contains the necessary circuitry to generate the appropriate input waveforms to test your circuit.  It includes a `.tran` statement to run the simulation for the appropriate length of time and a few .plot statements which will display the input and output waveforms for your circuit.
+
+{: .new-title}
+> Hints
+> 
+> Remember that only NFETs should be used in **pulldown** circuits and only PFETs should be in **pullup** circuits. Using six MOSFETs, we implement the complement of F as one large CMOS (complementary MOS) gate and then use the remaining two MOSFETs to **invert** the output of your large gate. Refer to the lecture on [CMOS Technology](https://natalieagus.github.io/50002/notes/cmostechnology) to understand how you can construct the circuit using complementary MOSFETs. 
+
+
+
+
+## Part B: Building Logic Gates XOR and XNOR
 
 Since logic gates are used to implement the logic for the full adder, a good place to start is to:
 * Build your own gate library (e.g., inverter, 2-input `nand`, 2-input `nor`, `inv`, 2-input `xnor`, 2-input `xor`), 
@@ -88,7 +159,7 @@ It’s much easier to debug your circuit module-by-module rather than as one big
 .ends
 ```
 
-## Part B: Simple 1-bit Adder
+## Part C: Simple 1-bit Adder
 Let’s start a simple **1-bit full-adder** module before proceeding to create a 4-bit Ripple-Carry adder. Later we will discuss higher performance adder architectures you can use in the implementation of the Beta (the computer central processing unit we will be designing in later labs).
 
 The full adder module has **3 inputs** (`A`, `B`, and `Ci`) and **2 outputs** (`S` and `Co`). The logic equations and truth tables for `S` and `Co` are shown below.

@@ -41,10 +41,13 @@ The lecture notes on [Digital Abstraction](https://natalieagus.github.io/50002/n
   * Realise that we can optimise the noise margin by optimising the MOSFET material 
   * Understand why static discipline is important, and how we can analyse VTC to choose the best MOSFET design
 
-**Task 5:** logic synthesis and CMOS circuit
-<br>Related Notes: **Logic Synthesis**
-* [Translating between truth table and boolean equation ](https://natalieagus.github.io/50002/notes/logicsynthesis#straightforward-logic-synthesis)
-* [Creating CMOS circuit from the given boolean equation](https://natalieagus.github.io/50002/notes/logicsynthesis#logic-synthesization-with-cmos), consisting of pull-up and pull-down parts then inverting the overall output.
+**Task 5:** measuring tpd and tcd
+<br>Related Notes: **CMOS Technology**
+  * [Timing Specifications of Combinational Logic Devices](https://natalieagus.github.io/50002/notes/cmostechnology#timing-specifications-of-combinational-logic-devices)
+  * To analyse the relationship between setup time, hold time, contamination delay, and propagation delays
+
+
+
 
 ## Introduction to JSim 
 *(you really should’ve read this intro section before coming to class)*

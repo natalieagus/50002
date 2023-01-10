@@ -1,7 +1,7 @@
 
-## Part C: CMOS Logic Gate Design
+## CMOS Logic Gate Design
 
-As the final part of this lab, your mission is to create and test a CMOS circuitry that implements the function $$F(A,B,C) = C + A·B$$ using NFETs and PFETs. The truth table for F is shown below:
+In this section, your mission is to create and test a CMOS circuitry that implements the function $$F(A,B,C) = C + A·B$$ using NFETs and PFETs. The truth table for F is shown below:
 
 
 A |  B |  C | F(A,B,C)
@@ -15,13 +15,13 @@ A |  B |  C | F(A,B,C)
 1 | 1 | 0 | 1
 1 | 1 | 1 | 1
 
-### Submission
+
 {: .highlight}
-**Write** your answer in the space provided under inside `lab1_submit.jsim`. Your solution should contain <span style="color:red; font-weight: bold;">NO</span> more than 8 MOSFETs.
+**Write** your answer in the space provided  inside `lab2_cmos_submit.jsim`. Your solution should contain <span style="color:red; font-weight: bold;">NO</span> more than 8 MOSFETs.
 
 ```cpp
 .include "nominal.jsim"
-.include "lab1checkoff.jsim"
+.include "lab2cmoscheckoff.jsim"
 
 .subckt F A B C Z
 * BEGIN ANSWER
@@ -35,8 +35,9 @@ A |  B |  C | F(A,B,C)
 *END ANSWER
 .ends
 ```
+
 **Steps:**
-* Open `lab1_submit.jsim` and write your answer there:
+* Open `lab2_cmos_submit.jsim` and write your answer there:
 * There should be three parts to your answer
   * The pullup circuitry
   * The pulldown circuitry
@@ -52,9 +53,7 @@ Click on the green tick button on the right hand corner of the plot window. A me
 <img src="/50002/assets/contentimage/lab1/6.png"  class=" center_fifty"/>
 
 
-The files `nominal.jsim` and `lab1checkoff.jsim` contains the necessary circuitry to generate the appropriate input waveforms to test your circuit.  It includes a `.tran` statement to run the simulation for the appropriate length of time and a few .plot statements which will display the input and output waveforms for your circuit.
-
-
+The files `nominal.jsim` and `lab2cmoscheckoff.jsim` contains the necessary circuitry to generate the appropriate input waveforms to test your circuit.  It includes a `.tran` statement to run the simulation for the appropriate length of time and a few .plot statements which will display the input and output waveforms for your circuit.
 
 {: .new-title}
 > Hints
