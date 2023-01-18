@@ -108,7 +108,7 @@ Let's figure out the **functionality** of each of these logic gate by assembling
 * Let's begin by examining its **functionality** first before later studying how it works
 
 ### 74HC00
-Let's take into example this Quad NAND gate (74HC00). Assemble it on your breadboard as follows:
+Let's take into example this Quad NAND gate (74HC00). Assemble it on your breadboard as follows. Please note the orientation of the <span style="color:red; font-weight: bold;">notch</span>!
 
 <img src="{{ site.baseurl }}/assets/images/mhp/MHP-1_NAND.png"  class="center_seventy"/>
 
