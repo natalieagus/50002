@@ -473,7 +473,7 @@ Follow the schematic below. Make sure you **use the right logic gate** to comput
 <img src="{{ site.baseurl }}/assets/images/mhp/MHP-half-adder-sum-carry_bb.png"  class="center_seventy"/>
 
 Here's the equivalent circuit diagram to help you:
-<img src="{{ site.baseurl }}/assets/images/mhp/circuit-diag.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/assets/images/mhp/circuit-diag.png"  class="center_fifty"/>
 
 Do not forget to **test** your sum bit by using the dipswitch and observing if the LED is **ON** up only when ONE of the switches are **ON**. 
 
