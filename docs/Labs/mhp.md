@@ -207,12 +207,12 @@ Select **all** statements that are **TRUE**.
 
 - [x] VDD has higher voltage than GND
 - [ ] VDD has lower voltage than GND
-- [ ] VDD must be 6V 
-- [ ] GND must be 0V
+- [ ] VDD must be 6V (only)
+- [ ] VDD must be 3V (only)
 - [x] VDD can be 3V and GND can be 0V
 - [ ] VDD can be 0V and GND can be 3V 
-- [x] VDD can be 6V and GND can be 1V 
-- [ ] VDD can be 1V and GND can be 6V
+- [x] VDD can be 6V and GND can be 0V 
+- [ ] VDD can be 0V and GND can be 6V
 
 </div>
 
@@ -471,6 +471,10 @@ Do not forget to **test** your carry out by using the dipswitch and observing if
 Follow the schematic below. Make sure you **use the right logic gate** to compute the Sum bit:
 
 <img src="{{ site.baseurl }}/assets/images/mhp/MHP-half-adder-sum-carry_bb.png"  class="center_seventy"/>
+
+Here's the equivalent circuit diagram to help you:
+<img src="{{ site.baseurl }}/assets/images/mhp/circuit-diag.png"  class="center_seventy"/>
+
 Do not forget to **test** your sum bit by using the dipswitch and observing if the LED is **ON** up only when ONE of the switches are **ON**. 
 
 
