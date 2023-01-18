@@ -72,6 +72,7 @@ A |  B |  C | F(A,B,C)
 1 | 1 | 0 | 1
 1 | 1 | 1 | 1
 
+### Task 1
 
 {: .highlight}
 **Write** your answer in the space provided  inside `lab2_cmos_submit.jsim`. Your solution should contain <span style="color:red; font-weight: bold;">NO</span> more than 8 MOSFETs.
@@ -136,6 +137,8 @@ It’s much easier to debug your circuit module-by-module rather than as one big
 
 <img src="/50002/assets/contentimage/lab2/3.png"  class=" center_fourty"/>
 
+### Task 2
+
 {: .highlight}
 **Write** your xnor and xor circuitry inside `lab2_adder4_submit.jsim`. <br>
 
@@ -177,6 +180,8 @@ C_{o}  &= A \cdot B + A \cdot C_{i} + B \cdot C_i
 > Hints
 > 
 > `S` is typically implemented using two cascaded 2-input XOR gates. You can use three 2-input NANDs and one 3-input NAND to implement `Co` (remember that by De Morgan’s Law, two cascaded NANDs are logically equivalent to a cascade of AND/OR).
+
+### Task 3
 
 {: .highlight}
 **Write** your answer inside `lab2_adder4_submit.jsim`.
