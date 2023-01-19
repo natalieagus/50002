@@ -426,6 +426,5 @@ It is impossible to have "infinitely large" memory unit, so in practice we simpl
  
 We can then construct some kind of *machine control system* (the unit represented as the *arrow* in the TM diagram). This similar to how we build an FSM using combinational logic devices to **compute** the TM's 2-bit output data, next `address`, and the next state, given current `address`, current state,  and 2-bit input data based on the functional specification stated in the truth table above. 
 
-<img src="https://dropbox.com/s/d22zfd7tpxawm2d/TMREALISE.png?raw=1"  class="center_seventy" >
-
+<img src="{{ site.baseurl }}/assets/contentimage/turing_machine/tm-realise.png"  class="center_fifty"/>
 The diagram above shows a rough schematic on how we can realise the abstract concept of a Turing Machine with a specification that does *increment* by building a (*non-programmable*) physical machine that can only do this **one task**. 
