@@ -346,7 +346,7 @@ Here is a detailed bit-level description of how a **4-bit** by **4-bit** unsigne
 
 This diagram can be **extended** in a straightforward way to 32-bit by 32-bit multiplication. Remember that since our machine is **only** 32-bit, that means we only can store the low-order 32-bits of the result, we <span style="color:red; font-weight: bold;">don’t need</span> to include the circuitry that generates the rest of the 64-bit product.
 
-As you can see from the diagram above, forming the *partial products* is easy.  Multiplication of two bits can be implemented using an `AND` gate.  The hard **and VERY TEDIOUS part** is adding up all the partial products **(there will be 32 partial products in your circuit)**.  O
+As you can see from the diagram above, forming the *partial products* is easy.  Multiplication of two bits can be implemented using an `AND` gate.  The hard **and VERY TEDIOUS part** is adding up all the partial products **(there will be 32 partial products in your circuit)**. 
 * One can use full adders (FAs) hooked up in a ripple-carry configuration to add each partial product to the accumulated sum of the previous partial products (see the diagram below) 
 * The circuit closely follows the diagram above but omits an FA module if two of its inputs are `0`
 
