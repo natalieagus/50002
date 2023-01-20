@@ -356,7 +356,7 @@ As you can see from the diagram above, forming the *partial products* is easy.  
 ### Multiplier Analysis
 
 
-The circuit above works with both **unsigned** operands and **signed** two’s complement operands.  This may seem strange – don’t we have to worry about the most significant bit (MSB) of the operands?<>  With unsigned operands the MSB has a weight of $$2^{MSB}$$ (assuming the bits are numbered 0 to MSB) but with signed operands the MSB has a weight of $$-2^{MSB}$$.  
+The circuit above works with both **unsigned** operands and **signed** two’s complement operands.  This may seem strange – don’t we have to worry about the most significant bit (MSB) of the operands?  With unsigned operands the MSB has a weight of $$2^{MSB}$$ (assuming the bits are numbered 0 to MSB) but with signed operands the MSB has a weight of $$-2^{MSB}$$.  
 
 Doesn’t our circuitry need to take that into account?
 
