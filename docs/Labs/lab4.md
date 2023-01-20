@@ -130,7 +130,7 @@ Open `lab4_pc_submit.jsim` and observe that the module interface has been provid
 ```
 Your job is to fill up each blanks between `BEGIN ANSWER` and `END ANSWER`
 
-### PCSEL Multiplexers
+### Task 1: PCSEL Multiplexers
 
 {: .highlight}
 **Write** your answer in the space provided under `5-to-1 PCSEL mux` section inside `lab4_pc_submit.jsim`. Read on to find out how to fill it up.
@@ -197,7 +197,7 @@ Xmux_unit0 control_signal 0 0 output_signal0 mux2
 ```
 
 
-### RESET Multiplexer
+### Task 2: RESET Multiplexer
 {: .highlight}
 **Write** your answer in the space provided under `RESET mux` and `PC Register` sections inside `lab4_pc_submit.jsim`. Read on to find out how to fill it up.
 
@@ -214,9 +214,20 @@ Remember that we need to add a way to set the PC to zero on `RESET`.  We use a t
 
 We have given you the nodes for constant `0x80000000` called `RESET[31:0]`, **please utilise that**. 
 
-### 32-bit PC Reg
+### Task 3: 32-bit PC Reg
 The PC is a separate **32-bit register** that can be built using the `dreg` component from the standard cell library, see [Appendix](https://natalieagus.github.io/50002/lab/lab4#appendix-3-standard-cells).  
 
+{: .highlight}
+**Write** your answer in the space provided under `PC Register` inside `lab4_pc_submit.jsim`.
+
+```cpp
+**** PC Register ***********
+* BEGIN ANSWER
+
+
+* END ANSWER
+****************************
+```
 
 ### Increment-by-4
 Conceptually, the increment-by-4 circuit is just a 32-bit adder with one input wired to the constant 4. You can reuse the 32-bit FA circuit that you have created in Lab 3. However, it is possible to build a much **smaller** circuit if you design an adder **optimized** knowing that one of its inputs is `0x00000004` constant.
@@ -236,7 +247,7 @@ XPC43 0#2 PC_4[1:0] bus
 
 Please study the unit above as it will help you implement the shift-add-4 unit next.
 
-### Shift-and-add
+### Task 4: Shift-and-add
 The branch-offset adder **adds** PC+4 to the 16-bit offset encoded in the instruction `id[15:0]`. You can use `adder32` again here. The offset is **sign-extended** to 32-bits and multiplied by 4 in preparation for the addition.  Both the sign extension and shift operations can be done with appropriate wiring—no gates required!
 
 {: .highlight}
@@ -251,7 +262,7 @@ The branch-offset adder **adds** PC+4 to the 16-bit offset encoded in the instru
 ****************************
 ```
 
-### Supervisor Bit
+### Task 5: Supervisor Bit
 The high-order bit of the PC is dedicated as the **supervisor** bit (see section 6.3 of the **Beta Documentation**). 
 * The `LDR` instruction **ignores** this bit, treating it as if it were *zero*. 
 * The `JMP` instruction is allowed to clear the Supervisor bit or leave it unchanged, but <span style="color:red; font-weight: bold;">cannot set</span> it, 
@@ -337,7 +348,7 @@ Open `lab4_regfile_submit.jsim` and observe that the module interface has been p
 {: .note}
 Your job is to fill up each blanks between `BEGIN ANSWER` and `END ANSWER`
 
-### WASEL and RA2SEL Mux
+### Task 6: WASEL and RA2SEL Mux
 You will need a mux controlled by `RA2SEL` to select the **correct** address for the B read port. The 5-bit 2-to-1 **WASEL** multiplexer determines the write address for the register file. 
 
 We have provided the address for `Reg XP` for you, that is the 5-bit constant `30`: `0b11110`. Please utilise that in your implementation. 
@@ -356,7 +367,7 @@ We have provided the address for `Reg XP` for you, that is the 5-bit constant `3
 
 
 
-### Memory
+### Task 7: Regfile Memory
 The register file is a 3-port memory.  Here’s a template netlist for specifying the 3-port register file using JSim `$memory` component:
 
 ```cpp
@@ -404,7 +415,7 @@ Note that the memory component **doesn’t know** that location `31` of the regi
 
 The `RA1`/`RD1` port output producing `ra[31:0]` is also wired directly to the `JT` inputs of the `PCSEL` multiplexer. Remember we already  **force** the low-order two bits to zero and to add supervisor bit logic to bit 31 in the PCSEL Unit, so we do not have to do it here anymore.
 
-### Z Logic
+### Task 8: Z Logic
 Z logic can be added to the output of the RA1/RD1 port of the register file memory above. The value of Z must be `0b1` if and only if `ra[31:0]` is `0x00000000`. Z must be `0b0` otherwise. This is exactly a `NOR` logic, but we do not have a 32-bit NOR gate. Hence we can use  a fan-in OR gates and place an `inverter` at the end as shown in the schematic above. 
 
 {: .highlight}
@@ -418,7 +429,7 @@ Z logic can be added to the output of the RA1/RD1 port of the register file memo
 ****************************
 ```
 
-### mwd[31:0] Output
+### Task 9: mwd[31:0] Output
 Finally, connect the output of the `RD2` port of the register file memory above to produce `mwd[31:0]`. You can use the `bus` connection provided inside `stdcell` as explained above. For instance, if the output of the `RD2` port of your regfile memory is called `rb[31:0]`, we can create `mwd[31:0]` as such:
 
 ```cpp
@@ -498,7 +509,7 @@ We have provided the `reset` mux to handle this in `lab4_control_submit.jsim`:
 Xresetmux reset wr_temp 0 wr_cu mux2 
 ```
 
-### PCSEL 
+### Task 10: PCSEL 
 The PCSEL logic should take into account the presence of **branching** `BNE/BEQ` OPCODE, and output the correct signal depending on the value of `Z` if branching is indeed happening. Here's the related OPCODE and PCSEL value:
 
 
@@ -529,7 +540,7 @@ Please follow the schematic carefully and ensure that you understand that the br
 
 
 
-### IRQ Handling
+### Task 11: IRQ Handling
 When `IRQ` signal is 1 and the Beta is in “user mode” (PC31 is zero), an **interrupt** should occur.  Asserting `IRQ` should have NO effect when in “supervisor mode” (`PC31` is one).  You should add logic that causes the Beta to abort the current instruction and **save** the current **PC+4** in register `XP` (`11110`) and to set the PC to `0x80000008`.  In other words, an interrupt forces the following:
 
 1.	PCSEL to `0b100` (select `0x80000008` as the next PC)
@@ -600,6 +611,8 @@ Also, **Bit 31** of the branch-offset input to the ASEL mux should be set to `0`
 Please study the circuitry inside `lab4_aluwdsel.jsim` before proceeding to the next section.
 
 ## Part D: Assemble Completed Beta
+### Task 12
+
 Open `lab4_beta_submit.jsim` and notice that it should have these .include statements:
 
 ```cpp
