@@ -11,3 +11,5 @@ nav_order: 20
 
 
 There’s **no** graded homework for this course. Problem sets in our course website and pre-class activities that you found in the weekly folder on eDimension are for your practice only, so the grades do not count. However, this is a very difficult course. Hence, you are strongly encouraged to complete them in order to cope in this course. 
+
+To view the problem sets, click the links in the **sidebar**. If you're viewing this page from mobile site, click the hamburger menu situated at the bottom left of the page to reveal the sidebar. 
