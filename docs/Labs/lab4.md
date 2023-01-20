@@ -650,7 +650,7 @@ Write your answer in the space given. The answer in this file should literally j
 
 The complete schematic of the Beta is (you might want to open this image in another tab):
 
-<img src="/50002/assets/contentimage/lab4/betalab.png"  class="center_seventy"/>
+<img src="/50002/assets/contentimage/beta/beta.png"  class="center_seventy"/>
 
 Note the addition of the IRQ (interrupt request) input. Your design will be tested at a cycle time of 100ns.  The reset signal is asserted for the first clock edge and then deasserted to start the program running.  This implementation of the Beta subcircuit has the following terminals:
 

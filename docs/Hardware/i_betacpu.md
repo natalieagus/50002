@@ -29,7 +29,7 @@ In this chapter, we will study how each of the 32 $$\beta$$ instructions is supp
 
 The key is to have a proper **Control Logic** unit that is able to ***decode***  current instruction's `OPCODE` and give out the correct control signals (PCSEL, RA2SEL, ASEL, etc) to reprogram the datapath. The complete truth table of the control logic unit is as shown below,
 
-<img src="https://dropbox.com/s/2txzo6r3aeynguy/CU_2.png?raw=1"  class="center_seventy"  >
+<img src="https://dropbox.com/s/2txzo6r3aeynguy/CU_2.png?raw=1"  class="center_fifty"  >
 
 {: .note}
 This unit can be easily implemented using a read only memory. 
