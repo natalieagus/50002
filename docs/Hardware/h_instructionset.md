@@ -307,7 +307,7 @@ The 32-bit instruction `I` is segmented to various sections.
 #### OPCODE
 The `OPCODE = I[31:26]` is 6 bits long. The `OPCODE` signifies different types of operation. They are summarised in the table below:
 
-<img src="https://dropbox.com/s/jq9rcou91vbu6ka/instr.png?raw=1"  class="center_seventy >
+<img src="https://dropbox.com/s/jq9rcou91vbu6ka/instr.png?raw=1"  class="center_seventy" >
 
 #### Rc, Ra, Rb (Type 1)
 For Type 1 instruction (without literal), we have these three segments: `Rc = I[25:21]`, `Ra = I[20:16]`, and `Rb = I[15:11]`, each 5 bits in length, to signify the target *address* of the registers in the REGFILE.  *The last 11 bits are unused.*
