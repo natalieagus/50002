@@ -73,7 +73,7 @@ as the part with the highest gain in the middle of the graph can most probably b
   
   
 
-**(a).** The following graph plots the VTC for a device with one input and one output. **Can this device be used** as a combinational device in logic family with 0.75 noise margins?
+**(a).** The following graph plots the VTC for a device with one input and one output. **Can this device be used** as a combinational device in logic family with 0.75V noise margins?
 
 <img src="https://dropbox.com/s/q363sc7ov84ww45/Q2.png?raw=1"    class="center_fifty"    >
 
