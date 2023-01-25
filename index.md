@@ -52,7 +52,7 @@ If you're planning to take [50.044](https://istd.sutd.edu.sg/undergraduate/cours
 Every year, major tech companies always release their new, cutting edge technologies, be it new CPU architecture, better and faster motherboard, etc. Terms like **unified memory**, **z-nm transistors**, basic CPU specs like **L-cache, overclocking, TDP rating, clock speed** should sound really familiar to you. Would you like to be the ones who contribute in their development? 
 
 ### System on Chip Engineer
-System on Chip (SOC) is the integration of functions necessary to implement an electronic system onto a single substrate and contains at least one processor. It is a **popular** field as of today (2023) due to its unprecendented efficiency. have you ever wondered why? 
+System on Chip (SOC) is the integration of functions necessary to implement an electronic system onto a single substrate and contains at least one processor. It is a **popular** field as of today (2023) due to its unprecendented efficiency. Have you ever wondered why? 
 
 ### Cybersecurity Expert
 Any career in cybersecurity requires a deep technical knowledge on how digital systems (that you're protecting) work. Obviously, you can't professionally protect a house without knowing its schematic, materials, weak points, etc. 
@@ -61,10 +61,10 @@ Any career in cybersecurity requires a deep technical knowledge on how digital s
 Building the next-generation Operating System? Surely you need to be familiar with the architecture of the CPU you're building it for. 
 
 ### Tech Lead, DevOps Engineer
-Any good fullstack software engineer needs to have a pretty good idea about the Operating System, Network, and Security. In order to appreciate the knowledge in these domain, it is fundamental to understand basic principles of how our computers work, all the way down to its ISA. You'll never know when you'll be faced with some very weird bugs that requires systematic debugging, or needing to fix major vulnerability in your system. 
+Any good fullstack software engineer needs to have a pretty good idea about the Operating System, Network, and Security. In order to appreciate the knowledge in these domains, it is fundamental to understand basic principles of how our computers work, all the way down to its ISA. You'll never know when you'll be faced with some very weird bugs that requires systematic debugging, or needing to fix major vulnerability in your system. 
 
 ### Contributing to Open Source Project
-Thinking to contribute to improve the Linux Kernel? Or writing the next-generation debugger? Contributing by making merge requests to fix open issues in famous backend/frontend framework? How about making an efficient front-end framework by yourself? Maybe you'll also want to create your own game engine, or simply answer questions in StackOverflow. Yep, think big.  
+Thinking of contributing to improve the Linux Kernel? Or writing the next-generation debugger? Contributing by making merge requests to fix open issues in famous backend/frontend framework? How about making an efficient front-end framework by yourself? Maybe you'll also want to create your own game engine, or simply answer questions in StackOverflow. Yep, think big.  
 
 ### Other Fields and Application
 Other non-directly related fields that require you to work with **hardware and software optimisation**, deep diving into **assembly code** or making a tweak or two to your compiler requires the basic building blocks taught in 50.002. Knowing how digital systems work really equip you with all of the necessary knowledge to **troubleshoot** and **debug** almost anything.
