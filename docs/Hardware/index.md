@@ -27,11 +27,10 @@ These topics are taught before the recess week. They are **tested** during our M
 * draw and analyse the VTC graph
 
 ## [CMOS Technology](https://natalieagus.github.io/50002/notes/cmostechnology)
-* explain types of MOSFETs: PFETs and NFETs
-* explain how to build CMOS inverter from field effect transistor (FET)
-* experiment with the mechanism of pull up and pull down transistors
-* explain how CMOS works and the importance of its complementary nature 
+* recognise there exist two types of MOSFETs: PFETs and NFETs
+* trace the output of CMOS circuitry 
 * construct simple boolean equations given some CMOS circuits
+* recognise how  CMOS recipes can be used to create more complex combinational logic devices (logic gates)
 * compute propagation delay and contamination delay
 * calculate and analyse timing specification of a combinational circuit
 
