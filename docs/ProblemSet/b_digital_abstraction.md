@@ -49,7 +49,7 @@ When answering the questions below, assume that all voltages are constrained to 
   
 
 1. Can one choose a **Vol** of 0V for this device? **Explain**.
-2. **What's the smallest** **Vol** one can choose and still the device obey the static discipline?
+2. What is the smallest voltage that the device can produce?
 3. Assuming that we want to have 0.5V noise margins for both "0" and "1" values, **what are the appropriate voltage levels** for Vol, Vil, Vih, and **Voh** so that the device obeys the static discipline? *Hint: there are many choices. Just choose the one that obeys the static discipline and the NM constraint.*
 4. **What device** is this called?
 
