@@ -142,7 +142,7 @@ Using these steps, we can come up with the *simplest* (not necessarily the most 
 Notice that if the expression contains many terms summed together, we need bigger OR gate at the output. This causes the size of our device to be bigger, and therefore more expensive. In the later sections, we learn how to ***reduce*** the boolean expression such that we have less number of terms, and thus are able to synthesize the logic more effectively. 
 
 ## [Boolean Algebra Properties](https://www.youtube.com/watch?v=yXBAy432vT8&t=1492s)
-Another tool we need to master before being able to minimise or reduce boolean expression is boolean algebra properties. They are useful to manipulate boolean expressions so that we quations. A summary end up with simpler terms and reduce the terms, while still keeping the logic equivalent. 
+Another tool we need to master before being able to minimise or reduce boolean expression is boolean algebra properties. They are useful to manipulate boolean expressions so that we simply and reduce the terms, while still keeping the logic equivalent. 
 
 Here are the simpler boolean algebra properties that we must know before proceeding to a more complex ones:
 
