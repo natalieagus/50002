@@ -276,7 +276,7 @@ instruction is considered **atomic** and is presumed to **complete** *before* th
 
 ### [$$\beta$$ Machine Model](https://www.youtube.com/watch?v=h1KGzAbJH4Q&t=3264s)
 The $$\beta$$ is a **general-purpose** 32-bit architecture. All registers are 32 bits wide. There are **33** registers in total (in the entire CPU):
-* **The PC register**: contains the *address* of the CURRENT **instruction** that's is **executed** by the CPU.
+* **The PC register**: contains the *address* of the CURRENT **instruction** that is **executed** by the CPU.
 	* When loaded with an *address*, it can point to any location in the *byte-addressable* memory. 
 	* The memory unit returns the instruction (32-bit data) stored at this *address* for the CPU to decode and execute. 
 * **The REGFILE registers** (internal storage in CPU): contains 32 registers in total (**and each register is 32 bits wide**), *addressable* with 5 bits to identify `R0` to `R31` respectively. 
