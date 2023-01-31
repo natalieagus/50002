@@ -49,7 +49,7 @@ When answering the questions below, assume that all voltages are constrained to 
   
 
 1. Can one choose a **Vol** of 0V for this device? **Explain**.
-2. **What's the smallest** **Vol** one can choose and still the device obey the static discipline?
+2. What is the smallest voltage that the device can produce?
 3. Assuming that we want to have 0.5V noise margins for both "0" and "1" values, **what are the appropriate voltage levels** for Vol, Vil, Vih, and **Voh** so that the device obeys the static discipline? *Hint: there are many choices. Just choose the one that obeys the static discipline and the NM constraint.*
 4. **What device** is this called?
 
@@ -73,7 +73,7 @@ as the part with the highest gain in the middle of the graph can most probably b
   
   
 
-**(a).** The following graph plots the VTC for a device with one input and one output. **Can this device be used** as a combinational device in logic family with 0.75 noise margins?
+**(a).** The following graph plots the VTC for a device with one input and one output. **Can this device be used** as a combinational device in logic family with 0.75V noise margins?
 
 <img src="https://dropbox.com/s/q363sc7ov84ww45/Q2.png?raw=1"    class="center_fifty"    >
 
