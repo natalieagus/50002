@@ -112,7 +112,7 @@ To compute the 2's Complement representation of $$5$$ and represent a negative v
 ### Example:
 
 `0 0 1 1 = 3` $$\rightarrow$$ we want to turn this into -3, so we do the steps below: 
-- **Step 1**: 1 1 0 0 (inversed)\
+- **Step 1**: 1 1 0 0 (inversed)
 - **Step 2**: 1 1 0 0 + 0 0 0 1 = 1 1 0 1 (add 1)
 
 The value of the result of step 2 above is : $$-2^3 + 2^2 + 2^0 = -3$$.
@@ -150,7 +150,7 @@ Example of encoding is character encoding so that the string of bits can be disp
 <img src="https://dropbox.com/s/0xizcif6yux3uyi/ascii.jpg?raw=1"  class="center_seventy"  >
 * **16-bit** Unicode (UTF-16) encoding: for other language alphabets that are fixed, e.g: Russian, Korean
 
-We can create electronic devices that are able to *map* (decode) a given encoded information, perform computations based on the received information, and encode back the output so that the results can be interpreted by us (users) or other devices. 
+We can create electronic devices that are able to *map* (decode) given encoded information, perform computations based on the received information, and encode back the output so that the results can be interpreted by us (users) or other devices. 
 ## The `Byte` Convention
 
 {: .warning-title}
@@ -175,7 +175,7 @@ Equivalently, it is **proportional to** the *uncertainty* of that event happenin
 
 
 {: .new-title}
-> In Laymen Terms
+> In Layman Terms
 > 
 > If an event is bound to happen, then the fact that the event happens does not give any kind of information.
 
@@ -259,16 +259,16 @@ Transistor is *not the first* tool created to manipulate voltages: triode vacuum
 ### Early Transistors
 If you Google "triode vacuum tubes", and "electro-mechanical relays" -- or even the "**early transistors**", you'd realise that they have quite a **large** size and they are definitely **not cheap.** You can find some information [here](https://spectrum.ieee.org/tech-talk/semiconductors/devices/how-much-did-early-transistors-cost) for context, but on average in the past it costs about $$8$$ each. They cost about **a billion times** more than they are now, *so your computers that have billions of transistors might cost you a few billion $$ in the past (not to mention that it would've been enormous in size too).* 
 
-It might be **unimaginable** how big and expensive computers were at first because we are so used to having portable computers -- consisted of billions of **cheap** and *extremely small* transistors (5-7nm) and pretty much "*unlimited*" storage unit (we can always buy external drive, cloud storage, extend our RAM or simply buy computers with terabytes of disk size). But in the past -- life wasn't quite as easy.
+It might be **unimaginable** how big and expensive computers were at first because we are so used to having portable computers -- consisting of billions of **cheap** and *extremely small* transistors (5-7nm) and pretty much "*unlimited*" storage unit (we can always buy external drive, cloud storage, extend our RAM or simply buy computers with terabytes of disk size). But in the past -- life wasn't quite as easy.
 
 With this in mind, it makes sense that if someone (in the past) were to make a digital device **from scratch**, he or she has to be *mindful* with the **size and cost of the device**, and therefore has to be mindful with *counting (and probably minimising)* how many **bits** are needed to contain all information and *logic* necessary for the intended device to work.
 
 
 ### General Purpose Computers
 But having a digital device that can do **only that** **specific** job: just *addition*, just that *game* logic, or just playing a VCD (VCD player) is **not enough**. We do not want to:
-* Have so many devices to carry. 
+* Have so many devices to carry 
 * Spend so much money to buy 1 device for each task
-* It will be ridiculous now to imagine if we need 1 separate, physical device for everything: 1 device to browse, 1 device for *each* video game, 1 device for chatting with a *particular* person, 1 device for computing addition, 1 device for computing division.. *you get the idea.* 
+* It will be ridiculous now to imagine if we need 1 separate, physical device for everything: 1 device to browse, 1 device for *each* video game, 1 device for chatting with a *particular* person, 1 device for computing addition, 1 device for computing division... *you get the idea.* 
 
 Therefore towards the middle of the term, we will learn how to create a **better** digital device: a **programmable** one that is suitable to be used for a plethora of purposes **without any hardware changes** -- *and can manipulate, store, and produce digital data.*   
 

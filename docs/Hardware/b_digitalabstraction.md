@@ -178,12 +178,12 @@ You can quickly tell if a digital device can be *potentially* be used as a combi
 
 If you can satisfy the condition highlighted above, then it means that the device is a combinational logic device. It's VTC curve has to possesses both **characteristics** below:
 
-1.  There exist *some region in the VTC* whereby   its **absolute** `Gain` is $$>1$$ . `Gain` is actually a function of $$V_{in}$$ and is **formally** defined as: 
+1.  There exist *some region in the VTC* whereby its **absolute** `Gain` is $$>1$$ . `Gain` is actually a function of $$V_{in}$$ and is **formally** defined as: 
 
 	$$\begin{aligned}
 	\text{Gain}(V_{in}) = \frac{d V_{out}}{d V_{in}} \end{aligned}$$
 
-	In laymen terms you can approximate `Gain` during some transition $$V_{in_i}$$ to $$V_{in_j}$$ that results in some $$V_{out_k}$$ to $$V_{out_l}$$ respectively by the simply computing the slope between these two points on the VTC: 
+	In layman terms you can approximate `Gain` during some transition $$V_{in_i}$$ to $$V_{in_j}$$ that results in some $$V_{out_k}$$ to $$V_{out_l}$$ respectively by the simply computing the slope between these two points on the VTC: 
 	
 	$$ \text{Gain} \approx \frac{V_{out_l}-V_{out_k}}{V_{in_j}-V_{in_i}}  $$
 
