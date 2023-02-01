@@ -413,7 +413,9 @@ The necessary control signals are:
 </ul></li><br>
 <li> The functions of 6 variables which we can implement must be of the form: `Y = C(C1, C2, F(F1,F2,F3,F4))` or the form of `Y = C(C1,F(F1, F2, F3, F4), G(G1, G2, G3, G4))`. <i>This second function will have some **overlap** between `C1`, `F1-4`, and `G1-4`; that is some variables will be connected to **multiple** inputs.</i>
 <br><br>
-Essentially, the functions we are able to implement are only those for which we can <span style="color:red; font-weight: bold;">factor</span> a set of 4 variables out of the equation. For example, the following function cannot be implemented by the CLB: `Y = A1A2A3A4A5 + A1A2A3A4A6 + A1A2A3A5A6 + A1A2A4A5A6 + A1A3A4A5A6 + A2A3A4A5A6`. This function <span style="color:red; font-weight: bold;">cannot</span> be broken down into either of the forms mentioned above.
+Essentially, the functions we are able to implement are only those for which we can <span style="color:red; font-weight: bold;">factor</span> a set of 4 variables out of the equation. For example, the following function cannot be implemented by the CLB: `Y = A1A2A3A4A5 + A1A2A3A4A6 + A1A2A3A5A6 + A1A2A4A5A6 + A1A3A4A5A6 + A2A3A4A5A6` (Y is `1` only if there is one `0` in the input). This function <span style="color:red; font-weight: bold;">cannot</span> be broken down into either of the forms mentioned above. 
+<br><br>
+This function says that `Y` is `1` if and only if these inputs are given as `A1-A6`: `111110`, or `111101`, or `111011`, or `110111`, or `101111`, or `011111`, or `111111`. However suppose `A3-A6` are plugged as `F1-F4`, and `A1, A2` are plugged into `C1, C2` in the FPGA. If you supply `A3-A6` as `0111`, it should output a `1` as the output of `F` due to the clause: `A1A2A4A5A6`. Then, if you supply `C1=0, C2=1`, it will output a `1` as well at `Y` due to the clause: `A2A3A4A5A6`. This effectively means `010111` gives a `1` which violates the condition for `Y`, which turns `1` only if there exist one `0` in the input. Hence the FPGA cannot implement this particular 6-variable function. 
 </li></ol></p></div><br>
 
 
