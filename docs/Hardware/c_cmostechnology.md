@@ -211,7 +211,7 @@ Contents of the pull-down circuit:
  1.  All FETs in the pull-down circuit are NFETS.
  2.  Hence all of their bulks are connected to `GND`, and so are all of their Sources.
 1.  It is called 'pull-down' because when there is  connection to from the Source (`GND`) to the Drain output, then the output of the overall CMOS circuit is 0
-2.  **We call the pull-down circuit to be ON if there exists any direct path for *electrons* to flow from any source of the NFETs in the pull-up circuit to the logic output drain.** 
+2.  **We call the pull-down circuit to be ON if there exists any direct path for *electrons* to flow from any source of the NFETs in the pull-down circuit to the logic output drain.** 
 
 
 ## [The CMOS Complementary Recipe](https://www.youtube.com/watch?v=JqgZcV_1IU4&t=1388s)
