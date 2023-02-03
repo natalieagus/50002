@@ -271,7 +271,7 @@ Notice how the circuitry in the previous section is called **NAND**. The name co
 {: .highlight}
 A combinational device with multiple inputs but **only one output** is called a **logic gate** .
 
-The NAND gate is just one of many possible gates that we will encounter in this course. We will learn that in the next notes. 
+The NAND gate is just one of many possible gates that we will encounter in this course. We can make various logic gates: **NAND**, **NOR**, **INV**, **XOR**, etc using PFETs and NFETs and connecting them in a complementary way in order for them to work and produce the boolean logic as intended. We will <span style="color:red; font-weight: bold;">not</span> test you on designing transistor-level circuitry, so all the sections above are written as a **precursor** to understand better on how **logic gates** are made. 
 
   
 

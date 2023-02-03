@@ -108,7 +108,7 @@ This explanation can be made clear with the following example. Suppose we supply
 * The voltage value that is received at Device 2 may be *slightly higher* than 0.5V, for example: 0.55V instead, and therefore according to our specification, it is *no longer a valid bit `0`*.
 
 {: .note}
-Noise can knock the voltage down as well, this is just an example that's detrimental to the function of the devices in this example.*
+Noise can knock the voltage down as well (not just up, it's basically random disturbance). The above is just an example that's detrimental to the function of the devices in this example.
 
   
 Device 1 in the figure above **violates** static discipline because given a **valid** input, it may be **unable** to produce a valid output (to **reach** the next device 2), because the `0.5V` produced at the output of Device 1 may meet some disturbances that caused it to be slightly off, e.g: `0.55V`.
@@ -153,6 +153,10 @@ VTC **does not** tell us how fast the device is. It just captures the static beh
 The image below shows the VTC of a **buffer**: a *low* $$V_{in}$$ gives a *low* $$V_{out}$$ and vice versa. 
 
 <img src="https://dropbox.com/s/vod5ltqh4kq9119/vtcbuffer.png?raw=1"   width="60%" alt ="Figure 4"/>
+
+
+{: .important}
+Forbidden zone is <span style="color:red; font-weight: bold;">not</span> equal to invalid zone. The latter is the zone where a voltage value does not correspond to digital bit `0` or `1` while the former is the zone whereby static discipline is violated because a valid input voltage does not produce a valid output voltage.
 
 {: .new-title}
 > Think!
