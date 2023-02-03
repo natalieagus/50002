@@ -354,10 +354,15 @@ The function generators are actually **small** 16-by-1 and 8-by-1 memories that 
 The multiplexer select signals (labeled `Mx` in the diagram) are also set by the programming process to configure the CLB. After programming, these Mx signals remain constant during CLB operation.
 
 The following is a list of the possible configurations proposed:
+
 (a). An arbitrary function F of **up to four unrelated input variables**, plus another arbitrary function G of **up to four unrelated input variables,** plus a third arbitrary function H of **up to three unrelated input variables.**
+
 (b). An arbitrary single function of **five variables.**
+
 (c).  An arbitrary function of **four variables** together *with some functions of six variables.* Characterize the functions of six variables that can be implemented.  
+
 (d). Some functions of up to **nine variables.** Characterize the functions of up to nine variables that can be implemented.
+
 (e). Can **every** function of **six** inputs be implemented? If so, explain how. If not, give a 6-input function and explain why it can't be implemented in the CLB.
 
 
