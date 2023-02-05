@@ -262,7 +262,7 @@ We can call the $$t_{PD} CL$$ (propagation delay of the CL) as the time taken to
 The propagation or contamination delays of a Flip-Flop is not considered a logic computation, because unlike combinational logic devices (that can be made to implement functionalities such as addition, subtraction, boolean expressions, etc), a Flip-Flop **does not implement** any other special functionalities except to function as a memory device. 
   
 
-**See [this supplementary document](https://dropbox.com/s/gi4r2ea1tdv5x4d/Seq_Logic_Timing_Extras_2020.pdf?dl=1) to know more about timing computations for sequential logic device.**
+**Read [this supplementary document](https://dropbox.com/s/gi4r2ea1tdv5x4d/Seq_Logic_Timing_Extras_2020.pdf?dl=1) to know more about timing computations for sequential logic device.**
 
 
 ## [$$t_{pd}$$ and $$t_{cd}$$ of Sequential Logic vs Combinational Logic Devices](https://www.youtube.com/watch?v=HlizelEp4Yc&t=2974s)
@@ -368,10 +368,9 @@ Since there is **no lower bound** on $$\|V_{out} - V_m\|$$, then there is **no u
  
 
 {: .important}
-In summary, we cannot completely avoid the metastable state. 
+In summary, we cannot completely avoid the metastable state. If a SL device enters the metastable state, it *might* eventually settle to a valid zero... or a valid one, but there is **no guarantee** when this will happen. It may take a second,  or it may take forever to settle. 
 
-> If an SL device enters the metastable state, it *might* eventually settle to a valid zero... or a valid one, but there is no guarantee when this will happen. It may take a second,  or it may take forever to settle. 
-> 
+
 The only thing we can do is to **minimise** the metastable state's probability from happening. We can do that by introducing more **delays** between the first 'upstream' Flip-Flop and the CL devices downstream in the **hopes** that the signal will somehow settle towards either end before reaching the CL, as illustrated here:
 
 <img src="https://dropbox.com/s/g5sbabtn9ywwkod/series.png?raw=1">

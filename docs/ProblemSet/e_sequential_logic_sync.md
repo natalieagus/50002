@@ -26,6 +26,8 @@ Singapore University of Technology and Design
 
 Each topic's questions are grouped into **three** categories: basic, intermediate, and challenging. You are recommended to do all basic problem set before advancing further. 
 
+**You are strongly encouraged to <span style="color:red; font-weight: bold;">read</span> [this supplementary document](https://dropbox.com/s/gi4r2ea1tdv5x4d/Seq_Logic_Timing_Extras_2020.pdf?dl=1) to know more about timing computations for sequential logic device.**
+
 ## Warm-up Timing Computations (Basic)
   
 
