@@ -126,8 +126,9 @@ The dynamic discipline states that there are **two timing** **requirements for t
 ### Supplementary Section
 If you're interested to know *why* the dynamic discipline is so, read this section. If this is too much for you, you can skip it. You won't exactly lose in exam if you skip it, just that your knowledge wont be whole. 
 
+#### How long is tsetup and thold approximately?
 {: .note}
-$$T_{setup}$$ is *approximately* measured as $$2 \times t_{pd}$$  of the <span style="color:red; font-weight: bold;">components that make up the D-latch</span>. $$T_{hold}$$ is *approximately* measured as  $$t_{pd}$$ of the components that make up the D-latch. This $$t_{pd}$$ is <span style="color:red; font-weight: bold;">not</span> the same as the $$t_{pd}$$ of the entire sequential logioc circuit ([see section below](https://natalieagus.github.io/50002/notes/sequentiallogic#t_pd-and-t_cd-of-sequential-logic-vs-combinational-logic-devices))
+$$T_{setup}$$ is *approximately* measured as $$2 \times t_{pd}$$  of the <span style="color:red; font-weight: bold;">components that make up the D-latch</span>. $$T_{hold}$$ is *approximately* measured as  $$t_{pd}$$ of the components that make up the D-latch. This $$t_{pd}$$ is <span style="color:red; font-weight: bold;">not</span> the same as the $$t_{pd}$$ of the entire sequential logic circuit ([see section below](https://natalieagus.github.io/50002/notes/sequentiallogic#t_pd-and-t_cd-of-sequential-logic-vs-combinational-logic-devices))
   
 As explained in the previous notes,  $$t_{pd}$$ is the **propagation** delay of the combinational logic devices (components) that make up a D-latch, e.g: a multiplexer, which has a $$t_{pd}$$ value. The multiplexer can be made using a handful NAND gates. To clarify, this $$t_{pd}$$ is the propagation delay of that multiplexer or  components (combinational logic devices) that are used to make up a D-latch.
 
@@ -141,6 +142,18 @@ For $$T_{setup}$$, you can figure this out by estimating **how long** you **shou
 
 
 For $$T_{hold}$$, you can figure this out by realising that CLK is an **input** to the D-latch system as well, and the device needs **some time** ($$1\times t_{pd}$$) to realise that it is in `memory` mode after CLK turns to a valid `0`. Throughout this brief period. of time, the input at D must be held valid/stable. 
+
+#### The Lenient Mux
+
+Notice that Q is *also* an input to the mux. We will meet a <span style="color:red; font-weight: bold;">problem</span> if 1-to-0 transition on G causes the Q output to become invalid at a brief interval (even when D is held stable obeying $$T_{setup}$$ and $$T_{hold}$$). 
+
+{: .highlight}
+Thus, we assume that the mux used in a latch is a **lenient** mux. A lenient mux is a mux where a 1-to-0 transition on G doesn’t affect the validity of Q output. 
+
+In particular, a lenient mux fulfils either of 3 conditions below:
+1. When G turns is 1 (write mode), once D is valid for as long as *half* of $$T_{setup}$$, we guarantee that Q will be stable and valid (reflecting D) **independently** of Q' value. This allows Q to be unaffected by overwriting of Q' when new values from D has just arrived.
+2. When G turns is 1 (write mode), once D is valid for as long as $$T_{setup}$$, we guarantee that Q will be stable and valid (reflecting D) **regardless** of subsequent **transition** of G. This ensures that a 1-to-0 transition on G doesn’t affect the Q output
+3. When G is 0 (memory mode)a and Q has been stable for at least $$T_{hold}$$ (thanks to D being valid for at least $$T_{hold}$$), then Q will not be affected by subsequent transitions on D input. 
 
 ## [Edge-Triggered D Flip-Flop ](https://www.youtube.com/watch?v=HlizelEp4Yc&t=2066s)
 
