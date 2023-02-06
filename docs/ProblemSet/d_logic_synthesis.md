@@ -301,7 +301,7 @@ Answer the following questions based on the truth table:
 Then apply DeMorgan law:<br>
 <img src="https://dropbox.com/s/yzjpvf2xbn3car5/sumofpdt2.png?raw=1" class="center_thirty"  >
 </li><br>
-<li> If we use A and B as the <strong>select</strong> inputs for the MUX, then the four data inputs of the MUX should be tied to one of `0` (ground), `1` (VDD), `C` or `NOT C`. The following is one of the correct schematics that implement this function (there are other acceptable answers as well). Note that by changing the connections on the data inputs to the mux, we could implement any function of A, B and C.
+<li> If we use A and B as the <strong>select</strong> inputs for the MUX, then the four data inputs of the MUX should be tied to one of `0` (ground), `1` (VDD), `C` or `NOT C`. The following is one of the correct schematics that implement this function (there are other acceptable answers as well). Note that by changing the connections on the data inputs to the mux, we could implement any function of A, B and C. Another acceptable  (and simpler) answer involves having two 4-input muxes with `A` and `B` as selector each, reflecting their values when `C==0` and `C==1` respectively, and a 2-input mux with C as its selector, and the outputs of the 4-input muxes to each of the input terminals of the 2-input mux. You're definitely not expected to come up with fancy circuitry design as the given answer below.
 <br><img src="https://dropbox.com/s/0yykalujmctihu4/mux_stuff.png?raw=1"  class="center_thirty" >
 </li><br>
 <li>We can just write *sum of product* for rows that results the `0`s in the table above, and then reduce the expression into: $$\overline{F} = B \overline{C} + \overline{A} \text{ } \overline{B} C$$</li></ol></p></div><br>
