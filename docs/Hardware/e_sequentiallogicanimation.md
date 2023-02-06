@@ -55,6 +55,7 @@ The animation below shows exactly when tsetup and thold takes place.
 <video src="{{ site.baseurl }}/assets/videos/th-ts.mov" controls="controls" class="center_full">
 </video>
 
+
 Here's the breakdown of what's happening, following timestamps in the video:
 1. At `t=0` seconds mark in the video, an input (green) is about to enter the DFF
 2. At `t=7`, this green input is effectvely observed in the output. At the **same time**, it's safe for new input (blue) to enter the master latch. 
@@ -85,7 +86,11 @@ The $$t_2$$ constraint ensures that the clock period is **long enough** for <spa
 <video src="{{ site.baseurl }}/assets/videos/t2-simple.mov" controls="controls" class="center_full">
 </video>
 
-{: .important}
+{: .warning}
+Please remember that there are **TWO** DFFs in the setup above, <span style="color:red; font-weight: bold;">they're not master/slave latches anymore</span>. To be exact, each DFF contains a master and a slave latch, and it's abstracted (illustrated) as a **single** DFF in this diagram. You can tell whether a device is a latch or a DFF by the triangle symbol in it where the CLK is fed in. We call these two DFFs as upstream (left) and downstream (right) DFFs, following the flow of signal from input to output (left to right). These are <span style="color:red; font-weight: bold;">not</span> your master/slave latches drawn separately. 
+
+#### tpd and tcd of sequential circuits
+
 Notice how tpd (and also tcd by extension) of the overall circuit is computed **from** the downstream DFF only because now our input <span style="color:red; font-weight: bold;">reference</span> is the **clock** and <span style="color:red; font-weight: bold;">no longer</span> the actual IN to the circuit. 
 
 ### Sequential outputs synchronized with CLK
