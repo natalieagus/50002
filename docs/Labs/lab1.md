@@ -385,28 +385,21 @@ Now that we have the MOSFETs ratioed properly to **maximize noise immunity**, le
 > The contamination delay, **tcd**, for the `nand2` gate will be a **lower** bound for all the tc measurements we make. Similarly, the propagation delay, **tpd**, for the `nand2` gate will be an **upper** bound for all the tP measurements. 
 
 ### Contamination Delay
-Recall that **the contamination delay is the period of output validity after the inputs have become invalid**. That means there are **four** scenarios, depending on the combination of input and output values:
-1. The period of output remaining at valid `1` (before falling to valid `0` eventually) after input that was previously at valid `1` has turned invalid 
-2. The period of output remaining at valid `1` (before falling to valid `0` eventually) after input that was previously at valid `0` has turned invalid 
-3. The period of output remaining at valid `0` (before rising to valid `1` eventually) after input that was previously at valid `1` has turned invalid 
-4. The period of output remaining at valid `0` (before rising to valid `1` eventually) after input that was previously at valid `0` has turned invalid 
-
-The first two cases are called tc **fall**, while the latter two cases are called tc **rise**. The name rise or fall depends on whether the **output** is about to fall or rise. 
+Recall that **the contamination delay is the period of output validity after the inputs have become invalid**. We can compute this by first computing two values: **tc rise** and **tc fall** and taking the **minimum** of the two. These two values are the **contamination** delay in the case where output is transitioning from low to high (rise), or high to low (fall). The name rise or fall depends on whether the **output** is about to fall or rise. 
 
 {: .note}
 The statement: "Output **remaining** at valid `1`" means to maintain output voltage value above Voh, while *input at valid `1`* means to receive input voltage value above Vih. The same applies for valid `0` on both input and output. Revise the lecture on [Digital Abstraction](https://natalieagus.github.io/50002/notes/digitalabstraction) if you're still confused about this concept of valid `0` and `1`. 
 
 
-The truth table of the `nand2` gate is as follows:
+When we fix one of the inputs of the `nand2` gates as `vdd`, we essentially turn our `nand2` gates to an `inv` (inverter). The truth table of an `inv` is as follows:
 
-a | b| z
----------|----------|---------
-0 | 0 | 1
-0 | 1 | 1 
-1 | 0 | 1 
-1 | 1 | 0
+Vin | Vout
+---------|----------
+0 | 1
+1 | 0 
 
-Therefore the computation of tc **fall** and tc **rise** for `nand2` gate is: 
+
+Therefore the computation of tc **fall** and tc **rise** for `inv` is: 
 <br>
 
 $$
@@ -417,7 +410,7 @@ t_{cd} &= \min(t_{c_{RISE}}, t_{c_{FALL}})
 \end{aligned}
 $$
 
-**tc fall** is computed based on the third row of the `nand2` truth table. We first set the input at valid `0`, so we have the output at valid `1`. Then, we shall *increase* the input value to eventually no longer be valid `0` (> Vil) and compute the period of time where the output still remains at valid `1` (before eventually falling). The same logic applies for **tc rise**. 
+**tc fall** can be computed by first setting the input at valid `0`, so we have the output at valid `1`. Then, we shall *increase* the input value to eventually no longer be valid `0` (> Vil) and compute the period of time where the output still remains at valid `1` (before eventually falling). The same logic applies for **tc rise**. 
 
 The computation of tc **fall** and tc **rise** is **not the same** for all gates. For instance, the computation for the two values for a **buffer** is:
 <br>
@@ -434,17 +427,9 @@ $$
 Ensure you understand how the formulas above are derived before proceeding. 
 
 ### Propagation Delay
-Similarly, **the propagation delay is the period of output invalidity after the inputs have become valid**. 
+Similarly, **the propagation delay is the period of output invalidity after the inputs have become valid**. We can compute this by first computing two values: **tp rise** and **tp fall** and taking the **maximum** of the two. These two values are the **propagation** delay in the case where output is transitioning from low to high (rise), or high to low (fall). The name rise or fall depends on whether the **output** is about to fall or rise. 
 
-That means there are **four** scenarios, depending on the combination of input and output values:
-1. The period of output turning to valid `0` (from being in valid `1` previously) after the input has become a valid `1` 
-2. The period of output turning to valid `0` (from being in valid `1` previously) after the input has become a valid `0` 
-3. The period of output turning to valid `1` (from being in valid `0` previously) after the input has become a valid `1` 
-4. The period of output turning to valid `1` (from being in valid `0` previously) after the input has become a valid `0` 
-
-The first two cases are called tp **fall**, while the latter two cases are called tp **rise**.
-
-Therefore the computation of tp **fall** and tp **rise** for `nand2` gate is: 
+Therefore the computation of tp **fall** and tp **rise** for our `nand2` gate turned as an `inv`  is: 
 
 $$
 \begin{aligned}
@@ -465,7 +450,7 @@ Following standard practice, we’ll choose the logic thresholds as follows:
 Review the lecture on <a href="https://natalieagus.github.io/50002/notes/cmostechnology">CMOS Technology</a> to refresh your understanding on propagation delay and contamination delay. This is **VERY** important especially for Week 3 materials.  
 
 #### Generating test signal
-The final thing that we have to prepare to plot a VTC is to generate a test signal. You can use a voltage source with either a pulse or piecewise linear waveform to generate test signals for your circuit.  Here’s how to enter them in your netlist:
+The final thing that we have to prepare to plot a VTC is to generate a test signal. You can use a voltage source with either a pulse or piecewise linear waveform to generate test signals for your circuit.  Here’s how to enter the test signal in your netlist:
         	
 ```cpp
 Vid output 0 pulse(val1 val2 td tr tf pw per)
@@ -503,7 +488,49 @@ We use an **inverter** (`inv`) to drive the `nand2` input since we would normall
 <img src="/50002/assets/contentimage/lab1/11.png"  class="center_seventy no-invert"/><br>
 
 You will need to zoom in on the transitions in order to make an accurate measurement. Combine your answers for tc rise, tc fall, tp rise, and tp fall as described above to produce estimates for tcd and tpd.
- 
+
+### Measure tc fall
+
+Zoom in to a section where the output signal (red) is falling (conversely when the input green signal is rising). Note the four horizontal lines are helper lines for <span style="color:green; font-weight: bold;">voh</span>, <span style="color:yellow; font-weight: bold;">vih</span>, <span style="color:teal; font-weight: bold;">vil</span>, and <span style="color:purple; font-weight: bold;">vol</span> (top to bottom). 
+
+Click on the start time when the input has just turned invalid: crossed the teal horizontal line (vil), and drag to the end time where the red graph just crossed the green horizontal line (voh). On the top left hand corner in jsim, find the time difference (in white) between the two points. This will be your **tc fall** value. 
+
+<img src="{{ site.baseurl }}/assets/images/lab1/tc-fall.gif"  class="center_seventy"/>
+
+{: .highlight}
+Please understand why we compute tc fall this way and don't just blindly follow the instructions.
+
+### Measure tc rise
+
+Similarly, here's where you can compute tc rise. 
+
+<img src="{{ site.baseurl }}/assets/images/lab1/tc-rise.gif"  class="center_seventy"/>
+
+
+### Measure tp fall
+
+To measure tp fall, your time measurement should start from the moment the input becomes valid (crosses the yellow horizontal line vih) to the moment the output becomes valid (crosses the purple horizontal line vol). 
+
+<img src="{{ site.baseurl }}/assets/images/lab1/tp-fall.gif"  class="center_seventy"/>
+
+### Measure tp rise
+
+The same ordeal as tp fall, but in the section where the output is rising: 
+
+<img src="{{ site.baseurl }}/assets/images/lab1/tp-rise.gif"  class="center_seventy"/>
+
+### Compute tpd and tcd 
+
+{: .important-title}
+> Reporting overall device tpd and tcd
+> 
+> As said above, to compute overall device tpd, we take the **maximum** between tp rise and tp fall. To compute its tcd, we take the **minimum** between tc rise and tc fall. 
+
+The *why* should be pretty intuitive by now. tcd can be seen as the *memory* ability of the device; indicating how long it is able to produce the **previous** valid output even when the input has currently turned invalid. If your device *remembers* rising case better than falling case, the overall *memory ability* that should be reported for the device should be the smaller of the two. 
+
+Likewise, tpd is some sort of *loading time* of the device. If your device loads longer in the falling case than the rising case, we have to report the longer loading time so our users know how to mitigate that. In short, we need to take into account that the device will be used to produce both rising and falling cases. 
+
+
 {: .highlight}
 **Record** down the contamination tcd and propagation tpd delays for both the rising and falling output transitions and fill in the respective questions on eDimension. Please **zoom** in at least 4-5 times before doing this to get a clearer picture of the signals.  
 
