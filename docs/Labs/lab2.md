@@ -75,7 +75,7 @@ A |  B |  C | F(A,B,C)
 ### Task 1
 
 {: .highlight}
-**Write** your answer in the space provided  inside `lab2_cmos_submit.jsim`. Your solution should contain <span style="color:red; font-weight: bold;">NO</span> more than 8 MOSFETs.
+**Write** your answer in the space provided  inside `lab2_cmos_submit.jsim`. Your solution should contain <span style="color:red; font-weight: bold;">NO</span> more than 8 MOSFETs. 
 
 ```cpp
 .include "nominal.jsim"
@@ -94,12 +94,16 @@ A |  B |  C | F(A,B,C)
 .ends
 ```
 
+You can follow this schematic to derive your answer. Note that circuit design is <span style="color:red; font-weight: bold;">not</span> tested in exams, but you need to be able to trace the outputs of a CMOS circuit given various combinations of inputs. 
+
+<img src="{{ site.baseurl }}/assets/images/lab2/mhp-cmos.png"  class="center_fifty"/>
+
 **Steps:**
 * Open `lab2_cmos_submit.jsim` and write your answer there:
-* There should be three parts to your answer
-  * The pullup circuitry
-  * The pulldown circuitry
-  * The inverter at the drain of not F CMOS circuitry to produce back F 
+* There should be three parts to your answer:
+  * The pullup circuitry (PFETs)
+  * The pulldown circuitry (NFETs)
+  * The inverter at the drain of $$\bar{F}$$ CMOS circuitry to produce back $$F$$
 * Run it on jsim using the **FAST TRANSIENT ANALYSIS** button: 
 <br><br>
 <img src="/50002/assets/contentimage/lab1/8.png"  class=" center_fifty"/>
