@@ -89,7 +89,7 @@ The combination for the lock is <code>100</code>.
 
 ## Constructing an FSM (Basic)
 
-Construct a **divisible-by-3** FSM that accepts a binary number entered **one** bit at a time. The most significant bit entered first, and the FSM should indicate with an output light (1 bit) if the number entered so far is divisible by 3. 
+Construct a **divisible-by-3** **Moore** FSM that accepts a binary number entered **one** bit at a time. The most significant bit entered first, and the FSM should indicate with an output light (1 bit) if the number entered so far is divisible by 3. 
 
 {: .new-title}
 > Hint
@@ -115,7 +115,7 @@ Answer the following questions:
 	<br>
 	</p></div>
 
-2. Construct a truth table for the FSM logic. Inputs include the state bits and the next bit of the number; outputs include the next state bits and the control for the light.
+2. Construct a truth table for the FSM logic. Inputs include the state bits and the next bit of the number; outputs include the next state bits and the control for the light. Remember that this should be a Moore machine, so the output (light) should follow the **current** state output and not the next state. 
 	<div  cursor="pointer"  class="collapsible">Show Answer</div>  <div  class="content_answer">
 	<p>
 	$$
