@@ -222,7 +222,7 @@ Y &= AB \bar{C} \bar{D} + AB \bar{C}D + \bar{A} \bar{B}CD + \bar{A}BCD + ABCD \\
 &= CD + C\bar{B} + AB
 \end{aligned}$$
 <br>
-Convince yourself that the simplified form allows you to make a cheaper and smaller combinational logic device (because we use less number of gates).
+Convince yourself that the simplified form allows you to make a cheaper and smaller combinational logic device (because we use less number of gates). If you have your own method and can't seem to reconcile between the given answer and your answer, apply **[consensus theorem](https://natalieagus.github.io/50002/notes/logicsynthesis#boolean-algebra-properties)** (scroll to the said theorem). You can also use [online tools](https://www.boolean-algebra.com) to confirm that the truth table of your boolean expression and the above boolean expression is equivalent. 
 </p></div><br>
 
   
