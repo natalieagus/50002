@@ -32,7 +32,7 @@ Each topic's questions are grouped into **three** categories: basic, intermediat
   
 
 Consider the following diagram of a simple sequential circuit:
-<img src="https://dropbox.com/s/63cip82ur4u3y64/Q1.png?raw=1" class="center_fifty" >
+<img src="https://dropbox.com/s/63cip82ur4u3y64/Q1.png?raw=1" class="center_seventy" >
   
 The components labeled `CL1` and `CL2` are combinational and `R1` and `R2` are edge triggered flip flops. Timing parameters for each component are as shown in the figure (in ns). Answer both questions below:
 
