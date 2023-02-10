@@ -314,7 +314,8 @@ Recall that dynamic discipline is crucial for any sequential logic circuit to wo
 
 Look at the figure above. Let D be the "user" input to the Flip-Flop and OUT be the output "Q" of the Flip-Flop. When one of the timing constraints ($$t_{H}$$ in this case) imposed by the dynamic discipline is violated, we may end up storing the invalid values during `memory` mode. This event of storing invalid value is called the **metastable state**. 
 
-
+{: .important}
+When <span style="color:red; font-weight: bold;">dynamic discipline is violated</span>, there's no guarantee that our DFFs can produce a valid output: *it can be valid, or invalid*. When its output is invalid, we call it to be suffering from the **metastable state**. 
 
 ## [The Metastable State](https://www.youtube.com/watch?v=HlizelEp4Yc&t=5110s)
   
@@ -365,6 +366,9 @@ However, if we have $$V_{in} = V_m$$, then from the graph we can easily see that
 
 ### Noise is Good, Sometimes
 Therefore, without the presence of noise or external disturbances, if $$V_in$$ is *exactly* at $$V_m$$ then there is **always** a **chance** that we MIGHT *wait* **forever** for it to be able to settle to either a stable values. A small presence of noise will drive $$V_{in}$$ down or up and eventually it *may* settle to a stable value, however this is **not guaranteed in bounded time**. 
+
+{: .important}
+Remember that even though the output *might* settle to some valid value eventually, this does **not** necessarily correspond to the correct input (that was causing this metastable state). The actual true value of the input is <span style="color:red; font-weight: bold;">gone</span> (when it violates the dynamic discipline). 
 
 ### Properties of Metastable State
 The state whereby your SL device is unable to settle to a stable valid value for unknown period of time is called the **metastable** state. Obviously we **do not** want this because the output of the device is invalid during this unknown time frame, and therefore rendered *useless*. 
