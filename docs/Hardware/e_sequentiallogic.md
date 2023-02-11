@@ -126,7 +126,7 @@ The dynamic discipline states that there are **two timing** **requirements for t
 ### Supplementary Section
 If you're interested to know *why* the dynamic discipline is so, read this section. If this is too much for you, you can skip it. You won't exactly lose in exam if you skip it, just that your knowledge wont be whole. 
 
-#### How long is tsetup and thold approximately?
+#### How long is $$T_{setup}$$ and $$T_{hold}$$ approximately?
 {: .note}
 $$T_{setup}$$ is *approximately* measured as $$2 \times t_{pd}$$  of the <span style="color:red; font-weight: bold;">components that make up the D-latch</span>. $$T_{hold}$$ is *approximately* measured as  $$t_{pd}$$ of the components that make up the D-latch. This $$t_{pd}$$ is <span style="color:red; font-weight: bold;">not</span> the same as the $$t_{pd}$$ of the entire sequential logic circuit ([see section below](https://natalieagus.github.io/50002/notes/sequentiallogic#t_pd-and-t_cd-of-sequential-logic-vs-combinational-logic-devices))
   
@@ -203,12 +203,21 @@ Notice two further behaviors in the Flip-Flop:
 {: .important}
 You can also make the slave latch to be the one that receives the inverted CLK signal, and the value at Q reflects the input at D at each **falling edge** of the CLK. The name "edge-triggered" comes from the fact that the **output at port Q**  of the slave **changes** only when the CLK edge changes (in our case, at every rising *edge*). 
 
+## DFF as Memory Device
+A DFF always outputs a stable and valid value at its Q port for one clock period (regardless of the actual input at the D port), before changing it to a new updated value. In a way, it is able to **memorise** whatever value at D was during CLK rising edge for an entire CLK period thereafter. 
+
+We can create another circuit using a DFF to allow it to either **always** output a previously stored value regardless of the CLK, *or* to **load** a new `IN` value into the DFF when needed using a <span style="color:red; font-weight: bold;">control</span> signal called `WRITE ENABLE`. 
+
+A simplified anatomy is shown below:
+
+<img src="{{ site.baseurl }}/assets/images/notes/mhp-register.drawio.png"  class="center_seventy"/>
+
+You will meet this device [later on ](https://natalieagus.github.io/50002/notes/betacpu#detailed-anatomy-of-the-regfile). 
 
 ## [Flip-Flop Timing Constraint](https://www.youtube.com/watch?v=HlizelEp4Yc&t=3458s)
 
-  
 
-Recall that we learned the *dynamic discipline* that has to be obeyed to ensure that we do not end up storing invalid input signals. In the flip-flop configuration, we **connect** two D-latches together.   Hence the dynamic discipline for the slave latch has to be obeyed by the master latch because the *output* of the master latch is the *input* to the slave latch. 
+Recall that the *dynamic discipline* ($$T_{setup}$$ and $$T_{hold}$$) ensure that we do not end up storing invalid input signals. In the flip-flop configuration, we **connect** two D-latches together.   Hence the dynamic discipline for the slave latch has to be **obeyed** by the master latch because the *output* of the master latch is the *input* to the slave latch. 
 
 To obey the dynamic discipline, there exist this **timing constraint** for the Flip-Flop configuration:
 
@@ -398,7 +407,37 @@ The only thing we can do is to **minimise** the metastable state's probability f
 {: .highlight}
 **Note** that this comes at the cost of price, responsiveness, and size of the device. 
 
- 
+## About CPU Clock
+
+{: .highlight}
+This is a **supplementary knowledge**, for those who are curious only. 
+
+Throughout this lecture, we have learned how clocks make it **easier** to **synchronize** various combinational logic devices. 
+
+{: .important}
+If you have difficulties remembering **why** synchronisation is required, remember **assembly line**. Ever seen an assembly line? People and machines working in sync to get the job done in the fastest and most efficient manner? <span style="color:red; font-weight: bold;">Remember the sync part, that is the key.</span> How are they so synchronized? 
+
+<figure>
+<img src="https://th-thumbnailer.cdn-si-edu.com/0jP0vHeCZLZ_24H9q6zAw5J_oTk=/1000x750/filters:no_upscale()/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer/1c/11/1c113495-5153-4040-b7ea-5a37acf4d525/ford_assembly_line_-_1913.jpg"  class="center_fifty"/>
+<figcaption style="text-align: center">The Ford assembly line in 1913. Wikimedia Commons/public domain.</figcaption>
+</figure>
+
+Our CPU is very similar to that. It's a giant synchronous circuit consisted of billions of transistors working together to compute results together. A CPU is typically reported with a clk rate (something around 3-4 Ghz in 2023) -- that's our clock signal: a **timing signal**, like a conductor in an orchestra or the constant humming of machines in a factory that keeps up the assembly line's **tempo**.
+
+
+Our combinational logic devices will still work (to an extent) without adding clocks, but its functionality will be primitive. It will not be able to process series of inputs and outputs in an orderly (pipelined) fashion, and it will not be able to compute an output based on sequences of input (no memory device).
+
+{: .highlight}
+**But where do clocks come from? How are they made and how can they produce such a high frequency for our CPUs to run?**
+
+The clock signal is commonly produced **mechanically** using quartz crystals oscillators. When we apply a voltage source to a small thin piece of quartz crystal, it begins to change its **shape** and *vibrate* (a characteristic known as the [piezo-electric effect](https://www.explainthatstuff.com/piezoelectricity.html)). This characteristics produces a mechanical force. The frequency of which the crystal is going to oscillate varies, depending on the oscillator's topology. We typically call this the **base frequency** of our clock. We then can build other circuits to multiply (boost) or divide (slow down) this frequency to run different components in our PC at different speed depending on the specifications. 
+
+For example in a multicore CPU, each core might have an independent multiplier circuit. Cores that are underutilised can run slower while cores under heavy load can run faster (e.g: [Intel Turbo Boost](https://www.intel.sg/content/www/xa/en/gaming/resources/turbo-boost.html)). Your RAM also need a different clock speed than your CPUs. 
+
+
+
+
+
 ## [Summary](https://www.youtube.com/watch?v=HlizelEp4Yc&t=5788s)
 You may want to watch the post lecture videos here:
 * [Part 1: D-Latch](https://youtu.be/TdwV30ORXJY)
