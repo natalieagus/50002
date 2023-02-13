@@ -344,7 +344,7 @@ Now, suppose that at time `t=0`, `RESET` signal is changed from `1` to `0`, and 
 3. What is the decimal value of `O[2:0]` at time `t=3`?
 	<div  cursor="pointer"  class="collapsible">Show Answer</div>  <div  class="content_answer">
 	<p>
-	 <code>X</code>  is  <code>011</code>  and  <code>Y</code>  is  <code>011</code>  at  <code>t=2</code>. Using the truth table of  <code>A000R</code> and the schematic of  <code>A1</code>, we can deduce that  <code>O[2:0]</code>at  <code>t=3</code> is  <code>2</code>.
+	 <code>X</code>  is  <code>011</code>  and  <code>Y</code>  is  <code>011</code>  at  <code>t=2</code>. Using the truth table of  <code>A000R</code> and the schematic of  <code>A2</code>, we can deduce that  <code>O[2:0]</code>at  <code>t=3</code> is  <code>2</code>.
 	</p></div><br>
 
 
