@@ -512,7 +512,7 @@ Once your `Mouse()` implementation is complete, add a `Mouse()` instruction **ju
 
 When you are done, remember to **remove** the `Mouse()` instruction you added.
 
-## Task C: Add fourth user-mode process P3 that reports mouse clicks
+## Part C: Add fourth user-mode process P3 that reports mouse clicks
 In this task, we would have to **modify** the **kernel** to add support for a **fourth user-mode process**. Add user-mode code for the new process that calls `Mouse()` and then prints out a message of the form:
 
 <img src="/50002/assets/contentimage/lab6/7.png"  class=" center_seventy"/>
@@ -555,7 +555,7 @@ ProcTbl:
     .. add more process table here
 ```
 
-## Task D: Synchronize mouse reporting with other I/O using Semaphores
+## Part D: Synchronize mouse reporting with other I/O using Semaphores
 Using **semaphores**, **coordinate** the operation of the user-mode processes so that click messages only appear after the prompt has been output but before you have started typing in a sentence to be translated. 
 * In other words, once you start typing in a sentence, click messages should be **delayed** until after the next prompt. 
 * If the user clicks *multiple* times after they have started typing, only a SINGLE click message needs to be displayed (describing either the **first** or **last** click, your **choice**).
