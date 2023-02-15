@@ -541,6 +541,18 @@ Xtest#1 a1 b1 z1 xor2
 Xtest#2 a0 b0 z0 xor2
 ```
 
+Iterators can also take the form of `prefix[start:stop:step]suffix`. For example:
+
+```cpp
+Xtest abc[3:0:2]xyz out[1:0] buffer
+```
+
+is equvilent to:
+```cpp
+Xtest#1 abc3xyz out1 buffer
+Xtest#2 abc1xyz out0 buffer
+```
+
 ### Duplicating a signal
 There is also a handy way of duplicating a signal. For example, xor-ing a 4-bit bus with a control signal `ctl` could be written as
 
