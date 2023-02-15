@@ -114,7 +114,7 @@ Here’s the detailed schematic of the adder. Please **label** the nodes yoursel
 <img src="/50002/assets/contentimage/lab3/adder.png"  class=" center_seventy"/>
 
 {: .highlight}
-**Write** your answer in the space provided inside `lab3_alu_submit.jsim`, and include `lab3adder.jsim` header to test your adder32 unit only. You can <span style="color:red; font-weight: bold;">comment</span> out `lab3checkoff.jsim` for the time being. 
+**Write** your answer in the space provided inside `lab3_alu_submit.jsim`, and include `lab3_testadder.jsim` header to test your adder32 unit only. You can <span style="color:red; font-weight: bold;">comment</span> out `lab3checkoff.jsim` for the time being. 
 
 ```cpp
 **********************************
