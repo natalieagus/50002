@@ -210,7 +210,7 @@ We can create another circuit using a DFF to allow it to either **always** outpu
 
 A simplified anatomy is shown below:
 
-<img src="{{ site.baseurl }}/assets/images/notes/mhp-register.drawio.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/assets/images/notes/mhp-register.drawio.png"  class="center_fifty"/>
 
 You will meet this device [later on ](https://natalieagus.github.io/50002/notes/betacpu#detailed-anatomy-of-the-regfile). 
 
