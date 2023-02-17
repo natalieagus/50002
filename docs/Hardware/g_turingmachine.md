@@ -50,7 +50,7 @@ The **pointer** of the machine (black arrow)  represents our current input read 
 To operate the machine, we can *move the tape* left and right to shift the arrow, or you can *move the arrow* left and right. They are the same. 
 
 {: .warning}
-Note that in order to move the arrow  to the right **right**, we need to equivalently move the tape to the **left**. **In practice**, we move the tape, not the arrow.  
+Note that in order to move the arrow  to the **right**, we need to equivalently move the tape to the **left**. **In practice**, we move the tape, not the arrow.  
 
 There exists  a **HALT** state where you reach the end-state, and of course a **START** state as well. 
 
