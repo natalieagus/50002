@@ -70,7 +70,7 @@ ALUFN \neq OPCODE
 $$
 
 {: .important}
-The ALUFN signals used to **control** the operation of the ALU circuitry use an encoding chosen to make the design of the ALU circuitry as simple as possible. This encoding is ***not*** the same as the one used to encode the 6-bit OPCODE field of Beta instructions. In Lab 5, you will build some logic (actually a ROM) that will translate the opcode field of an instruction into the appropriate ALUFN control bits. </div></div><br>
+The ALUFN signals used to **control** the operation of the ALU circuitry use an encoding chosen to make the design of the ALU circuitry as simple as possible. This encoding is ***not*** the same as the one used to encode the 6-bit OPCODE field of Beta instructions. In Lab 5, you will build some logic (actually a ROM) that will translate the opcode field of an instruction into the appropriate ALUFN control bits. <br>
 
 
 
