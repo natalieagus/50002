@@ -55,7 +55,7 @@ These topics are taught before the recess week. They are **tested** during our M
 * define finite state machine and draw a valid state transition diagram given a specification
 * FSM equivalence and reduction
 * identify two different types of state machine and their pros and cons: Moore and Mealy
-* implement finite state machine in a hardware
+* trace the implementation of finite state machine in a hardware
 
 ## [Programmability and Computability](https://natalieagus.github.io/50002/notes/turingmachine)
 * explain the workings of hypothetical Turing Machine
