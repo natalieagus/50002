@@ -95,7 +95,7 @@ No. This device gain is not more than 1, hence it cannot be used as a combinatio
 <br><br>
 For (A), choose NM = 0.5V, then: $$V_{OL} = 1V, V_{IL} = 1.5V, V_{IH} = 5V, V_{OH} = 5.5V$$
 <br><br>
-For (D), choose NM = 0.5V, then: $$V_{OL} = 0.5V, V_{IL} = 1V, V_{IH} = 5, V_{OH}= 5.5V$$
+For (D), choose NM = 0.5V, then: $$V_{OL} = 0.2V, V_{IL} = 0.5V, V_{IH} = 5, V_{OH}= 5.5V$$
 </p></div><br>
 
 ## Static Discipline (Basic)
