@@ -385,7 +385,7 @@ For <strong>Program 4</strong>:
 <li> The content of <code>R1</code>  is stored to <code>Mem[Constant+8]</code> instead of the content of <code>R0</code>. Therefore, <code>Mem[Constant+8]</code>  is <code>0</code> instead of <code>5</code>.</li>
 <li> The content of <code>R2</code> is <code>8</code> instead of <code>16</code>.</li>
 </ul>
-<strong>Program 2</strong> and <strong>Program 3</strong> also utilizes <code>ST</code> and <code>OP</code> instructions: <code>MUL</code>/<code>ADD</code>, etc that involve the <code>ASEL</code> mux but if you run them with the faulty Beta and with a working Beta, the end state is either the same or different due to one of the faulties only, and therefore can't be used to detect both faulties. 
+<strong>Program 2</strong> also utilizes <code>ST</code> and <code>OP</code> instructions: <code>MUL</code>/<code>ADD</code>, etc that involve the <code>ASEL</code> mux but if you run them with the faulty Beta and with a working Beta, the end state is either the same or different due to one of the faulties only, and therefore can't be used to detect both faulties. Finally, <strong>Program 3</strong> will not even run at all because the first instruction is an integer (8) and that's not a legal instruction. 
 </p></div><br>
 
 ## Beta Instruction Replacements (Intermediate)
