@@ -399,7 +399,7 @@ For each of the statements below, indicate whether they're True or False and pro
 * **Statement 3:** We can never perform `LD` and `ST`  to any two independent addresses in a *single cycle* (even if the memory unit supports it) by just modifying the **control unit** of the Beta. In other words, we need to modify the datapath of the Beta in order to do this. 
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-<strong>Statement 1 is <span style="color:red; font-weight: bold;">False</span></strong>. We can have <code>ADDC(R0, -32768, R0)</code> but we cant have <code>SUBC(R0, 32768, R0)</code> as the most positive number that a signed 16-bit can represent is <code>32768</code>.
+<strong>Statement 1 is <span style="color:red; font-weight: bold;">False</span></strong>. We can have <code>ADDC(R0, -32768, R0)</code> but we cant have <code>SUBC(R0, 32768, R0)</code> as the most positive number that a signed 16-bit can represent is <code>32767</code>.
 <br>
 <br>
 <strong>Statement 2 is <span style="color:red; font-weight: bold;">False</span></strong>. <code>Ra</code> contains 32-bit of data, so we can set <code>PC</code> to be pointing to <i>any</i> address in the memory (4GB of address space) with <code>JMP(Ra)</code>. However, <code>BEQ</code> only covers <code>32768 times 4</code> (above <code>PC+4</code>) + <code>32768 times 4</code> (*below and inclusive of <code>PC+4</code>*) bytes of address space.
