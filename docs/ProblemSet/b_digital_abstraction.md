@@ -84,7 +84,7 @@ No. This device gain is not more than 1, hence it cannot be used as a combinatio
 
 **(b).** You are designing a new logic family and trying to decide on values of the four parameters: Vol, Vil, Vih, and **Voh** that lead to non-zero noise margins for various possible inverter designs. Four proposed inverter designs exhibit the VTC shown in the diagrams below. **For each design, either specify four suitable values** of Vol, Vil, Vih, and **Voh** or **explain why no values can obey the static discipline.** 
 
-*Hint: you may want to start by choosing NM to be 0.5V for ease of computation.*
+*Hint: you may want to start by choosing Noise Immunity to be between 0.2V to 0.5V for ease of computation.*
 
 <img src="https://dropbox.com/s/j8e2aii7x6cjtv2/Q3.png?raw=1"     class="center_fifty"   >
 
@@ -93,9 +93,9 @@ No. This device gain is not more than 1, hence it cannot be used as a combinatio
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 (B) and (C) cannot be used as inverter (combinational device) as its gain is less than 1. 
 <br><br>
-For (A), choose NM = 0.5V, then: $$V_{OL} = 1V, V_{IL} = 1.5V, V_{IH} = 5V, V_{OH} = 5.5V$$
+For (A), choose Noise Immunity = 0.5V, then: $$V_{OL} = 1V, V_{IL} = 1.5V, V_{IH} = 5V, V_{OH} = 5.5V$$
 <br><br>
-For (D), choose NM = 0.3V, then: $$V_{OL} = 0.2V, V_{IL} = 0.5V, V_{IH} = 5, V_{OH}= 5.5V$$
+For (D), choose Noise Immunity = 0.3V, then: $$V_{OL} = 0.2V, V_{IL} = 0.5V, V_{IH} = 5, V_{OH}= 5.5V$$
 </p></div><br>
 
 ## Static Discipline (Basic)
