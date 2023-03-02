@@ -393,9 +393,7 @@ For <strong>Program 4</strong>:
 For each of the statements below, indicate whether they're True or False and provide your reasoning. 
 
 * **Statement 1:**  In the Beta, every `ADDC` instruction can **always** be replaced by a `SUBC` instruction that puts precisely the **same** value in the destination register. For example, `ADDC(R0,1,R0)` is equal to `SUBC(R0,-1,R0)` (*think about all constants*).  
-
 * **Statement 2:** In a Beta program, you can use `BEQ(R31, label, R31)` as a substitute for `JMP(Ra)` where `Ra` stores the address of `label`, no matter where `label` is. 
-
 * **Statement 3:** We can never perform `LD` and `ST`  to any two independent addresses in a *single cycle* (even if the memory unit supports it) by just modifying the **control unit** of the Beta. In other words, we need to modify the datapath of the Beta in order to do this. 
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
