@@ -91,7 +91,7 @@ No. This device gain is not more than 1, hence it cannot be used as a combinatio
 
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-(B) and (C) cannot be used as inverter (combinational device) as its gain is less than 1. 
+(B) and (C) cannot be used as inverter (combinational device) as its absolute gain is less than 1. 
 <br><br>
 For (A), choose Noise Immunity = 0.5V, then: $$V_{OL} = 1V, V_{IL} = 1.5V, V_{IH} = 5V, V_{OH} = 5.5V$$
 <br><br>
