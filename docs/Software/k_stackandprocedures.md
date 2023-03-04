@@ -231,7 +231,7 @@ And also the following macros for easier stack management which will be explaine
 {: .note-title}
 > Allocating a Stack Space
 > 
->  The **content** of `SP` contains the address of the memory which we define as the top of the stack. `ALLOCATE` is used to *move* `Reg[SP]` to a whatever free memory location that will be used as start of the stack.  Obviously you won't want to overwrite the part of your memory containing important information like your program instructions or data with stack data. 
+>  The **content** of `SP` contains the address of the memory which we define as the top of the stack. `ALLOCATE` is used to *move* `Reg[SP]` to a free memory location that will be used as start of the stack.  Obviously, you won't want to overwrite the part of your memory containing important information like your program instructions or data with stack data. 
 
 ###  [Example of stack usage](https://www.youtube.com/watch?v=u4TETujaNuk&t=1833s)
 
@@ -426,7 +426,7 @@ HALT()
 This is possible by callee sequences into two parts: callee entry sequence and callee exit/return sequence. 
 
 The entry sequence is consisted of five steps:
-1. `PUSH(LP)` : to preserve the state of `LP` which containts the return address to the caller of this function.
+1. `PUSH(LP)` : to preserve the state of `LP` which contains the return address to the caller of this function.
 2. `PUSH(BP)`: to preserve the state of `Reg[R27]`
 3. `ADD(SP, R31, BP)`: move the content of `SP` to `BP`.  This is to set the **stack frame base** for this function call. 
 	> We have a macro for this: `MOVE(SP, BP)`
