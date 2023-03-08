@@ -75,7 +75,7 @@ The `SVC` handler does the following routine:
 2. Extract its lower `N` bits and 
 3. Branch to the appropriate service routine as requested by the calling process based on the value of `N`: 
    
-Here's the extracted code snippet from the TinyOS lab (`lab6.uasm` file):
+Here's the extracted code snippet from the TinyOS lab ([`tinyOS.uasm` file](https://github.com/natalieagus/lab-tinyOS)):
 ```nasm
 SVC_Handler: 
 LD(XP, -4, R0)	| examine the faulting instruction

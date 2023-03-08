@@ -380,5 +380,5 @@ The Kernel **manages**  the execution of all processes, as well as all I/O devic
 
 During either case of interrupt, `PC+4` is stored at `Reg[XP]` so that the system knows how to resume the process later on. 
 
-The $$\beta$$ Kernel called the TinyOS that you will encounter in 50005 is **non-reentrant** (the CPU cannot be interrupted while in Kernel Mode). It is a simple Kernel. In practice, most modern [UNIX Kernels are reentrant](https://www.oreilly.com/library/view/understanding-the-linux/0596002130/ch01s06.html). Careful writing and construction of the Kernel program is required. 
+The $$\beta$$ Kernel called the [TinyOS](https://github.com/natalieagus/lab-tinyOS) that you will encounter in 50005 is **non-reentrant** (the CPU cannot be interrupted while in Kernel Mode). It is a simple Kernel. In practice, most modern [UNIX Kernels are reentrant](https://www.oreilly.com/library/view/understanding-the-linux/0596002130/ch01s06.html). Careful writing and construction of the Kernel program is required. 
 
