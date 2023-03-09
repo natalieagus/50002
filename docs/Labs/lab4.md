@@ -286,11 +286,11 @@ This has the following three implications for your Beta design:
 
 3. You’ll have to add logic to **bit 31** of the `JT` input to the **PCSEL** mux to ensure that JMP instruction can only **clear** or **leave the supervisor bit unchanged**. Here’s a table showing the new value of the supervisor bit after a `JMP` as function of JT31 and the current value of the supervisor bit (PC31): <br>
 
-    old PC31 (ia31) | JT31 (ra31) | new PC31
-    ---------|----------|---------
-    0 | -- | 0
-    1 | 0 | 0
-    1 | 1 | 1
+old PC31 (ia31) | JT31 (ra31) | new PC31
+---------|----------|---------
+0 | -- | 0
+1 | 0 | 0
+1 | 1 | 1
 
 
 {: .highlight}
@@ -797,7 +797,7 @@ Where:
   * If this port is only a read port, connect this terminal to the ground node “0”.
 
 
-* `a[naddr-1] … a[0] `are the **address** **inputs**, listed **most significant bit first**.  
+* `a[naddr-1] … a[0]`are the **address** **inputs**, listed **most significant bit first**.  
   * The values of these terminals are used to compute the address of the memory location to be read or written.  
   * The number of address terminals is determined from the number of locations in the memory: `naddr = ceiling(log2(nloc))`.  
   * When the number of locations in a memory isn’t exactly a power of 2, reads that refer to non-existent locations return “X” and writes to non-existent locations have **no effect**.
@@ -818,28 +818,28 @@ By **specifying** one of the following options it is possible to specify the ini
   > 
   > The following statement would create a **1024**-location 32-bit memory with **three** ports: 2 **READ** ports and 1 one **WRITE** port.  The memory is initialized from the BSim output file “foo.bin”.
 
-  ```cpp
-  Xmem
-  + vdd 0 0 ia[11:2] id[31:0]    // (read) instruction data
-  + vdd 0 0 ma[11:2] mrd[31:0]   // (read) program data (LDs)
-  + 0 clk wr ma[11:2] mwd[31:0]  // (write) program data (STs)
-  + $memory width=32 nlocations=1024
-  + file="foo.bin"
-  ```
+```cpp
+Xmem
++ vdd 0 0 ia[11:2] id[31:0]    // (read) instruction data
++ vdd 0 0 ma[11:2] mrd[31:0]   // (read) program data (LDs)
++ 0 clk wr ma[11:2] mwd[31:0]  // (write) program data (STs)
++ $memory width=32 nlocations=1024
++ file="foo.bin"
+```
 
 * `contents=( data… )`
   * The memory is initialized, **location**-by-**location**, from the data values given in the list.  
   * The **least significant bit** (bit 0) of a value is used to initialize bit 0 of a memory location, bit 1 of a value is used to initialize bit 1 of a memory location, and so on.  
   * For example, to enter the short test program ADDC(R31,1,R0); ADDC(R31,2,R1); ADD(R0,R1,R2) one might specify:
 
-  ```cpp
-  Xmem
-  + vdd 0 0 ia[11:2] id[31:0]    // (read) instruction data
-  + vdd 0 0 ma[11:2] mrd[31:0]   // (read) program data (LDs)
-  + 0 clk wr ma[11:2] mwd[31:0]  // (write) program data (STs)
-  + $memory width=32 nlocations=1024
-  + contents=(0xC01F0001 0xC03F0002 0x80400800)
-  ```
+```cpp
+Xmem
++ vdd 0 0 ia[11:2] id[31:0]    // (read) instruction data
++ vdd 0 0 ma[11:2] mrd[31:0]   // (read) program data (LDs)
++ 0 clk wr ma[11:2] mwd[31:0]  // (write) program data (STs)
++ $memory width=32 nlocations=1024
++ contents=(0xC01F0001 0xC03F0002 0x80400800)
+```
 
 
 Initialized memories are **useful** for modeling ROMs (e.g., for **control logic**) or simply for loading programs into the main memory of your Beta.  
