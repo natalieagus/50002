@@ -20,6 +20,10 @@ Modified by: Kenny Choo, Natalie Agus, Oka Kurniawan (2021)
 
 # Lab 4: Beta Processor
 {: .no_toc}
+
+{: .warning}
+There might be <span style="color:red; font-weight: bold;">major</span> changes to this lab. It should be finalised by end of Week 8.
+
 ## Starter Code
 The following files inside your `/50002/` folder are what you're going to use for this lab:
 - `lab4_pc_submit.jsim` 
