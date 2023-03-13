@@ -21,6 +21,13 @@ Written by: Natalie Agus (2023)
 # Lab 4: Beta Processor with FPGA (Part 2)
 {: .no_toc}
 
+In this second part of the lab, we will learn how to **operate** our Beta:
+1. To run a tester code that demonstrate basic instructions: `OP/OPC`, control transfer (`BNE/BEQ/JMP`), and memory access (`LD/ST`)
+2. To interact with the system (triggers `irq`, handle I/O)
+3. To view the system's output at the 7seg
+4. To view the system's states (e.g: `ma`, `ia`, `id`, etc) at the 7seg 
+5. To trigger `ILLOP` and demonstrate how it is handled 
+
 
 ## Beta Tester Source Code
 We have written a simple 28-line tester code for your Beta inside `instruction_rom.luc`. Unfortunately, we don't have a nice auto-tester and auto-graded checkoff file like we have in `jsim`. We just need to either manually ensure that the outputs are correct by observing each **state** of the Beta (PC content, Regfile content, control signals, etc) at each instruction execution or write an automatic tester like you did for your ALU in Checkoff 1.
@@ -164,10 +171,10 @@ Right now in `au_top.luc`, we are using index `27` and `25` so that you have suf
     fastclock_edge.in = frequency_divider.value[25];
 ```
 
-## Input and Output
+## User I/O
 The system is designed to have the following input and output unit for user interaction:
 - **Input**: `io_button[2:0]` triggers interrupt (hardwired). This is the up, middle, and down button. 
-- **Output**: set `io_dip[0]` to: `00001111` (`0x0F`). This is your "screen".
+- **Output**: set `io_dip[0]` to: `00001111` (`0x0F`) and the output will be displayed at the 7seg. This is your "screen".
 
 When `io_button[0]`, `io_button[1]`, or `io_button[2]` is pressed, we write some logic in `au_top.luc` to store its encoding to `system_input_buffer` and `system_output_buffer` (32 bit dff) defined in `motherboard.luc`.  
 
