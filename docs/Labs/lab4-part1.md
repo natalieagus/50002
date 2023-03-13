@@ -1,7 +1,7 @@
 ---
 layout: default
-permalink: /lab/lab4
-title: Lab 4 - Beta Processor with FPGA
+permalink: /lab/lab4-part1
+title: Lab 4 - Beta Processor with FPGA (Part 1)
 description: Lab 4 handout covering topics from Beta Datapath
 parent: Labs
 nav_order:  5
@@ -18,11 +18,11 @@ Singapore University of Technology and Design
 <br>
 Written by: Natalie Agus (2023)
 
-# Lab 4: Beta Processor with FPGA
+# Lab 4: Beta Processor with FPGA (Part 1)
 {: .no_toc}
 
 {: .warning}
-Before this lab, you are required to [complete this very basic FPGA tutorial](https://natalieagus.github.io/50002/fpga/fpga_1) we wrote and perhaps the official [Getting-Started-With-FPGA tutorial](https://alchitry.com/your-first-fpga-project) by Alchitry lab. Please **come prepared** and bring your FPGA + laptops where Vivado + Alchitry Lab is installed. At least one person in each team should have this. 
+Before this lab, you are required to [complete this very basic FPGA tutorial](https://natalieagus.github.io/50002/fpga/fpga_1) we wrote and perhaps the official [Getting-Started-With-FPGA tutorial](https://alchitry.com/your-first-fpga-project) by Alchitry lab. Please **come prepared** and bring your FPGA + laptops where Vivado + Alchitry Lab is installed. At least one person in each team should have a laptop that can run Vivado and bring the FPGA. 
 
 ## Starter Code 
 
@@ -68,7 +68,7 @@ The signals indicated in red refers to external **`INPUT`** to our Beta, supplie
 
 
 ## Memory Unit
-The Memory Unit is implemented in the file `memory_unit.luc`. It is physically *broken* into two sections for ease of explanation and implementation: 
+The Memory Unit is implemented in the file `memory_unit.luc`. It is physically *separated* into two sections for ease of explanation and implementation: 
 * the **instruction** memory and 
 * the **data** memory
 
@@ -81,13 +81,41 @@ The schematic of the memory unit is as follows:
 
 
 ### Instruction Memory
+The instruction memory is implemented using the `simple_ram.v` component. See this file under the `Components` folder in your alchitry project to read more about how to use it. In short:
+- `read_data` port of the `simple_ram` will output the value of the entry pointed by `raddr` in the <span style="color:red; font-weight: bold;">previous</span> clock cycle. If you want to read address `EA`, you shall set `raddr = EA` and then wait for one FPGA clock cycle for `Mem[EA]` to show up. 
+- If you read and write to the **same** address, you will get the value of the old output at `read_data` in the second clock cycle, and on the third clock cycle, the newly updated value will be produced at `read_data`.  
+
+
 The input to the instruction memory supplied by the Beta is: **instruction address** (`ia[31:0]`). This contains the address of the next instruction to be executed. This will cause the instruction memory to output **instruction data** (`id[31:0]`) for the Beta CPU. Since we never need to **write** to this instruction memory *during program execution*, we implement it as a **single port ram** (only read *or* write can be done one at a time in one `clk` cycle)
 
 {: .note}
 The instruction memory unit receives input address `ia[31:0]` and outputs instruction data `id[31:0]`. After a certain **propagation delay**, the memory unit will supply the Beta with the **contents** of address `ia[31:0]`. We symbolically illustrate this **content** as `Mem[EA]`, where `EA = ia[31:0]`.
 
+The interface of the instruction memory is given to you inside `memory_unit.luc`:
+
+```verilog  
+    // for instruction memory 
+    input ia[$clog2(WORDS)+2], // byte addressing expected
+    input instruction_write_enable,
+    input instruction_towrite[32],
+    output id[32]
+```
+
 ### Data Memory
-The Beta CPU can **read** or **write** to the Data Memory. The data memory is implemented as a **dual port ram** (read and write can be done independently in the same `clk` cycle).
+The Beta CPU can **read** or **write** to the Data Memory. For ease of demonstration data memory is implemented as a **dual port ram** (read and write can be done independently in the same `clk` cycle). That is why we have two address ports `raddr` and `waddr` inside `memory_unit.luc` instead of `addr` like illustrated in our diagram above, but in principle they work the same way. See `simple_dual_ram.v` in the Components folder in your Alchitry project for more information. In short:
+- `read_data` port of the `simple_ram` will output the value of the entry pointed by `raddr` in the <span style="color:red; font-weight: bold;">previous</span> clock cycle. If you want to read address `EA`, you shall set `raddr = EA` and then wait for one FPGA clock cycle for `Mem[EA]` to show up.  
+- We should <span style="color:red; font-weight: bold;">avoid</span> reading and writing to the same address simultaneously because the `read_data` will be undefined.
+
+The interface for the data memory is given to you inside `memory_unit.luc`:
+
+```verilog
+    // for data memory
+    input raddr[$clog2(WORDS)+2], // byte addressing expected
+    input waddr[$clog2(WORDS)+2], // byte addressing expected
+    input wd[32], // write data
+    input we,
+    output mrd[32],
+```
 
 #### Memory Read
 The Data Memory Unit receives **one** input from the Beta:
@@ -102,7 +130,21 @@ If the Beta wants to **store** (write) data to the memory, it needs to supply **
 * memory write enable (`wr`) signal. Set to 1 when the Beta wants to store into the memory location specified by `ma[31:0]` at the **end** of the current cycle.  
 
 {: .warning}
-The signal `wr`  should **ALWAYS** have a **valid** logic value (either 1 or 0) at the **RISING** edge of `CLK` otherwise the contents of the memory will be erased. If signal `wr` is 1, the data  `mwd[31:0]` will be written into memory at the **end** of the current cycle. Otherwise, if `wr = 0`, then the data at` mwd[31:0]` will be **ignored**. 
+The signal `wr`  should **ALWAYS** have a **valid** logic value (either 1 or 0) at the **RISING** edge of `CLK` otherwise the contents of the memory will be affected. If signal `wr` is 1, the data  `mwd[31:0]` will be written into memory at the **end** of the current cycle. Otherwise, if `wr = 0`, then the data at` mwd[31:0]` will be **ignored**. 
+
+### Addressing Convention
+We expect **byte addressing** to be supplied at `raddr`, `waddr`, and `ia`. However, since we would naturally declare our `simple_ram` with `#SIZE(32)`, it expects word addressing. Hence, we need to ignore the lower two bits of `ia`, `raddr`, and `waddr` when using them. 
+
+```verilog
+  instruction_memory.address = ia[$clog2(WORDS)+2-1:2]; 
+```
+
+Given memory capacity of `WORDS`, we need to take `log2` of it to find the minimum number of bits to address this many `WORDS` of data. When **declaring** `ia`, we state that `ia` contains `$clog2(WORDS)+2` bits. Thus when **indexing**, we want to start from index `$clog2(WORDS)+2-1` (this is MSB). Since we only want word addressing when actually using the `simple_ram`, we simply start from index `$clog2(WORDS)+2-1` and end at index `2` (inclusive). 
+
+{: .note}
+Note that we can declare our `simple_ram` with `#SIZE(4), #DEPTH(WORDS*4)` if we want it to strictly be byte addressable, but we will need additional logics to extract 4 bytes at a type. 
+
+
 
 ## Part A: PC Unit
 ### PC Unit Schematic
@@ -111,12 +153,31 @@ Here is the suggested PC Unit schematic that you can implement. Take note of the
 <img src="/50002/assets/contentimage/lab4/pcunit.png"  class="center_seventy"/>
 
 
-Open `TBC` and observe that the module interface has been provided for you. **We follow the PC Unit Schematic** above for the declaration of the input and output (they are **positional arguments**). Your job is to fill up each blanks between `BEGIN ANSWER` and `END ANSWER`.
+
 
 ### Task 1: PCSEL Multiplexers
 
 {: .highlight}
-**Paste** the code snippet below in the space provided under `5-to-1 PCSEL mux` section inside `pc_unit.luc`. Read on to find out how to fill it up.
+**Paste** the code snippet below in the space provided under `PCSEL mux` section inside `pc_unit.luc`. 
+
+```verilog
+      case (pcsel){
+          b000: 
+            pcsel_out = pc_4_sig;
+          b001:
+            pcsel_out = pc_4_sxtc_sig;
+          b010:
+            // JMP mux to protect JT31
+            pcsel_out = c{pc.q[31] & reg_data_1[31], reg_data_1[30:0]};
+          b011:
+            pcsel_out = h80000004; // illop 
+          b100: 
+            pcsel_out = h80000008; // irq 
+          default:
+            pcsel_out = pc.q;
+        }
+      pc.d = c{pcsel_out[31:2], b00}; // setting of pcreg content must happen only when slowclk == 1, don't bring this outside of if(slowclk) clause
+```
 
 The 32-bit 5-to-1 PC mux **selects** the value to be loaded into the `PC` register at the next rising edge of the clock depending on the `PCSEL` control signal. 
 
@@ -137,28 +198,36 @@ You also have to **force** the lower two bits of inputs going into the PC+4, PC+
 Example: 
 
 ```verilog
-pcsel_out = c{pc_signal[31:2], b00}
+pc.d = c{pcsel_out[31:2], b00};
 ```
 
 ### Task 2: RESET Multiplexer
+
 {: .highlight}
-**Paste** the code snippet below in the space provided under `RESET mux` and `PC Register` sections inside `pc_unit.luc`. Read on to find out how to fill it up.
+**Paste** the code snippet below in the space provided under `RESET mux` section inside `pc_unit.luc`. 
+
+```verilog
+    if (rst){
+        pc.d = h80000000; // reset can happen anytime regardless of slowclk
+    }
+```
 
 
 Remember that we need to add a way to set the PC to zero on `RESET`.  We use a two-input 32-bit mux that selects `0x80000000` when the RESET signal is asserted, and the output of the PCSEL mux when RESET is not asserted. We will use the RESET signal to force the PC to zero during the first clock period of the simulation.
 
 ### Task 3: 32-bit PC Reg
-The PC is a separate **32-bit register** that can be built using the `dff` component.
+The PC is a separate **32-bit register** that can be built using the `dff` component. We have declared it above the `always` block:
 
-{: .highlight}
-**Paste** the code snippet below in the space provided under `PC Register` inside `pc_unit.luc`.
-
+```verilog
+  dff pc[32](#INIT(0),.clk(clk)); // PC Register
+```
 
 ### Increment-by-4
 Conceptually, the increment-by-4 circuit is just a 32-bit adder with one input wired to the constant 4. It is possible to build a much **smaller** circuit if you design an adder **optimized** knowing that one of its inputs is `0x00000004` constant. In Lucid, this can be done very easily by just stating:
 
 ```verilog
-pc_sig = pc.q + 4;
+    // increment pc by 4
+    pc_4_sig = c{pc.q[31], pc.q[30:0] + 4};     
 ```
 
 
@@ -166,27 +235,31 @@ pc_sig = pc.q + 4;
 The branch-offset adder **adds** PC+4 to the 16-bit offset encoded in the instruction `id[15:0]`. The offset is **sign-extended** to 32-bits and multiplied by 4 in preparation for the addition.  Both the sign extension and shift operations can be done with appropriate wiring—no gates required!
 
 {: .highlight}
-**Paste** the code snippet below in the space provided under `shift add unit` inside `pc_unit.luc`.
+**Paste** the code snippet below in the space provided under `shift-and-add` inside `pc_unit.luc`. 
+
+```verilog
+    sextc = 4 * c{id[15], id[15:0]};
+    pc_4_sxtc_sig = c{pc.q[31], pc.q[30:0] + 4 + sextc[30:0]};
+```
 
 ### Task 5: Supervisor Bit
-The high-order bit of the PC is dedicated as the **supervisor** bit (see section 6.3 of the [**Beta Documentation**](https://drive.google.com/file/d/1L4TXMEDgD5gTN2JSd4ea_APpwNKUpzqK/view?usp=share_link)). 
+The highest-order bit of the PC (`PC31`/`ia31`) is dedicated as the **supervisor** bit (see section 6.3 of the [**Beta Documentation**](https://drive.google.com/file/d/1L4TXMEDgD5gTN2JSd4ea_APpwNKUpzqK/view?usp=share_link)). 
 * The `LDR` instruction **ignores** this bit, treating it as if it were *zero*. 
 * The `JMP` instruction is allowed to clear the Supervisor bit or leave it unchanged, but <span style="color:red; font-weight: bold;">cannot set</span> it, 
-* **No other instructions may have any effect on it**
+* **No other instructions may have any effect on `PC31`**
 
 {: .note-title}
 > Setting the Supervisor Bit
 >  
 > Only `RESET`, `exceptions` (`ILLOP`) and `interrupts` (`XAddr`) cause the Supervisor bit of the Beta `PC` to become **set**.
 
-This has the following three implications for your Beta design:
+This has the following three implications for your PC unit design:
 
 1. `0x80000000`, `0x80000004` and `0x80000008` are loaded into the PC during `reset`, `ILLOP` and `IRQ` respectively.   This is the only way that the supervisor bit gets set.  Note that after `reset` the Beta starts execution in supervisor mode. This is equivalent to when a regular computer is starting up.
 
 2. **Bit 31** of the `PC+4` and **branch-offset** inputs to the **PCSEL** mux should be connected to the highest bit of the PC Reg output, `ia31`; i.e., the value of the supervisor bit doesn’t change when executing most instructions. 
-    * Please ensure your answer in shift-and-add section takes this into account. 
 
-3. You’ll have to add logic to **bit 31** of the `JT` input to the **PCSEL** mux to ensure that JMP instruction can only **clear** or **leave the supervisor bit unchanged**. Here’s a table showing the new value of the supervisor bit after a `JMP` as function of JT31 and the current value of the supervisor bit (PC31): <br>
+3. You need to add additional logic to **bit 31** of the `JT` input to the **PCSEL** mux to ensure that JMP instruction can only **clear** or **leave the supervisor bit unchanged**. Here’s a table showing the new value of the supervisor bit after a `JMP` as function of JT31 and the current value of the supervisor bit (PC31):
 
 old PC31 (ia31) | JT31 (ra31) | new PC31
 ---------|----------|---------
@@ -195,17 +268,12 @@ old PC31 (ia31) | JT31 (ra31) | new PC31
 1 | 1 | 1
 
 
-{: .highlight}
-**Paste** the code snippet below in the space provided under `JMP mux` inside `pc_unit.luc`.
+{: .new-title}
+> Think! 
+>
+> You have pasted quite a fair bit of answers to complete `pc_unit.luc`. Which part(s) protects the supervisor bit?
 
 
-
-### Testing 
-It takes quite some time to compile Lucid (and Verilog too) code, so testing smaller components is crucial! 
-
-```
-TBC
-```
 
 ## Part B: REGFILE Unit
 ### REGFILE Unit Schematic
@@ -216,36 +284,80 @@ Here is the suggested REGFILE Unit schematic that you can implement.
 
 Open `regfile_unit.luc` and observe that the module interface has been provided for you. **We follow the Regfile Unit Schematic** above for the declaration of the input and output.
 
-{: .note}
-Your job is to fill up each blanks between `BEGIN ANSWER` and `END ANSWER`
 
-### Task 6: WASEL and RA2SEL Mux
+
+### Task 6: RA2SEL and WASEL Mux
 You will need a mux controlled by `RA2SEL` to select the **correct** address for the B read port. The 5-bit 2-to-1 **WASEL** multiplexer determines the write address for the register file. 
 
 {: .highlight}
 **Paste** the code snippet below in the space provided under `RA2SEL mux` and `WASEL mux` sections inside `regfile_unit.luc`.
 
-### Task 7: Regfile Memory
-The register file is a 3-port memory. You must implement it in `regfile_memory.luc`, which is then utilised by `regfile_unit.luc`. The `RA1`/`RD1` port output producing `ra[31:0]` is also wired directly to the `JT` inputs of the `PCSEL` multiplexer. Remember we already  **force** the low-order two bits to zero and to add supervisor bit logic to bit 31 in the PCSEL Unit, so we do not have to do it here anymore.
+```verilog
+    // RA2SEL mux
+    case(ra2sel){
+      b0:
+        ra2sel_out = rb;
+      b1:
+        ra2sel_out = rc;
+      default:
+        ra2sel_out = rb;
+    }
 
-### Task 8: Z Logic
-Z logic can be added to the output of the RA1/RD1 port of the register file memory above. The value of Z must be `1` if and only if `ra[31:0]` is `0x00000000`. Z must be `0` otherwise. This is exactly a `NOR` logic. You can create a reduction `NOR` logic gate very easily in Lucid (well, [actually Verilog](https://class.ece.uw.edu/cadta/verilog/reduction.html)), but of course you're welcome to follow the schematic above. 
+    // WASEL mux 
+    case(wasel){
+      b0:
+        wasel_out = rc;
+      b1:
+        wasel_out = b11110;
+      default:
+        wasel_out = rc;
+    }
+```
+
+### Task 7: Regfile Memory
+The register file is a 3-port memory. It should be implemented in `regfile_memory.luc`, which is then utilised by `regfile_unit.luc`. 
 
 {: .highlight}
-**Paste** the code snippet below in the space provided under `Z computation` section inside `regfile_unit.luc`.
+Paste the code below inside the `always` block in `regfile_unit.luc`.
+
+```verilog
+    // always read 
+    reg_data_1 = registers.q[read_address_1];
+    reg_data_2 = registers.q[read_address_2];
+    
+    // check if write_en and its not R31 
+    if (write_address != b11111 && write_enable){
+        registers.d[write_address] = write_data;
+    }
+    
+    // always give out 0 if we are reading R31
+    if (read_address_1 == b11111) reg_data_1 = 32h0;
+    if (read_address_2 == b11111) reg_data_2 = 32h0;
+```
+
+The `RD1` port output producing `reg_data_1[31:0]` is also wired directly as the third (for `JMP`) input of the `PCSEL` multiplexer. Remember we <span style="color:red; font-weight: bold;">already</span>  **force** the low-order two bits to zero and to add supervisor bit logic to bit 31 in the `PCSEL` Unit, so we do not have to do it here anymore.
+
+### Task 8: Z Logic
+Z logic can be added to the output of the RA1/RD1 port of the register file memory above. The value of Z must be `1` if and only if `reg_data_1[31:0]` is `0x00000000`. Z must be `0` otherwise. This is exactly a `NOR` logic. You can create a reduction `NOR` logic gate very easily in Lucid (well, [actually Verilog](https://class.ece.uw.edu/cadta/verilog/reduction.html)), but of course you're welcome to follow the schematic above. 
+
+{: .highlight}
+Paste the code snippet below in the space provided under `commpute Z` section inside `regfile_unit.luc`.
+
+```verilog
+    z = ~|regfile.reg_data_1;
+```
 
 
 ### Task 9: mwd[31:0] Output
-Finally, connect the output of the `RD2` port of the register file memory above to produce `mwd[31:0]`. 
+Finally, we need to connect the output of the `RD2` port of the register file memory above to produce `mwd[31:0]`. 
 
 {: .highlight}
-**Paste** the code snippet below in the space provided under `mwd[31:0] output` section inside `regfile_unit.luc`.
+Paste the code below to this task section `regfile_unit.luc`. 
 
+```verilog
+    mwd = regfile.reg_data_2;
+```
 
-
-### Testing 
-
-TBC
 
 ## Part C: CONTROL Unit
 ### CONTROL Unit Schematic
@@ -255,7 +367,7 @@ Here is the suggested **CONTROL** Unit schematic that you can implement.
 
 Open `control_unit.luc` and observe that the module interface has been provided for you. **We follow the Control Unit Schematic** above for the declaration of the input and output.
 
-Fill up each blanks between `BEGIN ANSWER` and `END ANSWER`
+
 
 ### ROM
 The control logic should be tailored to generate the control signals your logic requires, which may differ from what’s shown in the diagram above. Note that a ROM can be built by simply declaring a `CONST` array in Lucid. 
@@ -280,8 +392,8 @@ Some of the signals can connect directly to the appropriate logic, e.g., `ALUFN[
 
 We have already provided you with the bare Control Unit ROM as shown in the schematic above. Further processing for control signals: `PCSEL, wasel, wdsel, werf, wr` are needed. 
 
-### WR 
-We do need to be careful with the write enable signal for main memory (WR) which needs to be **valid** even before the first instruction is fetched from memory. WR is an **input** to the main memory, and recall that ALL inputs need to be VALID (0 is also a valid value!) in order for the main memory to give a valid output data. You should include some additional logic that forces `wr` to `0b0` when `reset=1`. 
+### WR and WERF
+We do need to be careful with the write enable signal for main memory (WR) which needs to be **valid** even before the first instruction is fetched from memory. WR is an **input** to the main memory, and recall that ALL inputs need to be VALID (0 is also a valid value!) in order for the main memory to give a valid output data. You should include some additional logic that forces `wr` to `b0` when `reset is 1`. This takes highest priority, hence it is written at the bottom of the `always` block in `control_unit.luc`. 
 
 
 ### Task 10: PCSEL 
@@ -298,8 +410,16 @@ BNE `011110` | 1 | `000`
 If you are using **pureply** a ROM-based implementation without additional logic (128 words in the ROM as opposed to just 64), you can make `Z` an additional address input to the ROM (**doubling** its size).  A more economical implementation might use external logic to modify the value of the PCSEL signals as defined in our schematic above. 
 
 {: .highlight}
-**Paste** the code snippet below in the space provided under `Branch check` section inside `control_unit.jsim`.
+**Paste** the code snippet below in the space provided under `PCSEL for BNE/BEQ` section inside `control_unit.luc`.
 
+```verilog
+    if (opcode == b011101 && z == 1){ // BEQ, branch if z == 1
+      pcsel = b001;
+    }
+    else if (opcode == b011110 && z == 0){ // BNE, branch if z != 1
+      pcsel = b001;
+    }
+```
 
 ### Task 11: IRQ Handling
 When `IRQ` signal is 1 and the Beta is in “user mode” (PC31 is zero), an **interrupt** should occur.  Asserting `IRQ` should have NO effect when in “supervisor mode” (`PC31` is one).  You should add logic that causes the Beta to abort the current instruction and **save** the current **PC+4** in register `XP` (`11110`) and to set the PC to `0x80000008`.  In other words, an interrupt forces the following:
@@ -315,10 +435,20 @@ Note that you’ll also want to add logic to **reset** the Beta; at the very lea
 {: .highlight}
 **Paste** the code snippet below in the space provided under `IRQ handling` section inside `control_unit.luc`.
 
+```verilog
+    if (irq_sampler.q & slowclk & ~ia31){
+      pcsel = b100;
+      wasel = 1;
+      werf = 1;
+      wdsel = b00;
+      wr = 0;
+      // clear interrupt bit 
+      irq_sampler.d = 0;
+    }
+```
 
+Note that the snippet above is located near the end of the `always` block because it shall **overwrite** the current instructions' control signals defined earlier above. 
 
-### Testing 
-TBC
 
 ## ALU + WDSEL Unit
 This unit is fairly straightforward to implement.  **In fact, it is so easy and we just implement it for you** inside `beta_cpu.luc`. We  provide you with the ALU unit (`alu.luc`) so you don't have to make the 32-bit version. We follow closely the modular implementation of ALU from Lab 3. 
@@ -337,23 +467,82 @@ Also, **Bit 31** of the branch-offset input to the ASEL mux should be set to `0`
 
 
 ### WDSEL Mux
-**Bit 31** of the PC+4 input to the **WDSEL** mux should connect to the highest bit of the PC Reg output, `ia31`, saving the current value of the supervisor whenever the value of the PC is saved by a branch instruction or trap.
+**Bit 31** of the PC+4 input to the **WDSEL** mux should connect to the highest bit of the PC Reg output, `ia31`, saving the current value of the supervisor whenever the value of the PC is saved by a branch instruction or trap.  This is already handled in the PC unit. You don't need to do anything else here.
 
 
 ## Part D: Assemble Completed Beta
 ### Task 12
-Open `beta_cpu.luc` and fill in your answer between the `BEGIN ANSWER` and `END ANSWER` statements. The necessary units: `alu`, `regfile_unit`, `control_unit`, and `pc_unit` have all been instantiated for you.
-
-{: .highlight}
-Write your answer in the space given. 
 
 The complete schematic of the Beta is (you might want to open this image in another tab):
 
 <img src="/50002/assets/contentimage/beta/beta.png"  class="center_seventy"/>
 
+Open `beta_cpu.luc` and study the starter code. The 4 major components of the Beta has been instantiated for you.
 
-## Beta Tester Source Code
-We have written a simple 5-line tester code for your Beta inside `instruction_rom.luc`. Unfortunately, we don't have a nice auto-tester and auto-graded checkoff file like we have in `jsim`. We just need to either manually ensure that the outputs are correct by observing each **state** of the Beta (PC content, Regfile content, control signals, etc) at each instruction execution or write an automatic tester like you did for your ALU in Checkoff 1.
+```verilog
+  control_unit control_system(.clk(clk), .rst(rst));
+  alu alu_system;
+  regfile_unit regfile_system(.clk(clk), .rst(rst));
+  pc_unit pc_system(.clk(clk));
+```
 
-TBC
+{: .highlight}
+Paste the code below under `Task 12` section to define connections to the control unit, PC unit, and regfile unit respectively. 
 
+```verilog
+    //***** CONTROL unit ******// 
+    control_system.irq = irq;
+    control_system.ia31 = pc_system.ia[31];
+    control_system.opcode = instruction[31:26];
+    control_system.z = regfile_system.z;
+    control_system.slowclk = slowclk;
+
+    //***** PC unit ******// 
+    pc_system.rst = rst;
+    pc_system.slowclk = slowclk;
+    pc_system.reg_data_1 = regfile_system.reg_data_1;
+    pc_system.pcsel = control_system.pcsel;
+    pc_system.id = instruction[15:0];
+    ia = pc_system.ia;
+
+    //***** REGFILE unit *****//
+    regfile_system.slowclk = slowclk;
+    regfile_system.ra2sel = control_system.ra2sel;
+    regfile_system.wasel = control_system.wasel;
+    regfile_system.werf = control_system.werf;
+    regfile_system.ra = instruction[20:16];
+    regfile_system.rb = instruction[15:11];
+    regfile_system.rc = instruction[25:21];
+```
+
+{: .highlight}
+Finally, we need our beta to produce appropriate output signals. Paste the code snippet below under `output connections` section in `beta_cpu.luc`. 
+
+```verilog
+
+    alu_system.a = asel_out;
+    alu_system.b = bsel_out; 
+    regfile_system.wdsel_out = wdsel_out;
+    mem_data_address = alu_system.out;
+    mem_data_output = regfile_system.mwd;
+    wr = control_system.wr;
+
+```
+
+### Connect Debug Signals 
+
+It is really hard to debug your FPGA and it takes a long time to compile your Lucid code. As such, it always helps to create additional debug output so that we can "inspect" the content of each crucial component in the Beta CPU during each instruction execution. 
+
+{: .highlight}
+Paste the debug code below under `debug signals` section in `beta_cpu.luc`.
+
+```verilog
+    debug[0][15:0] = pc_system.pc_4_sxtc[15:0];
+    debug[1][15:0] = asel_out[15:0];
+    debug[2][15:0] = bsel_out[15:0];
+    debug[3][15:0] = wdsel_out[15:0];
+```
+
+Congratulations! 🎉 
+
+You have made a working Beta CPU. Please take your time to understand how each component works. In the next lab, we will study how to **run** this beta cpu and connect I/O. 
