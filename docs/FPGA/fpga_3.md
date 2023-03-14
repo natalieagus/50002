@@ -197,26 +197,27 @@ The updated `always` block of `seq_plus_vary.luc` is as follows, where we perfor
   
 	case (y_controller.q){
   	y_controller.S0:
-      	adder.y = 8h02;
-       if (slowClockEdge.out == b1){ //only trigger change when slowClockEdge gives a 1
+      adder.y = 8h02;
+      if (slowClockEdge.out == b1){ //only trigger change when slowClockEdge gives a 1
       	    y_controller.d = y_controller.S1;
-        }
+      }
   	y_controller.S1:
-      	adder.y = 8h07;
-       if (slowClockEdge.out == b1){
+      adder.y = 8h07;
+      if (slowClockEdge.out == b1){
       	y_controller.d = y_controller.S2;
-        }
+      }
   	y_controller.S2:
-      	adder.y = 8h0C;
-       if (slowClockEdge.out == b1){
+      adder.y = 8h0C;
+      if (slowClockEdge.out == b1){
       	y_controller.d = y_controller.S0;
-      	}
+      }
     }
 
     if (slowClockEdge.out == b1){
-	          register_1.d = adder.s;
-        }
-    	out = adder.s;
+	    register_1.d = adder.s;
+    }
+    
+    out = adder.s;
 	
   }
 ```

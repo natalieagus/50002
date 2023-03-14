@@ -28,7 +28,7 @@ Before this lab, you are required to [complete this very basic FPGA tutorial](ht
 
 Please clone the starter code from this repository, then **open** it with Alchitry Lab. 
 ```
-TBC
+git clone https://github.com/natalieagus/beta-fpga-starter.git
 ```
 
 {: .important}
@@ -161,22 +161,26 @@ Here is the suggested PC Unit schematic that you can implement. Take note of the
 **Paste** the code snippet below in the space provided under `PCSEL mux` section inside `pc_unit.luc`. 
 
 ```verilog
-      case (pcsel){
-          b000: 
-            pcsel_out = pc_4_sig;
-          b001:
-            pcsel_out = pc_4_sxtc_sig;
-          b010:
-            // JMP mux to protect JT31
-            pcsel_out = c{pc.q[31] & reg_data_1[31], reg_data_1[30:0]};
-          b011:
-            pcsel_out = h80000004; // illop 
-          b100: 
-            pcsel_out = h80000008; // irq 
-          default:
-            pcsel_out = pc.q;
-        }
-      pc.d = c{pcsel_out[31:2], b00}; // setting of pcreg content must happen only when slowclk == 1, don't bring this outside of if(slowclk) clause
+    case (pcsel){
+      b000: 
+        pcsel_out_sig = pc_4_sig;
+      b001:
+        pcsel_out_sig = pc_4_sxtc_sig;
+      b010:
+        // JMP mux to protect JT31
+        pcsel_out_sig = c{pc.q[31] & reg_data_1[31], reg_data_1[30:0]};
+      b011:
+        pcsel_out_sig = h80000004; // illop 
+      b100: 
+        pcsel_out_sig = h80000008; // irq 
+      default:
+        pcsel_out_sig = pc.q;
+     }
+    
+    // advance the PC only when slowclk is 1 
+    if (slowclk){
+      pc.d = c{pcsel_out_sig[31:2], b00}; // setting of pcreg content must happen only when slowclk == 1, don't bring this outside of if (slowclk) clause
+    }
 ```
 
 The 32-bit 5-to-1 PC mux **selects** the value to be loaded into the `PC` register at the next rising edge of the clock depending on the `PCSEL` control signal. 
@@ -238,8 +242,8 @@ The branch-offset adder **adds** PC+4 to the 16-bit offset encoded in the instru
 **Paste** the code snippet below in the space provided under `shift-and-add` inside `pc_unit.luc`. 
 
 ```verilog
-    sextc = 4 * c{id[15], id[15:0]};
-    pc_4_sxtc_sig = c{pc.q[31], pc.q[30:0] + 4 + sextc[30:0]};
+    pc_4_sxtc_32_sig = pc.q + 4 + (4 * c{16x{id[15]}, id[15:0]});
+    pc_4_sxtc_sig = c{pc.q[31], pc_4_sxtc_32_sig[30:0]};
 ```
 
 ### Task 5: Supervisor Bit
@@ -318,7 +322,7 @@ You will need a mux controlled by `RA2SEL` to select the **correct** address for
 The register file is a 3-port memory. It should be implemented in `regfile_memory.luc`, which is then utilised by `regfile_unit.luc`. 
 
 {: .highlight}
-Paste the code below inside the `always` block in `regfile_unit.luc`.
+Paste the code below inside the `always` block in `regfile_memory.luc`.
 
 ```verilog
     // always read 
@@ -498,7 +502,6 @@ Paste the code below under `Task 12` section to define connections to the contro
     control_system.slowclk = slowclk;
 
     //***** PC unit ******// 
-    pc_system.rst = rst;
     pc_system.slowclk = slowclk;
     pc_system.reg_data_1 = regfile_system.reg_data_1;
     pc_system.pcsel = control_system.pcsel;
@@ -543,6 +546,62 @@ Paste the debug code below under `debug signals` section in `beta_cpu.luc`.
     debug[3][15:0] = wdsel_out[15:0];
 ```
 
+## Compile and Run
 Congratulations! 🎉 
 
-You have made a working Beta CPU. Please take your time to understand how each component works. In the next lab, we will study how to **run** this beta cpu and connect I/O. 
+You have made a working Beta CPU. Please take your time to understand how each component works. You shall now **compile**, run the program and then vary `io_dip[0]` switches to **inspect** each state. In `au_top.luc`, we have linked up the `io_led[1:0]` to various debug signals. 
+
+`io_dip[0]` can be changed to "view" various states presented at `io_led[1]` and `io_led[0]` (16 bits of values at once). Simply set it to represent the values below, e.g: `0x3` means that `io_dip[0]` is set to `00000011` (turn the rightmost two switches on). Here are the exhaustive list:
+
+1. `0x0`: MSB 16 bits of current instruction (id[31:16])
+2. `0x1`: LSB 16 bits of current instruction (id[15:0])
+3. `0x2`: LSB 16 bits of instruction address (ia[15:0])
+4. `0x3`: LSB 16 bits of EA (this is also ALU output) (ma[15:0])
+5. `0x4`: MSB 16 bits of EA (this is also ALU output) (ma[31:16])
+6. `0x5`: LSB 16 bits of Mem[EA] (mrd[15:0])
+7. `0x6`: MSB 16 bits of Mem[EA] (mrd[31:16])
+8. `0x7`: LSB 16 bits of RD2 (mwd[15:0])
+9. `0x8`: MSB 16 bits of RD2 (mwd[31:16])
+10. `0x9`: LSB 16 bits of pcsel_out
+11. `0xA`: LSB 16 bits of asel_out
+12. `0xB`: LSB 16 bits of bsel_out
+13. `0xC`: LSB 16 bits of wdsel_out
+14. `0xD`: MSB 16 bits of instruction address. Useful to see PC31 (kernel/user mode) (ia[31:16])
+15. `0xE`: LSB 16 bits of beta input buffer. This is a dff that's hardwired to reflect Mem[0x10]
+16. `0xF`: LSB 16 bits of beta output buffer. This is a dff that's hardwired to reflect Mem[0xC]
+
+We have also provided all this information in the repository's [readme](https://github.com/natalieagus/beta-fpga-starter). 
+
+## A Better Test Instruction
+Now we need to test it by giving it a simple starter code (well, should've tested each and every component up above, but we don't have enough time in class). 
+
+{: .highlight}
+Paste the following simple driver code inside `instruction_rom.luc`, under `const INSTRUCTIONS`, replacing the existing instruction. 
+
+```verilog
+    32h7BE3FFFB, // 0x010 BNE(R3, main_sub, R31) 
+    32h607F0020, // 0x00C LD(R31, 32, R3) 
+    32h643F0020, // 0x008 ST(R1, 32, R31)
+    32h90410800, // 0x004 CMPEQ(R1, R1, R2) 
+    32hC03F0003 // 0x000 ADDC(R31, 3, R1) --- main
+```
+
+Compile, and run the Beta FPGA again while observing that the states: `id`, `ia`, `pcsel_out`, etc should **match** the truth.  
+
+{: .important}
+What is the <span style="color:red; font-weight: bold;">true</span> value for all these states? Well, you learned the Beta ISA in the first half of the semester, didn't you? You should know how it works. 
+
+You can also paste this equivalent program in `bsim` and observe its states, ensure that it matches the FPGA's (yes, manual observation).
+
+```nasm
+.include beta.uasm
+
+ADDC(R31, 3, R1)
+CMPEQ(R1, R1, R2)
+ST(R1, 32, R31)
+LD(R31, 32, R3)
+BNE(R3, 0, R31)
+```
+
+In the next lab, we will study more on how `motherboard.luc` works and drive the Beta CPU, and how to handle special events like `irq`, `illop`, and `reset` properly. We will connect I/O to interact with our Beta, kinda like connecting a keyboard and a screen to our computer (but a way simplied version of it). 
+

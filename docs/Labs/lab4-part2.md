@@ -37,7 +37,7 @@ The instruction is as follows. Notice that the first instruction (address `0`) i
 ```verilog
    // Driver code, BR(reset) is the first instruction
   const INSTRUCTIONS = {
-    32h6FE50000, // 0x06C JML(R5)
+    32h6FE50000, // 0x06C JMP(R5)
     32hC0BF000C, // 0x068 ADDC(R31, 12, R5) --- reset handler, go to main in user mode 
     32h6FE50000, // 0x064 JMP(R5)
     32hC0BF000C, // 0x060 ADDC(R31, 12, R5) 
@@ -61,7 +61,7 @@ The instruction is as follows. Notice that the first instruction (address `0`) i
     32h643F0020, // 0x018 ST(R1, 32, R31)
     32h90410800, // 0x014 CMPEQ(R1, R1, R2) 
     32hC4210001, // 0x010 SUBC(R1, 1, R1) --- main_sub
-    32hC03F0003, // 0x00C ADDC(R31, 7, R1) --- main
+    32hC03F0003, // 0x00C ADDC(R31, 3, R1) --- main
     32h77FF0007, // 0x008 BR(irq)
     32h77FF000C, // 0x004 BR(illop)
     32h77FF0019  // 0x000 BR(reset)
@@ -133,7 +133,7 @@ It should be fairly easy for you to know what the tester program do. We have thr
 4. Refer to `README.md` inside the repository for more information on how to operate the Beta CPU automatically.
 
 ### Debug Signals
-`io_dip[0]` can be changed to "view" various states presented at `io_led[1]` and `io_led[0]` (16 bits of values at once). Simply set it to represent the values below, e.g: `0x3` means that `io_dip[0]` is set to `00000011` (turn the rightmost two switches on). Here are the exhaustive list:
+As a reminder, `io_dip[0]` can be changed to "view" various states presented at `io_led[1]` and `io_led[0]` (16 bits of values at once). Simply set it to represent the values below, e.g: `0x3` means that `io_dip[0]` is set to `00000011` (turn the rightmost two switches on). Here are the exhaustive list:
 
 1. `0x0`: MSB 16 bits of current instruction (id[31:16])
 2. `0x1`: LSB 16 bits of current instruction (id[15:0])
@@ -152,6 +152,7 @@ It should be fairly easy for you to know what the tester program do. We have thr
 15. `0xE`: LSB 16 bits of beta input buffer. This is a dff that's hardwired to reflect Mem[0x10]
 16. `0xF`: LSB 16 bits of beta output buffer. This is a dff that's hardwired to reflect Mem[0xC]
 
+We have also provided all this information in the repository's [readme](https://github.com/natalieagus/beta-fpga-starter). 
 
 ### The `slowclk`
 

@@ -413,7 +413,7 @@ if (slowclk){
       b000: 
         pc.d = pc.q + 4;
       b001:
-        pc.d = pc.q + 4 + 4 * c{instruction[15], instruction[15:0]};
+        pc.d = pc.q + 4 + (4 * c{16x{instruction[15]}, instruction[15:0]});
       b010:
         // protect jump
         pc.d = c{pc.q[31] && regfile_system.read_data_1[31],regfile_system.read_data_1[30:0]};
