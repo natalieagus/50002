@@ -650,7 +650,7 @@ Upon compilation and flashing of the new 5-line instructions for the first time,
 
 <img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-42-34.png"  class="center_fifty"/>
 
-To <span style="color:red; font-weight: bold;">advance</span> to the next instruction, **press** the RIGHT io button (`io_button[4]`). You shall see the first 16 bits of second instruction (`CMPEQ`) now: 
+To <span style="color:red; font-weight: bold;">advance</span> to the next instruction, **press** the RIGHT io button (`io_button[4]`). You shall see the first 16 bits of the second instruction (`CMPEQ`) now: 
 
 <img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-43-45.png"  class="center_fifty"/>
 

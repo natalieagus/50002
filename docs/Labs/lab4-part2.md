@@ -21,12 +21,12 @@ Written by: Natalie Agus (2023)
 # Lab 4: Beta Processor with FPGA (Part 2)
 {: .no_toc}
 
-In this second part of the lab, we will learn how to **operate** our Beta:
-1. To run a tester code that demonstrate basic instructions: `OP/OPC`, control transfer (`BNE/BEQ/JMP`), and memory access (`LD/ST`)
-2. To interact with the system (triggers `irq`, handle I/O)
-3. To view the system's output at the 7seg
-4. To view the system's states (e.g: `ma`, `ia`, `id`, etc) at the 7seg 
-5. To trigger `ILLOP` and demonstrate how it is handled 
+In this second part of the lab, we will learn about further implementations to **operate** our Beta CPU:
+1. To run a tester code that demonstrate basic instructions: `OP/OPC`, control transfer (`BNE/BEQ/JMP`), and memory access (`LD/ST`) with a slowclock, faster clock, and manually
+2. To view the system's states (e.g: `ma`, `ia`, `id`, etc) at the 7-seg as part of debug protocol
+3. To view the system's output buffer at the 7-segment
+4. To interact with the system (triggers hardware interrupt `irq`, handle I/O)
+5. To trigger `ILLOP` (software interrupt) and demonstrate how it is handled 
 
 
 ## Beta Tester Source Code
@@ -263,6 +263,83 @@ That is if we were to `STORE` any value to `Mem[0xC]`, it will reflected at the 
 
 ## Sample Run
 
-This section illustrates what should be observed on your FPGA IO Shield. 
+This section illustrates what should be observed on your FPGA IO Shield. When you compile the program above and flash it to your FPGA for the first time with **all** of its dip switches down, you will see the following as the first 16 bit of your instruction:
 
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-39-55.png"  class="center_fifty"/>
 
+This corresponds to `BR(reset): 0x77FF0019`. Pressing the `next` button (`io_button[4]`) will bring you to address `0x068` which is the `reset` handler.
+
+{: .note}
+We assume you know which dip switch to set to view these states: `ia`, `id`, etc. 
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-42-30.png"  class="center_fifty"/>
+
+The first line of instruction in the `reset` handler is `ADDC(R31, 12, R5): 0xC0BF000C`: 
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-43-35.png"  class="center_fifty"/>
+
+Press `next` one more time and confirm you're met with the `JMP(R5)` instruction (the MSB 16):
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-44-42.png"  class="center_fifty"/>
+
+At this point, the content of `Reg[R5]` is address `0x00C`. Pressing `next` will bring your PC to point to this address with instruction `ADDC(R31, 3, R1): 0xC03F0003`.
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-46-06.png"  class="center_fifty"/>
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-46-34.png"  class="center_fifty"/>
+
+Continuously press `next` until you reach address `0x020`, the `BNE(R3, main_sub, R31)` instruction:  
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-47-01.png"  class="center_fifty"/>
+
+At this point, the content of `R3` is 2, which means that you will be looped back to `main_sub` (adress `0x010`). Press `next` to confirm the content of PC is indeed `0x010`:
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-48-05.png"  class="center_fifty"/>
+
+### Triggering `ILLOP`
+
+The content of `R3` will be reduced by 1 in each loop to `main_sub`, until eventually its content is `0`. This will cause `BNE(R3, main_sub, R31)` to not branch, and the PC will execute instruction at address `0x024` instead:
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-49-45.png"  class="center_fifty"/>
+
+The instruction at address `0x024` is `LONG(256)`, which is <span style="color:red; font-weight: bold;">not a valid Beta instruction</span>. Executing this will trigger an `ILLOP`. When you press `next`, you will be brought to address `0x004` which contains instruction `BR(illop)`. 
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-50-52.png"  class="center_fifty"/>
+
+The `illop_handler` resides at address `0x038`. Surely enough when you press `next`, the PC will point to address `0x038`, which is the beginning of the `illop_handler`:
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-52-06.png"  class="center_fifty"/>
+
+### The `ILLOP` handler
+
+The ILLOP handler does a very simple thing, which is simply storing the value `5, 4, 3, 2, 1` to a particular memory address `message`.
+
+{: .note}
+`message` is set to be `0xC` in our FPGA, which is a memory-mapped region to showcase our "output" to the `system_output_buffer`. 
+
+```nasm
+|| ILLOP HANDLER, KERNEL PROGRAM ||
+illop: ADDC(R31, 5, R4)	|| countdown: 5,4,3,2,1 to mimmick illop handling
+ST(R4, message, R31)
+ADDC(R31, 4, R4) 
+ST(R4, message, R31)
+ADDC(R31, 3, R4) 
+ST(R4, message, R31)
+ADDC(R31, 2, R4) 
+ST(R4, message, R31)
+ADDC(R31, 1, R4) 
+ST(R4, message, R31)
+ADDC(R31, 12, R5)
+JMP(R5)			|| jump to execute main program in user mode
+|||||||||||||||||||||||||||||||||||
+```
+
+Advance to address `0x040`. 
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-57-00.png"  class="center_fifty"/>
+
+Then set `io_dip[0] = 0xF` to view the content of `system_output_buffer`. You shall see the value `5` there. 
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-57-09.png"  class="center_fifty"/>
+
+To witness it going from `5` to `4, 3, 2, 1`, simply switch up `io_dip[2][7]`. This triggers the `auto` execution mode with the **slow** clock. If you are impatient, you can switch up `io_dip[2][6]` as well and it will advance the PC at a faster rate. 
