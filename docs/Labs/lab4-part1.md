@@ -356,7 +356,7 @@ Paste the code snippet below in the space provided under `commpute Z` section in
 Finally, we need to connect the output of the `RD2` port of the register file memory above to produce `mwd[31:0]`. 
 
 {: .highlight}
-Paste the code below to this task section `regfile_unit.luc`. 
+Paste the code below to this `Task 9` section `regfile_unit.luc`. 
 
 ```verilog
     mwd = regfile.reg_data_2;
@@ -572,6 +572,45 @@ You have made a working Beta CPU. Please take your time to understand how each c
 
 We have also provided all this information in the repository's [readme](https://github.com/natalieagus/beta-fpga-starter). 
 
+## Observed Output
+
+###  Initial State
+Upon flash to the FPGA, with **ALL** switches down, you should see the following. 
+
+{: .highlight}
+`io_led[1:0]` is showing MSB 16 bits of current instruction (id[31:16]) which is `BEQ(R31, 0, R31): 0x77FFFFFF`. 
+
+<img src="{{ site.baseurl }}/assets/images/lab4-part1/2023-03-16-11-26-24.png"  class="center_fifty"/>
+
+### `io_dip[0]` to `0x01` 
+Then, set `io_dip[0]` to `0x01` (rightmost switch up). You shall see the LSB 16 bits of current instruction. 
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-30-07.png"  class="center_fifty"/>
+
+### `io_dip[0]` to `0x02`
+
+Confirm that the current PC is pointing at address `0x80000000`. Observe its last 16 bits value:
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-31-42.png"  class="center_fifty"/>
+
+### `io_dip[0]` to `0x0D`
+
+Then, observe PC **first** 16 bits value:
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-32-42.png"  class="center_fifty"/>
+
+{: .note-title}
+> Kernel Address Space
+> 
+> Note that PC is set to `0x80000000` instead of `0x00000000` because upon `reset`, we shall technically execute the **reset handler**, which part of the Kernel program that "prepares" your machine upon start up. A kernel program must be placed in the Kernel address space (address space with MSB of `1`) instead of user address space. 
+
+### `io_dip[0]` to `0x9`
+
+Finally, observe that the last 16 bits of `pcsel_out` (the next PC value) still points to 0 (as per the instruction). 
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-35-55.png"  class="center_fifty"/>
+
+
 ## A Better Test Instruction
 Now we need to test it by giving it a simple starter code (well, should've tested each and every component up above, but we don't have enough time in class). 
 
@@ -579,7 +618,7 @@ Now we need to test it by giving it a simple starter code (well, should've teste
 Paste the following simple driver code inside `instruction_rom.luc`, under `const INSTRUCTIONS`, replacing the existing instruction. 
 
 ```verilog
-    32h7BE3FFFB, // 0x010 BNE(R3, main_sub, R31) 
+    32h7BE3FFFB, // 0x010 BNE(R3, main, R31) 
     32h607F0020, // 0x00C LD(R31, 32, R3) 
     32h643F0020, // 0x008 ST(R1, 32, R31)
     32h90410800, // 0x004 CMPEQ(R1, R1, R2) 
@@ -603,5 +642,36 @@ LD(R31, 32, R3)
 BNE(R3, 0, R31)
 ```
 
+### Observed Output
+
+Ensure to put all switches **down** at first. 
+
+Upon compilation and flashing of the new 5-line instructions for the first time, we are met with a new instruction `ADDC(R31, 3, R1): 0x7BE3FFFB`. 
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-42-34.png"  class="center_fifty"/>
+
+To <span style="color:red; font-weight: bold;">advance</span> to the next instruction, **press** the RIGHT io button (`io_button[4]`). You shall see the first 16 bits of second instruction (`CMPEQ`) now: 
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-43-45.png"  class="center_fifty"/>
+
+Set `io_dip[0]: 0x02` to confirm that you're indeed pointing at address `4`: 
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-45-24.png"  class="center_fifty"/>
+
+Press RIGHT io button once again to advance until the third instruction (`ST`) at address `0x8`. Set your `io_dip[0]: 0x5` to view `mwd[15:0]`. At this point, we are about to store the content of `R1` to the memory device and you can confirm that this value is indeed `3`. 
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-47-24.png"  class="center_fifty"/>
+
+Finally, when you reach the fifth instruction at address `0x10` (`BNE`), confirm that you will loop back to execute the first instruction at address `0x0`. Don't forget to set your `io_dip[0]: 0x02` to view `ia[15:0]`. 
+
+**Before**:
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-48-32.png"  class="center_fifty"/>
+
+**After**:
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-48-59.png"  class="center_fifty"/>
+
+## What's Next?
 In the next lab, we will study more on how `motherboard.luc` works and drive the Beta CPU, and how to handle special events like `irq`, `illop`, and `reset` properly. We will connect I/O to interact with our Beta, kinda like connecting a keyboard and a screen to our computer (but a way simplied version of it). 
 
