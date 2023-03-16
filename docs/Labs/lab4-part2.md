@@ -342,4 +342,5 @@ Then set `io_dip[0] = 0xF` to view the content of `system_output_buffer`. You sh
 
 <img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-57-09.png"  class="center_fifty"/>
 
+{: .note}
 To witness it going from `5` to `4, 3, 2, 1`, simply switch up `io_dip[2][7]`. This triggers the `auto` execution mode with the **slow** clock. If you are impatient, you can switch up `io_dip[2][6]` as well and it will advance the PC at a faster rate. 
