@@ -306,11 +306,18 @@ The instruction at address `0x024` is `LONG(256)`, which is <span style="color:r
 
 <img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-50-52.png"  class="center_fifty"/>
 
-The `illop_handler` resides at address `0x038`. Surely enough when you press `next`, the PC will point to address `0x038`, which is the beginning of the `illop_handler`:
+{: .important}
+Note that at this point, the MSB of the PC (we also call this `PC31`) is 1, which means that the CPU is supposedly at the **kernel mode**. This is also known as the <span style="color:red; font-weight: bold;">supervisor bit</span>
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-52-06.png"  class="center_fifty"/>
+You can set `io_dip[0]: 0xD` to confirm:
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-35-49.png"  class="center_fifty"/>
+
 
 ### The `ILLOP` handler
+
+The `illop_handler` resides at address `0x80000038` to address `0x8000064`, but for the ease of explanation, we simply report the last 3 hex digits. Surely enough when you press `next`, the PC will point to address `0x038`, which is the beginning of the `illop_handler`:
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-52-06.png"  class="center_fifty"/>
 
 The ILLOP handler does a very simple thing, which is simply storing the value `5, 4, 3, 2, 1` to a particular memory address `message`.
 
@@ -344,3 +351,201 @@ Then set `io_dip[0] = 0xF` to view the content of `system_output_buffer`. You sh
 
 {: .note}
 To witness it going from `5` to `4, 3, 2, 1`, simply switch up `io_dip[2][7]`. This triggers the `auto` execution mode with the **slow** clock. If you are impatient, you can switch up `io_dip[2][6]` as well and it will advance the PC at a faster rate. 
+
+### Returning to `main` (user mode program)
+
+Once we reach address `0x064`, we are met with the instruction `JMP(R5)`. 
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-37-26.png"  class="center_fifty"/>
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-39-16.png"  class="center_fifty"/>
+
+At this point, the content of `R5` is `12` or `0xC`, which means that it should execute address `0xC` later in **user mode**. If you press `next`, you will meet the instruction `ADDC(R31, 3, R1)` again (`main`):
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-40-52.png"  class="center_fifty"/>
+
+Surely enough, we are back at **user mode**. You can confirm this by inspecting the MSB of the `PC`:
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-41-24.png"  class="center_fifty"/>
+
+### Receive user input 
+
+You can press any button: `io_button[2:0]`. These are **hardwired** as user input, kinda how keyboards are connected to your PC by default. 
+
+Firstly, let's confirm that your button presses are registered in `system_input_buffer`. This is just a `dff` situated at your `motherboard` to store current button presses, and it is **hardwired** (memory-mapped) to `Mem[0x10]`. 
+
+Assume that you are currently in **user mode**,  (that is your `ia31` or equivalently `pc31` is 0). Set your beta to **manual** mode (all `io_dip[2]` is down). For example, let's assume that we are currently pointing to address `0x14`:
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-59-26.png"  class="center_seventy"/>
+
+Press the top button (`io_button[0]`) and set `io_dip[0]: 0xE`. You should see `b0` shown in the 7 seg immediately: 
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-47-01.png"  class="center_fifty"/>
+
+You can also press `io_button[0]` or `io_button[1]`, and a different output is shown at the 7seg:
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-47-56.png"  class="center_fifty"/>
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-48-07.png"  class="center_fifty"/>
+
+There's nothing fancy at this moment. You're simply viewing the content of `system_input_buffer` that stores current button presses **immediately**.
+
+### The `irq` handler
+What's interesting now is that if you press `next`, your `ia` (PC) will not execute the next address e.g (`0x10 SUBC`) but rather the <span style="color:red; font-weight: bold;">`irq` handler entry</span> at address `0x80000008`. 
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-51-46.png"  class="center_fifty"/>
+
+Address `0x80000008` contains instruction `BR(irq)` where `irq` is at address `0x80000028`, so pressing `next` will bring you there:
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-52-27.png"  class="center_fifty"/>
+
+Let's study what's happening in the `irq` handler:
+
+```nasm
+|| IRQ HANDLER, KERNEL PROGRAM ||
+irq: LD(R31, 16, R4)	|| load hardwired value at input_buffer (Mem[16])
+ST(R4, message, R31)	|| store (display) input value at output_buffer (Mem[12])
+ADDC(R31, 12, R5)	
+JMP(R5)			|| jump to execute main program in user mode
+|||||||||||||||||||||||||||||||||
+```
+
+At first, we **load** the content of `Mem[0x10]` to `Reg[R4]`. Remember that `system_input_buffer` is memory mapped to `Mem[0x10]` so what we are doing here is none other than loading the user input data to `Reg[R4]`. `system_input_buffer` should contain either `0xb0, 0xb1, or 0xb2` depending on which button you pressed. 
+
+Then we store the content of `R4` to `Mem[0xC]`. Remember that `system_output_buffer` (which is equivalent to our monitors) is memory mapped to `Mem[0xC]` so our CPU can essentially store anything in this address `0xC` to "output" whatever we want so that it can be **seen** by the output device. 
+
+View it at this moment and confirm that its value is `0x01` due to the previous countdown `5, 4, 3, 2, 1` from triggering the `illop` handler:
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-08-54.png"  class="center_fifty"/>
+
+Now, advance two more instructions until your current instruction address is `0x80000030`. 
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-57-40.png"  class="center_fifty"/>
+
+Then, view the state of `system_output_buffer` by setting `io_dip[0]: 0xF`. You should see the encoding of your last pressed button there:
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-58-13.png"  class="center_fifty"/>
+
+### Returning to `main` program in User Mode
+The last two instructions of the `irq` handler ensures that we `JMP` back to address `0xC`, which essentially **restarts** the `main` program. 
+
+You can prove this easily by advancing to address `0x034` (the last instruction of `irq` handler):
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-01-25.png"  class="center_fifty"/>
+
+Confirm that it is indeed `JMP(R5)`:
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-01-42.png"  class="center_fifty"/>
+
+Then press `next` and it should bring you back to address `0xC`:
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-01-59.png"  class="center_fifty"/>
+
+Again, realise that you will be back at **user mode** by this point by viewing `ia31` (set `io_dip[0]: 0xD`).
+
+{: .warning-title}
+> Problematic Return
+>
+> Did you realise that initially we were about to execute address `0x14` in **user mode** (main program), before the program got interrupted due to us pressing the input buttons, and yet we <span style="color:red; font-weight: bold;">do not resume</span> from `0x14`? We would expect our program to **resume** where it left off in the presence of hardware interrupt right? 
+
+
+If our programs don't resume where it left off in the presence of (asynchronous) hardware interrupt, then our computers are not usable anymore. Imagine having our programs restart all the time at the event of any keyboard input or mouse movement or click. 
+
+{: .new-title}
+> The Solution 
+>
+> To know where to **return** to when user program is interrupted, we would save `PC+4` value (that is address `0x18` in our example because PC was pointing to `0x14` when the program is interrupted) in `Reg[XP]` (`R30`). This is why we call `R30` a **special register** as its purpose is solely to store the **return address** of the last "paused" or interrupted instruction. You have used it a lot as well in Week 9 when you learn Stack and Procedure because it is used to store the **return** address after a function call exits. 
+
+
+### Interrupt in Kernel Mode
+
+Our Beta CPU should **disable** interrupt when we are **currently** handling an event (be it handling `illop`, or `reset` or another `irq`). 
+
+This is handled by the `irq_sampler` at the control unit:
+
+```verilog
+    // sample interrupt at the beginning of each cycle
+    if (~irq_sampler.q){
+      // sample only when interrupt bit is 0 (clear) 
+      irq_sampler.d = irq;
+    }
+```
+
+Plus the `irq` logic at the control unit:
+
+```verilog
+    if (irq_sampler.q & slowclk & ~ia31){
+      pcsel = b100;
+      wasel = 1;
+      werf = 1;
+      wdsel = b00;
+      wr = 0;
+      // clear interrupt bit 
+      irq_sampler.d = 0;
+    }
+```
+
+We check that `irq` cannot fire **when** `ia31 == 1`. However we do not "lose" the interrupt signal. `irq_sampler` dff was <span style="color:red; font-weight: bold;">not</span> reset to be `0` because the **only** was to clear it was by **handling** it. 
+
+We can demonstrate this very easily. Simply advance your Beta until you enter the `illop` handler. For the purpose of this example, we advance our `PC` until it points to address `0x8000003C` (second instruction in `illop` handler). Ensure that your Beta CPU is in **manual** mode. 
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-17-22.png"  class="center_fifty"/>
+
+Then press `io_button[1]`. Ensure that this is immediately reflected at `system_input_buffer`:
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-18-02.png"  class="center_fifty"/>
+
+Then press `next`. Notice that the next address of instruction to be executed is `0x80000040` and <span style="color:red; font-weight: bold;">not</span> the `irq` hander (`0x80000008`). 
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-19-06.png"  class="center_fifty"/>
+
+The entire `illop` handler will be executed up until the last instruction at address `0x064`:
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-20-53.png"  class="center_fifty"/>
+
+This will result in the Beta CPU returning to the **user mode** and its `PC` pointing to address `0x0C`:
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-21-15.png"  class="center_fifty"/>
+
+
+However, now our `irq` will take place. By pressing `next`, we are brought to the **entry** of the `irq` handler instead of the next address `0x10`:
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-22-06.png"  class="center_fifty"/>
+
+At this point, you will execute the entire sequence of `irq` handler and observe `00b1` at `system_output_buffer` eventually. 
+
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-23-23.png"  class="center_fifty"/>
+
+{: .note}
+This short activity demonstrates that asynchronous interrupt (due to user input) is not necessarily "lost" even though we are in the midst of executing a program in Kernel mode (handling another event like `illop`). Of course, only the **last** input (before its handled) is captured because our `system_input_buffer` can only capture the last input. If we spam press the buttons while our Beta is running **very slowly** handling `illop` in Kernel mode, then earlier button presses will be *lost* and we only handle the final button press to be displayed at `system_output_buffer`. 
+
+In practice, this is tackled in three ways:
+1. Our CPU clock is **extremely fast** (>3 Ghz in 2023) such that it is humanly impossible to spam user inputs that fast. Our previous user input would have been **processed** by the `irq` handler before we can even supply another one. 
+2. Our Operating System Kernel will assign interrupt **priority**, so in practice we **can** interrupt our system in Kernel mode (provided contingency plans are in place so that we don't lose our existing task). We will learn more about this at the end of this course and also in the first few weeks of 50.005. 
+3. There exist smarter microcontrollers on our motherboard, and not just a simple `system_input_buffer` like what we have in this lab. They are capable of storing quite a bit of information and **wait** until our CPU is free to handle the interrupt event. 
+
+
+You need not to worry about the possibility that asynchronous interrupt request is *lost* at this point. Just now that *eventually*, all interrupt requests should be handled by our Operating System Kernel (which means you need to use a good kernel program coupled with decent hardware).
+
+## Summary
+
+Experiment with different assembly program of your liking to ensure that you understand how Beta CPU works. You can even execute functions with proper procedure, or even use this as your 1D project. 
+
+{: .important}
+Please talk to your instructors if you plan to implement your 1D with a general purpose CPU instead of an FSM. Your checkoff criteria will have to be slightly adjusted.
+
+Also, be mindful about the <span style="color:red; font-weight: bold;">supervisor bit</span>. Ensure that you fully understand how it can be set or cleared. We paste the information from the first part of the handout below for clarity. 
+
+The highest-order bit of the PC (`PC31`/`ia31`) is dedicated as the **supervisor** bit (see section 6.3 of the [**Beta Documentation**](https://drive.google.com/file/d/1L4TXMEDgD5gTN2JSd4ea_APpwNKUpzqK/view?usp=share_link)). 
+* The `LDR` instruction **ignores** this bit, treating it as if it were *zero*. 
+* The `JMP` instruction is allowed to clear the Supervisor bit or leave it unchanged, but <span style="color:red; font-weight: bold;">cannot set</span> it, 
+* **No other instructions may have any effect on `PC31`**
+
+The Beta CPU implemented in this lab is simplistic. We don't have fancy stuffs as follows that provides abstraction and improves efficiency:
+1. Operating System Kernel 
+2. Fancy I/O (keyboard, mouse)
+3. Virtual Address and Cache 
+
+However, hopefully this has shed some light to give you clarity on how our computers work and how they are constantly improved so that it can be the general-purpose devices we love today.
+
+
