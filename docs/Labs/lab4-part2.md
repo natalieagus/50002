@@ -257,9 +257,9 @@ We use [Memory-Mapped I/O](https://www.baeldung.com/cs/memory-mapped-vs-isolated
 As a result, we need to systematically **update** some region of the `memory_unit` to reflect the contents of `system_input_buffer`, and update `system_output_buffer` to reflect the content of a certain memory region in the `memory_unit`. 
 
 {: .note}
-We choose `memory_unit` address `0xD` as the region to hold the input value, and we choose `memory_unit` address `0xC` as the region to hold the current output value. 
+We choose `memory_unit` address `0xD` as the region to hold the last-received input value, and we choose `memory_unit` address `0xC` as the region to hold the current output value. 
 
-That is if we were to `STORE` any value to `Mem[0xC]`, it will reflected at the "output" of the motherboard. In practice, this will be the buffer containing values to be displayed at your screen. Similarly, if any input button `io_button[2:0]` is pressed, it will trigger an <span style="color:red; font-weight: bold;">INTERRUPT</span>, and you can find the **encoding** of the currently pressed button in `Mem[0xD]`. In practice, this will be the buffer containing the currently received input (e.g: keyboard keypress). 
+That is if we were to `STORE` any value to `Mem[0xC]`, it will reflected at the "output" of the motherboard. In practice, this will be the buffer containing values to be displayed at your screen. Similarly, if any input button `io_button[2:0]` is pressed, it will trigger an <span style="color:red; font-weight: bold;">INTERRUPT</span>, and you can find the **encoding** of the currently pressed button in `Mem[0xD]`. This will be the buffer containing the currently received input (e.g: keyboard keypress). 
 
 ## Sample Run
 
