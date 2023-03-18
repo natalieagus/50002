@@ -223,10 +223,24 @@ The module `motherboard.luc` is where we instantiate our major hardware componen
 3. System input and output buffer (`32` bits each). This serves as a buffer that holds current input or current output value. The motherboard is connected to actual buttons (input) and LEDs (output) in `au_top.luc`.
 4. The instruction ROM (for initial loading of instruction)
 
-We define their connections and added a simple `fsm motherboard` that <span style="color:red; font-weight: bold;">runs the Beta</span> and handle I/O:
-1. Upon start up, `LOAD` instructions from instruction rom to the instruction memory part of the memory unit. We do not use the ROM directly to simulate a more realistic approach whereby upon boot up, we will load our data from **disk**  (signified by this ROM) to our physical memory. 
-2. Once all instructions are loaded, we go to the `RUN` state. 
-3. In the `RUN` state, we mostly "idle" and wait for the next `slowclk` to fire (advance the PC). 
+We define their connections and added a simple `fsm motherboard` that <span style="color:red; font-weight: bold;">runs the Beta</span> and handle I/O. 
+
+### `LOAD`
+Upon start up, `LOAD` instructions from instruction rom to the instruction memory part of the memory unit. We do not use the ROM directly to simulate a more realistic approach whereby upon boot up, we will load our data from **disk**  (signified by this ROM) to our physical memory. 
+
+### `RUN` 
+Once all instructions are loaded, we go to the `RUN` state. In the `RUN` state, we mostly "idle" and wait for the next `slowclk` to fire (advance the PC). When `slowclk == 1`, we need to deliberately do two things: refresh output and input buffers.
+
+### `LOAD_OUTPUT` and `DISPLAY_OUTPUT`
+Firstly, to **refresh** our `system_output_buffer`. This is done by **two states**: `LOAD_OUTPUT` and `DISPLAY_OUTPUT` because our `simple_dual_ram` requires 1 FPGA clock cycle to be able to display the requested data at a given read address. 
+
+### `UPDATE_INPUT`
+Secondly, to **refresh** `Mem[0x10]` (so that it matches the content of `system_input_buffer`). This is done by a single state: `UPDATE_INPUT`. Afterwards, the motherboard goes back to the `RUN` state, until `slowclk` turns 1 again and the whole output and input update is done. 
+
+### `slowclk` period
+
+The content at `Mem[0x10]` will only reflect `system_input_buffer` until after we exit `UPDATE_INPUT` and enters the `RUN` state again. The **soonest** any other component can read the updated `Mem[0x10]` is **two** clock cycles from `UPDATE_INPUT` (`UPDATE_INPUT` --> `RUN` --> `RUN`). Hence if the current instruction involves `LD` from `Mem[0x10]`, we need to make sure **at least** two `RUN` states happen after we exit from `UPDATE_INPUT` before `slowclk` fires. We <span style="color:red; font-weight: bold;">also</span> need at least three FPGA `clk` cycles have passed to account for `RUN` --> `LOAD_OUTPUT` --> `DISPLAY_OUTPUT` --> `UPDATE_INPUT`. In total, `slowclk` period must be at least **five times** longer than the FPGA `clk` period.
+
 
 ### Storing to `REGFILE`
 While waiting for the `slowclk`, our Beta has received `id` and `mrd` (whenever applicable). It is also continuously supplying all output to the `memory_unit`: `ia`, `wr`, `ma`, and `mwd`. In other words, it **continuously** execute the same instruction over and over for the duration of the period of `slowclk`. To avoid having <span style="color:red; font-weight: bold;">repercussions</span> we need to take care of the `werf` signal in the `regfile_unit`. 
