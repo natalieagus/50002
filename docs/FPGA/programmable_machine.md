@@ -21,7 +21,7 @@ Singapore University of Technology and Design
 {: .no_toc}
 For your 1D project, you are required to build an electronic game prototype that utilizes a **16-bit ALU**. You can do this by first designing a programmable datapath and the control logic (FSM) for your game, and finally implement on your FPGA. 
 
-This document shows an example on how you can create a programmable data path for a simple game idea. 
+This document shows an example on how you can create a programmable data path for a simple game idea called the **Counter Game**. [The complete code can be found in this repository if you'd like to dive straight to it](https://github.com/natalieagus/SampleAlchitryProjects/tree/master/CounterGame). Otherwise, read along.
 
 ## Introduction
 When you brainstorm for a game, try to keep two very **important** things in mind:
