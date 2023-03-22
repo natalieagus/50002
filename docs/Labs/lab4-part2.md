@@ -396,7 +396,7 @@ Firstly, let's confirm that your button presses are registered in `system_input_
 
 Assume that you are currently in **user mode**,  (that is your `ia31` or equivalently `pc31` is 0). Set your beta to **manual** mode (all `io_dip[2]` is down). For example, let's assume that we are currently pointing to address `0x14`:
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-59-26.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-59-26.png"  class="center_fifty"/>
 
 Press the top button (`io_button[0]`) and set `io_dip[0]: 0xE`. You should see `b0` shown in the 7 seg immediately: 
 
