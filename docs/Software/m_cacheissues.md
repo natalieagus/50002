@@ -103,7 +103,7 @@ The figure below illustrates the structure of an NWSA cache:
 An NWSA cache is made up of  `N` DM caches, connected in a *parallel* fashion. The cells in the same '*row*' marked in <span style="color:red; font-weight: bold;">red</span> is called as belonging in the same **set**. The cells in the same '*column*' of DM caches  is said to belong in the same **way**. Each **way** is basically a DM cache that has $$2^k$$ cache lines.
 
 #### To Write
-Given a write address `A`, we segment it into `K`-bits lower address (excluding the LSB `00`) and `T` bits upper address. We need to first fine the **set** which this `K` bits belong to. That particular combination of `K`-bits lower address, its higher `T` bits `TAG` and its `Content` can be stored in **any** of the N cache lines in the **same** set.
+Given a write address `A`, we segment it into `K`-bits lower address (excluding the LSB `00`) and `T` bits upper address. We need to first find the **set** which this `K` bits belong to. That particular combination of `K`-bits lower address, its higher `T` bits `TAG` and its `Content` can be stored in **any** of the N cache lines in the **same** set.
 
 #### To Read
 Given a query address `A`, we will need to **wait** for the device to *decode* its last `K` bits and find the right set.  Then, the device will perform a **parallel** lookup operation for all `N` cache lines same set. The lookup operation to find the cache line with the right content is done using **bitwise-comparison** with the `T` bits of the query address.
@@ -293,7 +293,7 @@ To support this policy, the cache needs to have a helper bit called the **dirty*
 
 This policy might require slightly complex hardware to implement as opposed to the other policies, e.g: hardware to support this pipelined update of the physical memory. CPU will not stall and will be executing next instructions while writes are completed in the background. It also needs the dirty bit indicator that will be cleared once the background write finishes. 
 
-It is not trivial to do this because now we require an **additional** hardware unit that is **asynchronous** to the CPU clock. It does not depend on the CPU to run and we therefore we need to consider some kind of fail-safe feature to synchronise between the CPU and this pipeline system when needed.  
+It is not trivial to do this because now we require an **additional** hardware unit that is **asynchronous** to the CPU clock. It does not depend on the CPU to run and therefore we need to consider some kind of fail-safe feature to synchronise between the CPU and this pipeline system when needed.  
 
 {: .important}
 There is no best write policy. Think about the pros and cons of each policy, and think about specific cases where one policy is superior than the other. 
@@ -333,7 +333,7 @@ The helper bits can be illustrated in a diagram like below. Below we have a samp
 {: .new-title}
 > Think!
 > 
-> The diagram above iilustrates a 3-Way SA cache with 4 distinct **sets**. How many LRU bits are needed per cache line? How many LRU bits are needed in the **entire** cache hardware? 
+> The diagram above illustrates a 3-Way SA cache with 4 distinct **sets**. How many LRU bits are needed per cache line? How many LRU bits are needed in the **entire** cache hardware? 
 
  
 
