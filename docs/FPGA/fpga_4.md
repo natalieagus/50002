@@ -21,6 +21,10 @@ Singapore University of Technology and Design
 
 # Getting Good with FPGA: Building the Beta CPU
 {: .no_toc}
+
+{: .warning}
+This project is now part of our lab and our syllabus. Please find [a more comprehensive and modular version of its implementation by reading this handout](https://natalieagus.github.io/50002/lab/lab4-part1) that implements interrupt, illop, and I/O handling more properly. 
+
 This document is created for the sake of enhancing our understanding in how basic CPU works by actually implementing it onto our FPGA. We will create our 32-bit $$\beta$$ CPU and use simple dual-port RAM to simulate some of the instructions that we have learned in class and **test** if they're working properly. 
 
 You are recommended to read this document only after you've understood **completely** up until the chapter on $$\beta$$ datapath and are comfortable enough with HDL programming:
