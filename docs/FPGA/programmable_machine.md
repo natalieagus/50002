@@ -35,7 +35,7 @@ A recommended route is  simply a bunch of buttons for **input** (you can get nic
 You can buy bigger buttons, LEDs or 7 segments, and buy **transistors** (simple, cheap BJT ones) to be used as **amplifiers** using external power source if the voltage from the Au is not strong enough. 
 
 #### More Upgrade: LED Strips
-You can buy LED strips (e.g: WS2812B), and **read the specifications**: typically the type of serial data and clock cycles required to set the lights. The specification of the model that you buy **must be CLEAR**, complete with details on how to encode information to light up your LEDs. [See this sample for WS2812B](https://www.dropbox.com/s/7kj6aa9n6817tid/WS2812.pdf?dl=0). You can find a [sample driver code for this model here](https://github.com/natalieagus/SampleAlchitryProjects/tree/master/LEDStripTest). 
+You can buy LED strips (e.g: WS2812B), and **read the specifications**: typically the type of serial data and clock cycles required to set the lights. The specification of the model that you buy **must be CLEAR**, complete with details on how to encode information to light up your LEDs. [See this datasheet for WS2812B](https://www.dropbox.com/s/7kj6aa9n6817tid/WS2812.pdf?dl=0). You can find a [sample driver code for this model here](https://github.com/natalieagus/SampleAlchitryProjects/tree/master/LEDStripTest). 
 
 #### Even More Upgrade: LED Dotmatrix, LED Matrix
 You can buy LED matrix if you're confident with your Lucid skills. There are TWO types: a simple up to 8x8 dot matrix,
