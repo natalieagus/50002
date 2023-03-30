@@ -162,7 +162,7 @@ The entire system runs on FPGA `clk`. However we need some other signal to **slo
 The Beta expects an input called `slowclk` so that you can slowly **observe** its execution (either by pressing `io_button[5]` or when `slowclock_edge` or `fastclock_edge` fires). The `slowclock_edge` turns `1` roughly once (for a single FPGA clock cycle) every 1.3s, and `fastclock_edge` is roughlt 4 times faster than `slowclock_edge`. You can use `io_dip[2][6]` to enable/disable `fastclock`.
 
 {: .important}
-It is <span style="color:red; font-weight: bold;">necessary</span> for `slowclock` and/or `fastclock` period to be at least <span style="color:red; font-weight: bold;">5 times longer</span> than Alchitry Au FPGA's because of how `fsm motherboard` is designed in `au_top.luc` (see next section). That is, the minimum index of `frequency_divider` in `au_top.luc` that can be used for `slowclock` and/or `fastclock` is `2`.
+It is <span style="color:red; font-weight: bold;">necessary</span> for `slowclock` and/or `fastclock` period to be at least <span style="color:red; font-weight: bold;">5 times longer</span> than Alchitry Au FPGA's because of how `fsm motherboard` is designed in `au_top.luc` (see next section). That is, the minimum index of `frequency_divider` in `au_top.luc` that can be used for `slowclock` and/or `fastclock` is `2` (index `0` is LSB).
 
 Right now in `au_top.luc`, we are using index `27` and `25` so that you have sufficient time to observe its output:
 
