@@ -114,7 +114,7 @@ R0 = 0
 R1 = 1
 
 ADDC(R0, x, R1) | equivalent to ADDC(0x0, 0x1000, 0x1)
-ADDC(R1, y, R1) | equivalent to ADDC(0x1, 0x1004, 0x0) 
+ADDC(R1, y, R1) | equivalent to ADDC(0x1, 0x1004, 0x1) 
 ```
 
 ### The dot variable

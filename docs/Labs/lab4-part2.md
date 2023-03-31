@@ -129,7 +129,7 @@ We do not actually instantiate a memory unit with 32-bit addressing. Hence we do
 It should be fairly easy for you to know what the tester program do. We have three handlers in address `0, 4, and 8` respectively to handle what has to be done in the event of `reset`, `illop`, and `irq`. The actual implementation of the handlers reside in label `reset`, `illo`, and `irq` respectively. 
 1. When you have implemented the `beta_cpu` succesfully and compiled it, ensure that ALL switches are down. 
 2. Load the compiled binary to the FPGA. At this point, your PC is pointing to `Mem[0x0]`. Use `io_dup[0]` to inspect the states of the Beta CPU. 
-3. Press the `next` button: `io_button[5]` (right button) to execute the next instruction. 
+3. Press the `next` button: `io_button[4]` (right button) to execute the next instruction. 
 4. Refer to `README.md` inside the repository for more information on how to operate the Beta CPU automatically.
 
 ### Debug Signals
@@ -159,7 +159,7 @@ We have also provided all this information in the repository's [readme](https://
 {: .important}
 The entire system runs on FPGA `clk`. However we need some other signal to **slow down** specifically the Beta CPU `PC` advancement so that we can **observe** the CPU's states like `id`,`ia`, `ma`, `mrd`, `mwd`, output of all muxes (pcsel mux, asel mux, bsel mux, and wdsel mux), as well as the value of I/O buffers. As such, we need <span style="color:red; font-weight: bold;">additional logics</span> to prevent the `PC` from advancing too fast.  
 
-The Beta expects an input called `slowclk` so that you can slowly **observe** its execution (either by pressing `io_button[5]` or when `slowclock_edge` or `fastclock_edge` fires). The `slowclock_edge` turns `1` roughly once (for a single FPGA clock cycle) every 1.3s, and `fastclock_edge` is roughlt 4 times faster than `slowclock_edge`. You can use `io_dip[2][6]` to enable/disable `fastclock`.
+The Beta expects an input called `slowclk` so that you can slowly **observe** its execution (either by pressing `io_button[4]` or when `slowclock_edge` or `fastclock_edge` fires). The `slowclock_edge` turns `1` roughly once (for a single FPGA clock cycle) every 1.3s, and `fastclock_edge` is roughlt 4 times faster than `slowclock_edge`. You can use `io_dip[2][6]` to enable/disable `fastclock`.
 
 {: .important}
 It is <span style="color:red; font-weight: bold;">necessary</span> for `slowclock` and/or `fastclock` period to be at least <span style="color:red; font-weight: bold;">5 times longer</span> than Alchitry Au FPGA's because of how `fsm motherboard` is designed in `au_top.luc` (see next section). That is, the minimum index of `frequency_divider` in `au_top.luc` that can be used for `slowclock` and/or `fastclock` is `2` (index `0` is LSB).
