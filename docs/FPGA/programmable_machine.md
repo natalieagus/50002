@@ -35,7 +35,7 @@ A recommended route is  simply a bunch of buttons for **input** (you can get nic
 You can buy bigger buttons, LEDs or 7 segments, and buy **transistors** (simple, cheap BJT ones) to be used as **amplifiers** using external power source if the voltage from the Au is not strong enough. 
 
 #### More Upgrade: LED Strips
-You can buy LED strips (e.g: WS2812B), and **read the specifications**: typically the type of serial data and clock cycles required to set the lights. The specification of the model that you buy **must be CLEAR**, complete with details on how to encode information to light up your LEDs. [See this datasheet for WS2812B](https://www.dropbox.com/s/7kj6aa9n6817tid/WS2812.pdf?dl=0). You can find a [sample driver code for this model here](https://github.com/natalieagus/SampleAlchitryProjects/tree/master/LEDStripTest). 
+You can buy LED strips (e.g: WS2812B), and **read the specifications**: typically the type of serial data and clock cycles required to set the lights. The specification of the model that you buy **must be CLEAR**, complete with details on how to encode information to light up your LEDs. [See this datasheet for WS2812B](https://www.dropbox.com/s/7kj6aa9n6817tid/WS2812.pdf?dl=0). You can find a [sample driver code for this model here](https://github.com/natalieagus/ws2812b). 
 
 #### Even More Upgrade: LED Dotmatrix, LED Matrix
 You can buy LED matrix if you're confident with your Lucid skills. There are TWO types: a simple up to 8x8 dot matrix,
@@ -45,7 +45,7 @@ Or, a **bigger** bit-addressable matrix like this (e.g; Adafruit matrix LED),<br
 <img src="https://dropbox.com/s/8nfp3inp8yi1t4v/bigmatrix.png?raw=1" class="center_thirty"   >
 <br>
 
-For the dotmatrix, you can use easy registers / dff to manage the data. For the big matrix, **you need to use some kind of RAM module** (you can use simple RAM default component in Alchitry) to store your data for the matrix to display at all times.[ You can find a sample driver code for the bit-addressable matrix (Adafruit LED matrix or equivalent) here. ](https://github.com/natalieagus/SampleAlchitryProjects/tree/master/MatrixLEDTest)
+For the dotmatrix, you can use easy registers / dff to manage the data. For the big matrix, **you need to use some kind of RAM module** (you can use simple RAM default component in Alchitry) to store your data for the matrix to display at all times.[ You can find a sample driver code for the bit-addressable matrix (Adafruit LED matrix or equivalent) here. ](https://github.com/natalieagus/rgbledmatrix)
 
 {: .warning}
 **NEVER use dff** for massive storage of data to be read by the big matrix! Your compile time is going to take a bizarrely long time or fail altogether because the FPGA does not have enough logic unit!  
