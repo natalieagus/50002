@@ -240,7 +240,7 @@ Random replacement policy is the simplest to implement as it does not require mu
 We can further improve cache performance by **increasing the capacity of each cache line**. We can **fetch  `B` words of data at a time**, and this is especially useful if there's high locality of reference.  The figure below illustrates a cache line with block size of 4:
   
 
-<img src="https://dropbox.com/s/ceamhyfon0dsofw/blocksize.png?raw=1"   class="center_seventy"  >
+<img src="{{ site.baseurl }}/assets/images/notes/cache-word-block.png"  class="center_seventy"/>
 
 
 {: .new-title}
