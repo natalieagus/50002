@@ -73,6 +73,7 @@ The answer is option 2.
 </p></div><br>
 
 ## Priority Scheduling Part 3 (Basic)
+
 {: .note}
 This question is a continuation from the above question.
 
