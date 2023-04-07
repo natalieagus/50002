@@ -179,7 +179,10 @@ If the CPU runs a handler of lower priority, it will be forced to perform a **co
 Handlers of the same priority level **can never** interrupt each other.
 
 ### Setting Handler Priority Level
-The **priority level** for each interrupt handler can be implemented using the  higher `p` bits of `PC`; meaning that the actual **location** of the handler in memory decides its priority level. Some hardware tweaks on the CPU is needed to support this feature, but we don't have to dwell too deep into that at this point. 
+In the Beta CPU, the **priority level** for each interrupt handler can be implemented using the  higher `p` bits of `PC`. As an implication, the actual **location** of the handler in memory decides its priority level. Some hardware tweaks on the CPU is needed to support this feature, but we don't have to dwell too deep into that at this point. 
+
+{: .note}
+Note that other CPU architecture uses special registers that indicate handler priority level and not necesarily the `PC` register. This example is for illustration purposes only.
 
 <img src="https://dropbox.com/s/7w7oy1jyaa5trnq/pc.png?raw=1"     class="center_fifty"  >
 
