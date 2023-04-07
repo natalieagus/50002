@@ -166,7 +166,7 @@ Refer to the state of RAM, pagetable, and TLB below. The addresses in the RAM, D
 	*	`ADDC(R31, 0b1000000, R2), LD(R2, 0b0011000, R3), SHLC(R3, 0x4, R3)`
 	
 	<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-	You <span style="color:red; font-weight: bold;">don't</span> require access to the pagetable if the entry is already cached at the TLB. The second instruction and the third instruction requires translation of **VPN** `3` and **VPN** `1` which are both present in the TLB. This means we don't need to access the pagetable anymore. 
+	You <span style="color:red; font-weight: bold;">don't</span> require access to the pagetable if the entry is already cached at the TLB. The second, third, and the fourth instruction all requires translation of **VPN** `3` and **VPN** `1` which are both present in the TLB. This means we don't need to access the pagetable anymore. 
 	</p></div><br>
 
 3. We want to call the following instruction: `ST(R31, 0b1100100, R31)`. Where is this data with VA of`0b1100100` located?
