@@ -112,6 +112,7 @@ A & B & C & OUT \\
   
 
 Choose all  correct Boolean expression(s) of this circuit:
+
 (a). $$OUT = \bar{C} + \bar{B}$$ <br>
 (b). $$OUT = \bar{A} \cdot \bar{B} + A \cdot \bar{B} + B \cdot \bar{C}$$ <br>
 (c). $$OUT = \bar{A} \cdot \bar{C} + A \cdot B \cdot \bar{C} + \bar{B}$$ <br>
