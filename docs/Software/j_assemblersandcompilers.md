@@ -319,8 +319,8 @@ To aid your learning, copy each snippet to `bsim` and observe the instruction ex
 C Code: 
 ```cpp
 int x,y;
-x = 20
-y = x + 5
+x = 20;
+y = x + 5;
 ```
 
 Translates to the following $$\beta$$ assembly code:
