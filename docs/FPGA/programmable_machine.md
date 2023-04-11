@@ -21,7 +21,7 @@ Singapore University of Technology and Design
 {: .no_toc}
 For your 1D project, you are required to build an electronic game prototype that utilizes a **16-bit ALU**. You can do this by first designing a programmable datapath and the control logic (FSM) for your game, and finally implement on your FPGA. 
 
-This document shows an example on how you can create a programmable data path for a simple game idea called the **Counter Game**. [The complete code can be found in this repository if you'd like to dive straight to it](https://github.com/natalieagus/SampleAlchitryProjects/tree/master/CounterGame). Otherwise, read along.
+This document shows an example on how you can create a programmable data path for a simple game idea called the **Counter Game**. [The complete code can be found in this repository if you'd like to dive straight to it](https://github.com/natalieagus/counter-game). Otherwise, read along.
 
 ## Introduction
 When you brainstorm for a game, try to keep two very **important** things in mind:
@@ -153,7 +153,7 @@ For this example, we follow the $$\beta$$: to have 2 read ports and 1 write port
 {: .note}
 Depending on your design, you may not we need to show the counter value, but it will  cause you to keep track of two counters: the one displayed to the players, and this internal counter. *These two counter values must be equal at all times.* If you have problems synchronising between the two, then just have ONE dff to track the current counter value that's read by the output device as well similar to how P1 score and P2 score are also displayed. 
 
-Coding a `REGFILE` on an FPGA is not an issue after you have a clear idea about its addressing system, and input/output ports of the module. This `REGFILE` should be implemented as a single file, e.g: `regfile.luc`. See [this github file](https://github.com/natalieagus/SampleAlchitryProjects/blob/master/CounterGame/source/game_miniRegfiles.luc) for its sample implementation. 
+Coding a `REGFILE` on an FPGA is not an issue after you have a clear idea about its addressing system, and input/output ports of the module. This `REGFILE` should be implemented as a single file, e.g: `regfile.luc`. See [this github file](https://github.com/natalieagus/counter-game/blob/master/source/game_miniRegfiles.luc) for its sample implementation. 
 
 ## Designing the ALU and Support Datapath 
 
@@ -281,14 +281,14 @@ In the **next cycle**, we will arrive at the state `BRANCH P1 BUTTON` which will
 The same logic applies for any other state. 
 
 ### `fsm` in Lucid
-Programming an FSM in Lucid is very easy. You only need to import the `fsm` module and declare the states in the beginning. Then, in the `always` block things are repetitive: specify what output signals to be produced, and given input signals, specify the next state to go to. The code for the control unit can be found in [here](https://github.com/natalieagus/SampleAlchitryProjects/blob/master/CounterGame/source/game_CU.luc). 
+Programming an FSM in Lucid is very easy. You only need to import the `fsm` module and declare the states in the beginning. Then, in the `always` block things are repetitive: specify what output signals to be produced, and given input signals, specify the next state to go to. The code for the control unit can be found in [here](https://github.com/natalieagus/counter-game/blob/master/source/game_CU.luc). 
 
 ## The Complete Datapath
 The complete datapath for the sample Counter game should look like this. In fact, this **basic structure** can be adapted to implement any simple game. 
 
 <img src="https://dropbox.com/s/tyjxwe2ygu51rnr/datapath.png?raw=1"   >
 
-The complete code that describes the datapath along with the connection to the control logic can be found [here](https://github.com/natalieagus/SampleAlchitryProjects/blob/master/CounterGame/source/game_miniBeta.luc). 
+The complete code that describes the datapath along with the connection to the control logic can be found [here](https://github.com/natalieagus/counter-game/blob/master/source/game_miniBeta.luc). 
 
 The black boxes signifies connection to **external input/output devices.** Interfacing with external devices is tricky, and may be frustrating at first. So it is important for you to finish ALL basic the other [basic FPGA tutorials](https://natalieagus.github.io/50002/fpga/). 
 
@@ -297,7 +297,7 @@ In particular, you need to know how to do smaller sub-components that are **cruc
 2. Create a small combinational logic module to produce a value of `1`  ONCE every second (denoted as `SLOW TIMER`). You can use a basic `counter` module set with `DIV`: 
 	* `counter slow_timer(#SIZE(1),#DIV(26));`
 	* And use  an **edge detector**
-3. Create a combinational logic module that randomly produce a value of `1` (denoted as `VARIABLE INCREMENTER`). You can see the code [here](https://github.com/natalieagus/SampleAlchitryProjects/blob/master/CounterGame/source/variable_counter.luc).
+3. Create a combinational logic module that randomly produce a value of `1` (denoted as `VARIABLE INCREMENTER`). You can see the code [here](https://github.com/natalieagus/counter-game/blob/master/source/variable_counter.luc).
 
 Notice the **bootstrapped** `REGFILE` output: all 16-bits `Rb_data` straight to the FSM. This is similar to the `Z` unit in $$\beta$$ used for **branching** after a comparison check in the previous state.  You can also use this to branch and *perform next check* in **1 cycle**. The relevant state illustration and its sample lucid code is:<br>
 <img src="https://dropbox.com/s/wh5rs5dakly3jtv/bcheck.png?raw=1" class="center_twenty"   >

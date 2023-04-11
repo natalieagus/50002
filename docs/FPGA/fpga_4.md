@@ -190,6 +190,7 @@ module alu (
 ```
 
 To make it more interesting, we can follow how we create the ALU in the course lab (instead of writing a bunch of if-elses according to `alufn_signal` combinations). Create four modules: `adder.luc`, `boolean.luc`, `shifter.luc`, and `compare.luc`, and implement its functionalities. 
+
 {: .note-title}
 > ALU Interface
 > 
