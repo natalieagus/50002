@@ -324,7 +324,9 @@ This process (of fetching new pages from swap space to the physical memory) even
 
 If a non-resident `VA` is enquired and the physical memory is **full**, the OS Kernel needs to *remove* some pages  (LRU/FIFO, depends on the replacement policy)  that are currently resident to make space for this newly requested page. 
 
-If these to-be-removed pages are **dirty** (its copy in the disk swap space is not the same as that in the RAM), a **write** onto the disk swap space is required before they're being overwritten. The kernel maintain some **data structure** that 
+If these to-be-removed pages are **dirty** (its copy in the disk swap space is not the same as that in the RAM), a **write** onto the disk swap space is required before they're being overwritten. The kernel maintains a **data structure** that keeps track of the status of each resident page in the physical memory. This data structure is often referred to as the "page frame database" or "page table". It contains information such as the VPN, PPN, and the access status (clean or dirty) of each page. 
+
+When a page is marked as dirty, it indicates that its contents have been modified in the RAM and differ from the contents in the swap space. In such cases, before the dirty page can be replaced, the kernel writes the updated contents back to the swap space to ensure data consistency. Once the dirty page has been written back to the swap space, the kernel can then safely replace it with the newly requested page in the physical memory. This process of replacing resident pages helps maintain an efficient utilization of the available memory and ensures that only the most relevant and frequently accessed pages are kept in the physical memory, while the less frequently accessed pages are stored in the swap space.
 
 
 ### Process Termination
