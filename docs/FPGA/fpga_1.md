@@ -193,7 +193,7 @@ It's not as complicated as it looks. We simply want to use:
 Where are these stuffs on Alchitry Io? 
 <br><img src="https://dropbox.com/s/v4baxwf8e33utm0/alc_io.png?raw=1"  class="center_seventy" >
 
-Therefore we can use the dip swithces (switch up for `1` and down for `0`) to supply various combinations of input `x,y,cin` **manually** and observe the output at the two rightmost LED in `IO_LED[2]`. 
+Therefore we can use the dip switches (switch up for `1` and down for `0`) to supply various combinations of input `x,y,cin` **manually** and observe the output at the two rightmost LED in `IO_LED[2]`. 
 
 
 Now build your code (it may take awhile, 2-3 minutes depending on your computer stats), and flash it to the Alchitry Au: 
