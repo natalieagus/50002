@@ -29,7 +29,7 @@ The physical memory can contain all kinds of information. The memory image of a 
 {: .new-title}
 > Program vs Process
 > 
-> A **program** and a **process** are terms that are  very closely related. Formally, we refer to a **program** as a group of instructions made carry out a specified task whereas a process simply means *a program that is currently run* or *a program in execution*. We can open and run the same program `N` times simultaneously, forming `N` distinct processes (e.g: opening multiple instances of text editors). In this course, we relax this strict distinction and use them *interchangeably* to explain certain concepts easily.
+> A **program** and a **process** are terms that are  very closely related. Formally, we refer to a **program** as a group of instructions made to carry out a specified task whereas a process simply means *a program that is currently running* or *a program in execution*. We can open and run the same program `N` times simultaneously, forming `N` distinct processes (e.g: opening multiple instances of text editors). In this course, we relax this strict distinction and use them *interchangeably* to explain certain concepts easily.
 
 We typically have **executable** instructions loaded in the lower address segment (PC starts from `0` when a process just started running). 
 
@@ -37,7 +37,7 @@ The **stack** portion (of the process) can grow during runtime mainly due to fun
 
 > There is also another data structure called the **Heap**, that grows upwards (towards lower addresses) and is used to store *global* variables. We don't go into too much details on how to maintain Heap during runtime in this course. For those who are interested, you can read these [external materials](http://www.enderunix.org/docs/memory.pdf).  
 
-Note that an *operating system* (OS) may not know in advance whether stack or heap will be used predominantly before the program is actually run. Therefore, an OS must layout these two memory regions in a way to guarantee **maximum space** for both. The point of this illustration is to show that the physical memory alone (in the size of 8-32GB these days in personal computers) definitely is not enough to hold all data required to open too many processes at once. 
+Note that an *operating system* (OS) may not know in advance whether stack or heap will be used predominantly before the program is actually running. Therefore, an OS must layout these two memory regions in a way to guarantee **maximum space** for both. The point of this illustration is to show that the physical memory alone (in the size of 8-32GB these days in personal computers) definitely is not enough to hold all data required to open too many processes at once. 
 
 {: .highlight}
 For instance, a size of the PC game Assassin's Creed Valhalla is at least 77 GB. How is it possible that you can run this game while running the web browser and whatsapp at the same time if your physical memory is only 32 GB in size? 
@@ -45,7 +45,7 @@ For instance, a size of the PC game Assassin's Creed Valhalla is at least 77 GB.
 ### Utilising the Swap Space
 We often open and run several processes **simultaneously**: multiple web browsers with gazzilion tabs, music player, video editor, photo editors, IDEs, video games, etc. 
 
-When each of these processes are run, they're first **loaded** (copied) from disk onto the physical memory before they can be accessed and executed by the CPU. The total space required to contain all the information needed to run these processes at the same time is definitely more than 4-32GB. 
+When each of these processes are running, they're first **loaded** (copied) from disk onto the physical memory before they can be accessed and executed by the CPU. The total space required to contain all the information needed to run these processes at the same time is definitely more than 4-32GB. 
 
 Hence, we need to **borrow** some free space on the Disk (*that are not used to store data*) to store the **state** of **currently-run programs**. This section is called the disk **swap space** and it serves as an extension to our physical memory. 
 
@@ -69,7 +69,7 @@ Using some empty space on our disk as an extension of the RAM motivates the idea
 > 1. It is **easier** for `N` processes to share the same *limited* physical storage without interfering with one another.
 > 2. It allows for the **illusion** (to users) of a *very large physical memory space* without being limited by how much space that are *actually* available on the physical memory device. 
 
-In virtual memory, we use a part of the disk as an extension to the physical memory, and let processes work in the virtual address space instead of the physical (actual) address space. This is so that it possible for many processes to seemingly be loaded onto the physical memory at address `PC=0` all at once, and having the illusion that it's run simultaneously, even when their total size exceeds the physical memory capacity. 
+In virtual memory, we use a part of the disk as an extension to the physical memory, and let processes work in the virtual address space instead of the physical (actual) address space. This makes it possible for many processes to seemingly be loaded onto the physical memory at address `PC=0` all at once, and having the illusion that it's run simultaneously, even when their total size exceeds the physical memory capacity. 
 
 
 ## [Memory Paging](https://www.youtube.com/watch?v=19wS4GC6mbQ&t=730s)
@@ -157,14 +157,14 @@ The figure below illustrates this scenario:
 
 <img src="https://dropbox.com/s/1h5q5heph7vp3yy/detailVM.png?raw=1" class="center_fifty"  >
 
-In the example above, there are two currently running processes: process `1` and process `2`, each running in its own VM. The actuall content of each VM may reside on physical memory, or disk swap space. The contents of the virtual memory can **either** be in the  physical memory **or** at the disk swap space. 
+In the example above, there are two currently running processes: process `1` and process `2`, each running in its own VM. The actual contents of the virtual memory can **either** be in the  physical memory **or** at the disk swap space. 
 
 The processes themselves **are not aware** that their actual memory space are not contiguous and **spans over two or more different hardware**. The virtual addresses however, are contiguous. 
 
 {: .highlight}
 It is worth reminding that only contents that reside on the physical memory has a physical address (PA).
 
-Contents that are stored on the disk swap space does **not** have a `PA`. If they are needed for access by the CPU, the OS Kernel needs to migrate a them over to the Physical Memory/RAM first, so that they have a corresponding `VA`-`PA` translation and are **accessible** by the CPU.
+Contents that are stored on the disk swap space does **not** have a `PA`. If they are needed for access by the CPU, the OS Kernel needs to migrate them over to the Physical Memory/RAM first, so that they have a corresponding `VA`-`PA` translation and are **accessible** by the CPU.
 
   
 ### [Pagetable](https://www.youtube.com/watch?v=19wS4GC6mbQ&t=1715s)
