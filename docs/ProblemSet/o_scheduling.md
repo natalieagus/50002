@@ -84,7 +84,7 @@ Device | Service Time (s) | Deadline (s) | Frequency (Hz)
 ---------|----------|---------|---------
 Printer | 0.1 | X | 2 
 Disk | 0.1 | Y | 4
-Keyboard | 0.1 Z | 1 
+Keyboard | 0.1 | Z | 1 
 
 If Weak scheme with priority: Printer > Disk > Keyboard is used, select all possible values of X, Y, and Z (deadli each device). 
 1. `X = 0.1, Y = 0.1, Z = 0.1`
