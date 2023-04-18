@@ -16,7 +16,7 @@ Information Systems Technology and Design
 <br>
 Singapore University of Technology and Design
 
-# Virtual Memory
+# Asynchronous I/O Handling 
 {: .no_toc}
 
 Each topic's questions are grouped into **three** categories: basic, intermediate, and challenging. You are recommended to do all basic problem set before advancing further. 
@@ -86,7 +86,7 @@ Printer | 0.1 | X | 2
 Disk | 0.1 | Y | 4
 Keyboard | 0.1 | Z | 1 
 
-If Weak scheme with priority: Printer > Disk > Keyboard is used, select all possible values of X, Y, and Z (deadli each device). 
+If Weak scheme with priority: Printer > Disk > Keyboard is used, select all possible values of X, Y, and Z (deadline for each device). 
 1. `X = 0.1, Y = 0.1, Z = 0.1`
 2. `X = 0.3, Y = 0.2, Z = 0.1`
 3. `X = 0.2, Y = 0.3, Z = 0.3`
