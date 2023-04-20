@@ -146,4 +146,7 @@ figure.highlight::before {
     filter: invert(0.9) hue-rotate(180deg);
   }
 
+  .chatbase-bubble-button{
+    background-color: $bold-color !important; 
+  }
 

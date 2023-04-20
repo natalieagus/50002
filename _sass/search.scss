@@ -238,10 +238,10 @@
 .search-button {
   position: fixed;
   right: $sp-4;
-  bottom: $sp-4;
+  bottom: #{$sp-4*5};
   display: flex;
-  width: $sp-9;
-  height: $sp-9;
+  width: $sp-8;
+  height: $sp-8;
   background-color: rgba($code-background-color, 0.6);
   // border: 1px solid rgba($link-color, 0.3);
   border-radius: #{$sp-9 / 2};

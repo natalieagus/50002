@@ -368,6 +368,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
     pdf_new_window();
     external_new_window();
 
+
 });
 
 // Set Callback event to highlight toc
@@ -412,3 +413,4 @@ function setMouseUpListener(){
         }
     });
 }
+
