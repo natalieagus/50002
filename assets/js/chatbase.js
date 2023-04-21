@@ -20,7 +20,7 @@ chatButton.style.borderRadius = CHAT_BUTTON_RADIUS + "px";
 chatButton.style.backgroundColor = CHAT_BUTTON_BACKGROUND_COLOR;
 chatButton.style.boxShadow = "0 4px 8px 0 rgba(0, 0, 0, 0.2)";
 chatButton.style.cursor = "pointer";
-chatButton.style.zIndex = 999999998;
+chatButton.style.zIndex = 2;
 chatButton.style.transition = "all .2s ease-in-out";
 
 const messageBubbles = document.createElement("div");
