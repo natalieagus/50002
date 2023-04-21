@@ -369,9 +369,6 @@ strong {
 }
 
 
-.no-invert{
-  filter: none !important
-}
 
 .avatar {
   height: 2em;
@@ -384,15 +381,17 @@ strong {
 }
 
 .chatbase-bubble-img{
+  filter: none !important;
   border-radius: 25px; 
   object-fit: cover;
   width: $sp-8 !important;
   height: $sp-8 !important;
-  filter: none !important
 }
 .chatbase-bubble-button{
   width: $sp-8 !important;
   height: $sp-8 !important;
   right: $sp-4 !important;
   bottom: $sp-4 !important;
+  background-color: $bold-color !important; 
 }
+
