@@ -383,6 +383,13 @@ strong {
   // margin-right: 0.5em;
 }
 
+.chatbase-bubble-img{
+  border-radius: 25px; 
+  object-fit: cover;
+  width: $sp-8 !important;
+  height: $sp-8 !important;
+  filter: none !important
+}
 .chatbase-bubble-button{
   width: $sp-8 !important;
   height: $sp-8 !important;
