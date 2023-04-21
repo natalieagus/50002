@@ -529,7 +529,8 @@ If you want to load other series of instructions, write them in `const SAMPLE_CO
 
 ### Connecting Memory Unit with the Beta
 Connecting  `memory_unit` with `beta` is actually pretty straightforward. We can do that in the `always` block of `au_top.luc`:
-```nasm
+
+```verilog
   beta.instruction = memory_unit.instruction;
   beta.mem_data_input = memory_unit.data_memory_output;
   memory_unit.ia = beta.ia[31:0]; 
@@ -541,7 +542,8 @@ Connecting  `memory_unit` with `beta` is actually pretty straightforward. We can
 ```
 
 Then take care of `irq`, `reset`, and `slowclk` inputs for `beta`:
-```**cpp**
+
+```verilog
 slowclockedge.in = slowclock.value[26];
 beta.interrupt = 0; 
 beta.slowclk = slowclockedge.out;
@@ -550,7 +552,8 @@ beta.rst = 0;
 
 ### Connect to I/O 
 The easiest way to observe the output of `beta` and determining whether it wors properly is by utilizing the leds on Alchitry Io. Here's one recommendation:
-```**cpp**
+
+```verilog
   // for debug
   io_led[0] = beta.ia[7:0]; //current pc value
   io_led[1] = beta.mem_data_address[7:0]; //output of the ALU 

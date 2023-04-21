@@ -48,7 +48,8 @@ The components labeled `CL1` and `CL2` are combinational and `R1` and `R2` are e
 	t_{CD} \text{ CL2} &=t_{H.R2} - t_{CD.R1} = 7.5\\
 	t_{CD} &= t_{CD.R2} = 2\\
 	t_{PD} &= t_{PD.R2} = 8\\
-	t_{CLK} &\geq t_{PD.R1} + t_{PD.CL2} + t_{S.R2} = 2 + 15 + 16 = 33
+	t_{CLK} &\geq t_{PD.R1} + t_{PD.CL2} + t_{S.R2} \\
+	&= 2 + 15 + 16 = 33
 	\end{aligned}$$
 	From this, hopefully you realise that the **tpd** and **tcd** of a sequential circuit is counted from the <strong>last</strong> downstream register(s) (there can be more than one) in the circuit because our reference "input" is no longer `IN` but the `CLK` signal.<br><br>Computation of **ts** and **th** is concerning the path from `IN` until the <strong>first</strong> upstream register(s) (there can be more than one)  in the circuit.<br><br>The dynamic discipline is always obeyed in any middle path, which is between two DFFs or register in the circuit because of the hardware characteristics (tcd of CLs in between and the `CLK` period) of the sequential circuit, so we don't need to worry about that. Therefore the definition of **ts** and **th** of the <strong>entire</strong> circuit is only concerning the first upstream register, because this is where we need need to be wary of its **ts** and **th** since it has to be fulfilled by the (*unreliable*) external input.
 	</p>

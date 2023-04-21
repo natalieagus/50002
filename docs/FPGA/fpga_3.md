@@ -456,18 +456,20 @@ This design will fail to generate a bitstream unless all logical ports have a us
 ```
 
  
-
 This can be fixed if we specify <strong>all</strong> pins on Alchitry Br (recommended), but that will be quite troublesome. You can however choose to ignore them by doing the following:
-<ul>
-<li> **Create** a new file under "Constraints" (right click >> New File) with name 
-<code>filename.xdc</code> (name it anything you want as long as the extension is <code>.xdc</code>). It should fall under "User Constraint" option. </li>
-<li>**Paste** the content of original <code>au.xdc</code> to it, and</li>
-<li>**Add** three more lines to ignore the warning and allow unconstrained bistream: 
-<pre><code>set_property SEVERITY {Warning} [get_drc_checks NSTD-1]
-set_property SEVERITY {Warning} [get_drc_checks UCIO-1]
-set_property BITSTREAM.General.UnconstrainedPins {Allow} [current_design]</code></pre></li>
-<li> **Delete** the original <code>au.xdc</code>.</li>
-</ul>
+
+* **Create** a new file under "Constraints" (right click >> New File) with name `filename.xdc` (name it anything you want as long as the extension is <code>.xdc</code>). It should fall under "User Constraint" option. 
+* **Paste** the content of original <code>au.xdc</code> to it, and
+* **Add** three more lines to ignore the warning and allow unconstrained bistream: 
+
+```verilog
+  set_property SEVERITY {Warning} [get_drc_checks NSTD-1]
+  set_property SEVERITY {Warning} [get_drc_checks UCIO-1]
+  set_property BITSTREAM.General.UnconstrainedPins {Allow} [current_design]
+```
+* **Delete** the original <code>au.xdc</code>.
+
+
 
 
 You can then define **output** pins in `custom.acf` in the following format,
