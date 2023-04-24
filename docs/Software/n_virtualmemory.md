@@ -216,9 +216,9 @@ The number of LRU bits needed **per entry** in the pagetable is $$v$$ (#VPN) bit
 {: .warning}
 This section is difficult and requires patience and practice to excel. Take it easy.
 
-Suppose our system conforms to **byte addressing** convention. Given a `VA` of `(v+p)` bits and a `PA` of `(m+p)` bits, we can deduce the following information:
+Suppose our system conforms to **byte addressing** convention. Given a `VA` of `(v+p)` bits and a `PA` of `(m+p)` bits, we can deduce the following information (assume byte addressing):
 *  The size of VM is: $$2^{v+p}$$ bytes 
-*  The actual size of the physical memory is: $$2^{m+p}$$ 
+*  The actual size of the physical memory is: $$2^{m+p}$$ bytes
 *  The Pagetable must store $$(2 + m) \times 2^v$$ bits *plus* however many helper bits depending on the replacement policy, because:
 	* There are $$2^v$$ rows, 
 	* Each row stores `m` bits of `PPN`
