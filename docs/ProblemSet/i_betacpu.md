@@ -26,7 +26,7 @@ Each topic's questions are grouped into **three** categories: basic, intermediat
 {: .important}
 Before you proceed, we suggest you explore the `bsim` and [**read** the beta documentation](https://drive.google.com/file/d/1L4TXMEDgD5gTN2JSd4ea_APpwNKUpzqK/view?usp=share_link) given in the course handout, especially this section called **Convenience Macros** that makes it easier to express certain common operations.
 
-<img src="{{ site.baseurl }}//assets/images/i_betacpu/2023-02-24-08-18-12.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}//assets/images/i_betacpu/2023-04-24-20-03-11.png"  class="center_seventy"/>
 
 ## $$\beta$$ Trivia (Basic)
 1.  In an unpipelined Beta implementation, when is the signal `RA2SEL` set to `1`?
