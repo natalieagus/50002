@@ -219,10 +219,11 @@ This section is difficult and requires patience and practice to excel. Take it e
 Suppose our system conforms to **byte addressing** convention. Given a `VA` of `(v+p)` bits and a `PA` of `(m+p)` bits, we can deduce the following information:
 *  The size of VM is: $$2^{v+p}$$ bytes 
 *  The actual size of the physical memory is: $$2^{m+p}$$ 
-*  The Pagetable must store $$(2 + m) \times 2^v$$ bits, because:
+*  The Pagetable must store $$(2 + m) \times 2^v$$ bits *plus* however many helper bits depending on the replacement policy, because:
 	* There are $$2^v$$ rows, 
 	* Each row stores `m` bits of `PPN`
-	* Each row also has a few helper bits:  `2` bits for `D` and `R`, `v` bits for `LRU` ordering
+	* Each row also has a few helper bits:  `2` bits for `D` and `R`, *and* `v`* bits for `LRU` ordering (if LRU is used)
+    	* Note that actual implementation might vary, e.g: LRU might be implemented in a separate unit 
 	* The $$v$$ VPN bits are *not exactly stored* as entries in the pagetable, but used as indexing (addressing, eg: using a **decoder** to select exactly one pagetable row using $$v$$ bits as the selector to the decoder)
 *  There are $$2^{p}$$ bytes per page.
 

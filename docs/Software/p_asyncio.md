@@ -79,7 +79,7 @@ Here's the extracted code snippet from the TinyOS lab ([`tinyOS.uasm` file](http
 ```nasm
 SVC_Handler: 
 LD(XP, -4, R0)	| examine the faulting instruction
-ANDC(R0, 0xN, R0) | mask out lower N bits
+ANDC(R0, Nx{b1}, R0) | mask out lower N bits, if N == 4, then we have 0xF, or if N is 7 then we have 0x7F
 SHLC(R0, 2, R0) | make a word index
 LD(R0, SVCtbl, R0) | load service table entry
 JMP(R0) | jump to the appropriate handler
