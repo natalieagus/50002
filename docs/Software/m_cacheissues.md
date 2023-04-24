@@ -116,7 +116,7 @@ Cache replacement policy is required in **both** FA cache and NWSA cache (but no
 {: new-title}
 > Think!
 > 
-> We do we not need a replacement policy for DM Cache?
+> Why do we not need a replacement policy for DM Cache?
 
 There are three common cache replacement strategies. Usually they're implemented **in hardware**, and carries varying degree of *overhead*.
 
