@@ -31,11 +31,11 @@ The following questions ask you to evaluate alternative cache designs using patt
 The questions below present a **sequence** of addresses for memory reads. You should assume the sequences repeat from the start whenever you see ”...” 
 
 {: .highlight}
-**Keep in mind that byte addressing is used; addresses of consecutive words in memory differ by 4**.
+**Keep in mind that byte addressing is used; addresses of consecutive words in memory differ by 4**. 
 
 Each question asks which cache(s) give the best hit rate for the sequence. Answer by considering the steady-state hit rate, i.e., the percentage of memory references that hit in the cache after the sequence has been repeated many times.
 
-1. Which cache(s) have the best hit rate for the sequence 0, 16, 4, 36, ...?
+1. Which cache(s) have the best hit rate for the sequence 0, 16, 4, 36, ...? The "..." means that we repeat the sequences: 0, 16, 4, 36, 0, 16, 4, 36, ... and so on. This applies to all other questions below.
 	<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 	<strong>DM:</strong> locations 4 and 36 collide, so each iteration has 2 hits, 2 misses.<br><br>
 	<strong>S2:</strong> 100% hit rate. 0 and 16 map to the same set, as do 4 and 36, but since the cache is 2-way associative they don’t collide.<br><br>
