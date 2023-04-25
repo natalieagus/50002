@@ -206,7 +206,7 @@ $$\begin{aligned}
 
 ### [Boolean Minimization Example](https://www.youtube.com/watch?v=yXBAy432vT8&t=1663s)
 
-When given a boolean expression, we need to be creative and utilize all properties of boolean algebra to minimise the expression. For example, we can use the *reduction* rule from the boolen algebra cheat-sheet above to perform boolean minimization:
+When given a boolean expression, we need to be creative and utilize all properties of boolean algebra to minimise the expression. For example, we can use the *reduction* rule from the boolean algebra cheat-sheet above to perform boolean minimization:
 
 $$\begin{aligned}
 Y &= \overline{C} \text{ }\overline{B} A + \overline{C} B A + CB\overline{A} + CBA\\

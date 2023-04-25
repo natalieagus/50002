@@ -399,7 +399,7 @@ For the ease of computation, word addressing is used (you can also tell that thi
 `At t=0: 0x0014` $$\rightarrow$$ `MISS` (and cached)
 
 Cache content after this access:  **`0x0014`**, `EMPTY`, `EMPTY`, `EMPTY`. 
-> Oldest entry is bolded. 
+> Oldest entry is removed and new entry is shown on the right. 
 
 `At t=1: 0x0011` $$\rightarrow$$ `MISS` (and cached).
 Cache content after this access:  **`0x0014`,** `0x0011`, `EMPTY`, `EMPTY`. 

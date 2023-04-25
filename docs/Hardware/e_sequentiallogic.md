@@ -174,7 +174,7 @@ We can decribe the structure of a Flip-Flop as follows:
   
   
 ### The Beauty of DFF
-**How does a Flip-Flop prevents the presence of invalid/unstable output during transition/disturbance of input at D?**
+**How does a Flip-Flop prevent the presence of invalid/unstable output during transition/disturbance of input at D?**
 
 The observer/user gets output only from the output wire of the **slave** latch's Q port, and the observer/user supplies input only to the **master** latch's D port.
 
