@@ -114,7 +114,7 @@ R0 = 0
 R1 = 1
 
 ADDC(R0, x, R1) | equivalent to ADDC(0x0, 0x1000, 0x1)
-ADDC(R1, y, R1) | equivalent to ADDC(0x1, 0x1004, 0x0) 
+ADDC(R1, y, R1) | equivalent to ADDC(0x1, 0x1004, 0x1) 
 ```
 
 ### The dot variable
@@ -319,8 +319,8 @@ To aid your learning, copy each snippet to `bsim` and observe the instruction ex
 C Code: 
 ```cpp
 int x,y;
-x = 20
-y = x + 5
+x = 20;
+y = x + 5;
 ```
 
 Translates to the following $$\beta$$ assembly code:

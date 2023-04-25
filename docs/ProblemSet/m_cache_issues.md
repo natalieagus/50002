@@ -38,14 +38,14 @@ Each question asks which cache(s) give the best hit rate for the sequence. Answe
 1. Which cache(s) have the best hit rate for the sequence 0, 16, 4, 36, ...?
 	<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 	<strong>DM:</strong> locations 4 and 36 collide, so each iteration has 2 hits, 2 misses.<br><br>
-	<strong>S2:</strong> 100% hit rate. 0 and 16 map to the same cache line, as do 4 and 36, but since the cache is 2-way associative they don’t collide.<br><br>
+	<strong>S2:</strong> 100% hit rate. 0 and 16 map to the same set, as do 4 and 36, but since the cache is 2-way associative they don’t collide.<br><br>
 	<strong>FA:</strong> 100% hit rate. The cache is only half filled by this loop.
 	</p></div><br>
 
 2. Which cache(s) have the best hit rate for the sequence 0, 4, 8, 12, 16, 20, 24, 28, 32, ...?
 	<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 	<strong>DM:</strong> locations 0 and 32 collide, so each iteration has 7 hits, 2 misses.<br><br>
-	<strong>S2:</strong> locations 0, 16 and 32 all map to the same cache line. The LRU replacement strategy replaces 0 when accessing 32, 16 when accesing 0, 32 when accessing 16, etc., so each iteration has 6 hits, 3 misses.<br><br>
+	<strong>S2:</strong> locations 0, 16 and 32 all map to the same set. The LRU replacement strategy replaces 0 when accessing 32, 16 when accesing 0, 32 when accessing 16, etc., so each iteration has 6 hits, 3 misses.<br><br>
 	<strong>FA:</strong> has 0% hit rate in the steady state since the LRU replacement strategy throws out each location just before it’s accessed by the loop
 	</p></div><br>
 

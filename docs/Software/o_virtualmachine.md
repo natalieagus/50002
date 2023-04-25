@@ -210,6 +210,10 @@ Since the OS Kernel is a program that manages the execution of all other process
 This **prevention** is done via **hardware**. The few sections below summarise how CPU hardware prevents access to restricted *Kernel* space (the memory region where the Kernel program resides).
 
 #### PC31: Kernel and User Mode
+
+{: note}
+Note that using PC31 as Kernel/User mode indicator is specific to Beta CPU. Other CPU architecture such as the x86 and ARM uses special registers ([FLAGS](https://en.wikibooks.org/wiki/X86_Assembly/X86_Architecture) register for x86 and [CPSR for certain ARM architecture](https://developer.arm.com/documentation/den0013/d/ARM-Processor-Modes-and-Registers)) for this purpose. The details about other CPU architecture is out of our syllabus, but the concept is similar. 
+
 Firstly, we need to establish some notion: 
 * We call the  **MSB** (most significant bit) of the PC register as the **Supervisor Bit**. 
 * Whenever the PC executes any code in an address where its MSB is `1`, it means that the CPU is running in the **Kernel Mode**. 
@@ -380,5 +384,5 @@ The Kernel **manages**  the execution of all processes, as well as all I/O devic
 
 During either case of interrupt, `PC+4` is stored at `Reg[XP]` so that the system knows how to resume the process later on. 
 
-The $$\beta$$ Kernel that you will encounter in the [supplementary lab](http://127.0.0.1:4000/50002/lab/lab6) is **non-reentrant** (the CPU cannot be interrupted while in Kernel Mode). It is a simple Kernel. In practice, most modern [UNIX Kernels are reentrant](https://www.oreilly.com/library/view/understanding-the-linux/0596002130/ch01s06.html). Careful writing and construction of the Kernel program is required. 
+The $$\beta$$ Kernel called the [TinyOS](https://github.com/natalieagus/lab-tinyOS) that you will encounter in 50005 is **non-reentrant** (the CPU cannot be interrupted while in Kernel Mode). It is a simple Kernel. In practice, most modern [UNIX Kernels are reentrant](https://www.oreilly.com/library/view/understanding-the-linux/0596002130/ch01s06.html). Careful writing and construction of the Kernel program is required. 
 

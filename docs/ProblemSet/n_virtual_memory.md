@@ -159,14 +159,14 @@ Refer to the state of RAM, pagetable, and TLB below. The addresses in the RAM, D
 	 **PO** is 4 bits, **PPN** is 2 bits, **VPN** is 3 bits.
 	</p></div><br>
 
-2. Which of the following instructions **does not** require access to the pagetable? Assume that the pagetable, ram, and TLB presented refers the *data* portion only, so obviously instructions that does not do `LD` or `ST` does not require access to either of the three tables presented above. 
-	*	`ST(R0, 0b1111100, R31)`
-	*	`ST(R0, 0b0110100, R31)`
-	*	`ADDC(R31, 0x3, R0), ST(R0, 0b0010100, R31)`
-	*	`ADDC(R31, 0b1000000, R2), LD(R2, 0b0011000, R3), SHLC(R3, 0x4, R3)`
+2. Which of the following instructions **does not** require access to the pagetable? Assume that the pagetable, ram, and TLB presented refers the *data* portion only, so obviously instructions that does not do `LD` or `ST` does not require access to either of the three tables presented above. Assume also that each of the four scenarios are called separately (independent of one another) on the virtual memory state as in the figure above. 
+	1.	`ST(R0, 0b1111100, R31)`
+	2.	`ST(R0, 0b0110100, R31)`
+	3.	`ADDC(R31, 0x3, R0), ST(R0, 0b0010100, R31)`
+	4.	`ADDC(R31, 0b1000000, R2), LD(R2, 0b0011000, R3), SHLC(R3, 0x4, R3)`
 	
 	<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-	You <span style="color:red; font-weight: bold;">don't</span> require access to the pagetable if the entry is already cached at the TLB. The second instruction and the third instruction requires translation of **VPN** `3` and **VPN** `1` which are both present in the TLB. This means we don't need to access the pagetable anymore. 
+	You <span style="color:red; font-weight: bold;">don't</span> require access to the pagetable if the entry is already cached at the TLB. The second and third instruction all require translation of **VPN** `3` and **VPN** `1` which are both present in the TLB. This means we don't need to access the pagetable anymore. The fourth instruction requires access to the pagetable because you're accessing VPN 5 instead of VPN 1 because `EA = Reg[R2] + 0b0011000`.  
 	</p></div><br>
 
 3. We want to call the following instruction: `ST(R31, 0b1100100, R31)`. Where is this data with VA of`0b1100100` located?

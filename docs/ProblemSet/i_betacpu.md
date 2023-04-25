@@ -23,6 +23,11 @@ Singapore University of Technology and Design
 
 Each topic's questions are grouped into **three** categories: basic, intermediate, and challenging. You are recommended to do all basic problem set before advancing further. 
 
+{: .important}
+Before you proceed, we suggest you explore the `bsim` and [**read** the beta documentation](https://drive.google.com/file/d/1L4TXMEDgD5gTN2JSd4ea_APpwNKUpzqK/view?usp=share_link) given in the course handout, especially this section called **Convenience Macros** that makes it easier to express certain common operations.
+
+<img src="{{ site.baseurl }}//assets/images/i_betacpu/2023-04-24-20-03-11.png"  class="center_seventy"/>
+
 ## $$\beta$$ Trivia (Basic)
 1.  In an unpipelined Beta implementation, when is the signal `RA2SEL` set to `1`?
 
@@ -380,7 +385,7 @@ For <strong>Program 4</strong>:
 <li> The content of <code>R1</code>  is stored to <code>Mem[Constant+8]</code> instead of the content of <code>R0</code>. Therefore, <code>Mem[Constant+8]</code>  is <code>0</code> instead of <code>5</code>.</li>
 <li> The content of <code>R2</code> is <code>8</code> instead of <code>16</code>.</li>
 </ul>
-<strong>Program 2</strong> and <strong>Program 3</strong> also utilizes <code>ST</code> and <code>OP</code> instructions: <code>MUL</code>/<code>ADD</code>, etc that involve the <code>ASEL</code> mux but if you run them with the faulty Beta and with a working Beta, the end state is either the same or different due to one of the faulties only, and therefore can't be used to detect both faulties. 
+<strong>Program 2</strong> also utilizes <code>ST</code> and <code>OP</code> instructions: <code>MUL</code>/<code>ADD</code>, etc that involve the <code>ASEL</code> mux but if you run them with the faulty Beta and with a working Beta, the end state is either the same or different due to one of the faulties only, and therefore can't be used to detect both faulties. Finally, <strong>Program 3</strong> will not even run at all because the first instruction is an integer (8) and that's not a legal instruction. 
 </p></div><br>
 
 ## Beta Instruction Replacements (Intermediate)
@@ -388,13 +393,11 @@ For <strong>Program 4</strong>:
 For each of the statements below, indicate whether they're True or False and provide your reasoning. 
 
 * **Statement 1:**  In the Beta, every `ADDC` instruction can **always** be replaced by a `SUBC` instruction that puts precisely the **same** value in the destination register. For example, `ADDC(R0,1,R0)` is equal to `SUBC(R0,-1,R0)` (*think about all constants*).  
-
 * **Statement 2:** In a Beta program, you can use `BEQ(R31, label, R31)` as a substitute for `JMP(Ra)` where `Ra` stores the address of `label`, no matter where `label` is. 
-
 * **Statement 3:** We can never perform `LD` and `ST`  to any two independent addresses in a *single cycle* (even if the memory unit supports it) by just modifying the **control unit** of the Beta. In other words, we need to modify the datapath of the Beta in order to do this. 
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-<strong>Statement 1 is <span style="color:red; font-weight: bold;">False</span></strong>. We can have <code>ADDC(R0, -32768, R0)</code> but we cant have <code>SUBC(R0, 32768, R0)</code> as the most positive number that a signed 16-bit can represent is <code>32768</code>.
+<strong>Statement 1 is <span style="color:red; font-weight: bold;">False</span></strong>. We can have <code>ADDC(R0, -32768, R0)</code> but we cant have <code>SUBC(R0, 32768, R0)</code> as the most positive number that a signed 16-bit can represent is <code>32767</code>.
 <br>
 <br>
 <strong>Statement 2 is <span style="color:red; font-weight: bold;">False</span></strong>. <code>Ra</code> contains 32-bit of data, so we can set <code>PC</code> to be pointing to <i>any</i> address in the memory (4GB of address space) with <code>JMP(Ra)</code>. However, <code>BEQ</code> only covers <code>32768 times 4</code> (above <code>PC+4</code>) + <code>32768 times 4</code> (*below and inclusive of <code>PC+4</code>*) bytes of address space.
@@ -404,8 +407,7 @@ For each of the statements below, indicate whether they're True or False and pro
 
 ## PCSEL Fault Detection (Intermediate)
 
-This time round, consider a Beta machine with a faulty **control unit**, where its `PCSEL` signal is always `0`, meaning that the input to the `PC` register is always  
-`PC+4` *regardless* of the instruction.
+This time round, consider a Beta machine with a faulty **control unit**, where its `PCSEL` signal is always `0`, meaning that the input to the `PC` register is always  `PC+4` *regardless* of the instruction.
 
 As always, we can  detect this particular fault by running a simple test program written in Beta assembly language. State which of the following programs can **detect** this particular fault, meaning that if it was to be run on a faulty Beta machine, we will get different results (contents) on the registers in the regfiles, PC, or Memory Unit, and provide your reasoning. 
 

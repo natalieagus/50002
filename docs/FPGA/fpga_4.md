@@ -21,6 +21,10 @@ Singapore University of Technology and Design
 
 # Getting Good with FPGA: Building the Beta CPU
 {: .no_toc}
+
+{: .warning}
+This project is now part of our lab and our syllabus. Please find [a more comprehensive and modular version of its implementation by reading this handout](https://natalieagus.github.io/50002/lab/lab4-part1) that implements interrupt, illop, and I/O handling more properly. 
+
 This document is created for the sake of enhancing our understanding in how basic CPU works by actually implementing it onto our FPGA. We will create our 32-bit $$\beta$$ CPU and use simple dual-port RAM to simulate some of the instructions that we have learned in class and **test** if they're working properly. 
 
 You are recommended to read this document only after you've understood **completely** up until the chapter on $$\beta$$ datapath and are comfortable enough with HDL programming:
@@ -186,6 +190,7 @@ module alu (
 ```
 
 To make it more interesting, we can follow how we create the ALU in the course lab (instead of writing a bunch of if-elses according to `alufn_signal` combinations). Create four modules: `adder.luc`, `boolean.luc`, `shifter.luc`, and `compare.luc`, and implement its functionalities. 
+
 {: .note-title}
 > ALU Interface
 > 
@@ -413,7 +418,7 @@ if (slowclk){
       b000: 
         pc.d = pc.q + 4;
       b001:
-        pc.d = pc.q + 4 + 4 * c{instruction[15], instruction[15:0]};
+        pc.d = pc.q + 4 + (4 * c{16x{instruction[15]}, instruction[15:0]});
       b010:
         // protect jump
         pc.d = c{pc.q[31] && regfile_system.read_data_1[31],regfile_system.read_data_1[30:0]};
@@ -524,7 +529,8 @@ If you want to load other series of instructions, write them in `const SAMPLE_CO
 
 ### Connecting Memory Unit with the Beta
 Connecting  `memory_unit` with `beta` is actually pretty straightforward. We can do that in the `always` block of `au_top.luc`:
-```nasm
+
+```verilog
   beta.instruction = memory_unit.instruction;
   beta.mem_data_input = memory_unit.data_memory_output;
   memory_unit.ia = beta.ia[31:0]; 
@@ -536,7 +542,8 @@ Connecting  `memory_unit` with `beta` is actually pretty straightforward. We can
 ```
 
 Then take care of `irq`, `reset`, and `slowclk` inputs for `beta`:
-```**cpp**
+
+```verilog
 slowclockedge.in = slowclock.value[26];
 beta.interrupt = 0; 
 beta.slowclk = slowclockedge.out;
@@ -545,7 +552,8 @@ beta.rst = 0;
 
 ### Connect to I/O 
 The easiest way to observe the output of `beta` and determining whether it wors properly is by utilizing the leds on Alchitry Io. Here's one recommendation:
-```**cpp**
+
+```verilog
   // for debug
   io_led[0] = beta.ia[7:0]; //current pc value
   io_led[1] = beta.mem_data_address[7:0]; //output of the ALU 

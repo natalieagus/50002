@@ -70,7 +70,8 @@ padding: 1.5rem 0rem;
 left: 0;
 overflow: visible;
 z-index: 1;
-font-family: "Helvetica Neue";
+font-family: "Helvetica Neue", $body-font-family;
+
 
 }
 
@@ -149,6 +150,7 @@ height: 75vh;
 display: block;
 margin-left: auto;
 margin-right: auto;
+width: 100%;
 }
 
 .center_seventy {
@@ -367,9 +369,6 @@ strong {
 }
 
 
-.no-invert{
-  filter: none !important
-}
 
 .avatar {
   height: 2em;
@@ -380,3 +379,19 @@ strong {
   // border-radius: 0.2em;
   // margin-right: 0.5em;
 }
+
+.chatbase-bubble-img{
+  filter: none !important;
+  border-radius: 25px; 
+  object-fit: cover;
+  width: $sp-8 !important;
+  height: $sp-8 !important;
+}
+.chatbase-bubble-button{
+  width: $sp-8 !important;
+  height: $sp-8 !important;
+  right: $sp-4 !important;
+  bottom: $sp-4 !important;
+  background-color: $bold-color !important; 
+}
+

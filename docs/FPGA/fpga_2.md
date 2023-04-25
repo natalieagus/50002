@@ -238,15 +238,15 @@ module seq_plus_vary (
 	adder.cin = b0;
 	
 	case (y_controller.q){
-  	y_controller.S0:
-      	adder.y = 8h02;
-      	y_controller.d = y_controller.S1;
-  	y_controller.S1:
-      	adder.y = 8h07;
-      	y_controller.d = y_controller.S2;
-  	y_controller.S2:
-      	adder.y = 8h0C;
-      	y_controller.d = y_controller.S0;  	
+		y_controller.S0:
+			adder.y = 8h02;
+			y_controller.d = y_controller.S1;
+		y_controller.S1:
+			adder.y = 8h07;
+			y_controller.d = y_controller.S2;
+		y_controller.S2:
+			adder.y = 8h0C;
+			y_controller.d = y_controller.S0;  	
 	}
     
 	adder.cin = b0;

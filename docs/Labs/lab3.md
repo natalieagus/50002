@@ -70,7 +70,7 @@ ALUFN \neq OPCODE
 $$
 
 {: .important}
-The ALUFN signals used to **control** the operation of the ALU circuitry use an encoding chosen to make the design of the ALU circuitry as simple as possible. This encoding is ***not*** the same as the one used to encode the 6-bit OPCODE field of Beta instructions. In Lab 5, you will build some logic (actually a ROM) that will translate the opcode field of an instruction into the appropriate ALUFN control bits. </div></div><br>
+The ALUFN signals used to **control** the operation of the ALU circuitry use an encoding chosen to make the design of the ALU circuitry as simple as possible. This encoding is ***not*** the same as the one used to encode the 6-bit OPCODE field of Beta instructions. In Lab 5, you will build some logic (actually a ROM) that will translate the opcode field of an instruction into the appropriate ALUFN control bits. <br>
 
 
 
@@ -114,7 +114,7 @@ Here’s the detailed schematic of the adder. Please **label** the nodes yoursel
 <img src="/50002/assets/contentimage/lab3/adder.png"  class=" center_seventy"/>
 
 {: .highlight}
-**Write** your answer in the space provided inside `lab3_alu_submit.jsim`, and include `lab3adder.jsim` header to test your adder32 unit only. You can <span style="color:red; font-weight: bold;">comment</span> out `lab3checkoff.jsim` for the time being. 
+**Write** your answer in the space provided inside `lab3_alu_submit.jsim`, and include `lab3_testadder.jsim` header to test your adder32 unit only. You can <span style="color:red; font-weight: bold;">comment</span> out `lab3checkoff.jsim` for the time being. 
 
 ```cpp
 **********************************
@@ -539,6 +539,18 @@ is equivalent to:
 Xtest#0 a2 b2 z2 xor2
 Xtest#1 a1 b1 z1 xor2
 Xtest#2 a0 b0 z0 xor2
+```
+
+Iterators can also take the form of `prefix[start:stop:step]suffix`. For example:
+
+```cpp
+Xtest abc[3:0:2]xyz out[1:0] buffer
+```
+
+is equvilent to:
+```cpp
+Xtest#1 abc3xyz out1 buffer
+Xtest#2 abc1xyz out0 buffer
 ```
 
 ### Duplicating a signal

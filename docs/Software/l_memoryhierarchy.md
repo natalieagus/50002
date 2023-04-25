@@ -78,7 +78,7 @@ An SRAM cell can be made up of **6-transistors** as shown in the figure below. I
 
 <img src="https://dropbox.com/s/u1acx3abx3102pn/read_sram.png?raw=1"   class="center_fourty"   >
 
-Each cell stores **one** bit. The *loop* formed by two inverters can ***store*** a single bit for **as long as they are powered**. SRAM is a **volatile** memory device since it can only retain information when powered.
+Each cell stores **one** bit. The *loop* formed by two inverters can **store** a single bit for **as long as they are powered**. SRAM is a **volatile** memory device since it can only retain information when powered.
 
 There are two other features to note: 
 1. The **word** line: set to high voltage to "access" the cell
@@ -213,6 +213,9 @@ As illustrated in the figure below, our computing device in practice is consiste
 
 <img src="https://dropbox.com/s/9v2wj0zf64zbclo/memhierarchy.png?raw=1" class="center_seventy"  >
 
+{: .note}
+Cache is actually part of the CPU. The illustration above is just exaggerated to illustrate the hierarchy of memory devices. 
+
 
 ### The Locality of Reference
 It is possible to give the user an illusion that they're running at SRAM speed at **most** times due to the **locality of reference.** 
@@ -275,7 +278,7 @@ where:
 > You easily simply extend the formula to incorporate the events where disk is used. 
 
 ### Think Further
-The above cache principles are very simplified and incomplete. It does not address more details such as **how** can we store data in the cache, **what** to do in the event of cache miss in more detail, **what happens** when the physical memory itself is full, etc. We will perfect the cache principle to form what we call ***the caching algorithm** in the next lesson.
+The above cache principles are very simplified and incomplete. It does not address more details such as **how** can we store data in the cache, **what** to do in the event of cache miss in more detail, **what happens** when the physical memory itself is full, etc. We will perfect the cache principle to form what we call **the caching algorithm** in the next lesson.
 
 Most modern CPUs have at least three independent caches: 
 1. An **instruction cache** to speed up executable instruction fetch, 

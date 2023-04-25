@@ -26,11 +26,13 @@ Singapore University of Technology and Design
 
 Each topic's questions are grouped into **three** categories: basic, intermediate, and challenging. You are recommended to do all basic problem set before advancing further. 
 
+**You are strongly encouraged to <span style="color:red; font-weight: bold;">read</span> [this supplementary document](https://dropbox.com/s/gi4r2ea1tdv5x4d/Seq_Logic_Timing_Extras_2020.pdf?dl=1) to know more about timing computations for sequential logic device.**
+
 ## Warm-up Timing Computations (Basic)
   
 
 Consider the following diagram of a simple sequential circuit:
-<img src="https://dropbox.com/s/63cip82ur4u3y64/Q1.png?raw=1" class="center_fifty" >
+<img src="https://dropbox.com/s/63cip82ur4u3y64/Q1.png?raw=1" class="center_seventy" >
   
 The components labeled `CL1` and `CL2` are combinational and `R1` and `R2` are edge triggered flip flops. Timing parameters for each component are as shown in the figure (in ns). Answer both questions below:
 
@@ -46,7 +48,8 @@ The components labeled `CL1` and `CL2` are combinational and `R1` and `R2` are e
 	t_{CD} \text{ CL2} &=t_{H.R2} - t_{CD.R1} = 7.5\\
 	t_{CD} &= t_{CD.R2} = 2\\
 	t_{PD} &= t_{PD.R2} = 8\\
-	t_{CLK} &\geq t_{PD.R1} + t_{PD.CL2} + t_{S.R2} = 2 + 15 + 16 = 33
+	t_{CLK} &\geq t_{PD.R1} + t_{PD.CL2} + t_{S.R2} \\
+	&= 2 + 15 + 16 = 33
 	\end{aligned}$$
 	From this, hopefully you realise that the **tpd** and **tcd** of a sequential circuit is counted from the <strong>last</strong> downstream register(s) (there can be more than one) in the circuit because our reference "input" is no longer `IN` but the `CLK` signal.<br><br>Computation of **ts** and **th** is concerning the path from `IN` until the <strong>first</strong> upstream register(s) (there can be more than one)  in the circuit.<br><br>The dynamic discipline is always obeyed in any middle path, which is between two DFFs or register in the circuit because of the hardware characteristics (tcd of CLs in between and the `CLK` period) of the sequential circuit, so we don't need to worry about that. Therefore the definition of **ts** and **th** of the <strong>entire</strong> circuit is only concerning the first upstream register, because this is where we need need to be wary of its **ts** and **th** since it has to be fulfilled by the (*unreliable*) external input.
 	</p>
@@ -221,24 +224,24 @@ Some of the specifications refer to <span style="color:red; font-weight: bold;">
 1. A circuit that in unbounded time indicates <span style="color:red; font-weight: bold;">which of two</span> game show contestants pressed their button first.
 	<div  cursor="pointer"  class="collapsible">Show Answer</div>  <div  class="content_answer">
 	<p>
-	It is possible to build this <i>unbounded</i>-time arbiter.
+	It is possible to build this <i>unbounded</i>-time arbiter. An arbiter is basically a circuit that can decide to output 0 or 1 regardless of whether the input violates the dynamic discipline. From our lecture notes, we know that if we violate the dynamic discipline, we might end up in the metastable state, and that there's no guarantee how long it will take for the output to settle to be valid 0 or 1. 
 	<br> 
 	<br>
-	It may take an arbitrary period, after which it will produce <strong>a decision and a signal</strong> that indicates that its made a decision.
+	It might take unbounded time (arbitrarily long period), to produce <strong>a decision and a signal</strong> that indicates a valid output. 
 	</p>
 	</div><br>
 		
 2. A circuit that in bounded time indicates which of two game show contestants pressed their button first.
 	<div  cursor="pointer"  class="collapsible">Show Answer</div>  <div  class="content_answer">
 	<p>
-	This is a restatement of the "bounded time arbiter problem", known to be <span style="color:red; font-weight: bold;">unsolvable</span> in theory. In practice we can build a circuit to solve this problem where the probability of failure is related to **tpd**. For large **tpd** (eg, 10's of nanoseconds in today's technologies) the probability of failure can be made very small (eg, 1 failure in billions of years).
+	This is a restatement of the previous part, known to be <span style="color:red; font-weight: bold;">unsolvable</span> in theory because every bistable system exhibits at least one metastable state (physics defines this). In practice we can build a circuit to solve this problem where the probability of failure is related to **tpd** (basically we wait out until possible metastable state settles). For large **tpd** (eg, 10's of nanoseconds in today's technologies) the probability of failure can be made very small (eg, 1 failure in billions of years).
 	</p>
 	</div><br>
 
 3. A circuit that determines if button A was pressed ***before*** a specified deadline. Assume the circuit has an accurate internal signal that transitions from 0 to 1 when the deadline is reached. The output should be 1 if the button was pressed on or before the deadline, 0 if pressed after the deadline. The output should be valid and stable within a specified tpd.
 	<div  cursor="pointer"  class="collapsible">Show Answer</div>  <div  class="content_answer">
 	<p>
-	This is another restatement of the "bounded time arbiter problem", known to be unsolvable in theory. Of course, given sufficiently long time bounds, we can engineer practical approximate solutions (see the answer to the previous question).
+	This is another restatement of part 1, known to be unsolvable in theory. Of course, given sufficiently long time bounds, we can engineer practical approximate solutions (see the answer to the previous question).
 	</p>
 	</div><br>
 

@@ -31,7 +31,7 @@ This document is written to guide you with hardware programming in <a href="http
 More information about the board can be found <a href="https://alchitry.com/boards/au" target="_blank">here</a> but for now the above suffices. 
 
 {: .note}
-You are recommended to read this guide at the end of week 2, after you have finished **logic synthesis**, otherwise you might feel a little lost.
+You are recommended to read this guide at the end of week 2, after you have finished **logic synthesis**, otherwise you might feel a little lost. 
 
 **Before you begin, please install some softwares:**
 1. Prepare **at least 50GB** of free space. It goes without saying that you can use cloud storage (Dropbox, GDrive, iCloud Drive, AWS Cloud) or get an external drive. 
@@ -72,6 +72,9 @@ Let's take an example of a Full Adder unit that we did in Lab 2:
 * After drawing its schematic at first, we can then *test* or *simulate* its functionalities using jsim or some other tools.
 * Then you need to actually solder a bunch of things (transistors, etc) to prove your concept. *This is quite a hassle.* 
 * If you were to design a state-of-the-art full adder unit, you will want to mass-produce your design (if it works exceptionally well). 
+
+{: .important}
+[Please teach yourself how to solder](https://www.youtube.com/watch?v=Qps9woUGkvI), and how to [solder useful things like GPIO pins](https://www.youtube.com/watch?v=qz9Ryos1_GY). 
 
 Alternatively, we can use an FPGA to prove our concept. You can load your program (describing how your Full Adder works) onto an FPGA, and now the FPGA can be an actual working Full Adder unit. 
 
@@ -190,7 +193,7 @@ It's not as complicated as it looks. We simply want to use:
 Where are these stuffs on Alchitry Io? 
 <br><img src="https://dropbox.com/s/v4baxwf8e33utm0/alc_io.png?raw=1"  class="center_seventy" >
 
-Therefore we can use the dip swithces (switch up for `1` and down for `0`) to supply various combinations of input `x,y,cin` **manually** and observe the output at the two rightmost LED in `IO_LED[2]`. 
+Therefore we can use the dip switches (switch up for `1` and down for `0`) to supply various combinations of input `x,y,cin` **manually** and observe the output at the two rightmost LED in `IO_LED[2]`. 
 
 
 Now build your code (it may take awhile, 2-3 minutes depending on your computer stats), and flash it to the Alchitry Au: 

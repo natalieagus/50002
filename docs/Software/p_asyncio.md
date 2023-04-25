@@ -75,11 +75,11 @@ The `SVC` handler does the following routine:
 2. Extract its lower `N` bits and 
 3. Branch to the appropriate service routine as requested by the calling process based on the value of `N`: 
    
-Here's the extracted code snippet from the TinyOS lab (`lab6.uasm` file):
+Here's the extracted code snippet from the TinyOS lab ([`tinyOS.uasm` file](https://github.com/natalieagus/lab-tinyOS)):
 ```nasm
 SVC_Handler: 
 LD(XP, -4, R0)	| examine the faulting instruction
-ANDC(R0, 0xN, R0) | mask out lower N bits
+ANDC(R0, Nx{b1}, R0) | mask out lower N bits, if N == 4, then we have 0xF, or if N is 7 then we have 0x7F
 SHLC(R0, 2, R0) | make a word index
 LD(R0, SVCtbl, R0) | load service table entry
 JMP(R0) | jump to the appropriate handler
@@ -179,7 +179,10 @@ If the CPU runs a handler of lower priority, it will be forced to perform a **co
 Handlers of the same priority level **can never** interrupt each other.
 
 ### Setting Handler Priority Level
-The **priority level** for each interrupt handler can be implemented using the  higher `p` bits of `PC`; meaning that the actual **location** of the handler in memory decides its priority level. Some hardware tweaks on the CPU is needed to support this feature, but we don't have to dwell too deep into that at this point. 
+In the Beta CPU, the **priority level** for each interrupt handler can be implemented using the  higher `p` bits of `PC`. As an implication, the actual **location** of the handler in memory decides its priority level. Some hardware tweaks on the CPU is needed to support this feature, but we don't have to dwell too deep into that at this point. 
+
+{: .note}
+Note that other CPU architecture uses special registers that indicate handler priority level and not necesarily the `PC` register. This example is for illustration purposes only.
 
 <img src="https://dropbox.com/s/7w7oy1jyaa5trnq/pc.png?raw=1"     class="center_fifty"  >
 
