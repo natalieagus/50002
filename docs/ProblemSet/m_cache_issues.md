@@ -25,7 +25,7 @@ Each topic's questions are grouped into **three** categories: basic, intermediat
 ## Cache Competition (Basic)
 The following questions ask you to evaluate alternative cache designs using patterns of memory references taken from running programs. Each of the caches under consideration has a total capacity of 8 (4-byte) words, with one word stored in each cache line. The cache designs under consideration are:
 * **DM**: a direct-mapped cache.
-* **S2**: a 2-way set-associative cache with a least-recently-used replacement policy.
+* **S2**: a 2-way set-associative cache with a least-recently-used replacement policy. Note that since we have a **total** capacity of 8 words, it means we have 4 sets for **S2**.
 * **FA**: a fully-associative cache with a least-recently-used replacement policy.
 
 The questions below present a **sequence** of addresses for memory reads. You should assume the sequences repeat from the start whenever you see ”...” 
