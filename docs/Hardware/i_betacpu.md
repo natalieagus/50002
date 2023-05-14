@@ -69,7 +69,7 @@ Once the CPU knows the address of the very first instruction to be executed for 
 
 When the CPU has an instruction, it needs to figure out (decode) specifically what type of instruction it is. Each instruction will have a certain set of bits called the `OPCODE` that tells the CPU how to interpret it. In the $$\beta$$ ISA, the `OPCODE` can be found in the <span style="color:red; font-weight: bold;">6 most significant bits</span> of the 32-bits $$\beta$$ instruction. This `OPCODE` is given as an **input** to the Control Unit, and the Control Unit will compute the appropriate **control signals** to program the datapath. 
 
-This decoding step depends on how complex the ISA is. RISC-based computers (e.g: the $$\beta$$ ISA) has a smaller number of instructions (a few dozens) of the smae length, while x86-based computers have thousands of differing lengths. In either architecture, we can group their instructions into these three families in general? 
+This decoding step depends on how complex the ISA is. RISC-based computers (e.g: the $$\beta$$ ISA) has a smaller number of instructions (a few dozens) of the same length, while x86-based computers have thousands of differing lengths. In either architecture, we can group their instructions into these three families in general? 
 * **Memory Access**: anything regarding loading and storing of data between the REGFILE (CPU internal storage) and the Memory Unit. No other computation is performed.
 * **Arithmetic**: anything that requires computation using the ALU, and inputs are taken from the REGFILE.  
 * **Branch instructions**: anything pertaining to changing the value of PC Register to load instructions in different Memory Address, (*conditional*) based on a content of a specific register in the REGFILE. 
