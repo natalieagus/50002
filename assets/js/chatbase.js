@@ -30,7 +30,7 @@ messageBubbles.style.bottom = "80px";
 messageBubbles.style.borderRadius = "10px";
 messageBubbles.style.fontFamily = "sans-serif";
 messageBubbles.style.fontSize = "16px";
-messageBubbles.style.zIndex = 999999997;
+messageBubbles.style.zIndex = 2;
 messageBubbles.style.cursor = "pointer";
 messageBubbles.style.flexDirection = "column";
 messageBubbles.style.gap = "50px";
@@ -52,7 +52,7 @@ messageBubblesCloseButton.style.fontWeight = "bold";
 messageBubblesCloseButton.style.display = "none";
 messageBubblesCloseButton.style.justifyContent = "center";
 messageBubblesCloseButton.style.alignItems = "center";
-messageBubblesCloseButton.style.zIndex = 999999996;
+messageBubblesCloseButton.style.zIndex = 2;
 messageBubblesCloseButton.style.width = "22px";
 messageBubblesCloseButton.style.height = "22px";
 messageBubblesCloseButton.style.borderRadius = "50%";
@@ -80,7 +80,7 @@ chatButtonIcon.style.alignItems = "center";
 chatButtonIcon.style.justifyContent = "center";
 chatButtonIcon.style.width = "100%";
 chatButtonIcon.style.height = "100%";
-chatButtonIcon.style.zIndex = 999999999;
+chatButtonIcon.style.zIndex = 2;
 
 // add the chat button icon to the chat button element
 
@@ -127,7 +127,7 @@ chat.style.boxShadow =
 
 chat.style.display = "none";
 chat.style.borderRadius = "10px";
-chat.style.zIndex = 999999999;
+chat.style.zIndex = 2;
 chat.style.overflow = "hidden";
 
 document.body.appendChild(chat);
