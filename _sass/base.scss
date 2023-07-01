@@ -3,6 +3,7 @@
 
 * {
   box-sizing: border-box;
+  scrollbar-width: none;
   // background-color: $body-background-color;
 }
 
@@ -124,7 +125,7 @@ blockquote {
 
 /* Works on Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
-  width: 10px;
+  width: 0px;
 }
 
 *::-webkit-scrollbar-thumb:horizontal{
