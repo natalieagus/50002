@@ -28,6 +28,9 @@ A Finite State Machine does not keep track of the number of states it *visited*,
 
 The Turing Machine is a **mathematical** model of computation that defines an abstract **machine**. It is a machine that is able to implement **any** functionalities that FSM can implement, and it doesn't face this limitation that FSM has. 
 
+{: .note}
+The Turing Machine is loosely referred to as an "infinite state machine" due to its ability to move along an infinite tape. The tape, theoretically, has an unlimited length, allowing the Turing machine to transition between an infinite number of states. **However**, this is **not** to be confused with certain context of infinite state machine: systems with continuous state spaces, allowing for a continuous range of values such as analog machines or continuous systems in control theory.
+
 ## [Basics of Turing Machine](https://www.youtube.com/watch?v=cmfDBAiogA0&t=111s)
 
 <figure class="center_full">
