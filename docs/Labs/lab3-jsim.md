@@ -1,10 +1,10 @@
 ---
 layout: default
-permalink: /lab/lab3
-title: Lab 3 - Arithmetic Logic Unit
+permalink: /lab/lab3-jsim
+title: Lab 3 - Arithmetic Logic Unit with JSIM
 description: Lab 3 handout covering topics from Logic Synthesis, and Designing an Instruction Set
 parent: Labs
-nav_order:  4
+nav_order:  6
 ---
 
 * TOC

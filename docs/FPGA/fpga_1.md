@@ -222,7 +222,7 @@ The `.acf` file defines input and output pins from the original schematic of `Al
 > 
 > An input pin with `pulldown` resistor will by default give a value of `0` if there's **no** input being supplied to prevent a *floating/undefined* input voltage. An input pin with a `pullup` resistorlikewise will give a value of `1` by default if there's no input being supplied at that port. It is useful to read abit about <a href="https://www.electronics-tutorials.ws/logic/pull-up-resistor.html" target="_blank">pull-down and pull-up resistors</a>  if you were to implement a unit from scratch like our Mini-Hardware Project.  
 
-This document will <span style="color:red; font-weight: bold;">not</span> teach you how to define more inputs for use on the `Br` board yet, or use the 7-segments to display numbers. If you're interested to learn more, read the tutorial from the original author about <a href="https://alchitry.com/io-element" target="_blank">Io Element</a>
+This document will <span style="color:red; font-weight: bold;">not</span> teach you how to define more inputs for use on the `Br` board yet, or use the 7-segments to display numbers (it's an **anode** 7-seg, meaning you supply low `0` to turn the digit on). If you're interested to learn more, read the tutorial from the original author about <a href="https://alchitry.com/io-element" target="_blank">Io Element</a>
 
 #### Turning LEDs `off`
 
