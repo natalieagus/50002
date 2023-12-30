@@ -4,7 +4,7 @@ permalink: /problemset/virtualmemory
 title: Virtual Memory
 description: Practice questions containing topics from Virtual Memory
 parent: Problem Set
-nav_order: 11
+nav_order: 12
 ---
 
 * TOC

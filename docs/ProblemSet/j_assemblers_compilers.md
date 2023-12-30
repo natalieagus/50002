@@ -4,7 +4,7 @@ permalink: /problemset/assemblersandcompilers
 title: Assemblers and Compilers
 description: Practice questions containing topics from Assembler and Compilers
 parent: Problem Set
-nav_order: 7
+nav_order: 8
 ---
 
 * TOC

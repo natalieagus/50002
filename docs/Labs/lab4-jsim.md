@@ -51,7 +51,7 @@ Related sections in [Beta CPU](https://natalieagus.github.io/50002/notes/betacpu
 * [OPC datapath](https://natalieagus.github.io/50002/notes/betacpu#opc-datapath)
 * [Memory Access datapath](https://natalieagus.github.io/50002/notes/betacpu#memory-access-datapath)
 * [Control transfer datapath](https://natalieagus.github.io/50002/notes/betacpu#control-transfer-datapath)
-* [Exception handling](https://natalieagus.github.io/50002/notes/betacpu#exception-handling)
+* [Interrupt handling](https://natalieagus.github.io/50002/notes/betadiagnostics#interrupt-handling)
 * By the end of this lab, you should know how to build the schematic of the entire Beta CPU based on its [ISA](https://natalieagus.github.io/50002/notes/instructionset#the-beta-instruction-set-architecture) (blueprint). This lab will also help you to familiarise yourselves with core Beta instructions
 
 ## Introduction

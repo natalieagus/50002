@@ -4,7 +4,7 @@ permalink: /problemset/memoryhierarchy
 title: The Memory Hierarchy
 description: Practice questions containing topics from Memory Hierarchy 
 parent: Problem Set
-nav_order: 9
+nav_order: 10
 ---
 
 

@@ -11,7 +11,7 @@ nav_order: 19
 
 These topics are taught after the recess week. They are **tested** during our Final examination. Below we list the **learning objectives** of each topic. 
 ## [Beta CPU Diagnostics](https://natalieagus.github.io/50002/notes/betadiagnostics)
-1. Handle exceptions, trap, and interrupts. 
+1. Handle synchronous and asynchronous interrupts. 
 2. Analyze the Beta Datapath structure and function.
 3. Identify anomalies within the Beta CPU Architecture.
 4. Explore testing and troubleshooting techniques for the Beta CPU.

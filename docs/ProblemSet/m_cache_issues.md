@@ -4,7 +4,7 @@ permalink: /problemset/cacheissues
 title: Cache Design Issues
 description: Practice questions containing topics from Cache Issues
 parent: Problem Set
-nav_order: 10
+nav_order: 11
 ---
 
 

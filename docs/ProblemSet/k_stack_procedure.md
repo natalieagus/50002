@@ -4,7 +4,7 @@ permalink: /problemset/stackandprocedures
 title: Stack and Procedures
 description: Practice questions containing topics from Stack and Procedures
 parent: Problem Set
-nav_order: 8
+nav_order: 9
 ---
 
 * TOC
