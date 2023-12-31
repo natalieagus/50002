@@ -16,7 +16,7 @@ Information Systems Technology and Design
 <br>
 Singapore University of Technology and Design
 <br>
-Modified by: Kenny Choo, Natalie Agus, Oka Kurniawan (2021)
+Written by: Natalie Agus (2023)
 
 # 1D Part 1 - Mini Hardware Project 
 

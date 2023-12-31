@@ -16,7 +16,7 @@ Information Systems Technology and Design
 <br>
 Singapore University of Technology and Design
 <br>
-Modified by: Kenny Choo, Natalie Agus, Oka Kurniawan (2021)
+Modified by: Natalie Agus (2024) 
 
 # Lab 3: Arithmetic Logic Unit
 {: .no_toc}

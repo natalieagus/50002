@@ -20,6 +20,10 @@ Modified by: Kenny Choo, Natalie Agus, Oka Kurniawan (2021)
 
 # Lab 3: Arithmetic Logic Unit
 {: .no_toc}
+
+{: .warning}
+This is a **legacy** lab. We no longer use this in 2024. 
+
 ## Starter Code
 The following files inside your `/50002/` folder are what you're going to use for this lab:
 - `lab3_alu_submit.jsim` 

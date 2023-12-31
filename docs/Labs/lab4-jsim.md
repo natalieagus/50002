@@ -22,7 +22,7 @@ Modified by: Kenny Choo, Natalie Agus, Oka Kurniawan (2021)
 {: .no_toc}
 
 {: .warning}
-This lab is now obsolete. We will be doing the FPGA version in 2023. 
+This is a **legacy** lab. We no longer use this in 2023.
 
 ## Starter Code
 The following files inside your `/50002/` folder are what you're going to use for this lab:
