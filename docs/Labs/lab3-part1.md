@@ -34,18 +34,17 @@ git clone https://github.com/natalieagus/alu-starter.git
 {: .important}
 Since there's only 1 FPGA per group, you need to work through this lab as a 1D group during class. However each person must still submit the lab questionnaire **individually**.
 
+You are <span style="color:#ff791a; font-weight: bold;">not required</span> to submit your code for this lab. You will need it anyway for your 1D Project Checkoff 1: ALU and you should submit it then. Simply head to eDimension and do the lab questionnaire by the stipulated due date. 
 
 ## Related Class Materials
 The lecture notes on [Logic Synthesis](https://natalieagus.github.io/50002/notes/logicsynthesis) and [Designing an Instruction Set](https://natalieagus.github.io/50002/notes/instructionset) are closely related to this lab. 
 
-**Part A:** Design the ALU Components (Task 1-4) and **Part B:** Studying a Multiplier Design
+**Part 1:** Design 4 combinational ALU components 
 <br>Related sections in the notes: **[Logic Synthesis](https://natalieagus.github.io/50002/notes/logicsynthesis)**	
 * [N-input gates](https://natalieagus.github.io/50002/notes/logicsynthesis#n-input-gates) (all kinds of gates to produce the logic of each component in the ALU)
 * [Special combinational logic devices](https://natalieagus.github.io/50002/notes/logicsynthesis#special-combinational-logic-devices) (multiplexer with 1 or 2 selectors, and combining multiplexers together to form an even bigger one)
 
-**Part C:** Combine each combinational element in Part A and Part B to form an ALU
-<br>Related sections in the notes: **Designing an Instruction Set**
-* [Basics of programmable control systems](https://natalieagus.github.io/50002/notes/instructionset#an-example-of-a-basic-programmable-control-system) (using control signals like ALUFN to **perform different operations (`ADD`, `SHIFT`, `MUL`, etc)** between two **32-bit** inputs A and B in the same ALU circuit -- no hardware modification needed). 
+
 
 The lab will reinforce your understanding on how you can build the circuit to conform to the logic that you want, e.g: adder circuit will perform binary addition of input A and B, etc, and make it **programmable** using the control signal: `ALUFN`. 
 
@@ -93,7 +92,7 @@ Implement an **adder/subtractor** unit that can add or subtract 32-bit two’s c
 The `ALUFN0` input signal controls whether the operation is an `ADD` or `SUBTRACT`.  `ALUFN0` will be set to `0` for an `ADD (S = A + B)` and `1` for a `SUBTRACT (S = A – B)`. To perform a `SUBTRACT`, the circuit first computes the two’s complement of the `B` operand before adding the resulting value with `A`. The two's complement of `B` is computed using the XOR gate and `ALUFN0` as carry in to the first Full Adder in the RCA. 
 
 
-#### Computing Overflow: `V`
+### Computing Overflow: `V`
 Note that **overflow** can never occur when the two operands to the addition have **different** signs. If the two operands have the same sign, then overflow can be detected if the sign of the result differs from the **sign** of the operands. Note that we use `XB`, **not** `B`.
 
 $$\begin{align*}
@@ -106,14 +105,14 @@ V = &A_{31} \cdot XB_{31} \cdot \overline{S_{31}} + \overline{A_{31}} \cdot \ove
 > Why is `V` computed like the above? Start by having a small example, let's say a 4-bit RCA. If we have `A: 0111`, and `B: 0001`, adding both values will result in a **positive overflow**. The true answer to this should be decimal `8`. With signed devices, we need **5** bits to represent decimal 8: `01000`. However since our RCA can only output 4-bits, we have our output as just `1000`, and this means decimal -8 in a **signed** 4-bit output. Now think about other possible overflow cases (negative overflow, etc).
 
 
-#### Detailed Adder/Subtractor Schematic
+### Detailed Adder/Subtractor Schematic
 Here’s the detailed schematic of the adder to get you started:
 
 <img src="{{ site.baseurl }}/assets/contentimage/lab3-fpga/2024-50002-ADDER.drawio.png"  class="center_full"/>
 
 You may start by making a 1-bit **Full Adder** module first, and **then** create a 32-bit RCA module. Afterwards, assemble everything inside `adder.luc`. 
 
-#### Implementation Tips 
+### Implementation Tips 
 
 {: .warning}
 Remember that you are **NOT** allowed to use Lucid's math operator, such as `out = a+b` or `out = a-b` to implement the adder unit. Please follow the implementation of the schematic above. This is part of the requirements of your 1D project. 
@@ -121,6 +120,8 @@ Remember that you are **NOT** allowed to use Lucid's math operator, such as `out
 **for-loops**
 
 You can utilise `for` loops in Lucid (the same applies for Verilog) to **duplicate** creation of multiple units of `fa`. For instance, if you have the following `fa` module interface:
+
+<img src="{{ site.baseurl }}/assets/contentimage/lab3-fpga/2024-50002-FA.drawio.png"  class="center_fifty"/>
 
 ```cpp
 // fa.luc 
@@ -135,6 +136,8 @@ module fa (
     
   )
 ```
+
+
 
 You can utilise it as follows to create a 32-bit Ripple Carry Adder module's body:
 
@@ -177,7 +180,7 @@ In HDLs, **reduction** operators applies the logic across the bits of the input 
 * `&a` (reduction AND) is `1&0&1&01` which is `0`
 * `^a` (reduction XOR) is `1^0^1^0` which is `0`
 
-#### Test 
+### Test 
 
 Once you have implemented `adder.luc`, **connect** its input and output properly in `alu.luc` so that we can test our adder unit **manually**.
 
@@ -205,6 +208,8 @@ Since `a` and `b` are 32-bit long and we only have 24 dip switches, we took a sh
 
 As for `alufn` signal, we use `io_dip[0][5:0]` (the rightmost 6 switches). 
 
+Think of **useful test cases**, such as addition of zeroes, addition of two negative numbers, test overflow, subtraction of -ve values, and so on. 
+
 {: .important}
 Please **utilise the switches carefully**, they're **delicate** and easy to break. Use the tip of a male jumper wire to flick them. 
 
@@ -217,7 +222,7 @@ The inputs to the compare unit are:
 2. The `Z`, `V`, and `N` bits. They're the output of the adder/subtractor unit
 
 
-#### Performance
+### Performance
 The `Z`, `V` and `N` inputs to this circuit can only be produced by the adder/subtractor unit. That means we need to first perform a 32-bit addition/subtraction between `a` and `b` before we can compare them. This means there's some significant **tpd** to produce the output of the compare unit as the RCA is considerably **slow**. 
 
 In real life, you can speed things up considerably by thinking about the *relative* timing of `Z`, `V` and `N` and then designing your logic to minimize delay paths involving late-arriving signals. For instance, if you need to perform computations involving `Z` and other variables, you can compute those intermediary output involving the other variables first while "waiting" for `Z`. We do not need to worry much about it in this Lab as Vivado will do all sorts of optimisation for you. 
@@ -227,7 +232,7 @@ Here’s the detailed schematic of the compare unit. Pay **close** attention to 
 
 <img src="/50002/assets/contentimage/lab3-fpga/2024-50002-COMPARE.drawio.png"  class="center_fifty"/>
 
-#### Implementation Tips 
+### Implementation Tips 
 Since you are **not** allowed to use Lucid's math and comparison operators to implement this lab, it will be beneficial for you if you create a `mux_4` unit first: 
 
 ```cpp
@@ -254,7 +259,7 @@ module mux_4 (
 
 You can then utilise this inside `compare.luc` to implement the compare truth table above. 
 
-#### Test 
+### Test 
 
 Test your compare unit manually **before** proceeding to the next section. Edit `alu.luc` and make all the necessary connection between the `adder` and the `compare` unit, and supply the inputs to the `compare` unit appropriately. You should connect the `out` signal of `alu.luc` to the output of the `compare` unit instead of the `adder` unit **for now**. 
 
@@ -264,6 +269,8 @@ Since the alu **must** produce a 32-bit output, you should **set** the higher 31
 // alu.luc body 
   out = c{31x{b0}, compare.cmp}; // concatenation 
 ```
+
+Again, your test cases **must be comprehensive**, and think of possible **edge** cases such as comparing two negative numbers together, or comparing zeroes. 
 
 {: .important}
 It is very important to test each of your modules **incrementally** before proceeding to the next section. Debugging HDL is <span style="color:#ff791a; font-weight: bold;">extremely difficult</span> (no straightforward and convenient `print` statements or debugger to "pause" execution), so we shall minimise propagation of errors by testing each small module carefully. 
@@ -285,7 +292,7 @@ One possible implementation of a 32-bit boolean unit uses **32 copies of a 4-to-
 
 In total, you should utilise 32 4-to-1 multiplexers to build the boolean unit. You can utilise the earlier created `mux_4.luc` module to implement this. 
 
-#### Implementation Tips 
+### Implementation Tips 
 
 You will need 32 copies of `ALUFN` signals as you will be plugging them into the input ports of each `mux_4`. To do this, you can use the **duplication** operator in lucid, for instance:
 
@@ -308,7 +315,7 @@ You will need 32 copies of `ALUFN` signals as you will be plugging them into the
 ```
 
 
-#### Test 
+### Test 
 Please test the `boolean.luc` module by making appropriate connections in `alu.luc` before proceeding. For now, connect the output of the boolean unit to the output of the alu unit, as follows:
 
 ```cpp 
@@ -321,8 +328,10 @@ Please test the `boolean.luc` module by making appropriate connections in `alu.l
   out = boolean.bool 
 ```
 
+Don't forget to think of **useful test cases** that test not only the functionality of each boolean operation, but also **edge cases** (e.g: `A` and `B` are all `0` or `1`).
+
 ## Task 4: Shifter
-Design a **32-bit shifter** that implements `SRA`, `SHR` and `SHL` instructions.  
+Implement a **32-bit shifter** unit that is able to perform a shift left (SHL), shift right (SRA), or shift right arithmetic (SRA) operation on `A`:
 * The `A[31:0]` input supplies the data to be shifted  
 * The **low-order** 5 bits of the `B[4:0]`  are used as the **shift count** (i.e., from 0 to 31 bits of shift)
 * We do not use the high 27 bits of the `B` input (meaning that `B[31:5]` is **ignored** in this unit)
@@ -331,68 +340,123 @@ For example, if `A: 0x0000 00F0` and we would like to **shift** A to the left by
 
 The desired operation will be encoded on `ALUFN[1:0]` as follows:
 
-<img src="/50002/assets/contentimage/lab3/12.png"  class="center_fourty"/>
+<img src="/50002/assets/contentimage/lab3/12.png"  class="center_fifty"/>
 
-With this encoding, the **control** signal `ALUFN0` is `0` for a **left shift** (SHL) and `1` for a **right shift** (SHR) and `ALUFN1` controls the **sign extension** logic on **right shift**.   
-* For `SHL` and `SHR`, 0’s are shifted into the vacated bit positions.  
-* For `SRA` (“shift right arithmetic”), the vacated bit positions are all filled with A31, the sign bit of the original data so that the result will be the same as dividing the original data by the appropriate power of 2.
-
-Here’s the condensed schematic of the left shifter.  In total, you should use **32x5 = 160** 2-to-1 multiplexers. 
-
-<img src="/50002/assets/contentimage/lab3/13.png"  class="center_seventy"/>
+With this encoding, the **control** signal `ALUFN0` controls whether we are performing a **left shift** or a **right shift** (SHR). `ALUFN1` decides whether we apply the **sign extension** logic on **right shift**.   
+* For `SHL` and `SHR`, `0`s are shifted into the vacated bit positions.  
+* For `SRA` (“shift right arithmetic”), the vacated bit positions are all filled with `A31`, the sign bit of the original data so that the result will be the same as arithmetically dividing the original data by the appropriate power of 2.
 
 #### Detailed Shifter Unit Schematic
-The simplest implementation is to build THREE shifters: one for shifting **left**, one for shifting **right**, and one for shifting **right arithmetic**. Then, we  use a 4-way 32-bit multiplexer to select the appropriate answer as the unit’s output.  
+The simplest implementation is to build **three** separate shifters: one for shifting **left**, one for shifting **right**, and one for shifting **right arithmetic**. 
 
-It’s easy to build a shifter after noticing that a **multi-bit shift** can be **accomplished** by **cascading** shifts by various powers of 2.  
+<img src="{{ site.baseurl }}/assets/contentimage/lab3-fpga/2024-50002-SHIFTER.drawio.png"  class="center_full"/>
+
+Notice how a **multi-bit shift** can be **accomplished** by **cascading** shifts by various powers of 2.  
 * For example, a 13-bit shift can be implemented by a shift of 8, followed by a shift of 4, followed by a shift of 1. 
-* So the shifter is just a cascade of multiplexers each controlled by one bit of the shift count.  
+* Each shifter unit is just a cascade of multiplexers each controlled by one bit of the shift count.  
 
-Here’s the detailed schematic of the **left shifter**. There are really a lot of muxes. Please use the JSim **ITERATOR** for this!
-
-<img src="/50002/assets/contentimage/lab3/14.png"  class="center_seventy"/>
-
-Here’s the detailed schematic of the **right shifter**. 
-
-<img src="/50002/assets/contentimage/lab3/15.png"  class=" center_seventy"/>
-
-Here’s the detailed schematic of the **right arithmetic shifter**. 
-
-<img src="/50002/assets/contentimage/lab3/16.png"  class=" center_seventy"/>
-
-Finally, we can combine all three shifters together to form the total shifter output:
-
-<img src="/50002/assets/contentimage/lab3/17.png"  class="center_seventy"/>
+Afterwards, we can use a 4-way 32-bit multiplexer to select the appropriate answer as the unit’s output.  
 
 {: .new-title}
-> Alternative Approach
+> Alternative Approach: Compact Shifter
 > 
 > Another approach that **adds** latency but **saves** gates is to use the *left shift logic* for **both** left and right shifts, but for right shifts, **reverse** the bits of the `A` input first on the way in and **reverse** the bits of the output on the way out.
+>
+> Here's the schematic of this compact shifter.
+>
+> <img src="{{ site.baseurl }}/assets/contentimage/lab3-fpga/2024-50002-COMPACT-SHIFTER.drawio.png"  class="center_full"/>
 
+### Implementation Tips 
 
-{: .highlight}
-**Write** your answer in the space provided inside `lab3_alu_submit.jsim`. We have created a test jig to test your shift unit: `lab3_testshifter.jsim`. Use it to test that your shifter unit works properly. 
+You might want to create a `mux_2.luc` module here to help your implementation:
 
 ```cpp
-.include "nominal.jsim"
-.include "stdcell.jsim"
-.include "lab3_mult.jsim"
-* .include "lab3_testadder.jsim"
-* .include "lab3_testcompare.jsim"
-* .include "lab3_testboolean.jsim"
- .include "lab3_testshifter.jsim"
-* .include "lab3_testmultiply.jsim"
-* .include "lab3checkoff.jsim"
+module mux_2 (
+    input s0,
+    input in[2], // note: you can put input as an array, or declare them separately, e.g: input d0, input d1
+    // it will affect how you utilise this mux
+    output out
+  ) {
 
-**********************************
-**** Shifter32 circuit ***********
-.subckt shift32 ALUFN[1:0] A[31:0] B[4:0] shift[31:0]
-* BEGIN ANSWER
-
-
-* END ANSWER
-.ends
-**********************************
+  always {
+    case (s0) {
+      0: out = in[0];
+      1: out = in[1];
+      default:
+        out = 0;
+    }
+  }
+}
 ```
 
+Then, you might want to implement `x_bit_left_shifter.luc` unit, where x is a variable value. You can supply a parameter to a module that can be "instantiated" during declaration time. 
+
+```cpp
+module x_bit_left_shifter #(
+  // parameter declaration, to be set during module instantiation
+  // default value given is 8
+  SHIFT = 8 : SHIFT > -1 & SHIFT < 32
+  )(
+    input a[32],
+    input shift,
+    input pad,
+    output out[32]
+  ) {
+  
+  // module declarations
+  // declare your mux_2 (32 of them)
+  // other useful variables, e.g: shifted_bits[32] 
+  
+  always {
+    // assign value to shifted_bits[32] depending on the value of SHIFT
+    // connect the selector of each mux_2 with shift 
+    // 
+    // use a for-loop to: 
+    // connect input[0][i] of each mux_2 with a[i]
+    // connect input[1][i] of each mux_2 with the shiftedbits[i]xs
+  }
+}
+```
+
+{: .warning-title}
+> Warning: Instance Connections
+> 
+> Be cautious when connecting inputs and parameters using **instance connections**. They are **duplicated** across modules. 
+>
+> For example: `pipeline pipe [8] (#DEPTH(16));` instantiate 8 pipe modules, each with `DEPTH = 16`. As of now, we have not find a direct way to set different `DEPTH` parameter values for each `pipe` (in verilog, we can do this with `generate`). 
+> 
+> Here's what the documentation say: _You can also specify an array size for the instance. If you do this, that module will be duplicated in your design for each element in the array. Any connections or parameters specified at instantiation will be connected to each instance separately. For example, if your module has a single-bit input `clk` and you connect a signal to it, that single-bit signal will be **duplicated** and **connected** to **each** module._
+>
+> However, this behaviour is <span style="color:#ff791a; font-weight: bold;">not observed</span> in `dff` (**special type**). You can do: `dff ctr [32] (#INIT(32d15), .clk(clk));` and `ctr[0]` will take the least significant bit of `32d15` as `INIT`, which is `1`, and `ctr[31]` will take the most significant bit of `32d15` as its `INIT`, which is `0`. 
+
+### Performance
+
+The shifter unit is made by cascading various multiplexers together to shift `A` in **stages**. Suppose you know the `tpd` of each mux_2, could you compute the tpd of the shifter unit output? 
+
+> Of course it depends on your design and which shift operation is done (e.g: SHR vs SRA). Compute the `tpd` for each design (regular vs compact shifter) and shift operation.
+
+### Test 
+Please test the `shifter.luc` module by making appropriate connections in `alu.luc` before proceeding. For now, connect the output of the shifter unit to the output of the alu unit, as follows:
+
+```cpp 
+// alu.luc body
+
+  shifter.a = a;
+  shifter.b = b[4:0];
+  shifter.alufn_signal = alufn_signal;
+
+  out = shifter.shift;
+```
+
+Please be **mindful** when testing this unit, it should be as comprehensive as the tests you've done for the other 3 units above. 
+
 ## Summary 
+
+You are free to implement each module in whichever way you deep fit, or even come up with a new schematic as long as you don't use Lucid's math operators and compare operators. 
+
+Remember to **always** test each module separately. 
+
+In the next lab, we will implement the multiplier module and attempt to assemble each module together to form a complete 32-bit ALU unit. 
+
+{: .highlight}
+When you're done with the implementation of these 4 modules, head to eDimension to complete this week's lab quiz. 

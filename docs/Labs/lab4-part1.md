@@ -26,11 +26,15 @@ Written by: Natalie Agus (2023)
 
 Please clone the starter code from this repository, then **open** it with Alchitry Lab. 
 ```
-git clone https://github.com/natalieagus/beta-fpga-starter.git
+git clone https://github.com/natalieagus/beta-starter.git
 ```
+
+Then, you shall **paste** the implementation of your 32-bit ALU unit created in Lab 3: ALU. Be sure to include **all** files required by your `alu.luc`.
 
 {: .important}
 Since there's only 1 FPGA per group, you need to work through this lab as a 1D group during class. However each person must still submit the lab questionnaire **individually**.
+
+You are <span style="color:#ff791a; font-weight: bold;">not required</span> to submit your code for this lab. Simply head to eDimension and do the lab **questionnaire** by the stipulated due date. 
 
 ## Related Class Materials
 The lecture notes on [Building the Beta CPU](https://natalieagus.github.io/50002/notes/betacpu), and [Designing an Instruction Set](https://natalieagus.github.io/50002/notes/instructionset) are closely related to this lab. 
@@ -63,6 +67,9 @@ The goal of this lab is to build a **fully** functional 32-bit Beta Processor on
 <img src="/50002/assets/contentimage/lab4/beta_lab.png"  class="center_seventy"/><br>
 
 The signals indicated in red refers to external **`INPUT`** to our Beta, supplied by the **Memory Unit**. The signals illustrated yellow refers to our Beta's **`OUTPUT`** to the **Memory Unit**.
+
+{: .note}
+We have made this lab easier by simply asking you to **paste** the code snippets given to the **correct** location in the project. Please study each section **carefully** as this will be beneficial not only for your 1D Project and Exam, but also to sharpen your knowledge in basics of computer architecture which might be useful in your future career as a computer science graduate. 
 
 
 ## Memory Unit
@@ -453,7 +460,7 @@ Note that the snippet above is located near the end of the `always` block becaus
 
 
 ## ALU + WDSEL Unit
-This unit is fairly straightforward to implement.  **In fact, it is so easy and we just implement it for you** inside `beta_cpu.luc`. We  provide you with the ALU unit (`alu.luc`) so you don't have to make the 32-bit version. We follow closely the modular implementation of ALU from Lab 3. 
+This unit is fairly straightforward to implement.  **In fact, it is so easy and we just implement it for you** inside `beta_cpu.luc`.
 
 ### ALU+WDSEL Unit Schematic
 Here is the suggested **ALU + WDSEL** Unit schematic that we implemented: 

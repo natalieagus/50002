@@ -29,6 +29,9 @@ In this second part of the lab, we will learn about further implementations to *
 5. To trigger `ILLOP` (software interrupt) and demonstrate how it is handled 
 
 
+You are <span style="color:#ff791a; font-weight: bold;">not required</span> to submit your code for this lab. Simply head to eDimension and do the lab **questionnaire** by the stipulated due date. 
+
+
 ## Beta Tester Source Code
 We have written a simple 28-line tester code for your Beta inside `instruction_rom.luc`. Unfortunately, we don't have a nice auto-tester and auto-graded checkoff file like we have in `jsim`. We just need to either manually ensure that the outputs are correct by observing each **state** of the Beta (PC content, Regfile content, control signals, etc) at each instruction execution or write an automatic tester like you did for your ALU in Checkoff 1.
 
@@ -552,7 +555,7 @@ You need not to worry about the possibility that asynchronous interrupt request 
 Experiment with different assembly program of your liking to ensure that you understand how Beta CPU works. You can even execute functions with proper procedure, or even use this as your 1D project. 
 
 {: .important}
-Please talk to your instructors if you plan to implement your 1D with a general purpose CPU instead of an FSM. Your checkoff criteria will have to be slightly adjusted.
+Please talk to your instructors if you plan to implement your 1D with a general purpose CPU instead of an FSM. We would like to learn more about your implementation beforehand.
 
 Also, be mindful about the <span style="color:red; font-weight: bold;">supervisor bit</span>. Ensure that you fully understand how it can be set or cleared. We paste the information from the first part of the handout below for clarity. 
 
