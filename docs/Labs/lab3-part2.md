@@ -164,8 +164,6 @@ When multiplying two numbers where the sign of one is significant (like in two's
 > 
 > Combinational multipliers implemented as described above are pretty slow!  There are many design tricks we can use to speed things up – see the appendix on “Computer Arithmetic” in any of the editions of **Computer Architecture: A Quantitative Approach** by John Hennessy and David Patterson (Morgan Kauffmann publishers).
 
-### Implementation tips 
-
 
 ### Test 
 
