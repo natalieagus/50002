@@ -221,7 +221,7 @@ Be sure to test your ALU **comprehensively**. Here's some suggestions (you're no
    - **All Zeros and Ones**: `A OR 0` should be `A`, `A OR 0xFFFF` should be 0xFFFF.
    - **Identity Check**: `A OR A` should give `A`.
 6. XOR (0x16)
-   - **Id entity Check**: `A XOR 0` should give `A`, `A XOR A` should give 0.
+   - **Identity Check**: `A XOR 0` should give `A`, `A XOR A` should give 0.
    - **Complement Check**: `A XOR NOT A` should give 0xFFFF.
 7. "A" (LDR) (0x1A)
    - **Load Function**: Ensure that inputting `A` gives `A`, and does not modify it.
