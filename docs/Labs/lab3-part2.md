@@ -70,9 +70,9 @@ The multiplication process involves the following steps:
   x 1101   (B = 13 in decimal)
   ------
     1011   (This is A * 1; the rightmost bit in B is 1)
-   1011    (This is A * 0; shift left by 1 because we're on the second bit from the right in B)
+   0000    (This is A * 0; shift left by 1 because we're on the second bit from the right in B)
   1011     (This is A * 1; shift left by 2)
-1011       (This is A * 1; shift left by 3)
+ 1011       (This is A * 1; shift left by 3)
 ------
 10011111   (Sum of the above partial products)
 ```
@@ -135,21 +135,21 @@ The multiplication (ignoring overflow) of these two numbers is:
  0110     (A * 1, shift left by 2)
 0110      (A * 1, shift left by 3)
 ------
-10001110
+1001110   (78 in decimal, unsigned)
 ```
 
 However, the multiplication as **signed** numbers works differently because the last partial product **should be negated**:
 
 ```vb
-   0110   (A = 6)
- x 1101   (B = -3, as signed)
- ------
-   0110   (A * 1)
-  0000    (A * 0, shift left by 1)
- 0110     (A * 1, shift left by 2)
-1010000   (A * 1, shift left by 3, we get 0110 but this time it should be negated)
+    0110   (A = 6)
+  x 1101   (B = -3, as signed)
+  ------
+    0110   (A * 1)
+   0000    (A * 0, shift left by 1)
+  0110     (A * 1, shift left by 2)
+ 1010000   (A * 1, shift left by 3, we get 0110000 but it should be negated, resulting in 1010000)
 ------
-11111110 (after performing two's complement subtraction for the last original partial product 0110)
+ 1101110 (-18 in decimal, signed)
 ```
 
 If you're confused, realise that the negation of `0110000` is `1010000` (flip the bits, then add 1).
