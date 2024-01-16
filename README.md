@@ -2,4 +2,4 @@
 
 Respective markdown materials can be found under `/docs` directory.
 
-Please make an MR should you find any issues. 
+Please make a PR should you find any issues and would like your fixes to be reviewed and merged. 
