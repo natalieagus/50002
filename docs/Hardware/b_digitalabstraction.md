@@ -128,7 +128,7 @@ Below are the explanations necessary to understand the figure above:
 3.  The **absolute difference** between $$V_{ol}$$ and $$V_{il}$$ is called the **low bit noise margin**, and the **absolute difference** between $$V_{oh}$$ and $$V_{ih}$$ is called the **high bit noise margin**.
 
 {: .note}
-Low-bit/high-bit noise margin is formally defined as the **maximum** voltage amplitude of *extraneous* (erronous) signal that can be added to the noise-free input level *without* causing a drastic change in the output voltage and that it is still within the valid logic level. 
+Low-bit/high-bit noise margin is formally defined as the **maximum** voltage amplitude of *extraneous* (erroneous) signal that can be added to the noise-free input level *without* causing a drastic change in the output voltage and that it is still within the valid logic level. 
 
 ### Noise Immunity
 The **noise immunity** (like an "overall" or "effective" noise margin) is the ***minimum*** between the high bit noise margin and the low bit noise margin.
@@ -171,8 +171,7 @@ Explanation of the VTC figure above:
 - The name *'forbidden zone'* comes from the fact that  any value within this zone means that the device receives **valid** input but is unable to produce a valid output hence **violating the static discipline** and cannot be used as a combinational logic device.
 
 You can quickly tell if a digital device can be *potentially* be used as a combinational logic device **iff**: you can **find** a set of these four voltage specifications: $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, and $$V_{ih}$$ **whereby its VTC curve  does not cross the forbidden zone** and that $$V_{ol}$$< $$V_{il}$$ < $$V_{ih}$$ < $$V_{oh}$$.
-* We typically begin by *guessing* each value of $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, and $$V_{ih}$$ and check if the curve crosses the forbidden zone (check if static discpline obeyed) formed by these four values. 
-
+* We typically begin by *guessing* each value of $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, and $$V_{ih}$$ and check if the curve crosses the forbidden zone (check if static discipline obeyed) formed by these four values. 
 * If static discipline is violated, we either adjust our guess or find another device. 
 * Also, we want to choose  $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, and $$V_{ih}$$ that **maximises noise immunity**. -
 
