@@ -44,7 +44,11 @@ You are recommended to read this guide at the end of week 2, after you have fini
 >
 > [Please read the guide here](https://natalieagus.notion.site/Vivado-on-EC2-8ad5254e1091458bb62ce1e10ff5e95f?pvs=4). 
 
+### Intel macs
+If somehow you're still using Intel macbooks, then you might want to **dual boot** ([step by step guide here](https://docs.google.com/presentation/d/1yiXF70mobzyOHiCXZC9BBaf-A0aWPYj0CFVkv2Mx47A/edit?usp=sharing)), or use virtualisation software like VMWare or Virtual Box. There are plenty of guides online on how to set up these VMs with Windows. 
+
 ### x86 Windows or Linux 
+
 1. Install <a href="https://www.xilinx.com/support/download.html" target="_blank">Xilinx Vivado</a> : scroll down until you see the **Self-extracting Web-Installer**  (Windows or Linux only). 
 	* Sign-up for a **free** Xilinx account 
 	* Download Vivado ML Edition (2023.2) or Vivado HLx (2020.2). Either are tested and work perfectly. If you don't see these versions, please click the left tab **Vivado Archive** under "Version" in the site. 
