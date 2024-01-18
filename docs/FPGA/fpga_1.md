@@ -36,14 +36,20 @@ You are recommended to read this guide at the end of week 2, after you have fini
 **Before you begin, please install some softwares:**
 1. Prepare **at least 50GB** of free space. It goes without saying that you can use cloud storage (Dropbox, GDrive, iCloud Drive, AWS Cloud) or get an external drive. 
 
+### Apple Silicon
 {: .new-title}
-> macOS users
+> Apple Silicon Users
 > 
-> If you're a MacOS user, then you'd need to install Windows (dual-boot with Bootcamp is recommended, update your OS to the latest version first).  You need at least 60-70 GB for this, since  Windows OS alone will take up to 20GB of your space. If needed, see <a href="https://docs.google.com/presentation/d/1yiXF70mobzyOHiCXZC9BBaf-A0aWPYj0CFVkv2Mx47A/edit?usp=sharing" target="_blank">this step-by-step guide</a>   on how to perform bootcamp. M1
+> There's no way to run and compile with Vivado on Apple Silicon macs. A possible workaround is to set up a remote x86 instance, e.g: AWS EC2 instance and then install Alchitry Labs + Vivado on it.  It is pretty involved. Estimated time taken: 6 hours
+>
+> [Please read the guide here](https://natalieagus.notion.site/Vivado-on-EC2-8ad5254e1091458bb62ce1e10ff5e95f?pvs=4). 
 
-2. Install <a href="https://www.xilinx.com/support/download.html" target="_blank">Xilinx Vivado</a> : scroll down until you see the **Self-extracting Web-Installer**  (Windows or Linux only). Sorry Mac users, you will have to **Bootcamp** Windows 10 / Ubuntu.
+### x86 Windows or Linux 
+1. Install <a href="https://www.xilinx.com/support/download.html" target="_blank">Xilinx Vivado</a> : scroll down until you see the **Self-extracting Web-Installer**  (Windows or Linux only). 
 	* Sign-up for a **free** Xilinx account 
-	* Then, when you obtain the installer, install the **Vivado HL WebPACK Edition** (this is the free edition) 
+	* Download Vivado ML Edition (2023.2) or Vivado HLx (2020.2). Either are tested and work perfectly. If you don't see these versions, please click the left tab **Vivado Archive** under "Version" in the site. 
+	<img src="{{ site.baseurl }}//images/fpga_1/2024-01-18-19-14-57.png"  class="center_seventy"/>
+	* When the installer has been downloaded, open it and install **Vivado ML Standard** (if you choose Vivado ML Edition) or **Vivado HL WebPACK Edition** (if you choose Vivado HLx). This is the **free** version.
 	*  To avoid installing too many things, select just **Vivado** and **Artix7**:
 	<br><img src="https://dropbox.com/s/vqcvos3ram702u9/vivado1.png?raw=1"   class="center_thirty">
 	<img src="	https://dropbox.com/s/9ixj1lxu6vvi2so/vivado2.png?raw=1"   class="center_thirty"><br>
@@ -51,7 +57,7 @@ You are recommended to read this guide at the end of week 2, after you have fini
 3. Then, download the  <a href="https://alchitry.com/alchitry-labs" target="_blank">Alchitry Lab IDE</a>. This is the IDE where you can write your program in Lucid and flash it to the FPGA via USB connection. 
 
 {: .highlight}
-If needed, see step by step installation <a href="https://docs.google.com/presentation/d/12bO_RXe9b0qlX6HdUPo9ZpgxnwFnCszzvEmzzHluGng/edit?usp=sharing" target="_blank">here</a>. 
+If needed, see step by step installation <a href="https://www.notion.so/natalieagus/Vivado-on-EC2-8ad5254e1091458bb62ce1e10ff5e95f?pvs=4#2fbb74193830466b933cb9c21a4b86a7" target="_blank">here</a>. 
 
 By the end of this document, you should be able to create **simple combinational logic** modules and test them on Alchitry Au. 
 
