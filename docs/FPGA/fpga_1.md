@@ -21,7 +21,7 @@ Singapore University of Technology and Design
 
 # Getting Started with FPGA: Part 1
 {: .no_toc}
-This document is written to guide you with hardware programming in <a href="https://cdn.shopify.com/s/files/1/2702/8766/files/Lucid_Reference.pdf" target="_blank">Lucid</a>, a more human friendly version of Verilog -- the popular but relatively *difficult* hardware descriptive language.  Ultimately, we want to compile our code into a binary file to be loaded to our FPGA: the Alchitry Au, so that the FPGA can emulate the behavior of the machine that we describe via the code. 
+This document is written to guide you with hardware programming in <a href="https://cdn.shopify.com/s/files/1/2702/8766/files/Lucid_Reference.pdf" target="_blank">Lucid</a>, a more human friendly version of Verilog -- the popular but relatively *difficult* hardware descriptive language (HDL).  Ultimately, we want to compile our code into a binary file to be loaded to our FPGA: the Alchitry Au, so that the FPGA can emulate the behavior of the machine that we describe via the code. 
 
 **Some fun facts about Alchitry Au:**
 * It features **Xilinx Artix 7** FPGA, containing 33280 logic cells (the more cells, the better. Our code can "program" these cells, so if our FPGA has more cells it means that we can implement more complex functionalities)
@@ -33,8 +33,12 @@ More information about the board can be found <a href="https://alchitry.com/boar
 {: .note}
 You are recommended to read this guide at the end of week 2, after you have finished **logic synthesis**, otherwise you might feel a little lost. 
 
-**Before you begin, please install some softwares:**
-1. Prepare **at least 50GB** of free space. It goes without saying that you can use cloud storage (Dropbox, GDrive, iCloud Drive, AWS Cloud) or get an external drive. 
+You're required to install the following softwares to be able to compile and synthesize your HDL (read more about installation guide below): 
+1. Vivado 
+2. Latest Java SE 
+3. Alchitry Lab IDE
+
+Prepare **at least 80GB** of free space. It goes without saying that you can use cloud storage (Dropbox, GDrive, iCloud Drive, AWS Cloud) or get an external drive. You may stop here and read [this document instead for the most updated installation notes](https://natalieagus.notion.site/FPGA-Guide-464d950baa6e487a9d641d850e5d104f?pvs=4). What's written below is a **summary** if you'd like to speed things up. 
 
 ### Apple Silicon
 {: .new-title}
