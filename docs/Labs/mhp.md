@@ -33,9 +33,9 @@ By the end of this project you should be able to:
 
 ## Deliverables
 You have 3 tasks to do to score all 4%:
-1. **(0.5%)** Answer related questions about this handout on eDimension (Task 1-7, Task 9-12)
-2. **(0.5%)** Assemble 1-bit HALF adder on a breadboard and checkoff in class with a TA or Instructor (Task 8)
-3. **(3%)** Make a **1-bit FULL adder** using basic logic gates provided in your 1D kit, and **solder** the circuit on a stripboard. See our course handout for further submission details on sample submission photo. 
+1. Task A **(0.5%)**: Answer related questions about this handout on eDimension (Task 1-7, Task 9-12)
+2. Task B **(0.5%)**: Assemble 1-bit HALF adder on a breadboard and checkoff in class with a TA or Instructor (Task 8)
+3. Task C **(3%)**: Make a **1-bit FULL adder** using basic logic gates provided in your 1D kit, and **solder** the circuit on a stripboard. See our course handout for further submission details on sample submission photo. 
 
 ## Basics of Breadboard
 The **breadboard** can be use to **prototype** your circuit design fast without the need to solder anything. Take out a breadboard, battery pack, LED, resistor, a few jumper wires, and assemble the following simple circuit. 
