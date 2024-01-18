@@ -20,7 +20,7 @@ Written by: Natalie Agus (2023)
 
 # 1D Part 1 - Mini Hardware Project 
 
-This project is **part 1** of your 1D project (with **part 2** being your Electronic Game Hardware Project, details in the course handout). This part 1 weighs 4% of your total assesment, while part 2 weighs 25%. The goal of this project is to familiarise yourself with:
+This project is **part 1** of your 1D project (with **part 2** being your Electronic Game Hardware Project, details in the course handout). This part 1 weighs 4% of your total assessment, while part 2 weighs 25%. The goal of this project is to familiarise yourself with:
 1. The behavior of a few logic gates, 
 2. Basic wiring and using the breadboard
 3. Soldering various hardware components: switches, LEDs, resistors, logic gates
@@ -138,7 +138,7 @@ The **output** is represented by the <span style="color:orange; font-weight: bol
 
 <span style="color:red; font-weight: bold;">For the purpose of this lab</span>, when the LED is ON, it means that pin 3 (1Y) supplies a **high voltage** (which results in current flowing through the LED and power dissipated to light up the bulb). Let's name this **HIGH VOLTAGE** condition as **digital value `1`**. In other words, we say that pin 3 (1Y) supplies digital value `1` to the LED if the LED is lit up. 
 
-The LED itself is just a "tool" that we use to read the voltage value of pin 3 (1Y). If the voltage is HIGH enough, our LED is ON. Otherwise, our LED is OFF. We <span style="color:red; font-weight: bold;">dont really care</span> about the actual voltage value of pin 3 (1Y), only that it is a **HIGH VOLTAGE**: <span style="color:red; font-weight: bold;">higher than the lowest voltage in the circuit</span>, which is the battery's (-) terminal.
+The LED itself is just a "tool" that we use to read the voltage value of pin 3 (1Y). If the voltage is HIGH enough, our LED is ON. Otherwise, our LED is OFF. We <span style="color:red; font-weight: bold;">don't really care</span> about the actual voltage value of pin 3 (1Y), only that it is a **HIGH VOLTAGE**: <span style="color:red; font-weight: bold;">higher than the lowest voltage in the circuit</span>, which is the battery's (-) terminal.
 
 #### Digital value `0`
 Similarly, <span style="color:red; font-weight: bold;">for the purpose of this lab</span>, when the LED is OFF (at least to the naked eye), it means that pin 3 (1Y) supplies a **low voltage**. It does not necessarily mean that it is 0V, but **low enough** in comparison to the highest voltage point in the entire circuit which is the battery's (+) terminal.  In other words, we say that pin 3 (1Y) supplies digital value `0` to the LED if the led is **not** lit up.
@@ -146,7 +146,7 @@ Similarly, <span style="color:red; font-weight: bold;">for the purpose of this l
 Again, we <span style="color:red; font-weight: bold;">don't really care</span> about the actual low voltage of pin 3 (1Y). 
 
 {: .highlight}
-The notion of a "**LOW ENOUGH**" and "**HIGH ENOUGH**" voltage which corresnponds to digital value `0` and `1` respectively (without caring about its actual numerical value)  is called **digital abstraction**. You will learn it in future lectures. 
+The notion of a "**LOW ENOUGH**" and "**HIGH ENOUGH**" voltage which corresponds to digital value `0` and `1` respectively (without caring about its actual numerical value)  is called **digital abstraction**. You will learn it in future lectures. 
 
 #### VDD and GND
 If you haven't realised already, the terms **HIGH** and **LOW** voltages are <span style="color:red; font-weight: bold;">relative</span> and not absolute. The same logic applies to VDD and GND. 
