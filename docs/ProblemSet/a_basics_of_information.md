@@ -265,7 +265,7 @@ Each dice throw can result in any number between 1 to 6, which requires: $$\log_
 
   
 
-**(c.)** After throwing the die 9 times in total, how many **new bits** of information did he get from making the last (the 10th) throw? Give your answer in 3 decimal places.
+**(c.)** Consider the scenario in (b), to use the same die repeatedly. After throwing the die 9 times in total, how many **new bits** of information did he get from making the last (the 10th) throw? Give your answer in 3 decimal places.
 
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
