@@ -269,7 +269,7 @@ Each dice throw can result in any number between 1 to 6, which requires: $$\log_
 
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-With the same idea as the previous part, the last dice throws solve the mystery on whether we will get number 1, 2, 3, 4, 5, or 6. Hence we are given: $$\log_2(6)=2.585 \text{ bits}$$ from the last throw. Note that this is significantly different from the bits of information that has been given to us so far. The nine dice throws have given us: $$9*\log_2(6) \text{ bits}$$The last nice throws give us another: $$\log_2(6) \text{ bits}$$Please pay close attention to the wording of the question.
+With the same idea as the previous part, the last dice throws solve the mystery on whether we will get number 1, 2, 3, 4, 5, or 6. Hence we are given: $$\log_2(6)=2.585 \text{ bits}$$ from the last throw. Note that this is significantly different from the bits of information that has been given to us so far. The nine dice throws have given us: $$9*\log_2(6) \text{ bits}$$The last dice throw give us another: $$\log_2(6) \text{ bits}$$Please pay close attention to the wording of the question.
 </p></div><br>
 
 
