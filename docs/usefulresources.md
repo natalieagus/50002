@@ -1,7 +1,7 @@
 ---
 layout: notoc 
-title: Documentation 
-permalink: /documentation
+title: Useful Resources 
+permalink: /resources
 nav_order: 101
 ---
 
