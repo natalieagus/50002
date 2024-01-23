@@ -369,8 +369,8 @@ If we perform addition of two values (1 digit max) in base 10, our possible outp
 2. [ ] 0 to 3
 3. [ ] 0 to 4
 
-#### Representing `2` in base 2
-How do we represent the value `2` in base 2? 
+#### Representing 2 in base 2
+How do we represent the value 2 in base 2? 
 
 1. [ ] 00
 1. [ ] 01
