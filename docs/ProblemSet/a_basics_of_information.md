@@ -246,7 +246,7 @@ The most positive value in decimal: 2147483647. The most negative value in decim
 
 A group of five friends are playing a game that requires them to generate random numbers using 10 fair dice in the beginning before proceeding with the game. They each will throw the 10 dice and sum up all the outcomes of the dice to get the random number. Answer the following questions:
 
-**(a.)** How many bits at the **minimum** (so round up your answer to the nearest integer) are required to encode all distinct numeric outcomes of 10?
+**(a.)** How many bits at the **minimum** (so round up your answer to the nearest integer) are required to encode all distinct outcomes of the random number from the 10 dice throws? 
 
   
 
