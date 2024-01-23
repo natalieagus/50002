@@ -108,7 +108,7 @@ Let's figure out the **functionality** of each of these logic gate by assembling
 * Let's begin by examining its **functionality** first before later studying how it works
 
 ### 74HC00
-Let's take into example this Quad NAND gate (74HC00). Assemble it on your breadboard as follows. Please note the orientation of the <span style="color:red; font-weight: bold;">notch</span>!
+Let's take into example this Quad NAND gate (74HC00). Assemble it on your breadboard as follows. Please note the orientation of the <span style="color:red; font-weight: bold;">notch</span>, and also please ensure that the gate is placed correctly on the breadboard: 
 
 <img src="{{ site.baseurl }}/assets/images/mhp/MHP-1_NAND.png"  class="center_seventy"/>
 
@@ -459,6 +459,19 @@ Notice the presence of two resistors below the switch. These are called the <spa
 
 Do not forget to **test** your carry out by using the dipswitch and observing if the LED is **lit** up only when both of the switches are **ON**. 
 
+#### Using Push Button 
+
+If you're given push buttons instead of switches in your 1D kit, please note the push button's schematic. Each pin is **always connected** to the pin across it. When the button is pushed, the connection between a pin and its neighbouring pin is formed: 
+
+<img src="{{ site.baseurl }}/assets/images/mhp/button-schematic.png"  class="center_seventy"/>
+
+However when the button is released, the circuit is **broken** and the wire to the LED (or logic gate later on) is known as **floating** (the voltage is indeterminate) so we need to connect it to ground to ensure the LED/gate receives 0V (OFF):
+
+<img src="{{ site.baseurl }}/assets/images/mhp/button-connection_bb.png"  class="center_seventy"/>
+
+
+
+Each of the pair
 
 
 ### Task 7
@@ -466,7 +479,7 @@ Do not forget to **test** your carry out by using the dipswitch and observing if
 {: .new-title}
 > Assemble Sum
 > 
-> Now, assemble the carry out unit on a breadboard.
+> Now, assemble the sum unit on a breadboard.
 
 Follow the schematic below. Make sure you **use the right logic gate** to compute the Sum bit:
 
