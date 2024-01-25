@@ -55,7 +55,7 @@ $$\log_2(101\times101) - \log_2(26\times26) = 3.916$$
 </p></div><br>
 
 
-##  ISTD Prize (Intermediate)
+## [ISTD Prize (Intermediate)](https://youtu.be/tZTnNwkhg88)
   
 
 Your cohort in ISTD contains 100 students:
@@ -240,7 +240,7 @@ The most positive value in decimal: 2147483647. The most negative value in decim
 
 
 
-## Dice Throwing Game (Intermediate)
+## [Dice Throwing Game (Intermediate)](https://youtu.be/aySDpsq8Vd8)
 
   
 
@@ -330,8 +330,8 @@ Which of the following signed numbers is **the representation** of number -32 fo
 </p></div><br>
 
 
-## Proof of 2's Complement (Challenging)
----
+## [Proof of 2's Complement (Challenging)](https://youtu.be/44_d1apK3D8)
+
 
 At first glance, "Complement and add 1" doesn't seem like an obvious way to negate a two's complement number. By manipulating the expression $$A + (-A) = 0$$, **show** that "complement and add 1" does produce correct representation for the negative of a two's complement number. 
 

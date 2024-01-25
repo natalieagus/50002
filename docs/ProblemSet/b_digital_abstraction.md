@@ -77,17 +77,19 @@ as the part with the highest gain in the middle of the graph can most probably b
 
 <img src="https://dropbox.com/s/q363sc7ov84ww45/Q2.png?raw=1"    class="center_fifty"    >
 
+[Video explanation here.](https://youtu.be/W5rF1_6WpGI)
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 No. This device gain is not more than 1, hence it cannot be used as a combinational device.
 </p></div><br>
 
-**(b).** You are designing a new logic family and trying to decide on values of the four parameters: Vol, Vil, Vih, and **Voh** that lead to non-zero noise margins for various possible inverter designs. Four proposed inverter designs exhibit the VTC shown in the diagrams below. **For each design, either specify four suitable values** of Vol, Vil, Vih, and **Voh** or **explain why no values can obey the static discipline.** 
+**(b).** You are designing a new logic family and trying to decide on values of the four parameters: Vol, Vil, Vih, and Voh that lead to non-zero noise margins for various possible inverter designs. Four proposed inverter designs exhibit the VTC shown in the diagrams below. **For each design, either specify four suitable values** of Vol, Vil, Vih, and **Voh** or **explain why no values can obey the static discipline.** 
 
 *Hint: you may want to start by choosing Noise Immunity to be between 0.2V to 0.5V for ease of computation.*
 
 <img src="https://dropbox.com/s/j8e2aii7x6cjtv2/Q3.png?raw=1"     class="center_fifty"   >
 
+[Video explanation here.](https://youtu.be/W5rF1_6WpGI)
 
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
@@ -121,7 +123,7 @@ However we do know for sure that the <i>input cannot be higher than</i> **Vih** 
 
  
 
-## VTC Analysis (Intermediate)
+## [VTC Analysis (Intermediate)](https://youtu.be/4HJPsu6HAZM)
 
 Take a look at the figure below.
  
@@ -147,7 +149,7 @@ Which of the following specification(s) **does not obey** the static discipline?
 <strong>None of them</strong> obey the static discipline. You may easily check whether the device is able to provide the prescribed **Voh** given a corresponding **Vih** in the options, and whether it is able to provide as well the given **Vol** given a coresponding **Vil** in the options from tracing the graph.
 </p></div><br>
 
-## Choosing Signaling Thresholds (Intermediate)
+## [Choosing Signaling Thresholds (Intermediate)](https://youtu.be/bynDAQ1_Ojk)
 
 The following are VTCs of a single-input single-output devices to be used in a project: 
 
