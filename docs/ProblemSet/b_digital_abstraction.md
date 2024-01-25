@@ -123,7 +123,7 @@ However we do know for sure that the <i>input cannot be higher than</i> **Vih** 
 
  
 
-## [VTC Analysis (Intermediate)](https://youtu.be/4HJPsu6HAZM)
+## VTC Analysis (Intermediate)
 
 Take a look at the figure below.
  
@@ -144,18 +144,21 @@ Which of the following specification(s) **does not obey** the static discipline?
 
 1. $$V_{IL} = 0.5V, V_{IH} = 3.5V, V_{OL} = 0V, V_{OH} = 4V$$
 
+[Video Explanation here.](https://youtu.be/4HJPsu6HAZM)
   
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 <strong>None of them</strong> obey the static discipline. You may easily check whether the device is able to provide the prescribed **Voh** given a corresponding **Vih** in the options, and whether it is able to provide as well the given **Vol** given a coresponding **Vil** in the options from tracing the graph.
 </p></div><br>
 
-## [Choosing Signaling Thresholds (Intermediate)](https://youtu.be/bynDAQ1_Ojk)
+## Choosing Signaling Thresholds (Intermediate)
 
 The following are VTCs of a single-input single-output devices to be used in a project: 
 
 <img src="{{ site.baseurl }}/assets/images/pset/2024-50002-PS2.drawio.png"  class="center_seventy"/>
 
 Choose a **single set** of signaling threshold: Vol, Vil, Vih, Voh to be used with **both devices** to give the best noise immunity possible. 
+
+[Video explanation here.](https://youtu.be/bynDAQ1_Ojk)
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 The four values are: Vol = 0.5V, Vil = 1.5V, Vih = 3.5V, and Voh = 4.5V. This results in low noise margin and high noise margin of 1V. The noise immunity is therefore 1V. 

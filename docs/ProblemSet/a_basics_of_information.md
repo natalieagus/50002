@@ -55,7 +55,7 @@ $$\log_2(101\times101) - \log_2(26\times26) = 3.916$$
 </p></div><br>
 
 
-## [ISTD Prize (Intermediate)](https://youtu.be/tZTnNwkhg88)
+## ISTD Prize (Intermediate)
   
 
 Your cohort in ISTD contains 100 students:
@@ -68,6 +68,8 @@ Your cohort in ISTD contains 100 students:
 
 
 Now someone in your class won "the first to join ISTD" prize. Answer the following questions:
+
+[Video explanation here.](https://youtu.be/tZTnNwkhg88)
 
 **(a.)** If you are told the student ID of this winner, how much **information** did you receive in bits?
 
@@ -240,11 +242,13 @@ The most positive value in decimal: 2147483647. The most negative value in decim
 
 
 
-## [Dice Throwing Game (Intermediate)](https://youtu.be/aySDpsq8Vd8)
+## Dice Throwing Game (Intermediate)
 
   
 
 A group of five friends are playing a game that requires them to generate random numbers using 10 fair dice in the beginning before proceeding with the game. They each will throw the 10 dice and sum up all the outcomes of the dice to get the random number. Answer the following questions:
+
+[Video xplanation here.](https://youtu.be/aySDpsq8Vd8)
 
 **(a.)** How many bits at the **minimum** (so round up your answer to the nearest integer) are required to encode all distinct outcomes of the random number from the 10 dice throws? 
 
@@ -330,14 +334,15 @@ Which of the following signed numbers is **the representation** of number -32 fo
 </p></div><br>
 
 
-## [Proof of 2's Complement (Challenging)](https://youtu.be/44_d1apK3D8)
-
+## Proof of 2's Complement (Challenging)
 
 At first glance, "Complement and add 1" doesn't seem like an obvious way to negate a two's complement number. By manipulating the expression $$A + (-A) = 0$$, **show** that "complement and add 1" does produce correct representation for the negative of a two's complement number. 
 
 *Hint: express 0 as (-1 + 1) and rearrange the terms to get -A on one side and ZZZ+1 on the other and then think about how the expression ZZZ is related to A using only logical operations (AND, OR, NOT).* 
 
 Also, see how binary subtraction 'borrow' method works [here](https://www.wikihow.com/Subtract-Binary-Numbers) if you dont know how it works.
+
+[Video Explanation here.](https://youtu.be/44_d1apK3D8)
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 Let:
