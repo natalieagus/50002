@@ -106,7 +106,7 @@ Hence, the **tpd** of the 8-bit RCA is: $$1.8+7\times1.3=10.9$$</li>
 The contamination delay of the 8-bit RCA remains at 0.3ns.</ol></p></div>
 
 
-## Combinational Construction Rules (Challenging)
+## Combinational Construction Rules (Intermediate)
 
 During lecture, we learned a first set of principles that define a combinational device. A combinational device is a circuit element that has:
 1.  One or more digital inputs.
