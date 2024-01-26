@@ -54,7 +54,7 @@ These topics are taught before the recess week. They are **tested** during our M
 6. Comprehend The Dynamic Discipline
 7. Analyse timing requirements, focusing on the roles of Tsetup and Thold 
 8. Utilize understanding of propagation delay, contamination delay, and the dynamic discipline to evaluate and propose solutions for real-world problems in sequential logic circuits.
-9. Reflect on the importance of timing in circuit design
+9. Reflect on the importance of timing in circuit design (Metastable State)
 
 ## [Finite State Machine](https://natalieagus.github.io/50002/notes/fsm)
 1. Define finite state machine and its purpose
