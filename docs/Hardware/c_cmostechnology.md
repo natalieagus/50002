@@ -104,8 +104,8 @@ See the figure below and its corresponding explanation to understand better how 
 	- When $$V_G > V_{TH}$$, it draws the electrons towards the gate. An n-channel (made of electrons) will be formed between source and drain.
 	- Note that $$V_{TH}$$ for NFET is *positive*.
 3.  When it is \"ON\", current can pass from D to S.
-	- Electronits **majority** charge carrier flows from S to D
-		> We can say that its majority charge carrier is **drained** at 
+	- Electron, its **majority** charge carrier flows from S to D
+		> We can say that its majority charge carrier is **drained** at D
 	- The output of an NFET is at the D terminal.
 	- Hence, the output of an \"ON\" N-type is `0`
 4.  It is \"OFF\" when $$V_{GS}$$ is **low**, as it encourages depletion region to form further.
@@ -124,8 +124,8 @@ See the figure below and its corresponding explanation to understand better how 
 	  - When $$V_G < `VDD` + V_{TH}$$ (or equivalently, $$V_{GS} < V_{TH}$$), it draws the holes towards the gate. A p-channel (made of holes) will be formed between source and drain.
 	  - Note that $$V_{TH}$$ for PFET is *negative*.
 3.  When it is \"ON\", current can pass from S to D.
-	- Holeits **majority** charge carrier flows from S to D. 
-		> We can say that its majority charge carrier is **drained** at D (same as NFE
+	- Holes, its **majority** charge carrier flows from S to D. 
+		> We can say that its majority charge carrier is **drained** at D (same as NFE)
 	- The output of an PFET is also at the D terminal.
 	- Hence, the output of an \"ON\" p-type is `1`
 4.  It is "OFF" when $$V_{GS}$$ is **high**, as it encourages depletion region to form further.
