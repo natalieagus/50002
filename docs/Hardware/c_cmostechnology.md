@@ -69,7 +69,7 @@ There are two types of FETs: the **NFET** and the **PFET**.
 2.  **The PFET** : the majority of the charge carrier for the **bulk** are electrons (n-type semiconductor). The majority of the charge carrier for the **source and drain** are holes (p-type semiconductor). Typically, the bulk is connected to `VDD` to keep the PN junction *reverse biased*
 
 {: .note}
-Please watch the [post-preading video](https://www.youtube.com/watch?v=cJxBlO5NMGs&list=PLklpDKpv-EBhCVUAZDDRWEGZzR_It-FSo&index=3) or refer to the [later](https://natalieagus.github.io/50002/notes/cmostechnology#supplementary-sections) section if you are unclear about what is a PN junction, p-type, or n-type semiconductors.
+Please watch the [post-reading video](https://www.youtube.com/watch?v=cJxBlO5NMGs&list=PLklpDKpv-EBhCVUAZDDRWEGZzR_It-FSo&index=3) or refer to the [later](https://natalieagus.github.io/50002/notes/cmostechnology#supplementary-sections) section if you are unclear about what is a PN junction, p-type, or n-type semiconductors.
 
 
 Some terms we need to set straight before we proceed:
@@ -78,7 +78,7 @@ Some terms we need to set straight before we proceed:
 3.  `GND` : ground
 4.  *Reverse-biased:* a state whereby D is insulated from S, where current cannot flow from D to S **in the presence of applied voltage**.
 5.  A FET that is  "ON" refers to a state whereby  there exists a connection between D and S, so that current can flow through them.
-6.  A FET that is "OFF" referes to a state whereby there is no connection between D and S. Current cannot flow through them.
+6.  A FET that is "OFF" refers to a state whereby there is no connection between D and S. Current cannot flow through them.
 
 The circuit symbol for NFET and PFET are shown as below. Note that the bulk of NFET is connected to `GND`, and the bulk of PFET is connected to `VDD`.
 
