@@ -461,7 +461,7 @@ This statement produces a periodic waveform with the following shape:
 <img src="/50002/assets/contentimage/lab1/5.png"  class="center_fifty"/>
 
 ### Task 5: Measuring tpd and tcd
-Replace the netlist fragment from Task C with the following test circuit that will let us measure various delays:
+Replace the netlist fragment from Task 3 with the following test circuit that will let us measure various delays:
 
 ```cpp
 * test jig for measuring tcd and tpd
@@ -481,7 +481,7 @@ Voh voh 0 3.0v
 ```
 
 {: .note}
-Make these measurements using your “improved” nand2 gate from Task C that has the centered VTC, i.e., with the updated widths for the PFETs.
+Make these measurements using your “improved” nand2 gate from Task 3 that has the centered VTC, i.e., with the updated widths for the PFETs.
 
 We use an **inverter** (`inv`) to drive the `nand2` input since we would normally expect the test gate to be driven by the output of another gate (there are some subtle timing effects that we’ll miss if we drive the input directly with a voltage source).  Run the simulation with the “**device-level simulation**” button and measure the contamination and propagation delays for both the rising and falling output transitions.  You will meet such waveforms: 
 
