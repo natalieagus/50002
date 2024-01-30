@@ -310,7 +310,7 @@ Then apply DeMorgan law:<br>
 
 
 
-## Reading Karnaugh's Map
+## Reading Karnaugh's Map (Basic)
 
 Given the following Karnaugh's Map, write its **simplified boolean equation**.
 <br>
