@@ -401,14 +401,14 @@ The necessary control signals are:
 <li>`MD` = X (value doesn't matter) </li>
 <li> `ME` = 0 (select C1) </li>
 </ul></li><br>
-<li> Let `Z = G(G1, G2, G3, G4)` be the function of the 4 variables, so the four inputs are connected directly to node `G1-G4`. Then, let `X = F(F1, F2, F3, F4)` and  let `Y = H(C1, C2, X) = H(C1, C2, F(F1, F2, F3, F4))`. The functions of <span style="color:red; font-weight: bold;">six</span> variables which can be implemented (along with the 4-variable function) are all those functions that can be **re-written** as the function H with 3 variables. The inputs to this function of three variables must be 2 of the original variables (plugged at nodes `C1`, `C2`) and some function of the remaining four variables (plugged at nodes `G1-G4`). The necessary control signals are:
+<li> Let `Z = G(G1, G2, G3, G4)` be the function of the 4 variables, so the four inputs are connected directly to node `G1-G4`. Then, let `X = F(F1, F2, F3, F4)` and  let `Y = H(C1, C2, X) = H(C1, C2, F(F1, F2, F3, F4))`. The functions of <span style="color:red; font-weight: bold;">six</span> variables which can be implemented (along with the 4-variable function) are all those functions that can be **re-written** (decomposable) as the function H with 3 variables. The inputs to this function of three variables must be 2 of the original variables (plugged at nodes `C1`, `C2`) and some function of the remaining four variables (plugged at nodes `G1-G4`).The necessary control signals are:
 <ul>
 <li> `MA` = 0 </li>
 <li> `MB` = 1 </li>
 <li> `MC` = X (value doesn't matter) </li>
 <li> `MD` = 0 (select C1) </li>
 <li> `ME` = 1 (select C2) </li>
-</ul></li><br>
+</ul><br>An example of decomposable function in this case is `H = (C1 XOR C2) AND (F1 OR F2 OR F3 OR F4)`. There's no complex interaction between `C` and `F` variables. On the other hand, the following function is not decomposable to fit the structure of `H` required above: `H = (F1 XOR F2) AND (F3 OR C1) AND (NOT F4 OR C2)`. This function intertwines the C variables with the F variables in a way that their outputs are dependent on each other's values. For example, the outcome of the operation `F3 OR C1` depends on both `F3` and `C1`, which means that the value of `C1` directly influences how `F3` contributes to the overall function and thus creating dependency between them. It won't be possible to encapsulate these two variables separately as either purely `C1`, `C2` inputs or as `F(F1, F2, F3, F4)` output in `H`. </li><br>
 <li> Let: `X = F(F1, F2, F3, F4)`, `Z = G(G1, G2, G3, G4)`, `Y = H(C1, X, Z) = H(C1, F(F1, F2, F3, F4), G(G1, G2, G3, G4))`. The 9 inputs are connected to node `F1-F4`, `G1-G4`, and `C1`. The functions of <span style="color:red; font-weight: bold;">nine</span> variables that can be implemented are all those functions that can be re-written as the function `H` consisted of these 3 variables: `C1`, `F`, and `G`. The inputs to this three-variable function will be **one** of the original variables, plus **two** separate functions of 4 variables `F1-F4`, `G1-G4` (these two 4-variable functions will have the remaining 8 original variables as inputs).
 <ul>
 <li> `MA` = 0 </li>
