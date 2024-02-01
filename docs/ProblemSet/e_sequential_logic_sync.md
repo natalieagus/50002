@@ -219,7 +219,10 @@ Answer the following questions:
 ## Synchronizability (Basic)
 Which of the following cannot be made to function with perfect reliability, assuming reliable components and connections? <span style="color:red; font-weight: bold;">Explain your reasoning</span>. 
 
-Some of the specifications refer to <span style="color:red; font-weight: bold;">bounded time</span> which means there is a specified time interval, measured from the most recent input transition, after which the output is stable and valid.
+Some of the specifications refer to <span style="color:red; font-weight: bold;">bounded time</span> which means there is a specified time interval, measured from the most recent input transition, after which the output is stable and valid. Before we start, let's clarify some terms:
+* **Bounded time **refers to a scenario where the circuit produces a stable, valid output within a specified time interval after receiving an input. This means there's a known maximum time by which the circuit will respond.
+* **Unbounded time** implies that there is no guaranteed maximum time for the circuit to produce a stable, valid output. The circuit may eventually respond, but the exact time frame is unpredictable.
+* **Arbiter circuit**: This is a circuit used to decide between two competing inputs, like determining which game show contestant pressed their button first.
 
 1. A circuit that in unbounded time indicates <span style="color:red; font-weight: bold;">which of two</span> game show contestants pressed their button first.
 	<div  cursor="pointer"  class="collapsible">Show Answer</div>  <div  class="content_answer">
@@ -231,10 +234,12 @@ Some of the specifications refer to <span style="color:red; font-weight: bold;">
 	</p>
 	</div><br>
 		
-2. A circuit that in bounded time indicates which of two game show contestants pressed their button first.
+2. A circuit that in bounded time indicates which of two game show contestants pressed their button first (the arbiter circuit). 
 	<div  cursor="pointer"  class="collapsible">Show Answer</div>  <div  class="content_answer">
 	<p>
 	This is a restatement of the previous part, known to be <span style="color:red; font-weight: bold;">unsolvable</span> in theory because every bistable system exhibits at least one metastable state (physics defines this). In practice we can build a circuit to solve this problem where the probability of failure is related to **tpd** (basically we wait out until possible metastable state settles). For large **tpd** (eg, 10's of nanoseconds in today's technologies) the probability of failure can be made very small (eg, 1 failure in billions of years).
+
+	The key here is understanding the concept of a metastable state in digital circuits. A metastable state occurs when the circuit is transitioning between two stable states (like 0 and 1 in binary logic). In this state, the output is undefined and unpredictable. The arbiter circuit is susceptible to this state because it has to make a decision based on two inputs that could change nearly simultaneously.
 	</p>
 	</div><br>
 
@@ -290,6 +295,13 @@ Some of the specifications refer to <span style="color:red; font-weight: bold;">
 	The low-order bit of the encoding is the signal from A, the high-order bit is the signal from B. Nothing can go to metastable here.
 	</p>
 	</div><br>
+
+{: .note}
+> In an ideal world, with perfectly timed inputs and ideal components, this wouldn't be a problem. However, in the real world, there's always a small but non-zero chance that the arbiter will enter a metastable state. This happens when the inputs change in such a way that the circuit cannot clearly decide which one occurred first.
+> 
+> When a circuit is in a metastable state, it can take an undefined amount of time to settle into a stable state (0 or 1). This period can be short, or it can theoretically be very long (hence "unbounded time"). The likelihood of long metastable states is low, but it's not zero, and thus, the circuit cannot be guaranteed to work reliably within a bounded time frame.
+> 
+> So, in summary, while you can build an arbiter circuit with reliable components, you cannot guarantee it will always resolve its output within a bounded, predictable time due to the inherent risk of metastable states. This unbounded time to resolve makes the circuit unreliable for applications where timely decision-making is critical.
 
 
 
