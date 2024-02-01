@@ -208,6 +208,7 @@ $$\begin{aligned} Y = &AB \bar{C} \bar{D} + AB \bar{C}D + \\
 \end{aligned}$$
 
 
+[Video explanation here.](https://youtu.be/8m4e2m42gtk)
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 The final simplified form is $$Y = AB + CD + \bar{B}C$$ 
@@ -245,6 +246,7 @@ She has burned out 97 of her chips, and needs your help before destroying the re
 4. One of Anna's test chips has failed by **burning out the pullup** connected to A as well as the pulldown connected to B. Each of the burned out FETs appears as an open circuit (no connection), but the rest of the circuit remains functional. *Can the resulting circuit be used as a combinational device whose two inputs are A and B?* **Explain** its behavior for each combination of valid inputs.  
 5. In order to salvage her remaining two chips, Anna *connects the A and B inputs of each and tries to use it as a single-input gate.* Can the result be used as a single-input combinational device? **Explain**.
 
+[Video explanation here.](https://youtu.be/rsTm69YW12k)
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 <ol type="1">
@@ -324,7 +326,7 @@ CD  & 0 & 0& 1 & 1\\
 \bar{C}D & 1 & 0 & 1 & 1\\
 \end{matrix}$$
 
-
+[Video explanation here.](https://youtu.be/eCY7V0_UFLI)
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 The minimised boolean expression is: $$AD + \bar{B}\bar{C} + \bar{B} \bar{D}$$
@@ -373,7 +375,7 @@ For **each** configuration <span style="color:red; font-weight: bold;">indicate 
 - And what **output lines** (`X`, `Y`, or `Z`) the result(s) appear on?
 
 
-
+Video explanation here: [part a & b](https://youtu.be/yMdkoZ0s0DE), [part c, d, & e](https://youtu.be/FQfa_QpDcRY).
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 <ol type="a">
