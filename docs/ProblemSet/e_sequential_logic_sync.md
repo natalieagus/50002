@@ -220,7 +220,7 @@ Answer the following questions:
 Which of the following cannot be made to function with perfect reliability, assuming reliable components and connections? <span style="color:red; font-weight: bold;">Explain your reasoning</span>. 
 
 Some of the specifications refer to <span style="color:red; font-weight: bold;">bounded time</span> which means there is a specified time interval, measured from the most recent input transition, after which the output is stable and valid. Before we start, let's clarify some terms:
-* **Bounded time **refers to a scenario where the circuit produces a stable, valid output within a specified time interval after receiving an input. This means there's a known maximum time by which the circuit will respond.
+* **Bounded time** refers to a scenario where the circuit produces a stable, valid output within a specified time interval after receiving an input. This means there's a known maximum time by which the circuit will respond.
 * **Unbounded time** implies that there is no guaranteed maximum time for the circuit to produce a stable, valid output. The circuit may eventually respond, but the exact time frame is unpredictable.
 * **Arbiter circuit**: This is a circuit used to decide between two competing inputs, like determining which game show contestant pressed their button first.
 
