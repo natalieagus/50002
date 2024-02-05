@@ -297,9 +297,9 @@ Some of the specifications refer to <span style="color:red; font-weight: bold;">
 	</div><br>
 
 {: .note}
-> In an ideal world, with perfectly timed inputs and ideal components, this wouldn't be a problem. However, in the real world, there's always a small but non-zero chance that the arbiter will enter a metastable state. This happens when the inputs change in such a way that the circuit cannot clearly decide which one occurred first.
+> In an ideal world, with perfectly timed inputs and ideal components, this wouldn't be a problem. However, in the real world, there's always a **small** but non-zero chance that the arbiter will enter a **metastable** state. This happens when the inputs change in such a way that the circuit **cannot clearly decide** which one occurred first.
 > 
-> When a circuit is in a metastable state, it can take an undefined amount of time to settle into a stable state (0 or 1). This period can be short, or it can theoretically be very long (hence "unbounded time"). The likelihood of long metastable states is low, but it's not zero, and thus, the circuit cannot be guaranteed to work reliably within a bounded time frame.
+> When a circuit is in a metastable state, it can take an undefined amount of time to settle into a stable state (0 or 1). This period can be short, or it can theoretically be very long (hence "unbounded time"). **The likelihood of long metastable states is low, but it's not zero**, and thus, the circuit <span className="orange-bold">cannot</span> be guaranteed to work reliably within a bounded time frame.
 > 
 > So, in summary, while you can build an arbiter circuit with reliable components, you cannot guarantee it will always resolve its output within a bounded, predictable time due to the inherent risk of metastable states. This unbounded time to resolve makes the circuit unreliable for applications where timely decision-making is critical.
 
