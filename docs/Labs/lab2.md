@@ -176,7 +176,7 @@ Then add the following in the header:
 .include "nominal.jsim"
 ```
 
-**Remove** `.include "lab2adder4checkoff.jsim"` becaues we are not testing our Full Adder yet. Then add the following test code below:
+**Remove** `.include "lab2adder4checkoff.jsim"` because we are not testing our Full Adder yet. Then add the following test code below:
 
 ```
 Xtestxor clk1 clk2 xor_out xor2 
