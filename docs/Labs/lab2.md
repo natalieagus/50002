@@ -190,7 +190,7 @@ Xtestxnor clk1 clk2 xnor_out xnor2
 .plot L(xnor_out)
 ```
 
-Visually confirm that your xor and xnor gates are working properly. If yes, move on to Part C. 
+Run the Fast Transient Analaysis and visually confirm that your xor and xnor gates are working properly by looking at the plot. If yes, move on to Part C. 
 
 <img src="{{ site.baseurl }}//images/lab2/2024-02-07-10-37-12.png"  class="center_seventy"/>
 
