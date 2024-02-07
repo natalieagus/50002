@@ -166,6 +166,34 @@ It’s much easier to debug your circuit module-by-module rather than as one big
 .ends
 ```
 
+### Test your XOR and XNOR gate 
+
+Create a **new** file and **paste** all your gates there: xor, xnor, nand2, nor2, inv, etc. 
+
+Then add the following in the header: 
+```
+.include "8clocks.jsim"
+.include "nominal.jsim"
+```
+
+**Remove** `.include "lab2adder4checkoff.jsim"` becaues we are not testing our Full Adder yet. Then add the following test code below:
+
+```
+Xtestxor clk1 clk2 xor_out xor2 
+Xtestxnor clk1 clk2 xnor_out xnor2
+
+.tran 40ns 
+
+.plot L(clk1)
+.plot L(clk2)
+.plot L(xor_out)
+.plot L(xnor_out)
+```
+
+Visually confirm that your xor and xnor gates are working properly. If yes, move on to Part C. 
+
+<img src="{{ site.baseurl }}//images/lab2/2024-02-07-10-37-12.png"  class="center_seventy"/>
+
 ## Part C: Simple 1-bit Adder
 Let’s start a simple **1-bit full-adder** module before proceeding to create a 4-bit Ripple-Carry adder. Later we will discuss higher performance adder architectures you can use in the implementation of the Beta (the computer central processing unit we will be designing in later labs).
 
