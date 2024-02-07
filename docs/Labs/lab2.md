@@ -192,7 +192,7 @@ Xtestxnor clk1 clk2 xnor_out xnor2
 
 Run the Fast Transient Analaysis and visually confirm that your xor and xnor gates are working properly by looking at the plot. If yes, move on to Part C. 
 
-<img src="{{ site.baseurl }}//images/lab2/2024-02-07-10-37-12.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/lab2/2024-02-07-10-37-12.png"  class="center_seventy"/>
 
 ## Part C: Simple 1-bit Adder
 Let’s start a simple **1-bit full-adder** module before proceeding to create a 4-bit Ripple-Carry adder. Later we will discuss higher performance adder architectures you can use in the implementation of the Beta (the computer central processing unit we will be designing in later labs).
