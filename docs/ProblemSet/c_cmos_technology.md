@@ -97,7 +97,7 @@ Answer the following questions:
 
 	<img src="/50002/assets/contentimage/pset2/9.png"  class="center_seventy"/>
 
-[Video explanation here.](https://youtu.be/z_Ela7U0qnk)
+[Video explanation here.](https://youtu.be/VIhAAIudrPo)
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 <ol type="1">
