@@ -73,6 +73,8 @@ Now we feed it the following input signal and `CLK` signal. <span style="color:r
 
 <img src="https://dropbox.com/s/7a8ww9nvk0lzlfq/Q7b.png?raw=1" class="center_fourty" >
 
+[Video explanation here.](https://youtu.be/lil0V8ySjnc)
+
 <div  cursor="pointer"  class="collapsible">Show Answer</div>  <div  class="content_answer">
 <p>
 <strong>Signal 2</strong> is the output of the device since there's two <strong>unknown</strong> outputs (it takes two half-clock cycles for the input to be propagated to the output). 
@@ -140,6 +142,8 @@ Consider the following D-latch device and its VTC plot:
 
 We are given the following specification about the multiplexer's valid operating voltage ranges: $$V_{IL} = 1V, V_{OL} = 0.5V, V_{IH} = 3V, V_{OH} = 3.5V$$. The noise margin is $$0.5V$$ and we can assume that the device obeys the **static discipline**.
 
+[Video explanation here.](https://youtu.be/gQuY-8TkZ8w)
+
 1.  Which voltage value approximately, has the highest probability for the device to be in the metastable state?
 
 	<div  cursor="pointer"  class="collapsible">Show Answer</div>  <div  class="content_answer">
@@ -174,6 +178,8 @@ The specifications are as follows:
 * **tpd**, **tcd** of `INV` and `NOR` gates: 0.5s, and 0.4s respectively.
 
 Answer the following questions:
+
+[Video explanation here.](https://youtu.be/lCZ330_Cre0)
 
 1.  What is the smallest clock period for which the circuit still operates correctly?
 
@@ -223,6 +229,8 @@ Some of the specifications refer to <span style="color:red; font-weight: bold;">
 * **Bounded time** refers to a scenario where the circuit produces a stable, valid output within a specified time interval after receiving an input. This means there's a known maximum time by which the circuit will respond.
 * **Unbounded time** implies that there is no guaranteed maximum time for the circuit to produce a stable, valid output. The circuit may eventually respond, but the exact time frame is unpredictable.
 * **Arbiter circuit**: This is a circuit used to decide between two competing inputs, like determining which game show contestant pressed their button first.
+
+[Video explanation here.](https://youtu.be/w2AfqbvQ1q8)
 
 1. A circuit that in unbounded time indicates <span style="color:red; font-weight: bold;">which of two</span> game show contestants pressed their button first.
 	<div  cursor="pointer"  class="collapsible">Show Answer</div>  <div  class="content_answer">
