@@ -219,7 +219,12 @@ Implement a 32-bit compare unit that generate 1 bit output, depending on the fol
 
 The inputs to the compare unit are:
 1. The `ALUFN` control signals (used to select the comparison to be performed), in particular: `ALUFN[2:1]`
-2. The `Z`, `V`, and `N` bits. They're the output of the adder/subtractor unit
+2. The `Z`, `V`, and `N` bits. They're the output of the adder/subtractor unit. The adder **must** be in **subtraction** mode. 
+
+{: .new-title}
+> Think! 
+>
+> Why should the adder be in subtraction mode? 
 
 
 ### Performance
@@ -261,7 +266,12 @@ You can then utilise this inside `compare.luc` to implement the compare truth ta
 
 ### Test 
 
-Test your compare unit manually **before** proceeding to the next section. Edit `alu.luc` and make all the necessary connection between the `adder` and the `compare` unit, and supply the inputs to the `compare` unit appropriately. You should connect the `out` signal of `alu.luc` to the output of the `compare` unit instead of the `adder` unit **for now**. 
+Test your compare unit manually **before** proceeding to the next section. 
+1. Edit `alu.luc` and make all the necessary connection between the `adder` and the `compare` unit, 
+2. Supply the `Z, V, N` inputs to the `compare` unit appropriately,
+3. Set `adder.alufn_signal = 1` as the adder **must be subtracting** in order for the `Z, V, N` signal to be usable by the compare unit
+
+You should connect the `out` signal of `alu.luc` to the output of the `compare` unit instead of the `adder` unit **for now**. 
 
 Since the alu **must** produce a 32-bit output, you should **set** the higher 31 bits to `0`, and set the LSB to the output of the **compare** unit as follows:
 
