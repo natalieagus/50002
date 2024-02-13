@@ -115,7 +115,7 @@ You may start by making a 1-bit **Full Adder** module first, and **then** create
 ### Implementation Tips 
 
 {: .warning}
-Remember that you are **NOT** allowed to use Lucid's math operator, such as `out = a+b` or `out = a-b` to implement the adder unit. Please follow the implementation of the schematic above. This is part of the requirements of your 1D project. 
+Remember that you are **NOT** allowed to use Lucid's math operator, such as `out = a+b` or `out = a-b` to implement the adder unit. Please follow the implementation of the schematic above. This is part of the requirements of your 1D project. You can however to use these operator for **indexing**.
 
 **for-loops**
 
