@@ -49,7 +49,7 @@ The lecture notes on [Logic Synthesis](https://natalieagus.github.io/50002/notes
 The lab will reinforce your understanding on how you can build the circuit to conform to the logic that you want, e.g: adder circuit will perform binary addition of input A and B, etc, and make it **programmable** using the control signal: `ALUFN`. 
 
 {: .warning}
-You are <span style="color:red; font-weight: bold;">NOT</span> allowed to use **any** of Lucid's **math** and **comparison** operators when implementing this lab. This is the requirement of your 1D project. Please follow the implementation of the units from the given schematics. **Failure to comply will result in -2% of your overall grades.**
+You are <span style="color:red; font-weight: bold;">NOT</span> allowed to use **any** of Lucid's **math** and **comparison** operators when implementing this lab's functionality. This is the requirement of your 1D project. Please follow the implementation of the units from the given schematics. **Failure to comply will result in -2% of your overall grades. However, you can use them for array indexing only**.
 
 ## Part 1 Introduction 
 
