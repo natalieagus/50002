@@ -49,7 +49,7 @@ The lecture notes on [Logic Synthesis](https://natalieagus.github.io/50002/notes
 The lab will reinforce your understanding on how you can build the circuit to conform to the logic that you want, e.g: adder circuit will perform binary addition of input A and B, etc, and make it **programmable** using the control signal: `ALUFN`. 
 
 {: .warning}
-You are <span style="color:red; font-weight: bold;">NOT</span> allowed to use **any** of Lucid's **math** and **comparison** operators when implementing this lab's functionality. This is the requirement of your 1D project. Please follow the implementation of the units from the given schematics. **Failure to comply will result in -2% of your overall grades. However, you can use them for array indexing only**.
+You are <span style="color:red; font-weight: bold;">NOT</span> allowed to use **any** of Lucid's **math** and **comparison** operators when implementing this lab's functionality. This is the requirement of your 1D project because we would like you to learn the basics and not solely rely on Vivado's capability on creating components of the ALU. Please follow the implementation of the units from the given schematics. **Failure to comply will result in -2% of your overall grades**. However, you can use them for array indexing or checking conditions in loops. 
 
 ## Part 1 Introduction 
 
@@ -462,7 +462,7 @@ Please be **mindful** when testing this unit, it should be as comprehensive as t
 
 ## Summary 
 
-You are free to implement each module in whichever way you deep fit, or even come up with a new schematic as long as you don't use Lucid's math operators and compare operators. 
+You are free to implement each module in whichever way you deep fit, or even come up with a new schematic as long as you don't use Lucid's math operators and compare operators to implement any of these 13 functionalities. You can however use them for indexing purposes or conditional loops. 
 
 Remember to **always** test each module separately. 
 
