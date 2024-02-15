@@ -49,11 +49,11 @@ The lecture notes on [Logic Synthesis](https://natalieagus.github.io/50002/notes
 The lab will reinforce your understanding on how you can build the circuit to conform to the logic that you want, e.g: adder circuit will perform binary addition of input A and B, etc, and make it **programmable** using the control signal: `ALUFN`. 
 
 {: .warning}
-You are <span style="color:red; font-weight: bold;">NOT</span> allowed to use **any** of Lucid's **math** and **comparison** operators when implementing this lab's functionality. This is the requirement of your 1D project because we would like you to learn the basics and not solely rely on Vivado's capability on creating components of the ALU. Please follow the implementation of the units from the given schematics. **Failure to comply will result in -2% of your overall grades**. However, you can use them for array indexing or checking conditions in loops. 
+You are <span style="color:red; font-weight: bold;">NOT</span> allowed to use **any** of Lucid's [**math** and **comparison** operators](https://alchitry.com/lucid-reference) when implementing this lab's ALU 13 functionalities. This is the requirement of your 1D project because we would like you to learn the basics and not solely rely on Vivado's capability on creating components of the ALU. Please follow the implementation of the units from the given schematics. **Failure to comply will result in -2% of your overall grades**. However, you can use them for array indexing or checking conditions in loops. 
 
 ## Part 1 Introduction 
 
-In this lab, we will build a 32-bit **arithmetic and logic unit (ALU)** for the Beta processor. You <span style="color:#ff791a; font-weight: bold;">will</span> need this for your 1D Project Checkoff 1, just that you will need to **modify** it to be a **16-bit ALU**.  
+In this lab, we will build a 32-bit **arithmetic and logic unit (ALU)** for the Beta processor. You <span style="color:#ff791a; font-weight: bold;">will</span> need this for your 1D Project Checkoff 1, just that you will need to **modify** it to be a **16-bit ALU**. It should be a minor change for you to adapt the ALU for your 1D project (simply change in size). We will stick with 32-bit ALU in this Lab because we will need it for the next lab when we make the 32-bit Beta CPU taught in the lectures. 
 
 {: .new-title}
 > Arithmetic Logic Unit (ALU)
@@ -212,6 +212,39 @@ Think of **useful test cases**, such as addition of zeroes, addition of two nega
 
 {: .important}
 Please **utilise the switches carefully**, they're **delicate** and easy to break. Use the tip of a male jumper wire to flick them. 
+
+### Further Note 
+We made it a requirement in your 1D project to **NOT** use Lucid (or Verilog) math and comparison operators when implementing any of the 13 functionalities of the ALU. You can technically implement a 32-bit adder unit in this manner and let Vivado do the work: 
+
+```cpp
+module adder (
+    input a[32],
+    input b[32],
+    input alufn0,
+    output s[32]
+  ) {
+
+  always {
+    if (alufn0){
+      s = a + b;
+    }
+    else{
+      s = a - b;
+    }
+  }
+}
+```
+
+However the above does not allow you to learn anything new. Implementing components of the ALU from scratch has its own benefits as you're still learning. 
+
+Firstly, it enables you to gain a deeper insight into the underlying hardware mechanisms that perform arithmetic operations, and offers a tangible perspective on how abstract mathematical concepts are translated into physical, operational circuits. 
+
+This hands-on experience is invaluable for developing an appreciation of the intricacies and challenges associated with digital circuit design, including considerations of **timing**, **power consumption**, and **scalability**.
+
+Secondly, it encourages problem-solving skills, requiring you to apply logic and reasoning to create efficient and functional circuits, along with the first few weeks of 50.002 materials. This process enhances your ability to design, troubleshoot, and optimize digital systems, skills that are crucial for both academic and professional success in the CS field.
+
+Finally, it cultivates an **appreciation** for the evolution of digital design methodologies and the role of automation in modern engineering. You are *not* learning *how to rely* on Vivado but rather to figure out how it works under the hood.
+
 
 ## Task 2: Compare Unit
 Implement a 32-bit compare unit that generate 1 bit output, depending on the following conditions: 

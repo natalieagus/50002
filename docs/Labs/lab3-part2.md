@@ -36,6 +36,9 @@ The lecture notes on [Logic Synthesis](https://natalieagus.github.io/50002/notes
 <br>Related sections in the notes: **Designing an Instruction Set**
 * [Basics of programmable control systems](https://natalieagus.github.io/50002/notes/instructionset#an-example-of-a-basic-programmable-control-system) (using control signals like ALUFN to **perform different operations (`ADD`, `SHIFT`, `MUL`, etc)** between two **32-bit** inputs A and B in the same ALU circuit -- no hardware modification needed). 
 
+{: .warning}
+Remember that you are <span style="color:red; font-weight: bold;">NOT</span> allowed to use **any** of Lucid's [**math** and **comparison** operators](https://alchitry.com/lucid-reference) when implementing this lab's ALU 13 functionalities. This is the requirement of your 1D project because we would like you to learn the basics and not solely rely on Vivado's capability on creating components of the ALU. Please follow the implementation of the units from the given schematics. **Failure to comply will result in -2% of your overall grades**. However, you can use them for array indexing or checking conditions in loops. 
+
 ## Part 2 Introduction 
 In thit Part 2 of our ALU lab, we will implement a 32-bit multiplier unit and then assemble each of the components we have crated in Part 1 plus the multiplier to form a 32-bit ALU. 
 
@@ -249,7 +252,26 @@ Congratulations 🎉🎉! You have successfully built a 32-bit ALU in this lab a
 
 For your 1D project, you will need to downsize the ALU to support 16-bit instead of 32-bit. It shouldn't be too much work to modify. You might also want to consider creating **automatic tester** using the `fsm` module for your 1D Project Checkoff 1: ALU. Read the FPGA tutorials linked in our course handout for further information, and don't forget to polish your knowledge on Sequential Logic before proceeding. 
 
-Please also **read Checkoff 1: ALU** requirements and rubrics given in the course handout **carefully**. 
+Please also **read Checkoff 1: ALU** schedule, requirements and rubrics given in the course handout **carefully**. Do not miss your checkoff slot. 
+
+For your Checkoff 1: ALU, you're also required to create additional functionalities. You **are allowed** to use Lucid math and comparison operator for this **NEW** functionality. For example, if your new operation involves `DIVISION` between A and B, you're allowed to implement it as follows:
+
+```cpp
+// divide a by b
+module divider (
+    input a[32], // dividend
+    input b[32], // divisor
+    output d[32] // a/b
+  ) {
+
+  always {
+    d = a/b;
+  }
+}
+
+```
+
+Only the original 13 functionalities must be implemented using logic gates as per the circuitry given in this lab handout. 
 
 {: .highlight}
 When you're done with the implementation of your ALU, head to eDimension to complete this week's lab quiz. 
