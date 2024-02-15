@@ -156,6 +156,8 @@ Consider the schematic of a machine as follows, which function is to: *detect a 
 
 <img src="https://dropbox.com/s/nx1s0kw3iu0cvqz/Q6.png?raw=1" class="center_fifty" >
 
+[Video explanation here.](https://youtu.be/WbhtWbL45jw) 
+
 Let's analyse the circuit by answering the questions below:
 1. If the circuit has an **initial** state of `AB=00`, and the input at `t=0` is `x=0`, what will the immediate next state be?
 	<div  cursor="pointer"  class="collapsible">Show Answer</div>  <div  class="content_answer">
@@ -265,6 +267,8 @@ The timing specifications for other devices in the state machine is:
 * The Registers has the following time specification: **tcd** = `2ns`, **tpd** = `5ns`, **ts** = `2ns`, **th** = `2ns`.
 
 Both `A1` and `A2` are **combinational** logic that contains `A000R` only. Unfortunately, the design for `A1` is missing. We only know that `A1` uses only `A000R` to compute the output and the next state function and that `A1` has the same **tpd** as `A2`. The other information that we have is that the output of `A1`, `X[2:0]` is a sequence of decimal, `[1, 2, 3, ... ]` in the binary form, i.e. `[001, 010, 011, ...]`.
+
+[Video explanation here.](https://youtu.be/dAQTt2aojrY) 
 
 Answer the following questions:
 1. How many bits should the constant `Z1` have?
