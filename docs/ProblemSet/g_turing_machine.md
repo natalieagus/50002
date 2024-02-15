@@ -51,7 +51,7 @@ Unfortunately, the Universal FSM will have some fixed number (N) of states built
 
 
 ## FSM in TM (Intermediate)
-We encode the state of a Turing machine into `2` bits, the value that is read (input) from and written (output) onto the infinite tape into `2` bits, and the output move on the tape (left or right) into 1 bit. How many different finite state machines are there to control such a Turing machine? 
+We encode the state of a Turing machine into `2` bits, the value that is read (input) from and written (output) onto the infinite tape into `2` bits, and the output move on the tape (left or right) into `1` bit. How many different finite state machines are there to control such a Turing machine? 
 
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
