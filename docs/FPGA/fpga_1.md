@@ -56,7 +56,7 @@ If somehow you're still using Intel macbooks, then you might want to **dual boot
 1. Install <a href="https://www.xilinx.com/support/download.html" target="_blank">Xilinx Vivado</a> : scroll down until you see the **Self-extracting Web-Installer**  (Windows or Linux only). 
 	* Sign-up for a **free** Xilinx account 
 	* Download Vivado ML Edition (2023.2) or Vivado HLx (2020.2). Either are tested and work perfectly. If you don't see these versions, please click the left tab **Vivado Archive** under "Version" in the site. 
-	<img src="{{ site.baseurl }}//images/fpga_1/2024-01-18-19-14-57.png"  class="center_seventy"/>
+	<img src="{{ site.baseurl }}/assets/images/2024-01-18-19-14-57.png"  class="center_seventy"/>
 	* When the installer has been downloaded, open it and install **Vivado ML Standard** (if you choose Vivado ML Edition) or **Vivado HL WebPACK Edition** (if you choose Vivado HLx). This is the **free** version.
 	*  To avoid installing too many things, select just **Vivado** and **Artix7**:
 	<br><img src="https://dropbox.com/s/vqcvos3ram702u9/vivado1.png?raw=1"   class="center_thirty">
