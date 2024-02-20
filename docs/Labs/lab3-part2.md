@@ -246,6 +246,75 @@ Be sure to test your ALU **comprehensively**. Here's some suggestions (you're no
     - **Less Than or Equal**: Test where `A` is less than or equal to `B`.
     - **Greater Than**: Test where `A` is greater than `B` to ensure the result is false.
 
+### Testing tips 
+
+You should use the `fsm` component to test your ALU properly instead of using the buttons to hardcode values of A and B. If you follow the notes closely, you notice that bit 16 to 23 is always hardcoded as `0`:
+
+```
+a.d = c{io_dip[2], 8b0, io_dip[1], io_dip[0]}; // set io_dip[2] to dictate MSB 8 bits
+```
+
+What if we want to key in all 32-bits value of A? We need to leverage the `fsm`. You can declare an `fsm` in `au_top` as follows. There are 6 different states, each indicating whether we are setting the lower or higher 16 bits of A, and B, as well as the ALUFN, and then putting the fsm into RUN state. 
+
+```
+fsm alu_runner(.clk(clk), .rst(rst)) = {SET_A_16, SET_A_32, SET_B_16, SET_B_32, SET_ALUFN, RUN};
+```
+
+Now let's use `io_button[4]` to advance the fsm to next state, and `io_button[3]` to allow it to move from `RUN` to `SET_A_16` again. We need to modify the `button_conditioner`:
+
+```
+   // in .clk block 
+   button_conditioner button_conditioner[5];
+
+   // in always block 
+   button_conditioner.in = io_button[4:0];
+```
+
+Then we need to dictate what happened during each state in the `always` block. Below is one example:
+
+```
+case (alu_runner.q){
+        alu_runner.SET_A_16:
+          if (button_conditioner.out[4]){
+            a.d = c{a.q[31:16], io_dip[1], io_dip[0]};
+            alu_runner.d = alu_runner.SET_A_32;
+          }
+          
+        alu_runner.SET_A_32:
+          if (button_conditioner.out[4]){
+            a.d = c{io_dip[1], io_dip[0], a.q[15:0]};
+            alu_runner.d = alu_runner.SET_B_16;
+          }
+          
+        alu_runner.SET_B_16: 
+          if (button_conditioner.out[4]){
+            b.d = c{b.q[31:16], io_dip[1], io_dip[0]};
+            alu_runner.d = alu_runner.SET_B_32;
+          }
+          
+        alu_runner.SET_B_32:
+          if (button_conditioner.out[4]){
+            b.d = c{io_dip[1], io_dip[0], b.q[15:0]};
+            alu_runner.d = alu_runner.SET_ALUFN;
+          }
+          
+        alu_runner.SET_ALUFN:
+          if(button_conditioner.out[4]){
+            alufn.d = io_dip[0][5:0];
+            alu_runner.d = alu_runner.RUN;
+          }
+          
+        alu_runner.RUN:
+          if(button_conditioner.out[3]){
+            // set A again 
+            alu_runner.d = alu_runner.SET_A_16;
+          }
+      }   
+```
+
+You will start the system with the `fsm` being in the `SET_A_16` state, and will only advance to the next state when `io_button[4]` (right button) is pressed. At `SET_A_16` state, we are capturing the states of `io_dip[1]` and `io_dip[0]` to the lower 16 bits of `dff a[32]`. Then you can press `io_button[4]` again to set A's higher 16 bits and so on. Note that you might need to track which state you are at mentally as there's no indication whatsoever. You can improve this by outputting a certain LED at the side of the FPGA when being at each state to indicate which state you're currently at. We leave it up to you to decide. 
+
+
 ## Summary 
 
 Congratulations 🎉🎉! You have successfully built a 32-bit ALU in this lab and familiarse yourself with programming FPGA with Lucid. You will be required to **utilise it** in Lab 4 (Beta CPU), so **please keep a copy of your answer**. 
