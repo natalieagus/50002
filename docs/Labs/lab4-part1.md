@@ -32,7 +32,7 @@ git clone https://github.com/natalieagus/beta-starter.git
 Then, you shall **paste** the implementation of your 32-bit ALU unit created in Lab 3: ALU. Be sure to include **all** files required by your `alu.luc`.
 
 {: .important}
-Since there's only 1 FPGA per group, you need to work through this lab as a 1D group during class and **obtain checkoff as a group** by the end of the Lab next week. However each person must still submit the lab questionnaire **individually**.
+Since there's only 1 FPGA per group, you need to work through this lab as a 1D group during class and **obtain checkoff as a group** by the end of the Lab next week. However each person must still submit the lab questionnaire **individually**. For the checkoff next week, <span className="orange-bold">only group members who are present gain the marks (unless valid LOA).</span>
 
 You are <span style="color:#ff791a; font-weight: bold;">not required</span> to submit your code for this lab, only to show your implementation to your TA and instructors by the end of the Lab next week. Simply head to eDimension and do the lab **questionnaire** by the stipulated due date. 
 
@@ -626,7 +626,7 @@ Finally, when you reach the fifth instruction at address `0x10` (`BNE`), confirm
 
 ### Checkoff
 
-As stated in the beginning of this document, you need to complete all the above and demonstrate a working Beta CPU by the end of next week's lab. You can checkoff as a group. 
+As stated in the beginning of this document, you need to complete all the above and demonstrate a working Beta CPU by the end of next week's lab. You can checkoff as a group. <span className="orange-bold">Only group members who are present gain the marks (unless valid LOA).</span>
 
 {: .new-title}
 > Checkoff 

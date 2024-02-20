@@ -29,7 +29,7 @@ In this second part of the lab, we will learn about further implementations to *
 5. To trigger `ILLOP` (software interrupt) and demonstrate how it is handled 
 
 
-You are <span style="color:#ff791a; font-weight: bold;">not required</span> to submit your code for this lab. Simply head to eDimension and do the lab **questionnaire** by the stipulated due date. Please also complete the **Checkoff** to this lab, which is to demonstrate that the simple tester source code from the previous week works as intended following the screenshots provided in the previous lab. You shall do your checkoff as a group. 
+You are <span style="color:#ff791a; font-weight: bold;">not required</span> to submit your code for this lab. Simply head to eDimension and do the lab **questionnaire** by the stipulated due date. Please also complete the **Checkoff** to this lab, which is to demonstrate that the simple tester source code from the previous week works as intended following the screenshots provided in the previous lab. You shall do your checkoff as a group. <span className="orange-bold">Only group members who are present gain the marks (unless valid LOA).</span>
 
 
 ## Beta Tester Source Code
