@@ -260,14 +260,16 @@ What if we want to key in all 32-bits value of A? We need to leverage the `fsm`.
 fsm alu_runner(.clk(clk), .rst(rst)) = {SET_A_16, SET_A_32, SET_B_16, SET_B_32, SET_ALUFN, RUN};
 ```
 
-Now let's use `io_button[4]` to advance the fsm to next state, and `io_button[3]` to allow it to move from `RUN` to `SET_A_16` again. We need to modify the `button_conditioner`:
+Now let's use `io_button[4]` to advance the fsm to next state, and `io_button[3]` to allow it to move from `RUN` to `SET_A_16` again. We need to modify the `button_conditioner` and utilise an `edge_detector` because we want to use our buttons as **triggers** to transition the `fsm` to a different state exactly once per button press: 
 
 ```
    // in .clk block 
    button_conditioner button_conditioner[5];
+   edge_detector edge_detector[2](#RISE(1), #FALL(0));
 
    // in always block 
    button_conditioner.in = io_button[4:0];
+   edge_detector.in = button_conditioner.out[4:3];
 ```
 
 Then we need to dictate what happened during each state in the `always` block. Below is one example:
@@ -275,37 +277,37 @@ Then we need to dictate what happened during each state in the `always` block. B
 ```
 case (alu_runner.q){
         alu_runner.SET_A_16:
-          if (button_conditioner.out[4]){
+          if (edge_detector.out[1]){
             a.d = c{a.q[31:16], io_dip[1], io_dip[0]};
             alu_runner.d = alu_runner.SET_A_32;
           }
           
         alu_runner.SET_A_32:
-          if (button_conditioner.out[4]){
+          if (edge_detector.out[1]){
             a.d = c{io_dip[1], io_dip[0], a.q[15:0]};
             alu_runner.d = alu_runner.SET_B_16;
           }
           
         alu_runner.SET_B_16: 
-          if (button_conditioner.out[4]){
+          if (edge_detector.out[1]){
             b.d = c{b.q[31:16], io_dip[1], io_dip[0]};
             alu_runner.d = alu_runner.SET_B_32;
           }
           
         alu_runner.SET_B_32:
-          if (button_conditioner.out[4]){
+          if (edge_detector.out[1]){
             b.d = c{io_dip[1], io_dip[0], b.q[15:0]};
             alu_runner.d = alu_runner.SET_ALUFN;
           }
           
         alu_runner.SET_ALUFN:
-          if(button_conditioner.out[4]){
+          if(edge_detector.out[1]){
             alufn.d = io_dip[0][5:0];
             alu_runner.d = alu_runner.RUN;
           }
           
         alu_runner.RUN:
-          if(button_conditioner.out[3]){
+          if(edge_detector.out[0]){
             // set A again 
             alu_runner.d = alu_runner.SET_A_16;
           }
