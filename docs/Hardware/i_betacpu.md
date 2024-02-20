@@ -453,7 +453,7 @@ x : LONG(15) | this is an array
 
 ## Control Transfer Datapath
 
-So far, we have only seen `PC` to be advanced by 4:  `PC` $$\leftarrow$$ `PC+4`. With instructions involving transfer-of-control or , we are going to set `PC` a little bit differently. 
+So far, we have only seen `PC` to be advanced by 4:  `PC` $$\leftarrow$$ `PC+4`. With instructions involving transfer-of-control, we are going to set `PC` a little bit differently. 
 
 There are three instructions that involves **transfer-of-control** (i.e: *branching*, or *jumping*), that is to change the value of `PC` so that we can execute instruction from other `EA` in the Memory Unit instead of going to the next line. These instructions are `BEQ`, `BNE`, and `JMP`. 
 
