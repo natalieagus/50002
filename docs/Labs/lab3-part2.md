@@ -256,13 +256,13 @@ a.d = c{io_dip[2], 8b0, io_dip[1], io_dip[0]}; // set io_dip[2] to dictate MSB 8
 
 What if we want to key in all 32-bits value of A? We need to leverage the `fsm`. You can declare an `fsm` in `au_top` as follows. There are 6 different states, each indicating whether we are setting the lower or higher 16 bits of A, and B, as well as the ALUFN, and then putting the fsm into RUN state. 
 
-```verilog
+```vb
 fsm alu_runner(.clk(clk), .rst(rst)) = {SET_A_16, SET_A_32, SET_B_16, SET_B_32, SET_ALUFN, RUN};
 ```
 
 Now let's use `io_button[4]` to advance the fsm to next state, and `io_button[3]` to allow it to move from `RUN` to `SET_A_16` again. We need to modify the `button_conditioner` and utilise an `edge_detector` because we want to use our buttons as **triggers** to transition the `fsm` to a different state exactly once per button press: 
 
-```verilog
+```vb
    // in .clk block 
    button_conditioner button_conditioner[5];
    edge_detector edge_detector[2](#RISE(1), #FALL(0));
@@ -274,7 +274,7 @@ Now let's use `io_button[4]` to advance the fsm to next state, and `io_button[3]
 
 Then we need to dictate what happened during each state in the `always` block. Below is one example:
 
-```verilog
+```vb
 case (alu_runner.q){
         alu_runner.SET_A_16:
           if (edge_detector.out[1]){
