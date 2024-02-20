@@ -77,7 +77,7 @@ The multiplication process involves the following steps:
   1011     (This is A * 1; shift left by 2)
  1011       (This is A * 1; shift left by 3)
 ------
-10011111   (Sum of the above partial products)
+10001111   (Sum of the above partial products)
 ```
 
 
