@@ -104,7 +104,7 @@ Two important things happened **at the same time** at every CPU clock cycle:
 	*  If `PCSEL!=0` and `RESET=0`, then the value in the PC REG will be equivalent to either of the inputs to the PCSEL mux (depending on what `PCSEL` value is). 
 
 #### RESET
-If `RESET=1` then the value of the PC REG in the next cycle will be equivalent to `RESET`. We will learn what `RESET` is in the later weeks but in shortm, if `RESET=1`, then the value in the `PC` REG will will be set to `0x80000000` in the **next** clock cycle *instead of being increased by 4* or whichever other address that the supposed current instruction should compute. You will learn in the Virtual Machine chapter on why the MSB of `RESET` is `1` instead of `0`, but for now you can take its purpose as simply *resetting* the machine and eventually putting content of `PC` REG content back to `0` (restarting the program). 
+If `RESET=1` then the value of the PC REG in the next cycle will be equivalent to `RESET`. We will learn what `RESET` is in the later weeks but in short, if `RESET=1`, then the value in the `PC` REG will will be set to `0x80000000` in the **next** clock cycle *instead of being increased by 4* or whichever other address that the supposed current instruction should compute. You will learn in the Virtual Machine chapter on why the MSB of `RESET` is `1` instead of `0`, but for now you can take its purpose as simply *resetting* the machine and eventually putting content of `PC` REG content back to `0` (restarting the program). 
 
 {: .note}
 > Setting `PC=RESET` means that we will **execute** whatever instruction that resides at `0x80000000` in the next cycle. The instruction that resides in the `RESET` address is called the **reset handler**. It is usually a standard routine to **restart your computer**/devices. 
@@ -453,7 +453,7 @@ x : LONG(15) | this is an array
 
 ## Control Transfer Datapath
 
-So far, we have only seen `PC` to be advanced by 4:  `PC` $$\leftarrow$$ `PC+4`. With instructions involving transfer-of-control or , we are going to set `PC` a little bit differently. 
+So far, we have only seen `PC` to be advanced by 4:  `PC` $$\leftarrow$$ `PC+4`. With instructions involving transfer-of-control, we are going to set `PC` a little bit differently. 
 
 There are three instructions that involves **transfer-of-control** (i.e: *branching*, or *jumping*), that is to change the value of `PC` so that we can execute instruction from other `EA` in the Memory Unit instead of going to the next line. These instructions are `BEQ`, `BNE`, and `JMP`. 
 
