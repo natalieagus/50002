@@ -624,6 +624,10 @@ Finally, when you reach the fifth instruction at address `0x10` (`BNE`), confirm
 
 <img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-48-59.png"  class="center_fifty"/>
 
+### Checkoff
+
+As stated in the beginning of this document, you need to complete all the above and demonstrate a working Beta CPU by the end of next week's lab. You can checkoff as a group. 
+
 {: .new-title}
 > Checkoff 
 >
