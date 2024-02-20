@@ -32,9 +32,9 @@ git clone https://github.com/natalieagus/beta-starter.git
 Then, you shall **paste** the implementation of your 32-bit ALU unit created in Lab 3: ALU. Be sure to include **all** files required by your `alu.luc`.
 
 {: .important}
-Since there's only 1 FPGA per group, you need to work through this lab as a 1D group during class. However each person must still submit the lab questionnaire **individually**.
+Since there's only 1 FPGA per group, you need to work through this lab as a 1D group during class and **obtain checkoff as a group** by the end of the Lab next week. However each person must still submit the lab questionnaire **individually**.
 
-You are <span style="color:#ff791a; font-weight: bold;">not required</span> to submit your code for this lab. Simply head to eDimension and do the lab **questionnaire** by the stipulated due date. 
+You are <span style="color:#ff791a; font-weight: bold;">not required</span> to submit your code for this lab, only to show your implementation to your TA and instructors by the end of the Lab next week. Simply head to eDimension and do the lab **questionnaire** by the stipulated due date. 
 
 ## Related Class Materials
 The lecture notes on [Building the Beta CPU](https://natalieagus.github.io/50002/notes/betacpu), and [Designing an Instruction Set](https://natalieagus.github.io/50002/notes/instructionset) are closely related to this lab. 
@@ -69,7 +69,7 @@ The goal of this lab is to build a **fully** functional 32-bit Beta Processor on
 The signals indicated in red refers to external **`INPUT`** to our Beta, supplied by the **Memory Unit**. The signals illustrated yellow refers to our Beta's **`OUTPUT`** to the **Memory Unit**.
 
 {: .note}
-We have made this lab easier by simply asking you to **paste** the code snippets given to the **correct** location in the project. Please study each section **carefully** as this will be beneficial not only for your 1D Project and Exam, but also to sharpen your knowledge in basics of computer architecture which might be useful in your future career as a computer science graduate. 
+Please study each section **carefully** as this will be beneficial not only for your 1D Project and Exam, but also to sharpen your knowledge in basics of computer architecture which might be useful in your future career as a computer science graduate. 
 
 
 ## Memory Unit
@@ -163,28 +163,22 @@ Here is the suggested PC Unit schematic that you can implement. Take note of the
 ### Task 1: PCSEL Multiplexers
 
 {: .highlight}
-**Paste** the code snippet below in the space provided under `PCSEL mux` section inside `pc_unit.luc`. 
+Implement the `PCSEL mux` section inside `pc_unit.luc`. You can follow the following guide, and read each of its relevant sections below.
 
 ```verilog
     case (pcsel){
-      b000: 
-        pcsel_out_sig = pc_4_sig;
-      b001:
-        pcsel_out_sig = pc_4_sxtc_sig;
-      b010:
-        // JMP mux to protect JT31
-        pcsel_out_sig = c{pc.q[31] & reg_data_1[31], reg_data_1[30:0]};
-      b011:
-        pcsel_out_sig = h80000004; // illop 
-      b100: 
-        pcsel_out_sig = h80000008; // irq 
-      default:
+      // consider all cases of pcsel signals 
+      // for JMP, make sure to compute the supervisor bit properly 
+      // for ILLOP and IRQ handlers, ensure that the supervisor bit is set to 1
+     
+      default: // just a default case to silence warnings 
         pcsel_out_sig = pc.q;
      }
     
     // advance the PC only when slowclk is 1 
     if (slowclk){
-      pc.d = c{pcsel_out_sig[31:2], b00}; // setting of pcreg content must happen only when slowclk == 1, don't bring this outside of if (slowclk) clause
+      // set the content of pcreg to be its next value only when slowclk == 1
+
     }
 ```
 
@@ -213,13 +207,7 @@ pc.d = c{pcsel_out[31:2], b00};
 ### Task 2: RESET Multiplexer
 
 {: .highlight}
-**Paste** the code snippet below in the space provided under `RESET mux` section inside `pc_unit.luc`. 
-
-```verilog
-    if (rst){
-        pc.d = h80000000; // reset can happen anytime regardless of slowclk
-    }
-```
+Implement the RESET multiplexer in the space provided under `RESET mux` section inside `pc_unit.luc`. 
 
 
 Remember that we need to add a way to set the PC to zero on `RESET`.  We use a two-input 32-bit mux that selects `0x80000000` when the RESET signal is asserted, and the output of the PCSEL mux when RESET is not asserted. We will use the RESET signal to force the PC to zero during the first clock period of the simulation.
@@ -244,11 +232,11 @@ Conceptually, the increment-by-4 circuit is just a 32-bit adder with one input w
 The branch-offset adder **adds** PC+4 to the 16-bit offset encoded in the instruction `id[15:0]`. The offset is **sign-extended** to 32-bits and multiplied by 4 in preparation for the addition.  Both the sign extension and shift operations can be done with appropriate wiring—no gates required!
 
 {: .highlight}
-**Paste** the code snippet below in the space provided under `shift-and-add` inside `pc_unit.luc`. 
+Implement the `shift-and-add` unit inside `pc_unit.luc`. Ensure to set the right signals declared as shown: 
 
 ```verilog
-    pc_4_sxtc_32_sig = pc.q + 4 + (4 * c{16x{id[15]}, id[15:0]});
-    pc_4_sxtc_sig = c{pc.q[31], pc_4_sxtc_32_sig[30:0]};
+    pc_4_sxtc_32_sig = // implement intermediary signal: pc + 4 + SXT(C)
+    pc_4_sxtc_sig = // preserve the supervisor bit 
 ```
 
 ### Task 5: Supervisor Bit
@@ -280,7 +268,7 @@ old PC31 (ia31) | JT31 (ra31) | new PC31
 {: .new-title}
 > Think! 
 >
-> You have pasted quite a fair bit of answers to complete `pc_unit.luc`. Which part(s) protects the supervisor bit?
+> You have implemented quite a fair bit of answers to complete `pc_unit.luc`. Which part(s) protects the supervisor bit?
 
 
 
@@ -299,27 +287,21 @@ Open `regfile_unit.luc` and observe that the module interface has been provided 
 You will need a mux controlled by `RA2SEL` to select the **correct** address for the B read port. The 5-bit 2-to-1 **WASEL** multiplexer determines the write address for the register file. 
 
 {: .highlight}
-**Paste** the code snippet below in the space provided under `RA2SEL mux` and `WASEL mux` sections inside `regfile_unit.luc`.
+Implement the `RA2SEL mux` and `WASEL mux` sections inside `regfile_unit.luc`.
 
 ```verilog
     // RA2SEL mux
     case(ra2sel){
-      b0:
-        ra2sel_out = rb;
-      b1:
-        ra2sel_out = rc;
-      default:
-        ra2sel_out = rb;
+      // implement the RA2SEL mux logic here 
+      default: 
+        ra2sel_out = rb; // default case to silence warnings 
     }
 
     // WASEL mux 
     case(wasel){
-      b0:
-        wasel_out = rc;
-      b1:
-        wasel_out = b11110;
+      // implement the WASEL mux logic here 
       default:
-        wasel_out = rc;
+        wasel_out = rc; // default case to silence warnings 
     }
 ```
 
@@ -327,21 +309,15 @@ You will need a mux controlled by `RA2SEL` to select the **correct** address for
 The register file is a 3-port memory. It should be implemented in `regfile_memory.luc`, which is then utilised by `regfile_unit.luc`. 
 
 {: .highlight}
-Paste the code below inside the `always` block in `regfile_memory.luc`.
+Implement the workings of the REFGILE unit inside the `always` block in `regfile_memory.luc`.
 
 ```verilog
-    // always read 
-    reg_data_1 = registers.q[read_address_1];
-    reg_data_2 = registers.q[read_address_2];
+    // implement two output read ports   
     
-    // check if write_en and its not R31 
-    if (write_address != b11111 && write_enable){
-        registers.d[write_address] = write_data;
-    }
-    
-    // always give out 0 if we are reading R31
-    if (read_address_1 == b11111) reg_data_1 = 32h0;
-    if (read_address_2 == b11111) reg_data_2 = 32h0;
+    // implement one write port 
+    // check if(write_en) and that we are not writing to R31 
+  
+    // always give out 0 if we are reading R31 (from either RA ports)
 ```
 
 The `RD1` port output producing `reg_data_1[31:0]` is also wired directly as the third (for `JMP`) input of the `PCSEL` multiplexer. Remember we <span style="color:red; font-weight: bold;">already</span>  **force** the low-order two bits to zero and to add supervisor bit logic to bit 31 in the `PCSEL` Unit, so we do not have to do it here anymore.
@@ -350,22 +326,15 @@ The `RD1` port output producing `reg_data_1[31:0]` is also wired directly as the
 Z logic can be added to the output of the RA1/RD1 port of the register file memory above. The value of Z must be `1` if and only if `reg_data_1[31:0]` is `0x00000000`. Z must be `0` otherwise. This is exactly a `NOR` logic. You can create a reduction `NOR` logic gate very easily in Lucid (well, [actually Verilog](https://class.ece.uw.edu/cadta/verilog/reduction.html)), but of course you're welcome to follow the schematic above. 
 
 {: .highlight}
-Paste the code snippet below in the space provided under `commpute Z` section inside `regfile_unit.luc`.
-
-```verilog
-    z = ~|regfile.reg_data_1;
-```
+Implement the `commpute Z` section inside `regfile_unit.luc`. You can use reduction NOR for this. 
 
 
 ### Task 9: mwd[31:0] Output
 Finally, we need to connect the output of the `RD2` port of the register file memory above to produce `mwd[31:0]`. 
 
 {: .highlight}
-Paste the code below to this `Task 9` section `regfile_unit.luc`. 
+Implement `Task 9` section inside `regfile_unit.luc` that connects `mwd` with `regfile.reg_data_2`.
 
-```verilog
-    mwd = regfile.reg_data_2;
-```
 
 
 ## Part C: CONTROL Unit
@@ -419,15 +388,11 @@ BNE `011110` | 1 | `000`
 If you are using **pureply** a ROM-based implementation without additional logic (128 words in the ROM as opposed to just 64), you can make `Z` an additional address input to the ROM (**doubling** its size).  A more economical implementation might use external logic to modify the value of the PCSEL signals as defined in our schematic above. 
 
 {: .highlight}
-**Paste** the code snippet below in the space provided under `PCSEL for BNE/BEQ` section inside `control_unit.luc`.
+Complete the `PCSEL for BNE/BEQ` section inside `control_unit.luc`.
 
 ```verilog
-    if (opcode == b011101 && z == 1){ // BEQ, branch if z == 1
-      pcsel = b001;
-    }
-    else if (opcode == b011110 && z == 0){ // BNE, branch if z != 1
-      pcsel = b001;
-    }
+    // Check of OPCODE == BEQ, and branch (PCSEL: 001) if z == 1
+    // Check of OPCODE == BNE, and branch (PCSEL: 001) if z != 1
 ```
 
 ### Task 11: IRQ Handling
@@ -442,17 +407,12 @@ When `IRQ` signal is 1 and the Beta is in “user mode” (PC31 is zero), an **i
 Note that you’ll also want to add logic to **reset** the Beta; at the very least when `reset` is asserted you’ll need to force the PC to `0x80000000` and ensure that `WR` is 0 (to prevent your initialized main memory from being overwritten).
 
 {: .highlight}
-**Paste** the code snippet below in the space provided under `IRQ handling` section inside `control_unit.luc`.
+Implement `IRQ handling` section inside `control_unit.luc`.
 
 ```verilog
     if (irq_sampler.q & slowclk & ~ia31){
-      pcsel = b100;
-      wasel = 1;
-      werf = 1;
-      wdsel = b00;
-      wr = 0;
-      // clear interrupt bit 
-      irq_sampler.d = 0;
+      // set all appropriate control signals 
+      // don't forget to clear the content of irq_sampler dff
     }
 ```
 
@@ -496,44 +456,31 @@ Open `beta_cpu.luc` and study the starter code. The 4 major components of the Be
 ```
 
 {: .highlight}
-Paste the code below under `Task 12` section to define connections to the control unit, PC unit, and regfile unit respectively. 
+Complete `Task 12` section that defines connections to the control unit, PC unit, and regfile unit respectively. 
 
 ```verilog
     //***** CONTROL unit ******// 
-    control_system.irq = irq;
-    control_system.ia31 = pc_system.ia[31];
-    control_system.opcode = instruction[31:26];
-    control_system.z = regfile_system.z;
-    control_system.slowclk = slowclk;
+    // connect all input terminals of Control Unit to IRQ, pc_system, instruction, regfile_system, and slowclk accordingly 
 
     //***** PC unit ******// 
-    pc_system.slowclk = slowclk;
-    pc_system.reg_data_1 = regfile_system.reg_data_1;
-    pc_system.pcsel = control_system.pcsel;
-    pc_system.id = instruction[15:0];
-    ia = pc_system.ia;
+    // connect all input terminals of pc_system to slowclk, REGFILE, Control System, and instruction
+    // connect ia to pc_system.ia so we can use that for other parts of the datapath 
+
 
     //***** REGFILE unit *****//
-    regfile_system.slowclk = slowclk;
-    regfile_system.ra2sel = control_system.ra2sel;
-    regfile_system.wasel = control_system.wasel;
-    regfile_system.werf = control_system.werf;
-    regfile_system.ra = instruction[20:16];
-    regfile_system.rb = instruction[15:11];
-    regfile_system.rc = instruction[25:21];
+    // connect all regfile input ports accordingly, all read addresses and write addresses, as well as slowclk, and control signals
+
 ```
 
 {: .highlight}
-Finally, we need our beta to produce appropriate output signals. Paste the code snippet below under `output connections` section in `beta_cpu.luc`. 
+Finally, we need our beta to produce appropriate output signals. Complete the`output connections` section in `beta_cpu.luc`. 
 
 ```verilog
-
-    alu_system.a = asel_out;
-    alu_system.b = bsel_out; 
-    regfile_system.wdsel_out = wdsel_out;
-    mem_data_address = alu_system.out;
-    mem_data_output = regfile_system.mwd;
-    wr = control_system.wr;
+    // connect alu_system with asel_out and bsel_out
+    // connect regfile_system with wdsel_out 
+    // connect signals mem_data_address with the output of the ----------
+    // connect mem_data_output with regfile_system 
+    // finally, connect wr sig with control_system 
 
 ```
 
@@ -676,6 +623,12 @@ Finally, when you reach the fifth instruction at address `0x10` (`BNE`), confirm
 **After**:
 
 <img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-48-59.png"  class="center_fifty"/>
+
+{: .new-title}
+> Checkoff 
+>
+> You need to demonstrate that your FPGA works as the above with the test instruction to your TA/instructor by the end of next week's lab (during lab hour).
+
 
 ## What's Next?
 In the next lab, we will study more on how `motherboard.luc` works and drive the Beta CPU, and how to handle special events like `irq`, `illop`, and `reset` properly. We will connect I/O to interact with our Beta, kinda like connecting a keyboard and a screen to our computer (but a way simplied version of it). 
