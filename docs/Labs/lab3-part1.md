@@ -455,8 +455,8 @@ module x_bit_left_shifter #(
     // connect the selector of each mux_2 with shift 
     // 
     // use a for-loop to: 
-    // connect input[0][i] of each mux_2 with a[i]
-    // connect input[1][i] of each mux_2 with the shiftedbits[i]xs
+    // connect input[0] of each mux_2 with a[i]
+    // connect input[1] of each mux_2 with the shiftedbits[i]xs
   }
 }
 ```
