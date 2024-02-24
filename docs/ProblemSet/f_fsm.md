@@ -141,9 +141,9 @@ Answer the following questions:
 	The boolean equation for the FSM is:
 	$$
 	\begin{aligned}
-	\text{light } &= \overline{S_1} \times \overline{S_0}\\
-	S_1' &= \overline{S_1} \times S_0 \times \overline{b} + S_1 \times \overline{S_0} \times b \\
-	S_0' &= \overline{S_1} \times \overline{S_0} \times b + S_1 \times \overline{S_0} \times \overline{b}\\
+	\text{light } &= \overline{S_1} \cdot \overline{S_0}\\
+	S_1' &= \overline{S_1} \cdot S_0 \cdot \overline{b} + S_1 \cdot \overline{S_0} \cdot b \\
+	S_0' &= \overline{S_1} \cdot \overline{S_0} \cdot b + S_1 \cdot \overline{S_0} \cdot \overline{b}\\
 	\end{aligned}
 	$$
 
