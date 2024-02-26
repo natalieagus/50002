@@ -285,7 +285,7 @@ How many NOR gates are there in a single 74HC02 chip?
 3. [ ] 7
 
 #### How many inputs (NOR)?
-We know that we can supply 2 independent inputs to each NAND logic gates inside 74HC00. How many independent input(s) can we supply to a single INV inside 74HC04? 
+We know that we can supply 2 independent inputs to each NAND logic gates inside 74HC00. How many independent input(s) can we supply to a single NOR gate inside 74HC02? 
 
 > The answer can be found in the boolean expression under "General description" section of its [datasheet](https://assets.nexperia.com/documents/data-sheet/74HC_HCT02.pdf). 
 
