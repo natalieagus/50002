@@ -213,7 +213,7 @@ Be sure to test your ALU **comprehensively**. Here's some suggestions (you're no
    - **Zero Multiplication**: Multiply by 0 to ensure the result is 0.
    - **Multiplication by One**: `A * 1` should yield `A`.
    - **Positive Numbers**: Multiply two positive numbers and check for correct results.
-   - **Overflow**: Multiply two numbers that will cause overflow and ensure it is handled correctly.
+   - **Overflow** (not compulsory, only if it's relevant to your project): Multiply two numbers that will cause overflow and ensure it is handled correctly.
 4. AND (0x18)
    - **All Zeros and Ones**: `A AND 0` should be 0, `A AND 0xFFFF` (assuming 16-bit operands) should be `A`.
    - **Identity Check**: `A AND A` should give `A`.
