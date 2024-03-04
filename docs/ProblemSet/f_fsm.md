@@ -69,7 +69,7 @@ The ACME Company has recently received an order from a Mr. Wiley E. Coyote for t
   
 Unfortunately the design notes for the P3 are *incomplete*. Using the specification above and clues gleaned from the partially completed diagrams below **fill in the information that is missing from the state transition diagram** with its **accompanying truth table**. 
 
-<img src="https://dropbox.com/s/1ww80s7vpxznf1k/Q1%202.png?raw=1" class="center_seventy">
+<img src="{{ site.baseurl }}/assets/images/pset/fsm-2.png"  class="center_seventy"/>
 
 When done,
 *  Each state in the transition diagram should be assigned a 2-bit state name `S1S0` (note that in this design the state name is not derived from the combination that opens the lock),
