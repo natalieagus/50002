@@ -598,7 +598,7 @@ BNE(R3, 0, R31)
 
 Ensure to put all switches **down** at first. 
 
-Upon compilation and flashing of the new 5-line instructions for the first time, we are met with a new instruction `ADDC(R31, 3, R1): 0x7BE3FFFB`. 
+Upon compilation and flashing of the new 5-line instructions for the first time, we are met with a new instruction `ADDC(R31, 3, R1): 0xC03F0003`. 
 
 <img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-42-34.png"  class="center_fifty"/>
 
