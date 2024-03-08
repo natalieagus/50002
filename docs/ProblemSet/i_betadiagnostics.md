@@ -242,8 +242,73 @@ Execute for 2 cycles:
 </ul>
 </p></div><br>
 
+## A Confused Beta CPU (Hard)
+
+When Alice was walking back to her hostel this morning, she dropped her Beta CPU and it hit the ground pretty hard. She suspected that these components do not work properly anymore:
 
 
+* **Fault 1**: Input 2 of `PCSEL` mux (the `JT` input) is always `0` instead of the usual `Reg[Ra]`
+* **Fault 2**: `WR` memory control signal is always `1` instead of as per intended current intended instruction `OPCODE` (always writing to memory)
+* **Fault 3**: Input `0` of `BSEL` mux is faulty, it always read `0x00000000` instead of the actual 32-bit register data value produced by the second data port of the REGFILE unit. (Note: REGFILE unit is NOT faulty).
+
+She quickly wrote a diagnostic program that hopefully can detect all these faults at once. Her program is as follows, starting from address 0. 
+
+```cpp
+ADDC(R31, 16, R0)   | 0
+ADD(R31, R0, R0)    | 4
+LD(R31, 16, R1)     | 8
+ADDC(R31, 28, R0)   | 12
+JMP(R0)             | 16
+SUBC(R31, 1, R1)    | 20
+SUBC(R31, 1, R2)    | 24
+
+label: ADDC(R31, 7, R3) | 28
+
+HALT()              | 32
+```
+
+She sets the program to run for **6** cycles (to complete all 6), and then inspect the content of PC Register, Memory, and all registers in the REGFILE. You shall assume that:
+* In the beginning, the content of all registers in the REGFILE is `0`, and
+* If any ILLEGAL operation is executed (illegal `OPCODE`), then the program will **stop** its execution immediately (even if 6 completed cycles are not met yet), and 
+* Muxes that are **not** involved in the current operation will always have its selector bit set as `0`, e.g: if we don't use `RA2SEL` mux during a particular operation, the CU always set `RA2SEL` signal to `0`. 
+* Instruction and Data memory lives in the **same address space** (they're not separate!). This makes **Fault 2** very dangerous. 
+
+State whether each statement below is True or False and provide your reasoning. 
+
+**Statement 1**: If Fault 1 exists, but Fault 2 and 3 does NOT exist, then `Reg[R3]` will always contain the decimal value `0` instead of `7`. 
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+**True**. `R3` is only modified if the instruction at line 28 is executed.<br><br>
+The content of `R0` is 28 the moment the `ADDC` instruction at address 12 is executed. However at address 16, we will always `JMP` to address `0` instead of 28 due to Fault 1. Our program will always loop between address 0 to 16 (if allowed to run forever) and will never reach instruction at address `28` which modifies `R3`. 
+</p></div><br>
+
+**Statement 2**: If Fault 1 does **not** exist AND  Fault 3 does **not** exist, then the content of `Reg[R3]` is `7` (in decimal value). 
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+**False**. In other words: only Fault 2 exists. We need to pay attention to the output of the ALU (which dictates `EA`) and the output of `RD2` port of the REGFILE (which dictates memory write data `mwd`) at each instruction execution. When the third instruction (`LD(R31, 16, R1)`) is executed, the side effect due to fault 2 is that we are **storing** the content of `R0` (which is currently `16`) to address `16`. 
+<br><br>
+This is because the output of the ALU is `16`, and the output of `RD2` port is the content of `R0` (as current `inst[15:11]`, which is our `Rb` is `00000`). That means the instruction `JMP(R0)` is now **overwritten** to be `0x00000010` (or 16 in decimal) after the this instruction is executed. When the `PC` reaches address 16, it will trigger an `ILLOP` instead and we will never have the chance to reach `label` and modify the content of `Reg[R3]`.
+</p></div><br>
+
+**Statement 3**: If Fault 2 exists, then Alice won't be able to tell whether Fault 1 exists or not.
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+**True**. The `JMP` instruction is the only one that can test whether Fault 1 exists or not.  As explained in (2) above, our `JMP` instruction is overwritten the moment we execute the third instruction (`LD` at address 8). Hence, we won't have a chance to confirm and isolate the existence of Fault 1 if Fault 2 exists at the same time.
+</p></div><br>
+
+**Statement 4:** If Fault 2 exists, then `Reg[R1]` will contain the value of decimal `16` **regardless** of whether Fault 1 and/or Fault 3 exist or not.
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+**True**. Fault 3 only affects Type 1 instructions, while Fault 1 only affects `JMP`. When the first instruction (`ADDC(R31, 16, R0)`) is executed, the side effect is that we are storing the content of `R0` (as current `inst[15:11]` is `00000`) which is currently `0` to `Mem[16]`. When the second instruction is executed (`ADD(R31, R0, R0)`), we might have either `0` or `16` that's eventually stored at `R0` (depending on whether Fault 3 exists or not). Thus, the output of the ALU may be `0` or `16`, and the output of RD2 is still `Reg[R0]`, which means that the current content of `Mem[16]` is unchanged due to Fault 2.<br><br>
+The next instruction, `LD(R31, 16, R1)` produces `16` as the output of the ALU, and `Reg[R0]` again at `RD2`, leaving `Mem[16]` unchanged. The next instruction at address 12: `ADDC(R31, 28, R0)` changes `Mem[28]` instead to the content of `R0`. The CPU will then meet an `ILLOP` as it tries to execute the instruction at address `16`, leaving the content of `Mem[16]` to still be `16`. 
+</p></div><br>
+
+**Statement 5:** Alice will be able to tell with **certainty** that none of the fault exists if `Reg[R3]` contains the decimal value `7`, **and** the `Reg[R0]` contains the decimal value `28` **and** the memory content between address 0 and 32 contains all original instructions stated above at the end of 6 successful cycles of execution.
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+**False**. Alice won't be able to tell if Fault 3 exists at all. Fault 3 only affects Type 1 instructions, such as `ADD(R31, R0, R0)`, and then inspect the content of `R0` the moment this instruction is executed. If Fault 3 exists, then `Reg[R0]` will be `0` instead of `16`. However, since she will only inspect the Regs and the Memory after 6 CPU cycles, the content of `Reg[R0]` would've been overwritten by instruction at address `12` (`ADDC(R31, 28, R0)`), resulting in `28` at `R0`.  Since `ADDC` is **not** affected by Fault 3 and it overwrites the possible side effect of Fault 3, Alice's proposed program is flawed and won't be able to diagnose with certainty that all 3 faults do **not** exist. 
+</p></div><br>
+
+**Statement 6:** If Fault 2 does NOT exist, then Reg[R1] will contain the value 0x6FE00000 regardless of whether Fault 1 or Fault 3 exists or not.
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+**True**. The `SUBC` instruction that modifies `Reg[R1]` will **not** ever be executed regardless of whether any faults exist or not (the `JMP` instruction prevents it from being executed, and if we overwrite the `JMP` instruction due to Fault 2, `ILLOP` will be triggered). Hence, the only instruction that can modify `Reg[R1]` is `LD(R31, 16, R1)`. None of the faults directly affect the ability of the CPU to execute this instruction, so we will always be able to set `Reg[R1] <-- Mem[16]`.<br><br>
+If Fault 2 does not exist, then we will **not** accidentally alter the memory's content, and `Mem[16]` will still contain the instruction `JMP(R0)`. When translated to machine language, `JMP(R0) = 0x6FE00000`.  
+</p></div><br>
 
 
 
