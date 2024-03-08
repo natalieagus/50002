@@ -185,7 +185,7 @@ MUL(R1, R2, R0)
 HALT()  
 ```
 
-The program above can easily detect if the `ASEL` mux is faulty as described by observing the content of `R0` when the program halts. If the Beta CPU is faulty, the content of `R0` will be 0. Otherwise, it will be `16`.
+The program above can easily detect if the `ASEL` mux is faulty as described by observing the content of `R0` when the program halts. If the Beta CPU is faulty, the content of `R0` will be 0. Otherwise, it will be `64`.
 
 **Explanation**:
 * If the `ASEL` mux is faulty, we are multiplying the content of R2 with `0` instead of the content of `R1`
@@ -228,7 +228,7 @@ constant: LONG(8)
 LONG(4)
 ```
 
-The content at `Mem[constant+4]` will be 8 instead of 12 if only the `RA2SEL` mux is faulty, and the **content** stored at R2 will be 4 instead of 12 if only the ASEL mux is faulty. 
+The content at `Mem[constant+8]` will be 8 instead of 12 if only the `RA2SEL` mux is faulty, and the **content** stored at R2 will be 4 instead of 12 if only the ASEL mux is faulty. 
 
 **Explanation**:
 * If the `ASEL` mux is faulty, we will be adding `0` (instead of the content of `R0` which is `8`) with the content of `R1` (which is `4`) and storing it at `R2`. The content of `R2 = 0 + Reg[R1] = 4` instead of the expected `12`.
