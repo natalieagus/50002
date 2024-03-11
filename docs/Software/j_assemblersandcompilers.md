@@ -92,7 +92,7 @@ A UASM source file contains (in symbolic text) **values of successive bytes to b
 {: .warning-title}
 > Read the bsim Documentation
 >
-> Please <span style="color:red; font-weight: bold;">read</span> or at least bookmark ![the bsim documentation](https://drive.google.com/file/d/1Tq_Hg-jbZVPKDJZ4O6OZWYF4_8ywakbi/view?usp=share_link) to know more about the syntax of the Beta assembly language. You can also find this link in our course handout, under **Labs** section. 
+> Please <span style="color:red; font-weight: bold;">read</span>  the `bsim` [documentation](https://www.dropbox.com/scl/fi/psjv77mobp12srafj3us2/bsim.pdf?rlkey=qismnxs1al85qyorj1rxit7ow&dl=1) to know more about the syntax of the Beta assembly language.  
 
 
 ### Basic Values

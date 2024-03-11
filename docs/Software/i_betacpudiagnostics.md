@@ -138,7 +138,7 @@ In a fully working Beta CPU, we should observe that constant `8` is stored in Me
 **Explanation**:
 * The 16-bit signed constant of the `ST` instruction is `0xFFFC`
 * This makes bit 15 to 11 to be `11111` (what we deems as 'Rb')
-* If** `RA2SEL` mux selects input `0` during this instruction, it will take the content of register `11111` (`R31`) to be stored at `Mem[answer]`
+* If `RA2SEL` mux selects input `0` during this instruction, it will take the content of register `11111` (`R31`) to be stored at `Mem[answer]`
 * Therefore we will observe `0` at `Mem[answer]` instead of `8`
 
 Now consider the following program **P2** to be run at exactly 3 clk cycle (or until `HALT()`, whichever comes earlier):: 
