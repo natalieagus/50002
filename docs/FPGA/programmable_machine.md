@@ -229,7 +229,7 @@ There are four major **events**, color coded in the FSM diagram below (please op
 * `DECREASE TIMER`	event (blue)
 * `COMPUTE WINNER` event (purple)
 
-<img src="/50002/assets/contentimage/1D/1d_FSM.png"  class="center_full"/>
+<img src="/50002/assets/contentimage/1D/1d_fsm.png"  class="center_full"/>
 
 ### Button Press Event
 `BUTTON PRESS` **event** is invoked when the control unit **receives button press signal** from either player.
