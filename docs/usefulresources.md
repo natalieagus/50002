@@ -36,3 +36,15 @@ This page is dedicated to list certain useful and fun resources to aid your lear
 ### Videos
 
 [How a CPU works? Apple M1 vs Intel i9](https://www.youtube.com/watch?v=vqs_0W-MSB0)
+
+### Lucid Projects 
+
+Instructor drivers (written in Lucid) for:
+1. [WS2812B](https://github.com/natalieagus/ws2812b)
+2. [HUB75 RGB LED Matrix](https://github.com/natalieagus/rgbledmatrix)
+3. [75HC595 Shift Register](https://github.com/natalieagus/74hc595)
+4. [MAX7219](https://github.com/natalieagus/max7219)
+
+The sample 1D Project Repo: [Counter Game](https://github.com/natalieagus/counter-game).
+
+Other [sample Alchitry Projects](https://github.com/natalieagus/SampleAlchitryProjects) (Lucid) written by instructor for tutorials in this website.
