@@ -32,7 +32,7 @@ git clone https://github.com/natalieagus/beta-starter.git
 Then, you shall **paste** the implementation of your 32-bit ALU unit created in Lab 3: ALU. Be sure to include **all** files required by your `alu.luc`.
 
 {: .important}
-Since there's only 1 FPGA per group, you need to work through this lab as a 1D group during class and **obtain checkoff as a group** by the end of the Lab next week. However each person must still submit the lab questionnaire **individually**. For the checkoff next week, <span className="orange-bold">only group members who are present gain the marks (unless valid LOA).</span>
+Since there's only 1 FPGA per group, you need to work through this lab as a 1D group during class and **obtain checkoff as a group** by the end of the Lab next week. However each person must still submit the lab questionnaire **individually**. For the checkoff next week, <span className="orange-bold">only group members who are present gain the marks (unless valid LOA).</span<span style="color:#ff791a; font-weight: bold;"></span>>
 
 You are <span style="color:#ff791a; font-weight: bold;">not required</span> to submit your code for this lab, only to show your implementation to your TA and instructors by the end of the Lab next week. Simply head to eDimension and do the lab **questionnaire** by the stipulated due date. 
 
@@ -567,7 +567,7 @@ Finally, observe that the last 16 bits of `pcsel_out` (the next PC value) still 
 Now we need to test it by giving it a simple starter code (well, should've tested each and every component up above, but we don't have enough time in class). 
 
 {: .highlight}
-Paste the following simple driver code inside `instruction_rom.luc`, under `const INSTRUCTIONS`, replacing the existing instruction. 
+Paste the following simple driver code inside `instruction_rom.luc`, under `const INSTRUCTIONS`, replacing the existing instruction. You will <span className="orange-bold">need this for your Checkoff</span> for this lab (due lab time, Week 10). 
 
 ```verilog
     32h7BE3FFFB, // 0x010 BNE(R3, main, R31) 
@@ -626,7 +626,7 @@ Finally, when you reach the fifth instruction at address `0x10` (`BNE`), confirm
 
 ### Checkoff
 
-As stated in the beginning of this document, you need to complete all the above and demonstrate a working Beta CPU by the end of next week's lab. You can checkoff as a group. <span className="orange-bold">Only group members who are present gain the marks (unless valid LOA).</span>
+As stated in the beginning of this document, you need to complete all the above tasks and demonstrate a working Beta CPU using the "better test instructions" above by the end of next week's lab. You can checkoff as a group. <span className="orange-bold">Only group members who are present gain the marks (unless valid LOA).</span>
 
 {: .new-title}
 > Checkoff 
