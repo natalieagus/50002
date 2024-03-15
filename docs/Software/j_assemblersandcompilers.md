@@ -263,6 +263,13 @@ ADDC(R15, -32768, R0)
 .macro BNE(RA,LABEL,RC) betabr(0x1E,RA,RC,LABEL)
 ```
 
+## Beta Extended Macroinstructions
+We augment the basic Beta instruction set with the following macros, making it easier to express certain common operations:
+
+<img src="{{ site.baseurl }}/assets/contentimage/j_assemblersandcompilers/2024-03-15-11-20-04.png"  class="center_seventy"/>
+
+{: .note}
+We will use these extended macroinstructions in exam and problem sets. 
 
 ## [Interpreter vs Compiler](https://www.youtube.com/watch?v=Hhq3RhZcngQ&t=1487s)
 Some higher level languages, like Java and C/C++ have to be compiled first using its respective **compilers** (`javac` for Java or `GCC` for C/C++), resulting in an **executable** (a sequence of binary instructions directly understandable by the CPU). 
