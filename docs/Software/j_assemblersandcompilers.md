@@ -325,21 +325,28 @@ To aid your learning, copy each snippet to `bsim` and observe the instruction ex
 
 C Code: 
 ```cpp
-int x,y;
-x = 20;
+int x,y; // initialize x, y
+x = 20; // fill x with 20 
+
+// other code 
+// then eventually we use  y
 y = x + 5;
 ```
 
 Translates to the following $$\beta$$ assembly code:
 ```nasm
 .include beta.uasm
+ADDC(R31, 20, R9) 	| populate 20 to R9, selection of R9 is arbitrary
+ST(R9, x, R31)		| store 20 at x 
 
+||| assume other code 
+||| we can't assume that R9 still contains x so we need to reload it 
 LD(R31, x, R1)		| load the content of memory address x to R1
 ADDC(R1, 5, R0)		| now that '20' is in R1, add it with 5, store it at R0
 ST(R0, y, R31) 		| store the result (at R0) to location y
 HALT()
 
-x : LONG(20)	| label x points to where 20 is stored
+x : LONG(0)	| label x points to where 20 is stored
 y : LONG(0)		| label y points to where 0 is stored
 ```
 ### [Example 2: Arrays ](https://www.youtube.com/watch?v=Hhq3RhZcngQ&t=1934s)
@@ -355,6 +362,7 @@ Translates to the following $$\beta$$ assembly code:
 ```nasm
 .include beta.uasm
 
+||| Populate contents of array x
 ADDC(R31, 12, R0)	| supposed content of x[0]
 ST(R0, x)			| store '12' in R0 at address x
 ADDC(R31, 13, R1)	| supposed content of x[1]
