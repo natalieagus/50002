@@ -389,7 +389,8 @@ LD(R31, r, R2)
 
 check_while: CMPLT(R31, R1, R0)	| compute whether n > 0
 BNE(R0, while_true, R31) | if R0 != 0, go to while_true
-ST(R2, r, R31)			 | store the result to location 'r'
+ST(R2, r, R31)			 | store the result to location 'r' 
+ST(R1, n, R31)			 | store the result to location 'n'
 HALT()
 
 while_true: MUL(R1, R2, R2) | r = r*n
