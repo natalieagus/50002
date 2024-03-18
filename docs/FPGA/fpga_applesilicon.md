@@ -37,7 +37,7 @@ After that, download the image [from here](https://sutdapac-my.sharepoint.com/:u
 
 Then **unzip** the downloaded file, either using Finder or CLI: 
 ```
-unzip debian-12-rosetta-vivado.utm.zip
+unzip <source.zip> -d <destination_directory>
 ```
 
 It is recommended that you **download** this to an external drive, and then unzip and store the unzipped `.utm` file to your computer. This process will take about **30-50 minutes** because the size of the image is huge (approx 124 GB). You might want to move it out of your Downloads folder and put it somewhere more logical. This image will contain all your virtual machine's data. 
