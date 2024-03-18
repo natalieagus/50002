@@ -16,7 +16,7 @@ nav_order:  7
 As of early 2024, there's no officially supported way to run Vivado on Apple Silicon mac. We have managed to run Vivado + Alchitry lab on Debian 12 + Rosetta, running on UTM (virtual machines for mac). This document shares how you can download the prepared image and run it using UTM. 
 
 ## System Requirement 
-Apple Silicon mac with least 8 GB of RAM and 150GB of free space. 
+Apple Silicon mac with least 8 GB of RAM and **250GB** of free space for both downloading and unzipping (final free space needed: 150GB). 
 
 {: .note}
 This method is tested on **M2 Max Mac Studio**. 
@@ -40,7 +40,7 @@ Then **unzip** the downloaded file, either using Finder or CLI:
 unzip debian-12-rosetta-vivado.utm.zip
 ```
 
-This process will take about **30-50 minutes** because the size of the image is huge (approx 124 GB). You might want to move it out of your Downloads folder and put it somewhere more logical. This image will contain all your virtual machine's data. 
+It is recommended that you **download** this to an external drive, and then unzip and store the unzipped `.utm` file to your computer. This process will take about **30-50 minutes** because the size of the image is huge (approx 124 GB). You might want to move it out of your Downloads folder and put it somewhere more logical. This image will contain all your virtual machine's data. 
 
 ### Start the VM
 Once done, open UTM and import the image. 
