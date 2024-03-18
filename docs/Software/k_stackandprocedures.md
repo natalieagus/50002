@@ -106,8 +106,8 @@ int result_6 = fact(99);
 {: .important}
 > In principle, a **function**:
 > * Is a callable, **reusable** series of instructions.
-> * Has a single **named entry point**. It means we know the address of first > instruction for this function in memory.
-> * Is **Parameterizable** (can access or receive a predefined number of arguments).
+> * Has a single **named entry point**. It means that we know the address of the first instruction of this function in memory.
+> * Is **parameterizable** (can access or receive a predefined number of arguments).
 > * Has **local variables**, which cannot be accessed anymore once the function returned. 
 
 ### Return Value

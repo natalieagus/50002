@@ -151,14 +151,14 @@ HALT()
 
 constant: LONG(8) 
 
-.= 0x0CFC
+.= 0x07FC
 answer: LONG(4)
 ```
 
 P2 will <span style="color:#ff791a; font-weight: bold;">not</span> be able to detect the faulty in `RA2SEL` mux because we would have the value `8` stored at `Mem[answer]` regardless of whether the `RA2SEL`  mux is faulty or not.
 
 **Explanation**:
-1. The 16-bit signed constant of the `ST` instruction is `0x0CFC`, therefore bit 15 to 11 is now `00000` instead of `11111`
+1. The 16-bit signed constant of the `ST` instruction is `0x07FC`, therefore bit 15 to 11 is now `00000` instead of `11111`
 2. This means that we are **still** storing the content of `R0` to address `answer`
 3. Since both bit 25 to 21 (Rc) and bit 15 to 11 (Rb) are **identical** (`00000`), it does not matter if the `RA2SEL` mux selected Rc or Rb 
 
