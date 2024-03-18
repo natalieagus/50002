@@ -43,7 +43,11 @@ unzip debian-12-rosetta-vivado.utm.zip
 This process will take about **30-50 minutes** because the size of the image is huge (approx 124 GB). You might want to move it out of your Downloads folder and put it somewhere more logical. This image will contain all your virtual machine's data. 
 
 ### Start the VM
-Once done, open UTM and import the image. Start the VM and login with the password `debian`. Note that `sudo` password is also `debian`. You can start alchitry labs by opening terminal from the bottom menu of the desktop (press windows / command image if the dock isn't visible) and type `alchitry` command. Use alchitry labs as usual. 
+Once done, open UTM and import the image. 
+
+<img src="{{ site.baseurl }}/docs/FPGA/images/fpga_applesilicon/shared-dir.png"  class="center_seventy"/>
+
+Start the VM and login with the password `debian`. Note that `sudo` password is also `debian`. You can start alchitry labs by opening terminal from the bottom menu of the desktop (press windows / command image if the dock isn't visible) and type `alchitry` command. Use alchitry labs as usual. 
 
 ### Shared Directory 
 
@@ -52,7 +56,7 @@ After compiling your code, you will need to load the binary to your FPGA. There'
 <img src="{{ site.baseurl }}/docs/FPGA/images/fpga_applesilicon/2024-03-18-14-34-46.png"  class="center_seventy"/>
 
 You can **share directories** with your mac (host machine) by setting the desired shared directory in your host machine here. In this example we use `Documents/alchitry-utm` in our host machine as shared directory: 
-<img src="{{ site.baseurl }}/assets/images/shared-dir.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/FPGA/images/fpga_applesilicon/shared-dir.png"  class="center_seventy"/>
 
 Then in Debian (your VM), you can access this directory via the path `/media/share/DIRECTORY_NAME`, in this case it will be `/media/share/alchitry-utm`.
 
