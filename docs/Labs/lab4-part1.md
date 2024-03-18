@@ -385,7 +385,7 @@ BEQ `011101` | 1 | `001`
 BNE `011110` | 0 | `001`
 BNE `011110` | 1 | `000`
 
-If you are using **pureply** a ROM-based implementation without additional logic (128 words in the ROM as opposed to just 64), you can make `Z` an additional address input to the ROM (**doubling** its size).  A more economical implementation might use external logic to modify the value of the PCSEL signals as defined in our schematic above. 
+If you are using **purely** a ROM-based implementation without additional logic (128 words in the ROM as opposed to just 64), you can make `Z` an additional address input to the ROM (**doubling** its size).  A more economical implementation might use external logic to modify the value of the PCSEL signals as defined in our schematic above. 
 
 {: .highlight}
 Complete the `PCSEL for BNE/BEQ` section inside `control_unit.luc`.
@@ -503,7 +503,7 @@ Congratulations! 🎉
 
 You have made a working Beta CPU. Please take your time to understand how each component works. You shall now **compile**, run the program and then vary `io_dip[0]` switches to **inspect** each state. In `au_top.luc`, we have linked up the `io_led[1:0]` to various debug signals. 
 
-`io_dip[0]` can be changed to "view" various states presented at `io_led[1]` and `io_led[0]` (16 bits of values at once). Simply set it to represent the values below, e.g: `0x3` means that `io_dip[0]` is set to `00000011` (turn the rightmost two switches on). Here are the exhaustive list:
+`io_dip[0]` can be changed to "view" various states presented at `io_led[1]` and `io_led[0]` (16 bits of values at once). Simply set it to represent the values below, e.g: `0x3` means that `io_dip[0]` is set to `00000011` (turn the rightmost two switches on). Here is the exhaustive list:
 
 1. `0x0`: MSB 16 bits of current instruction (id[31:16])
 2. `0x1`: LSB 16 bits of current instruction (id[15:0])
@@ -522,7 +522,7 @@ You have made a working Beta CPU. Please take your time to understand how each c
 15. `0xE`: LSB 16 bits of beta input buffer. This is a dff that's hardwired to reflect Mem[0x10]
 16. `0xF`: LSB 16 bits of beta output buffer. This is a dff that's hardwired to reflect Mem[0xC]
 
-We have also provided all this information in the repository's [readme](https://github.com/natalieagus/beta-fpga-starter). 
+We have also provided all this information in the repository's [readme](https://github.com/natalieagus/beta-starter). 
 
 ## Observed Output
 
