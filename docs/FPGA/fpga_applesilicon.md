@@ -47,6 +47,10 @@ Once done, open UTM and import the image.
 
 <img src="{{ site.baseurl }}/docs/FPGA/images/fpga_applesilicon/shared-dir.png"  class="center_seventy"/>
 
+{: .warning}
+> Check that there are **TWO** drives: sized approx 64 GB and 80 GB respectively in your `.utm` file. Right click on your `.utm` file and click **Show package contents**. You should see the following under `Data/`: 
+> <img src="{{ site.baseurl }}/docs/FPGA/images/fpga_applesilicon/2024-03-18-17-47-02.png"  class="center_seventy"/>
+
 ### Login as `debian`
 Start the VM and login with the password `debian`. Note that `sudo` password is also `debian`. You can start alchitry labs by opening terminal from the bottom menu of the desktop (press windows / command image if the dock isn't visible) and type `alchitry` command. Use alchitry labs as usual. 
 
