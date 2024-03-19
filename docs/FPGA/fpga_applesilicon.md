@@ -19,7 +19,7 @@ As of early 2024, there's no officially supported way to run Vivado on Apple Sil
 Apple Silicon mac with least 8 GB of RAM and **280GB** of free space for both downloading and unzipping (final free space needed: 160GB). 
 
 {: .note}
-This method is tested on **M2 Max Mac Studio**. 
+This method is tested on **M2 Max Mac Studio** and **15" M2 Macbook Air**. 
 
 ## Installation Steps
 ### Download UTM
