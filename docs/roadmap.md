@@ -1,5 +1,5 @@
 ---
-layout: notoc
+layout: default 
 nav_order: 1
 permalink: /notes/roadmap
 title: Roadmap

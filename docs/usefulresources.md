@@ -1,5 +1,5 @@
 ---
-layout: notoc 
+layout: default 
 title: Useful Resources 
 permalink: /resources
 nav_order: 101
