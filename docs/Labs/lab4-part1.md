@@ -498,6 +498,8 @@ Paste the debug code below under `debug signals` section in `beta_cpu.luc`.
     debug[3][15:0] = wdsel_out[15:0];
 ```
 
+You may change it to suit your use case if you wish. 
+
 ## Compile and Run
 Congratulations! 🎉 
 
