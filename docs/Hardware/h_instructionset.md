@@ -369,13 +369,13 @@ The instruction above means: to **store** the content of register `R9` into the 
 
 Hence the instruction above is almost equivalent to the python code:
 ```python
-x = 20 # an int, which value 20 is stored at register R3
-arrayList = [32, 11, 19] # an array, which address is stored at register R9
+x = 20 # an int, which value 20 is stored at register R9 for example
+arrayList = [32, 11, 19] # an array, which address is stored at register R3
 
 # each element in arrayList is an integer, which takes up 32 bits. 
-# hence, the first element of arrayList has an address of Reg[R9]
-# the second element of arrayList has an address of Reg[R9] + 4	
-# the third element of arrayList has an address of Reg[R9] + 8	
+# hence, the first element of arrayList has an address of Reg[R3]
+# the second element of arrayList has an address of Reg[R3] + 4	
+# the third element of arrayList has an address of Reg[R3] + 8	
 arrayList[2] = x # store 20 as the third element of arrayList 
 ```
 
