@@ -288,14 +288,14 @@ That is if we were to `STORE` any value to `Mem[0xC]`, it will reflected at the 
 
 This section illustrates what should be observed on your FPGA IO Shield. When you compile the program above and flash it to your FPGA for the first time with **all** of its dip switches down, you will see the following as the first 16 bit of your instruction:
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-39-55.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}/assets/images/lab4-part2/2023-03-16-17-41-10.png"  class="center_fifty no-invert"/>
 
-This corresponds to `BR(reset): 0x77FF0019`. Pressing the `next` button (`io_button[4]`) will bring you to address `0x068` which is the `reset` handler.
+This corresponds to `BR(reset): 0x77FF0019`. Pressing the `next` button (`io_button[4]`) will bring you to address `0x068` which is the `reset` handler, having the same MSB 16 bit of the `id`: `0x77FF`.
 
 {: .note}
 We assume you know which dip switch to set to view these states: `ia`, `id`, etc. 
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-42-30.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}/assets/images/lab4-part2/2023-03-16-17-41-10.png"  class="center_fifty"/>
 
 The first line of instruction in the `reset` handler is `ADDC(R31, 12, R5): 0xC0BF000C`: 
 

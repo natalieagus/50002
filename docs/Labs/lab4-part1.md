@@ -210,7 +210,38 @@ pc.d = c{pcsel_out[31:2], b00};
 Implement the RESET multiplexer in the space provided under `RESET mux` section inside `pc_unit.luc`. 
 
 
-Remember that we need to add a way to set the PC to zero on `RESET`.  We use a two-input 32-bit mux that selects `0x80000000` when the RESET signal is asserted, and the output of the PCSEL mux when RESET is not asserted. We will use the RESET signal to force the PC to zero during the first clock period of the simulation.
+Remember that we need to add a way to set the PC to zero on `RESET`.  We use a two-input 32-bit mux that selects `0x80000000` when the RESET signal is asserted, and the output of the PCSEL mux when RESET is not asserted. 
+
+We will use the RESET signal to force the PC to zero during the **first** clock period of the simulation. This can be found inside `motherboard.luc`:
+
+```verilog
+// motherboard.luc
+
+   case(motherboard.q){
+        // instruction loading
+        motherboard.INSTRUCTIONLOAD:
+            beta.rst = 1;
+            writer_counter.d = writer_counter.q + 1;
+            instruction_unit.addr = writer_counter.q;
+            memory_unit.instruction_towrite = instruction_unit.out;
+            memory_unit.instruction_write_enable = b1;
+            memory_unit.ia = writer_counter.q<<2; // pad with two zeroes to make it byte addressable because memory_unit expects byte addresing ia
+            if ((writer_counter.q + 1) == MEMORY_SIZE){
+                motherboard.d = motherboard.RUN; // wait one more clock cycle to allow the last instruction to be loaded before start execution
+        }
+
+         motherboard.RUN:
+            // only load output and update input at the the beginning of each "next" instruction cycle 
+            // LOAD_OUTPUT will hijack EA for 2 cycles. At this point, the CPU is not receiving a legitimate Mem[EA] if it is doing a LD/LDR 
+            // However since "next" is more than 2 cycles, it will be fixed by the third cycle (actual EA coming out from beta is plugged into memory unit
+            if (slowclk){
+                motherboard.d = motherboard.LOAD_OUTPUT;
+            }
+            else{
+                motherboard.d = motherboard.RUN;
+            }       
+      ...
+```
 
 ### Task 3: 32-bit PC Reg
 The PC is a separate **32-bit register** that can be built using the `dff` component. We have declared it above the `always` block:
