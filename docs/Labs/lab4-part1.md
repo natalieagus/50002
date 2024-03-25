@@ -565,24 +565,24 @@ Upon flash to the FPGA, with **ALL** switches down, you should see the following
 {: .highlight}
 `io_led[1:0]` is showing MSB 16 bits of current instruction (id[31:16]) which is `BEQ(R31, 0, R31): 0x77FFFFFF`. 
 
-<img src="{{ site.baseurl }}/assets/images/lab4-part1/2023-03-16-11-26-24.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}/assets/images/lab4-part1/2023-03-16-11-26-24.png"  class="center_fifty no-invert"/>
 
 ### `io_dip[0]` to `0x01` 
 Then, set `io_dip[0]` to `0x01` (rightmost switch up). You shall see the LSB 16 bits of current instruction. 
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-30-07.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-30-07.png"  class="center_fifty no-invert"/>
 
 ### `io_dip[0]` to `0x02`
 
 Confirm that the current PC is pointing at address `0x80000000`. Observe its last 16 bits value:
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-31-42.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-31-42.png"  class="center_fifty no-invert"/>
 
 ### `io_dip[0]` to `0x0D`
 
 Then, observe PC **first** 16 bits value:
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-32-42.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-32-42.png"  class="center_fifty no-invert"/>
 
 {: .note-title}
 > Kernel Address Space
@@ -593,7 +593,7 @@ Then, observe PC **first** 16 bits value:
 
 Finally, observe that the last 16 bits of `pcsel_out` (the next PC value) still points to 0 (as per the instruction). 
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-35-55.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-35-55.png"  class="center_fifty no-invert"/>
 
 
 ## A Better Test Instruction
@@ -633,29 +633,29 @@ Ensure to put all switches **down** at first.
 
 Upon compilation and flashing of the new 5-line instructions for the first time, we are met with a new instruction `ADDC(R31, 3, R1): 0xC03F0003`. 
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-42-34.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-42-34.png"  class="center_fifty no-invert"/>
 
 To <span style="color:red; font-weight: bold;">advance</span> to the next instruction, **press** the RIGHT io button (`io_button[4]`). You shall see the first 16 bits of the second instruction (`CMPEQ`) now: 
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-43-45.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-43-45.png"  class="center_fifty no-invert"/>
 
 Set `io_dip[0]: 0x02` to confirm that you're indeed pointing at address `4`: 
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-45-24.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-45-24.png"  class="center_fifty no-invert"/>
 
 Press RIGHT io button once again to advance until the third instruction (`ST`) at address `0x8`. Set your `io_dip[0]: 0x5` to view `mwd[15:0]`. At this point, we are about to store the content of `R1` to the memory device and you can confirm that this value is indeed `3`. 
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-47-24.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-47-24.png"  class="center_fifty no-invert"/>
 
 Finally, when you reach the fifth instruction at address `0x10` (`BNE`), confirm that you will loop back to execute the first instruction at address `0x0`. Don't forget to set your `io_dip[0]: 0x02` to view `ia[15:0]`. 
 
 **Before**:
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-48-32.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-48-32.png"  class="center_fifty no-invert"/>
 
 **After**:
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-48-59.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-48-59.png"  class="center_fifty no-invert"/>
 
 ### Checkoff
 

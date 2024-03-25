@@ -295,52 +295,52 @@ This corresponds to `BR(reset): 0x77FF0019`. Pressing the `next` button (`io_but
 {: .note}
 We assume you know which dip switch to set to view these states: `ia`, `id`, etc. 
 
-<img src="{{ site.baseurl }}/assets/images/lab4-part2/2023-03-16-17-41-10.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}/assets/images/lab4-part2/2023-03-16-17-41-10.png"  class="center_fifty no-invert"/>
 
 The first line of instruction in the `reset` handler is `ADDC(R31, 12, R5): 0xC0BF000C`: 
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-43-35.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-43-35.png"  class="center_fifty no-invert"/>
 
 Press `next` one more time and confirm you're met with the `JMP(R5)` instruction (the MSB 16):
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-44-42.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-44-42.png"  class="center_fifty no-invert"/>
 
 At this point, the content of `Reg[R5]` is address `0x00C`. Pressing `next` will bring your PC to point to this address with instruction `ADDC(R31, 3, R1): 0xC03F0003`.
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-46-06.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-46-06.png"  class="center_fifty no-invert"/>
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-46-34.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-46-34.png"  class="center_fifty no-invert"/>
 
 Continuously press `next` until you reach address `0x020`, the `BNE(R3, main_sub, R31)` instruction:  
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-47-01.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-47-01.png"  class="center_fifty no-invert"/>
 
 At this point, the content of `R3` is 2, which means that you will be looped back to `main_sub` (adress `0x010`). Press `next` to confirm the content of PC is indeed `0x010`:
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-48-05.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-48-05.png"  class="center_fifty no-invert"/>
 
 ### Triggering `ILLOP`
 
 The content of `R3` will be reduced by 1 in each loop to `main_sub`, until eventually its content is `0`. This will cause `BNE(R3, main_sub, R31)` to not branch, and the PC will execute instruction at address `0x024` instead:
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-49-45.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-49-45.png"  class="center_fifty no-invert"/>
 
 The instruction at address `0x024` is `LONG(256)`, which is <span style="color:red; font-weight: bold;">not a valid Beta instruction</span>. Executing this will trigger an `ILLOP`. When you press `next`, you will be brought to address `0x004` which contains instruction `BR(illop)`. 
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-50-52.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-50-52.png"  class="center_fifty no-invert"/>
 
 {: .important}
 Note that at this point, the MSB of the PC (we also call this `PC31`) is 1, which means that the CPU is supposedly at the **kernel mode**. This is also known as the <span style="color:red; font-weight: bold;">supervisor bit</span>
 
 You can set `io_dip[0]: 0xD` to confirm:
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-35-49.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-35-49.png"  class="center_fifty no-invert"/>
 
 
 ### The `ILLOP` handler
 
 The `illop_handler` resides at address `0x80000038` to address `0x8000064`, but for the ease of explanation, we simply report the last 3 hex digits. Surely enough when you press `next`, the PC will point to address `0x038`, which is the beginning of the `illop_handler`:
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-52-06.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-52-06.png"  class="center_fifty no-invert"/>
 
 The ILLOP handler does a very simple thing, which is simply storing the value `5, 4, 3, 2, 1` to a particular memory address `message`.
 
@@ -366,11 +366,11 @@ JMP(R5)			|| jump to execute main program in user mode
 
 Advance to address `0x040`. 
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-57-00.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-57-00.png"  class="center_fifty no-invert/>
 
 Then set `io_dip[0] = 0xF` to view the content of `system_output_buffer`. You shall see the value `5` there. 
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-57-09.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-57-09.png"  class="center_fifty no-invert"/>
 
 {: .note}
 To witness it going from `5` to `4, 3, 2, 1`, simply switch up `io_dip[2][7]`. This triggers the `auto` execution mode with the **slow** clock. If you are impatient, you can switch up `io_dip[2][6]` as well and it will advance the PC at a faster rate. 
@@ -379,17 +379,17 @@ To witness it going from `5` to `4, 3, 2, 1`, simply switch up `io_dip[2][7]`. T
 
 Once we reach address `0x064`, we are met with the instruction `JMP(R5)`. 
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-37-26.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-37-26.png"  class="center_fifty no-invert"/>
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-39-16.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-39-16.png"  class="center_fifty no-invert"/>
 
 At this point, the content of `R5` is `12` or `0xC`, which means that it should execute address `0xC` later in **user mode**. If you press `next`, you will meet the instruction `ADDC(R31, 3, R1)` again (`main`):
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-40-52.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-40-52.png"  class="center_fifty no-invert"/>
 
 Surely enough, we are back at **user mode**. You can confirm this by inspecting the MSB of the `PC`:
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-41-24.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-41-24.png"  class="center_fifty no-invert"/>
 
 ### Receive user input 
 
@@ -399,28 +399,28 @@ Firstly, let's confirm that your button presses are registered in `system_input_
 
 Assume that you are currently in **user mode**,  (that is your `ia31` or equivalently `pc31` is 0). Set your beta to **manual** mode (all `io_dip[2]` is down). For example, let's assume that we are currently pointing to address `0x14`:
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-59-26.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-59-26.png"  class="center_fifty no-invert"/>
 
 Press the top button (`io_button[0]`) and set `io_dip[0]: 0xE`. You should see `b0` shown in the 7 seg immediately: 
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-47-01.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-47-01.png"  class="center_fifty no-invert"/>
 
 You can also press `io_button[0]` or `io_button[1]`, and a different output is shown at the 7seg:
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-47-56.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-47-56.png"  class="center_fifty no-invert"/>
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-48-07.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-48-07.png"  class="center_fifty no-invert"/>
 
 There's nothing fancy at this moment. You're simply viewing the content of `system_input_buffer` that stores current button presses **immediately**.
 
 ### The `irq` handler
 What's interesting now is that if you press `next`, your `ia` (PC) will not execute the next address e.g (`0x10 SUBC`) but rather the <span style="color:red; font-weight: bold;">`irq` handler entry</span> at address `0x80000008`. 
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-51-46.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-51-46.png"  class="center_fifty no-invert"/>
 
 Address `0x80000008` contains instruction `BR(irq)` where `irq` is at address `0x80000028`, so pressing `next` will bring you there:
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-52-27.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-52-27.png"  class="center_fifty no-invert"/>
 
 Let's study what's happening in the `irq` handler:
 
@@ -439,30 +439,30 @@ Then we store the content of `R4` to `Mem[0xC]`. Remember that `system_output_bu
 
 View it at this moment and confirm that its value is `0x01` due to the previous countdown `5, 4, 3, 2, 1` from triggering the `illop` handler:
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-08-54.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-08-54.png"  class="center_fifty no-invert"/>
 
 Now, advance two more instructions until your current instruction address is `0x80000030`. 
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-57-40.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-57-40.png"  class="center_fifty no-invert"/>
 
 Then, view the state of `system_output_buffer` by setting `io_dip[0]: 0xF`. You should see the encoding of your last pressed button there:
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-58-13.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-09-58-13.png"  class="center_fifty no-invert"/>
 
 ### Returning to `main` program in User Mode
 The last two instructions of the `irq` handler ensures that we `JMP` back to address `0xC`, which essentially **restarts** the `main` program. 
 
 You can prove this easily by advancing to address `0x034` (the last instruction of `irq` handler):
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-01-25.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-01-25.png"  class="center_fifty no-invert"/>
 
 Confirm that it is indeed `JMP(R5)`:
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-01-42.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-01-42.png"  class="center_fifty no-invert"/>
 
 Then press `next` and it should bring you back to address `0xC`:
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-01-59.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-01-59.png"  class="center_fifty no-invert"/>
 
 Again, realise that you will be back at **user mode** by this point by viewing `ia31` (set `io_dip[0]: 0xD`).
 
@@ -512,32 +512,32 @@ We check that `irq` cannot fire **when** `ia31 == 1`. However we do not "lose" t
 
 We can demonstrate this very easily. Simply advance your Beta until you enter the `illop` handler. For the purpose of this example, we advance our `PC` until it points to address `0x8000003C` (second instruction in `illop` handler). Ensure that your Beta CPU is in **manual** mode. 
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-17-22.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-17-22.png"  class="center_fifty no-invert"/>
 
 Then press `io_button[1]`. Ensure that this is immediately reflected at `system_input_buffer`:
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-18-02.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-18-02.png"  class="center_fifty no-invert"/>
 
 Then press `next`. Notice that the next address of instruction to be executed is `0x80000040` and <span style="color:red; font-weight: bold;">not</span> the `irq` hander (`0x80000008`). 
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-19-06.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-19-06.png"  class="center_fifty no-invert"/>
 
 The entire `illop` handler will be executed up until the last instruction at address `0x064`:
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-20-53.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-20-53.png"  class="center_fifty no-invert"/>
 
 This will result in the Beta CPU returning to the **user mode** and its `PC` pointing to address `0x0C`:
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-21-15.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-21-15.png"  class="center_fifty no-invert"/>
 
 
 However, now our `irq` will take place. By pressing `next`, we are brought to the **entry** of the `irq` handler instead of the next address `0x10`:
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-22-06.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-22-06.png"  class="center_fifty no-invert"/>
 
 At this point, you will execute the entire sequence of `irq` handler and observe `00b1` at `system_output_buffer` eventually. 
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-23-23.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-17-10-23-23.png"  class="center_fifty no-invert"/>
 
 {: .note}
 This short activity demonstrates that asynchronous interrupt (due to user input) is not necessarily "lost" even though we are in the midst of executing a program in Kernel mode (handling another event like `illop`). Of course, only the **last** input (before its handled) is captured because our `system_input_buffer` can only capture the last input. If we spam press the buttons while our Beta is running **very slowly** handling `illop` in Kernel mode, then earlier button presses will be *lost* and we only handle the final button press to be displayed at `system_output_buffer`. 
