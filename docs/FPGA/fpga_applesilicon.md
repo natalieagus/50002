@@ -52,7 +52,13 @@ Once done, open UTM and import the image.
 > <img src="{{ site.baseurl }}/docs/FPGA/images/fpga_applesilicon/2024-03-18-17-47-02.png"  class="center_full"/>
 
 ### Login as `debian`
-Start the VM and login with the password `debian`. Note that `sudo` password is also `debian`. You can start alchitry labs by opening terminal from the bottom menu of the desktop (press windows / command image if the dock isn't visible) and type `alchitry` command. Use alchitry labs as usual. 
+Start the VM and login with the password `debian`. Note that `sudo` password is also `debian`. You can start alchitry labs by opening terminal from the bottom menu of the desktop (press windows / command image if the dock isn't visible) and type `alchitry` command. Then, use alchitry labs as usual:
+
+<img src="{{ site.baseurl }}/docs/FPGA/images/fpga_applesilicon/2024-03-25-17-38-22.png"  class="center_seventy"/>
+
+Ensure that your desktop looks like this. If it doesn't it means that what you have downloaded might be corrupted. Ensure you have enough space (280GB in total)!
+
+<img src="{{ site.baseurl }}/docs/FPGA/images/fpga_applesilicon/2024-03-25-17-35-03.png"  class="center_seventy"/>
 
 ### Shared Directory 
 
