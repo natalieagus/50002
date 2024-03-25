@@ -408,7 +408,7 @@ BEQ(R31, fact, LP)
 || (3) remove argument from stack after function returns
 DEALLOCATE(1) 
 
-|| (4) obtain return value at R0 
+|| (4) obtain return value at R0 and store it elsewhere (you can also move it to another Register)
 ST(R0, result_1, R31) 
 HALT()
 ```
