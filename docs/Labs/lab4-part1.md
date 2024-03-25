@@ -643,7 +643,9 @@ Set `io_dip[0]: 0x02` to confirm that you're indeed pointing at address `4`:
 
 <img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-45-24.png"  class="center_fifty no-invert"/>
 
-Press RIGHT io button once again to advance until the third instruction (`ST`) at address `0x8`. Set your `io_dip[0]: 0x5` to view `mwd[15:0]`. At this point, we are about to store the content of `R1` to the memory device and you can confirm that this value is indeed `3`. 
+Press RIGHT io button once again to advance until the third instruction (`ST`) at address `0x8`. At this point, we are about to store the content of `R1` to the memory device. 
+
+You can confirm that this value is indeed `3` in the **next instruction** (`LD`, press RIGHT io button one more time), by setting your `io_dip[0]: 0x5` to view `mrd[15:0]`:
 
 <img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-47-24.png"  class="center_fifty no-invert"/>
 
