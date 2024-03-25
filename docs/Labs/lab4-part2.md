@@ -162,7 +162,7 @@ We have also provided all this information in the repository's [readme](https://
 {: .important}
 The entire system runs on FPGA `clk`. However we need some other signal to **slow down** specifically the Beta CPU `PC` advancement so that we can **observe** the CPU's states like `id`,`ia`, `ma`, `mrd`, `mwd`, output of all muxes (pcsel mux, asel mux, bsel mux, and wdsel mux), as well as the value of I/O buffers. As such, we need <span style="color:red; font-weight: bold;">additional logics</span> to prevent the `PC` from advancing too fast.  
 
-The Beta expects an input called `slowclk` so that you can slowly **observe** its execution (either by pressing `io_button[4]` or when `slowclock_edge` or `fastclock_edge` fires). The `slowclock_edge` turns `1` roughly once (for a single FPGA clock cycle) every 1.3s, and `fastclock_edge` is roughlt 4 times faster than `slowclock_edge`. You can use `io_dip[2][6]` to enable/disable `fastclock`.
+The Beta expects an input called `slowclk` so that you can slowly **observe** its execution (either by pressing `io_button[4]` or when `slowclock_edge` or `fastclock_edge` fires). The `slowclock_edge` turns `1` roughly once (for a single FPGA clock cycle) every 1.3s, and `fastclock_edge` is roughly 4 times faster than `slowclock_edge`. You can use `io_dip[2][6]` to enable/disable `fastclock`.
 
 {: .important}
 It is <span style="color:red; font-weight: bold;">necessary</span> for `slowclock` and/or `fastclock` period to be at least <span style="color:red; font-weight: bold;">5 times longer</span> than Alchitry Au FPGA's because of how `fsm motherboard` is designed in `au_top.luc` (see next section). That is, the minimum index of `frequency_divider` in `au_top.luc` that can be used for `slowclock` and/or `fastclock` is `2` (index `0` is LSB).
@@ -218,7 +218,7 @@ When `io_button[0]`, `io_button[1]`, or `io_button[2]` is pressed, we write some
 These buffers are then synchronized to a specific region in `memory_unit` so that your Beta CPU can access its values. 
 
 ## The Motherboard
-In practice, a motherboard is the main printed circuit board in general-purpose computers It holds and allows communication between many of the crucial components of a system: the CPU, the memory unit, and provides **connectors** for peripheral (I/O) devices.
+In practice, a motherboard is the main printed circuit board in general-purpose computers. It holds and allows communication between many of the crucial components of a system: the CPU, the memory unit, and provides **connectors** for peripheral (I/O) devices.
 
 The module `motherboard.luc` is where we instantiate our major hardware components:
 1. The Beta CPU 
@@ -508,7 +508,7 @@ Plus the `irq` logic at the control unit:
     }
 ```
 
-We check that `irq` cannot fire **when** `ia31 == 1`. However we do not "lose" the interrupt signal. `irq_sampler` dff was <span style="color:red; font-weight: bold;">not</span> reset to be `0` because the **only** was to clear it was by **handling** it. 
+We check that `irq` cannot fire **when** `ia31 == 1`. However we do not "lose" the interrupt signal. `irq_sampler` dff was <span style="color:red; font-weight: bold;">not</span> reset to be `0` because the **only** way to clear it is by **handling** it. 
 
 We can demonstrate this very easily. Simply advance your Beta until you enter the `illop` handler. For the purpose of this example, we advance our `PC` until it points to address `0x8000003C` (second instruction in `illop` handler). Ensure that your Beta CPU is in **manual** mode. 
 
