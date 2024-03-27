@@ -325,13 +325,8 @@ We then need to handle the `pcsel` value for `bne/beq` case separately:
 
 Similarly, `reset` and `irq` cases have to be handled separately. They have to be written at the **end** of the `always` block (**highest** priority). 
 ```nasm
-    // force xwr = 0 when reset == 1 
-    if (reset){
-      xwr = 0;
-      werf = 0;
-    }
-    
-    // interrupt checker, will overwrite everything hence we put at the bottom    
+
+    // interrupt checker  
     if (irq_sampler.q == 1){
       pcsel = b100;
       wasel = 1;
@@ -339,6 +334,13 @@ Similarly, `reset` and `irq` cases have to be handled separately. They have to b
       wdsel = b00;
       xwr = 0;
     }
+
+    // force xwr = 0 when reset == 1, will overwrite everything hence we put at the bottom  
+    if (reset){
+      xwr = 0;
+      werf = 0;
+    }
+    
 ```
 
 The complete implementation of `control_unit.luc` can be found <a href="https://github.com/natalieagus/SampleAlchitryProjects/blob/master/BetaComponents/source/control_unit.luc" target="_blank">here</a>.
