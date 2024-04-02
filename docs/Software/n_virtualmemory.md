@@ -337,9 +337,12 @@ Finally when the process terminates, the OS Kernel frees up all the space initia
 {: .important}
 This section is out of syllabus, and written just to complete your knowledge.
 
-The Pagetable holds more information than just VPN to PPN translation, but also some information about where that VPN is saved in the swap space (if any).  Recall that **Page Table Entry** is not removed when the corresponding page is swapped out of memory onto the swap space. The page table **must always** have `2^VPN` entries. (each VPN corresponds to an entry). There exist a **reference** to the **swap block** (a region containing the swapped out page on disk) for non-resident VPN which page exists only in the swap space. The actual implementation of the "pointer" that can directly access the disk swap space is **hardware dependent**.
+The Pagetable holds more information than just VPN to PPN translation, but also some information about where that VPN is saved in the swap space (if any). This section is also called the *swap table* (depending on OS).  Recall that **Page Table Entry** is not removed when the corresponding page is swapped out of memory onto the swap space. The page table **must always** have `2^VPN` entries. (each VPN corresponds to an entry). There exist a **reference** to the **swap block** (a region containing the swapped out page on disk) for non-resident VPN which page exists only in the swap space. The actual implementation of the "pointer" that can directly access the disk swap space is **hardware dependent**.
 
-The **size** of the swap space depends on the OS. In Linux OS, the size of the swap space is set to be **double** of the RAM space by default. You can read [this site](https://www.kernel.org/doc/gorman/html/understand/understand014.html) to learn more about swap space management in Linux. 
+The **size** of the swap space depends on the OS setting. In Linux OS, the size of the swap space is set to be **double** of the RAM space by default. You can read [this site](https://www.kernel.org/doc/gorman/html/understand/understand014.html) to learn more about swap space management in Linux. 
+
+> Sometimes you might have this misunderstanding that Virtual Address is *equal to* "swap space address". In reality, the relationship between virtual pages and swap space is managed through a series of mappings and tables (such as page tables, swap tables, and others) that track whether a page is in physical memory, on disk, or not currently allocated. The mapping also handles the translation between virtual addresses and physical addresses or swap space locations. These details are essential for understanding the full complexity of virtual memory systems, but are abstracted in 50.002.
+
 
 ### [An example](https://www.youtube.com/watch?v=19wS4GC6mbQ&t=3106s)
 <img src="https://dropbox.com/s/r8nia46u4gdw6gk/vmexample.png?raw=1" class="center_fifty"  >
