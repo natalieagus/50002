@@ -217,7 +217,7 @@ Unlike in JSim, <span style="color:red; font-weight: bold;">DO NOT</span> press 
 
 <img src="/50002/assets/contentimage/lab5/4.png"  class=" center_seventy"/>
 
-The error message will give you a clue about your bug. The example above shows that the output should be `0` bulls and `0` cows, but your code computes `4` bulls instead. You can trace your code by adding `.breakpoint` along your computation of bulls so that the execution will pause at that line. For instance, adding such `.breakpoint` will pause the beta execution there.  You can then **inspect** each register content and stack content slowly by running each instructions thereafter **step by step**:
+The error message will give you a clue about your bug. The example above shows that the output should be `4` bulls and `0` cows, but your code computes `0` bulls instead. You can trace your code by adding `.breakpoint` along your computation of bulls so that the execution will pause at that line. For instance, adding such `.breakpoint` will pause the beta execution there.  You can then **inspect** each register content and stack content slowly by running each instructions thereafter **step by step**:
 
 ```cpp
 	SHLC(R1,4,R1)		|bulls = bulls << 4
