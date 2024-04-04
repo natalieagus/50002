@@ -155,7 +155,7 @@ Systems that support Virtual Addressing allow for each process to have the ***sa
 
 The figure below illustrates this scenario:
 
-<img src="https://dropbox.com/s/1h5q5heph7vp3yy/detailVM.png?raw=1" class="center_fifty"  >
+<img src="https://dropbox.com/s/1h5q5heph7vp3yy/detailVM.png?raw=1" class="center_seventy"  >
 
 In the example above, there are two currently running processes: process `1` and process `2`, each running in its own VM. The actual contents of the virtual memory can **either** be in the  physical memory **or** at the disk swap space. 
 
@@ -177,7 +177,7 @@ The OS Kernel maintains a **Pagetable** (sometimes it is called **pagemap** too)
 
 The MMU utilizes the Pagetable to **translate** every memory reference requests from the CPU to an actual, physical address as illustrated below:
 
-<img src="https://dropbox.com/s/rek05rsjagk2m43/mmuusage.png?raw=1" class="center_fifty"  >
+<img src="{{ site.baseurl }}/assets/contentimage/mmu-cache.png"  class="center_seventy"/>
 
 #### Details
 The number of entries in the *Pagetable* is $$2^v$$, because **exactly one entry** is needed *for every possible virtual page*. 
@@ -361,7 +361,7 @@ We can assume that *instructions* are located at a separated physical memory (li
 {: .note-title}
 > Assumption
 > 
-> We assume for the sake of exercise in this course that we are looking at the portion of the RAM, Pagetable, and TLB that stores data only and NOT instruction.  
+> We assume *for the sake of this exercise only* that we are looking at the portion of the RAM, Pagetable, and TLB that stores data only and *NOT* instruction. Please read the questions carefully in quizzes or exams/tests. 
 
 #### Example 1
 Now suppose the current instruction pointed by the PC is **`LD(R31, 0x2C8, R0)`**. This means a memory reference to address `0x2C8` is required. 
