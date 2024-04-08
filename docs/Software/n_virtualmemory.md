@@ -373,7 +373,7 @@ We know that `0x2C8` is *a virtual address* (because now our CPU operates in the
 Looking at the pagetable, we see that `VPN: 0x2` is **resident**, and can be translated into `PPN: 100`. The translated physical address is therefore `100 1100 1000`. In hex, this is `0x4C8`. The content that we are looking for exists within page `E`. 
 
 #### Example 2
-Suppose the next instruction is **`ST(R31, 0x600, R0)`.** This means a memory reference to address `0x600` is required.
+Suppose the next instruction is **`ST(R31, 0x600, R31)`.** This means a memory reference to address `0x600` is required.
 
 We can segment the `VA` into:
 * `VPN: 0x6` (higher 4 bits)
@@ -408,7 +408,7 @@ The state of the physical memory after **both** instructions are executed in seq
 {: .new-title}
 > Think!
 > 
-> Enhance your understanding by adding TLB into the picture. If a TLB of size 2 (stores the 2 most recently used mapping) is used, what will its state be in the beginning? After **`LD(R31, 0x2C8, R0)`** is executed? Then after **`ST(R31, 0x600, R0)`** is executed next?  
+> Enhance your understanding by adding TLB into the picture. If a TLB of size 2 (stores the 2 most recently used mapping) is used, what will its state be in the beginning? After **`LD(R31, 0x2C8, R0)`** is executed? Then after **`ST(R31, 0x600, R31)`** is executed next?  
 
 
 ## [Context Switching](https://www.youtube.com/watch?v=19wS4GC6mbQ&t=3411s)
@@ -468,7 +468,7 @@ However, both `VA` and `PA` share the **same** Page Offset `PO`. If a cache line
 
  
 We can leverage on this fact by creating a **hybrid** arrangement: 
- <img src="https://dropbox.com/s/mdgucv6qubun01l/cachemmu2.png?raw=1"   class="center_fifty">
+ <img src="{{ site.baseurl }}/assets/images/mmu-hybrid.png"   class="center_fifty">
 
 Each cache line in the DW/NWSA used in the design above stores:
 1. The data word  (**(not pages)**) in its `Content` field and 
