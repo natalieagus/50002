@@ -292,32 +292,40 @@ When a computer is turned off, every bits of information is stored in its non-vo
 {: .note}
 Do not trouble yourself at this point at figuring out how *bootstrap* works, i.e: how to load the OS Kernel from the secondary storage to the physical memory. We will learn more about this next term.  
 
-The moment a request to execute a program is made,  the OS Kernel:
-1. **Allocates** and **prepares** the virtual memory space for this program on the disk's swap space, 
-	* Only a small subset, essentially the program's entry points (elf table, main function, initial stack) is put onto the physical memory, and everything **else** is loaded **later**.
-2. And the OS Kernel **copies** contents required for execution over to this designated **swap** space from the **storage** part of the disk.
-	* This includes all *instructions* necessary for this program to run, its *stack space*, *heap space*, etc are nicely prepared by the OS Kernel before the program **begins** execution. 
+The moment a request to execute a program is made,  the OS Kernel **allocates** and **prepares** the virtual memory space for this program on the  RAM: 
+* This space is defined by the process's addressable memory range (range of addresses that the process can use for its execution), which can include both code (instructions) and data.
+* The size and layout of this space are defined by the OS and are based on the process's needs and the system's architecture (e.g., 32-bit vs. 64-bit systems have different address space sizes).
+* Only a small subset, essentially the program's entry points (elf table, main function, initial stack) is put onto the physical memory, and everything **else** is loaded **later**. The actual loading of these into physical memory, however, is managed by <span class="orange-bold">demand paging</span>, meaning that they are loaded as needed.
+* Other details such as pagetable initialization, **mapping** of executable libraries, etc. We shall not dwell into this because implementation varies from OS to OS. 
 
-Therefore, almost all of its `VA` initially corresponds to some location on the disk's swap space. As the process runs longer, more and more of its content (data/other instructions) are stored on RAM. 
+The OS also prepares for scenarios where physical RAM might be insufficient by setting up swap space (on disk) where inactive pages can be stored temporarily, allowing more active processes to utilize the physical RAM
+{:.note}
+
+When the process attempts to access memory that hasn't yet been loaded (ever, first-time) into physical RAM (causing a <span class="orange-bold">page fault</span>), the OS loads the required data from **storage** (not swap space) into RAM, updates the page table to reflect the physical location, and then resumes process execution. 
+
+As the process runs longer, more and more of its content (data/other instructions) are stored on RAM. 
+
+When the RAM is full the OS Kernel swap some pages out of the RAM (inactive pages) onto the disk swap space. If the process requires this page back, this again will trigger a <span class="orange-bold">page fault</span> and the OS loads the required data from the **swap space** into RAM, updates the pagetable, and resumes process execution. 
 
 
 {: .note-title}
 > Summary
 > 
 > Let's summarise how demand paging works in a nutshell: 
-> *  ***At first*** (when the process has just been opened), majority of its content is placed on the swap space of the disk and only its entry point is loaded to the RAM to be executed by the CPU. 
-> *  Subsequent pages belonging to that process will only be brought up to physical memory if the process instruction asks for it.
+> *  ***At first*** (when the process has just been opened), majority of its content is still on the disk and only its entry point is loaded to the RAM to be executed by the CPU. 
+> *  Subsequent pages belonging to that process will only be brought up to physical memory (either from storage region of disk for first-time usage or swap-space for bringing back inactive pages) if the process instruction asks for it.
 
+This setup is <span class="orange-bold">fundamental</span> to modern operating systems, allowing them to efficiently manage memory, provide security and isolation among processes, and enable complex multitasking and applications that require memory beyond the physical limits of the system.
 
 ### [Page-Fault Exception](https://www.youtube.com/watch?v=19wS4GC6mbQ&t=2852s)
 Upon execution of the first few lines of instruction of the process's entry point, the CPU will request to refer to some `VA`, and it will result in **page-fault** exception because almost all of its virtual addresses are <span style="color:red; font-weight: bold;">not</span> resident in the physical memory yet at this point. 
 
-The OS Kernel will then handle this "missing" page and start copying them over to the physical memory from the swap space, hence turning these pages to be **resident**, which means that it has a `PPN` assigned to it. The kernel then updates the corresponding entry of the Pagetable and the TLB.
+The OS Kernel will then handle this "missing" page and start copying them over to the physical memory from the swap space (or other parts of disk if it's first-time access ever), hence turning these pages to be **resident**, which means that it has a `PPN` assigned to it. The kernel then updates the corresponding entry of the Pagetable and the TLB.
 
 {: .highlight}
-Many page faults will occur as the process begins its execution **until most of the working set of pages are in physical memory** (not the entire process, as some processes can be way larger than the actual size of your physical memory, e.g: your video games. 
+Many page faults will occur as the process begins its execution **until most of the working set of pages are in physical memory** (not the entire process, as some processes can be way larger than the actual size of your physical memory, e.g: your video games). 
 
-In other words, the OS  Kernel bring only necessary pages that are going to be executed onto the physical memory as the process runs, abd thus the name **demand paging** for this technique.
+In other words, the OS  Kernel <span class="orange-bold">bring only necessary pages</span> that are going to be executed onto the physical memory as the process runs, abd thus the name **demand paging** for this technique.
 
 ### [Replacing Resident Pages](https://www.youtube.com/watch?v=19wS4GC6mbQ&t=2978s)
 
@@ -325,9 +333,9 @@ This process (of fetching new pages from swap space to the physical memory) even
 
 If a non-resident `VA` is enquired and the physical memory is **full**, the OS Kernel needs to *remove* some pages  (LRU/FIFO, depends on the replacement policy)  that are currently resident to make space for this newly requested page. 
 
-If these to-be-removed pages are **dirty** (its copy in the disk swap space is not the same as that in the RAM), a **write** onto the disk swap space is required before they're being overwritten. The kernel maintains a **data structure** that keeps track of the status of each resident page in the physical memory. This data structure is often referred to as the "page frame database" or "page table". It contains information such as the VPN, PPN, and the access status (clean or dirty) of each page. 
+If these to-be-removed pages are **dirty** (its copy in the disk swap space is not the same as that in the RAM), a **write** onto the disk swap space (or permanent storage space, depending on usage case) is required before they're being overwritten. The kernel maintains a **data structure** that keeps track of the status of each resident page in the physical memory. This data structure is often referred to as the "page frame database" or "page table". It contains information such as the VPN, PPN, and the access status (clean or dirty) of each page. 
 
-When a page is marked as dirty, it indicates that its contents have been modified in the RAM and differ from the contents in the swap space. In such cases, before the dirty page can be replaced, the kernel writes the updated contents back to the swap space to ensure data consistency. Once the dirty page has been written back to the swap space, the kernel can then safely replace it with the newly requested page in the physical memory. This process of replacing resident pages helps maintain an efficient utilization of the available memory and ensures that only the most relevant and frequently accessed pages are kept in the physical memory, while the less frequently accessed pages are stored in the swap space.
+When a page is marked as dirty, it indicates that its contents have been modified in the RAM and differ from the contents in the swap space or permanent storage space. In such cases, before the dirty page can be replaced, the kernel writes the updated contents back to the swap space to <span class="orange-bold">ensure data consistency</span>. Once the dirty page has been written back to the swap space, the kernel can then safely replace it with the newly requested page in the physical memory. This process of replacing resident pages helps maintain an efficient utilization of the available memory and ensures that only the most relevant and frequently accessed pages are kept in the physical memory, while the less frequently accessed pages are stored in the swap space.
 
 
 ### Process Termination
