@@ -202,7 +202,13 @@ The Resident Bit `R` signifies two cases:
 * if `R==0`, then the requested *content* is not in the physical memory, but in the swap space of the disk.  **page-fault** exception occur and it has to be handled. 
 
 #### Dirty Bit
-The Dirty Bit `D==1`, then the content of the memory with address `PA` cannot simply be overwritten. `Mem[PA]` has to be stored on disk swap space before it's overwritten by new data. 
+
+{:.new-title}
+> Dirty Page
+> 
+>  A page is marked as "dirty" if it has been modified (written to) after being loaded into RAM from the disk. This means the page in memory is different from its counterpart on the disk (either in the swap space or the original file location).
+
+If the Dirty Bit `D==1`, then the content of the memory with address `PA` cannot simply be overwritten. `Mem[PA]` has to be stored on disk swap space or storage location on disk before it's overwritten by new data. 
 
 #### LRU Bit
 This bit is present only if replacement policy used is LRU. Just like in cache, it indicates the LRU ordering of the *pages* **resident** in the physical memory. 
