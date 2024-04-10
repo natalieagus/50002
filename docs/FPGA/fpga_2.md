@@ -51,8 +51,17 @@ Notice some details:
 * When the system starts, it will  add `2` to `INIT` value at each clock cycle.
 * If we connect each bit of  `CLout` to an LED, then  the output sequence we should observe (changing at each CLK cycle) is: `2, 4, 6, 8, ...` (in binary, of course). 
 
-## `DFF` in Lucid
-We already have the 8-bit ripple-carry adder module ready from our previous chapter, but not the D Flip-Flop. Fortunately, Lucid has a built in D Flip-Flop + additional `reset` mux built into it that you can use by **declaring** each unit with the keyword `dff` **before the always block.** 
+## `dff` in Lucid
+
+A DFF serves as a fundamental unit of memory and is commonly utilized to interface between segments of combinational logic, thereby enabling the creation of sequential logic devices. In Verilog, this is equivalent to the `reg` type. It captures the value of its input at the moment of a clock edge (usually the rising edge) and stores that value.  The `dff` in Lucid has four ports: clk, rst, d (input), and q (output).
+
+{:.note-title}
+> `reg` in Verilog 
+>
+> The `reg` type is used to model data storage elements that hold binary values (0 or 1) and are typically used within procedural blocks (such as initial or always blocks) to hold temporary values and implement storage elements like flip-flops or latches.
+
+
+We already have the 8-bit ripple-carry adder module ready from our previous chapter, but not the D Flip-Flop. Fortunately, Lucid's built in `dff` + additional `reset` mux built into it that you can use by **declaring** each unit with the keyword `dff` **before the always block.** 
 
 **Create** a new module and name it `seq_plus_two.luc`. This time round, we accept input `clk` and `rst` signal as per the default `.luc` script. These two signals are fed by the hardware, where `clk` is typically the onboard clock, and `rst` signal is `1` when the `reset` button on Alchitry Au (not Alchitry Io!) is pressed. 
 
@@ -61,7 +70,7 @@ We already have the 8-bit ripple-carry adder module ready from our previous chap
 To use a `dff` properly, you need to **initialise** the following parameters:
 1. The `clk` signal, 
 2. The `rst` signal (optional), and 
-3. The `INIT` value (optional) . 
+3. The `INIT` value (optional) 
 
 {: .note}
 All of the above must be done **BEFORE** the always block to take desired effect. 
@@ -98,12 +107,23 @@ The `dff` has **two** important terminals: `.d` for **input** and `.q` for **out
 ``` 
 
 You can download `seq_plus_two.luc` <a href="https://github.com/natalieagus/SampleAlchitryProjects/blob/master/GettingStartedWithFPGA/source/seq_plus_two.luc" target="_blank">here</a>.
+
+{:.error-title}
+> ⛔️ Do NOT use `sig` or `var` if you intend to *store* something 
+> 
+> Variable declarations (`var`) are used to define one or more variables that can be used later. Variables are used to store temporary integer values that you won’t see in your actual design. The most common use for them is as the index in a for statement. They <span class="orange-bold">will not work the way `var` works in Javscript or higher level programming language</span>!
+>
+> Signal declarations (`sig`) are used to define one or more signals. Signals should be thought of as wires in your design; they are used to carry a value from one expression to another. Inside an always block, they can be read and written. Their value will be whatever was last written in the always block, and they must be written before being read.
+
+
 ## Testing Your Sequential Logic Module
 
 If you declare the `seq_plus_two` module in `au_top`:
 ```verilog
 seq_plus_two seqplustwo(.clk(clk), .rst(rst));
-```... and connect its output to the LED,
+```
+
+And connect its output to the LED,
 ```verilog
 io_led[0] = seqplustwo.out;
 ```
