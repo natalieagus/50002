@@ -16,7 +16,7 @@ The FPGA tutorials here are written in Lucid programming language. Please see **
    * The Br reference schematic is different from original Alchitry due to our custom PCB. [<span style="color:red; font-weight: bold;">Use our NEW one here</span>](https://drive.google.com/file/d/1T3Vth8YpqDq1iOcPEW6TWjwVH0-h-59C/view?usp=sharing). This document is also in the folder linked above. 
    * Please DO NOT use Alchitry original Br, the schematic is DIFFERENT
 2. [Documentation for Lucid](https://drive.google.com/file/d/1QTdpkAp4nvukr1wNFe2W0YeYBmvZY1Am/view?usp=sharing): We will program the FPGA using **Lucid**, <span style="color:red; font-weight: bold;">not</span> Verilog
-   * The authors have a [quick reference here](https://alchitry.com/lucid-reference). Use this like a cheat sheet!
+  
 
 
 You can see our [Instructor Github repo](https://github.com/natalieagus/SampleAlchitryProjects) on more sample Au Projects. This repo contains many small alchitry projects for your reference. Checkout the other repositories as well that contains specific code for other drivers:
