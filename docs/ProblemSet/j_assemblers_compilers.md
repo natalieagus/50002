@@ -31,7 +31,7 @@ The memory is loaded as a byte array `{14, 00, 3F, 60, 18, 00, 5F, 60, 00, 10, 0
 
 For example, this means that `MEM[0] = 0x14` and `MEM[2] = 0x3F` and so on.
 
-What is the word at memory address `0xC`? And what is the word at memory address `0x14`? 
+What is the WORD at memory address `0xC`? And what is the word at memory address `0x14`? 
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 <code>MEM[0xC] = 64 1F 00 1C</code>, and <code>MEM[0x14] = 00 00 00 02</code>.
