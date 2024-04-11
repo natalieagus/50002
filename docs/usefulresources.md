@@ -54,3 +54,9 @@ Other [sample Alchitry Projects](https://github.com/natalieagus/SampleAlchitryPr
 You can [download the full pdf from here](https://www.dropbox.com/scl/fi/6dhf0kirl7oki78hmlq7e/BrElementReferenceNEW.pdf?rlkey=57jzc7kdj9t57hm0p8vx01vq5&dl=0), or refer to the image below. Remember this is the pins you should use with the Custom Br board wings given to you (don't use the one from alchitry website).
 
 <img src="{{ site.baseurl }}/docs/FPGA/images/fpga_applesilicon/br.png"  class="center_full"/>
+
+### Beta Assembler and Emulator 
+
+[A CSD senior from batch of 2024 wrote an emulator for Beta ISA](https://github.com/aleextw/beta_tui/tree/master). If creating your own ISA for the 1D project, you may use this as a starter for extending and defining your own opcodes. You can also modify this code to output the machine language of your Beta program to be pasted into your Lucid/Verilog file. 
+
+He also wrote an assembler so that you can get the assembled machine language to be copied to your Lucid file conveniently. [We publish his assembler repository here](https://github.com/natalieagus/beta-assembler). 
