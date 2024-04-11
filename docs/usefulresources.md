@@ -57,6 +57,6 @@ You can [download the full pdf from here](https://www.dropbox.com/scl/fi/6dhf0ki
 
 ### Beta Assembler and Emulator 
 
-[A CSD senior from batch of 2024 wrote an emulator for Beta ISA](https://github.com/aleextw/beta_tui/tree/master). If creating your own ISA for the 1D project, you may use this as a starter for extending and defining your own opcodes. You can also modify this code to output the machine language of your Beta program to be pasted into your Lucid/Verilog file. 
+[Alex, A CSD senior from batch of 2024 wrote an emulator for Beta ISA](https://github.com/aleextw/beta_tui/tree/master). If creating your own ISA for the 1D project, you may use this as a starter for extending and defining your own opcodes. You can also modify this code to output the machine language of your Beta program to be pasted into your Lucid/Verilog file. 
 
 He also wrote an assembler so that you can get the assembled machine language to be copied to your Lucid file conveniently. [We publish his assembler repository here](https://github.com/natalieagus/beta-assembler). 
