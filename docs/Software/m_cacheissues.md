@@ -333,7 +333,7 @@ The helper bits can be illustrated in a diagram like below. Below we have a samp
 {: .new-title}
 > Think!
 > 
-> The diagram above illustrates a 3-Way SA cache with 3 distinct **sets**. How many LRU bits are needed per cache line? How many LRU bits are needed in the **entire** cache hardware? 
+> The diagram above illustrates a 3-Way SA cache with 3 distinct **sets**. How many LRU bits are needed per cache line? How many SRAM cells are needed to hold ALL LRU bits in the **entire** cache hardware? 
 
  
 
