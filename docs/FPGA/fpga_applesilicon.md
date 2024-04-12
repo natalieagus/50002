@@ -62,7 +62,7 @@ Ensure that your desktop looks like this. If it doesn't it means that what you h
 
 ### Shared Directory 
 
-After compiling your code, you will need to load the binary to your FPGA. There's no USB passthrough with the VM (it's not the usual QEMU), so you will need to migrate `PROJECT_PATH/work/alchitry.bin` to your host machine and flash it to your FPGA using [Alchitry Loader part of the Alchitry Labs](https://new.alchitry.com/Alchitry-Labs-V2/download.html).
+After compiling your code, you will need to load the binary to your FPGA. There's no USB passthrough with the VM (it's not the usual QEMU), so you will need to migrate `PROJECT_PATH/work/alchitry.bin` to your host machine and flash it to your FPGA using [Alchitry Loader part of the Alchitry Labs](https://alchitry.com/Alchitry-Labs-V2/download.html).
 
 <img src="{{ site.baseurl }}/docs/FPGA/images/fpga_applesilicon/2024-03-18-14-34-46.png"  class="center_full no-invert"/>
 

@@ -30,10 +30,10 @@ If you're looking for 1D project sample for 50.002, checkout [this Counter Game 
 
 
 **More material that are recommended:**
-1. [Background tutorial](https://alchitry.com/background)
-2. [Your First FPGA Project](https://alchitry.com/your-first-fpga-project) and [external IO setup](https://learn.sparkfun.com/tutorials/external-io-and-metastability/all) 
-3. [Synchronous Logic](https://alchitry.com/synchronous-logic) (Related to Week 3 materials)
-4. [Io Element Project](https://alchitry.com/io-element)
-5. [ROM and FSMs Project](https://alchitry.com/roms-and-fsms) (Related to Week 2-5 materials)
-6. [Basic CPU](https://alchitry.com/hello-your_name_here)  (Related to Beta CPU)
-7. [DDR3 RAM](https://alchitry.com/ddr3-memory) (intermediate) 
+1. [Background tutorial](https://alchitry.com/tutorials/background/)
+2. [Your First FPGA Project](https://alchitry.com/tutorials/lucid_v1/your-first-fpga-project/) and [external IO setup](https://learn.sparkfun.com/tutorials/external-io-and-metastability/all) 
+3. [Synchronous Logic](https://alchitry.com/tutorials/lucid_v1/synchronous-logic/) (Related to Week 3 materials)
+4. [Io Element Project](https://alchitry.com/tutorials/lucid_v1/io-element/)
+5. [ROM and FSMs Project](https://alchitry.com/tutorials/lucid_v1/roms-and-fsms/) (Related to Week 2-5 materials)
+6. [Basic CPU](https://alchitry.com/tutorials/lucid_v1/hello-your-name-here/)  (Related to Beta CPU)
+7. [DDR3 RAM](https://alchitry.com/tutorials/lucid_v1/ddr3-memory/) (intermediate) 

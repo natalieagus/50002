@@ -107,7 +107,7 @@ Now you should see that you have a project with several files:
 
 
 {: .important}
-You need to do your own self-study part to fill in the gaps and understand how the code works better by reading the <a href="https://alchitry.com/lucid" target="_blank">tutorials</a> provided by the original developer. The course handout also provides you some useful self-study materials. This document is only made to *complement* and *speed up* your self-study process, but it **doesn't mean** that you can forget about reading anything else. 
+You need to do your own self-study part to fill in the gaps and understand how the code works better by reading the <a href="https://alchitry.com/lucid_v1" target="_blank">tutorials</a> provided by the original developer. The course handout also provides you some useful self-study materials. This document is only made to *complement* and *speed up* your self-study process, but it **doesn't mean** that you can forget about reading anything else. 
 
 If you haven't read any tutorials about Lucid and Alchitry yet, here's some quick information: 
 * Under `Source`, thats where you will write **all** your script. `au_top.luc` is like the `main` script, so do not delete that. 
@@ -236,7 +236,7 @@ The `.acf` file defines input and output pins from the original schematic of `Al
 > 
 > An input pin with `pulldown` resistor will by default give a value of `0` if there's **no** input being supplied to prevent a *floating/undefined* input voltage. An input pin with a `pullup` resistorlikewise will give a value of `1` by default if there's no input being supplied at that port. It is useful to read abit about <a href="https://www.electronics-tutorials.ws/logic/pull-up-resistor.html" target="_blank">pull-down and pull-up resistors</a>  if you were to implement a unit from scratch like our Mini-Hardware Project.  
 
-This document will <span style="color:red; font-weight: bold;">not</span> teach you how to define more inputs for use on the `Br` board yet, or use the 7-segments to display numbers (it's an **anode** 7-seg, meaning you supply low `0` to turn the digit on). If you're interested to learn more, read the tutorial from the original author about <a href="https://alchitry.com/io-element" target="_blank">Io Element</a>
+This document will <span style="color:red; font-weight: bold;">not</span> teach you how to define more inputs for use on the `Br` board yet, or use the 7-segments to display numbers (it's an **anode** 7-seg, meaning you supply low `0` to turn the digit on). If you're interested to learn more, read the tutorial from the original author about <a href="https://alchitry.com/tutorials/lucid_v1/io-element/" target="_blank">Io Element</a>
 
 #### Turning LEDs `off`
 
@@ -441,7 +441,7 @@ By implementing this adder on the FPGA, we have learned:
 
 Now of course if you have read the documentation, you can simply implement an addition using a `+` in Lucid without having to resort to basic boolean logic because the interpreter will implement the addition for you. Either way, the hardware circuitry is still the same. If you use `+`, then you are describing the **functionality** of the circuit. Vivado will then build the corresponding hardware unit (logically) by programming the FPGA. If you describe the adder's schematic explicitly, then you are doing what Vivado did when synthesizing a `+`. Either way, the final functionality is the **same**, which is *to add*.
 
-You are highly encouraged to read <a href="https://alchitry.com/your-first-fpga-project" target="_blank">this tutorial</a>  to enhance your understanding afterwards. 
+You are highly encouraged to read <a href="https://alchitry.com/tutorials/lucid_v1/your-first-fpga-project/" target="_blank">this tutorial</a>  to enhance your understanding afterwards. 
 
 {: .important-title}
 > About Using External IO

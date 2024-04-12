@@ -26,7 +26,7 @@ This is the final document in the series. It mainly shows how to handle I/O unit
 {: .note}
 We won't be discussing how to use the 7 segment here. 
 
-There are lots of <a href="https://alchitry.com/io-element" target="_blank">online tutorial</a> on how to operate a 7-segment. **The Io Element Base template** itself also already contain a sample on how to use the 7-segment, so please study it. 
+There are lots of <a href="https://alchitry.com/tutorials/lucid_v1/io-element/" target="_blank">online tutorial</a> on how to operate a 7-segment. **The Io Element Base template** itself also already contain a sample on how to use the 7-segment, so please study it. 
 
 ## External 7 Segment
 If you do buy an external 7-segment, please take note of the required **supply voltage**. Also pay attention whether you're buying a <a href="https://www.electronics-tutorials.ws/blog/7-segment-display-tutorial.html" target="_blank">cathode or anode</a>  7-segment. 
@@ -97,7 +97,7 @@ Bottomline is that external inputs are **unreliable**, and can be disastrous if 
 
 Normally, we can entirely avoid the **metastability** and **desynchronisation** problem using the built-in component provided by AlchitryLab: `reset_conditioner`.
 
-The `reset_conditioner` in `au_top.luc` **synchronises** the reset signal **with the actual FPGA clock** so that all synchronous units in the FPGA will come out of reset at once, so that there won't be a case where some `dff` stay reset one cycle longer than the other.  You can read more about `reset_conditioner`  at the end of <a href="https://alchitry.com/synchronous-logic" target="_blank">this</a> tutorial and <a href="https://learn.sparkfun.com/tutorials/external-io-and-metastability/all" target="_blank">this</a> tutorial as well.
+The `reset_conditioner` in `au_top.luc` **synchronises** the reset signal **with the actual FPGA clock** so that all synchronous units in the FPGA will come out of reset at once, so that there won't be a case where some `dff` stay reset one cycle longer than the other.  You can read more about `reset_conditioner`  at the end of <a href="https://alchitry.com/tutorials/lucid_v1/synchronous-logic/" target="_blank">this</a> tutorial and <a href="https://learn.sparkfun.com/tutorials/external-io-and-metastability/all" target="_blank">this</a> tutorial as well.
 
 For our `seq_plus_two.luc` unit, we used a custom clock and a separate manual reset from the rest of the units implemented in the FPGA.  While for this case seems fine (because it works for the **limited** number of times you tested it manually), it is a bad idea because if you have a more complicated system **it can be** **disastrous**:
  * If you manually reset each and every one of them without any kind of conditioner unit, then there's no way to ensure that all units come out of the reset at the same time. 
@@ -526,11 +526,11 @@ Input pins with default <code>pulldown</code> resistor will produce a <code>0</c
 This document builds up on some of the things we learned before in Part 1 and 2, and it mainly focuses on how to use external I/O devices and reset the whole system properly. You may find the complete project used in all three parts of this introduction to FPGA <a href="https://github.com/natalieagus/SampleAlchitryProjects" target="_blank">here</a>.  
 
 You are recommended to read further on (if they're applicable to your project of course) :
-1.  **How <a href="https://alchitry.com/io-element" target="_blank">7-Segment works</a>** (you can learn using the onboard 7-segment on Alchitry Io first before buying external units). **7-Segment component** is useful to display numbers, e.g: display score, time left, etc. 
+1.  **How <a href="https://alchitry.com/tutorials/lucid_v1/io-element/" target="_blank">7-Segment works</a>** (you can learn using the onboard 7-segment on Alchitry Io first before buying external units). **7-Segment component** is useful to display numbers, e.g: display score, time left, etc. 
    
 2. **How LED Strips work** (e.g: WS2812B, or SK6812 LEDs). You can refer to online tutorials like  <a href="https://vivonomicon.com/2018/12/24/learning-how-to-fpga-with-neopixel-leds/" target="_blank">this</a> one. Then read the [**datasheet**](https://www.dropbox.com/s/7kj6aa9n6817tid/WS2812.pdf?dl=0), see here for WS2812B datasheet so you understand how to send the low bits and the high bits to encode an LED color. We have some sample LED writers that's Au and WS2812B compatible <a href="https://github.com/natalieagus/ws2812b" target="_blank">here</a>  to get you started. 
    
-3. How you can utilize another powerful **storage device:** the **default RAM component**. You can find the <a href="https://alchitry.com/hello-your_name_here" target="_blank"> tutorial</a> written by the original author here (there's single-port and dual-port RAM). 
+3. How you can utilize another powerful **storage device:** the **default RAM component**. You can find the <a href="https://alchitry.com/tutorials/lucid_v1/hello-your-name-here/" target="_blank"> tutorial</a> written by the original author here (there's single-port and dual-port RAM). 
 
 	 <strong>RAM component</strong> is <strong>especially useful</strong> if you need to store a **large** amount of data <>, e.g data to be rendered out to large (32x32 or 64x32, etc) LED matrices. It is convenient to use the `dff` for small data storages, but you will run out of logic units real fast if you were to create thousands of dffs (not to mention the bizzare amount of time needed to compile the code). 
 

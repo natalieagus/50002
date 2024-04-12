@@ -237,11 +237,13 @@ Random replacement policy is the simplest to implement as it does not require mu
 
 ## [The Cache Block Size](https://www.youtube.com/watch?v=2OARjqLK4io&t=1860s)
 
-We can further improve cache performance by **increasing the capacity of each cache line**. We can **fetch  `B` words of data at a time**, and this is especially useful if there's high locality of reference.  The figure below illustrates a cache line with block size of 4:
+We can further improve cache performance by **increasing the capacity of each cache line**. We can **fetch  `B` words of data at a time**, and this is especially useful if there's high locality of reference.  The figure below illustrates a cache with a single cache line and a block size of 4:
   
 
 <img src="{{ site.baseurl }}/assets/images/notes/cache-word-block.png"  class="center_seventy"/>
 
+{:.highlight}
+Apply this knowledge if we have N cache lines and block size of 4: how many `TAG`, `k`, and `b` bits are there? 
 
 {: .new-title}
 > Cache Block Size
