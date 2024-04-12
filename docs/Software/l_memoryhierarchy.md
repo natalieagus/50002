@@ -342,7 +342,8 @@ The DM cache has the following generic structure:
 
 <img src="https://dropbox.com/s/eu74l2gi23380mp/dmcache.png?raw=1"      >
   
-
+{:.important}
+Notice the `00` omitted at the back. This is because we are using **byte addressing**, but we are storing 1 word in each cache line. 
 
 #### Comparison with FA Cache
 Characteristics of DM cache (in [comparison](https://www.youtube.com/watch?v=m5_u3sQ9bXo&t=3052s) to FA cache) are:
@@ -355,7 +356,7 @@ Characteristics of DM cache (in [comparison](https://www.youtube.com/watch?v=m5_
    * The `Content` field contains a copy of all bits of data at `Mem[A]`. 
 3.  **Contention problem:** DM cache suffers contention (*collision problem*) due to the way it strictly maps the lower `K` address bits to each cache line:
 	* Two or more *different* addresses `A1` and `A2` can be mapped to the **same** cache line  **if both have the same** lower `K` bits.
-	> The choice of using  `K`-**lower** bits for DM cache *mapping* is better than using the **upper** `T` bits **due to locality of reference**, but it does not completely eliminate contention.
+	* The choice of using  `K`-**lower** bits for DM cache *mapping* is better than using the **upper** `T` bits **due to locality of reference**, but it does not completely eliminate contention.
 4. **Slower**: There's *no parallel searching*:
 	* At first, DM cache has to decode the K-bit address to find the correct cache line: `TAG`-`Content` entry.
 	* Then, perform comparison with between `TAG` and the upper T-bit address input.

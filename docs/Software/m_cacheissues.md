@@ -250,6 +250,11 @@ We can further improve cache performance by **increasing the capacity of each ca
 
 Hence to index or address each word in the cache line of block size with `B` words, we need $$b = \log_2(B)$$ bits. In the example above, we need 2 bits to address each **column**, taken from `A[3:2]` (assuming that `A` uses byte addressing). 
 
+{: .info}
+> The Offset bits
+>
+> Some literature calls the `b+2` bits as the **offset bits**. Offset bits in a cache refer to the part of the memory address used to determine the exact location within a cache line where the desired data is stored. Offset corresponds to the bits used to determine the *byte* to be accessed from the cache line. In the example above, because the cache line is 4 words long (16 bytes long), there are 4 offset bits: the 2 b bits + 2. 
+
 ### Tradeoffs
 There are tradeoffs in determining the block size of our cache, since we always fetch (and / or overwrite) `B` words -- the entire block -- together at a time: 
 *  **Pros**: If high locality of reference is present, there's high likelihood that the words from the same block will be required together. Fetching a large block upon the first `MISS` will be beneficial later on, thus improving the average performance. 
