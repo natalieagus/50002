@@ -84,7 +84,7 @@ Consider a virtual memory system that uses a single-level page map to translate 
 
 Consider two possible page-replacement strategies: 
 * **LRU** (the least recently used page is replaced) 
-* FIFO (the page that has been in the memory longest is replaced
+* **FIFO** (the page that has been in the memory longest is replaced
  
 The merit of a page-replacement strategy is judged by its **hit ratio** or **miss rate**. The larger the hit ratio (or equivalently, the smaller the miss ratio), the better that cache is. 
 
