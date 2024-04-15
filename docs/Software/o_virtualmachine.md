@@ -153,7 +153,7 @@ At each CLK cycle, the Control Unit always checks whether `IRQ` is `1` or `0`.
 {: .note-title}
 > `IRQ` is Asynchronous
 > 
-> Note that `IRQ` may turn to be `1` asynchronously, e.g: in the "*middle*" of a particular CPU CLK cycle.  However the Control Unit is synchronised with CPU CLK. Therefore, this will only *trigger* an interrupt in the next CPU CLK tick. 
+> Note that `IRQ` may turn to be `1` asynchronously, e.g: in the "*middle*" or even towards the end of a particular CPU CLK cycle.  However the Control Unit is synchronised with CPU CLK. Therefore, this may only *trigger* an interrupt in the next CPU CLK tick. The exact implementation is <span class="orange-bold">hardware dependent</span>. 
 > * If `IRQ==0`, the Control Unit produces all control signals as dictated by `OPCODE` received.
 > * Else if `IRQ==1`, the Control Unit *traps* the PC onto the interrupt handler located at `XAddr`, by setting `PCSEL` value into `100`; *so that the PC points to `XAddr` in the next clock cycle.* 
 >	* At the same time, it stores the address of the *next* instruction (`PC+4`) at Register `XP` (`R30`).  
