@@ -351,10 +351,10 @@ During this event,
 * The illop handler will  look at `Reg[R0]` and invoke the right service routine to provide the requested service. 
 	* Upon returning, the service routine will put its return the result in `Reg[R0]`. 
 * The illop handler resumes the execution of the originating process:
-	* `Reg[XP] = Reg[XP] -4`
 	* `JMP[XP]`
 
-  
+{:.note} 
+There's no need to do `Reg[XP] = Reg[XP]-4` because we don't wish to re-invoke the Trap / SVC when we return to the calling process.
 
 One common scenario where a process running in user mode needs the Kernel service is when it asks for keyboard / mouse input, for example:
 
