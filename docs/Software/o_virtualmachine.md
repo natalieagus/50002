@@ -275,8 +275,14 @@ In this section, we illustrate an example of how a basic Kernel Scheduler works 
 
 The Kernel typically can set the `IRQ` signal to point to the any arbitrary bit of the counter (but we need more hardware to "clean" this counter signal, read below). 
 
-{: .warning}
-There's one more detail: we can't let the `IRQ` signal to **always** point to the `n`th bit of the counter because it will cause `IRQ` to be `1` for **more than 1 CPU clock cycle**. Let's do an example: suppose we have a CPU running on 100Hz clock, and a timer with 50Hz clock (so the timer is asynchronous of the CPU), and we select the `IRQ` to always point to the **5th** bit of the timer. This 5th bit of the timer will alternate between `0` and `1` every 16 cycles (or 0.32s). This means that the IRQ signal will be `1` for the first time after 16 cycles of the timer clock (0.32s), and it will **remain** `1` for *another* 0.32s before turning `0`. We do <span style="color:red; font-weight: bold;">not</span> what IRQ signal for 0.32s, that's 32 cycles of the CPU clock! We only want it to be `1` just **ONCE**, exactly just for 1 cycle of the CPU clock. As a result, we need to pass the 5th bit of the timer into a rising **edge detector** driven with the CPU clock before connecting it to the `IRQ` line of the CPU. 
+{: .warning-title}
+> IRQ 
+> 
+> There's one more detail: we can't let the `IRQ` signal to **always** point to the `n`th bit of the counter because it will cause `IRQ` to be `1` for **more than 1 CPU clock cycle**. 
+> 
+> **Let's use an example**: suppose we have a CPU running on 100Hz clock, and a timer with 50Hz clock (so the timer is asynchronous of the CPU), and we select the `IRQ` to always point to the **5th** bit of the timer. This 5th bit of the timer will alternate between `0` and `1` every 16 cycles (or 0.32s). 
+> 
+> This means that the IRQ signal will be `1` for the first time after 16 cycles of the timer clock (0.32s), and it will **remain** `1` for *another* 0.32s before turning `0`. We do <span style="color:red; font-weight: bold;">not</span> what IRQ signal for 0.32s, that's 32 cycles of the CPU clock! We only want it to be `1` just **ONCE**, exactly just for 1 cycle of the CPU clock. As a result, we need to pass the 5th bit of the timer into a rising **edge detector** driven with the CPU clock before connecting it to the `IRQ` line of the CPU. 
 
 With the rising edge detector, it means that the `IRQ` value will be `1` **once** every 0.64 seconds. 
 
