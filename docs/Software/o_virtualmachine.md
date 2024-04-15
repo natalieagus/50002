@@ -192,11 +192,7 @@ Then, the handler will figure out which specific **service routine** needs to be
 > What is the value of `Reg[XP]-4`? 
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-It depends. The **service routine** may or may not change the value of `Reg[XP]` before returning to the interrupt handler.
-
-If the value of `Reg[XP]` is unchanged, then the interrupted program resumes. Else, it means that the CPU executes another program.
-
-In any case, `Reg[XP]-4` **always** contains the address of instruction that the CPU should execute when the interrupt handler returns. 
+`Reg[XP]` contains the **next** address of the interrupted instruction. When we resume the interrupted process, we would like to re-execute this interrupted instruction. Hence, `Reg[XP]-4` **always** contains the address of that interrupted instruction that the CPU should execute when the interrupt handler returns. 
 </p></div><br>
 
 
