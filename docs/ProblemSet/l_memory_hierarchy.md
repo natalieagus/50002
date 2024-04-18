@@ -97,7 +97,7 @@ The following is a sequence of address references given as **word** addresses (g
 
 ## Cache Performance (Basic)
 
-1. If a cache access requires **one** clock cycle and handling cache misses stalls the processor for an additional **five** cycles, which of the following cache hit rates comes **closest** to achieving an **average** memory access of 2 cycles?
+1. If a cache access requires **one** clock cycle and handling cache misses stalls the processor for an additional **five** cycles, what cache hit rate comes **closest** to achieving an **average** memory access of 2 cycles?
 	<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 	2 cycle average access = (1 cycle for cache) + (1 - hit rate) * (5 cycles stall). This means the hit rate is **80%**.
 	</p></div><br>
