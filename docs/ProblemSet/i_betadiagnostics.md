@@ -56,14 +56,14 @@ As always, we can  detect this particular fault by running a simple test program
 Assume that all register values were `0` at the beginning of each program execution.
 
 **Program 1**: (executed for two CLK cycles)
-```cpp
+```nasm
 .= 0  
 BEQ(R0, .+4, R31)  
 ADDC(R0, 1, R0)  
 ```
 
 **Program 2**: (executed for three CLK cycles)
-```cpp
+```nasm
 .=0  
 CMPEQ(R0, R0, R0)  
 BNE(R0, .-4, R31)  
@@ -71,7 +71,7 @@ ADDC(R0, 1, R0)
 ```
 
 **Program 3**: (executed for four CLK cycles)
-```cpp
+```nasm
 .=0  
 LD(R0, 0, R0)  
 MULC(R0, 1, R0)  
@@ -80,21 +80,21 @@ CMPEQ(R0, R31, R2)
 ```
 
 **Program 4**: (executed for two CLK cycles)
-```cpp
+```nasm
 .=0
 ST(R0, x, R31) 
 x: LONG(12)
 ```
 
 **Program 5**: (executed for two CLK cycles)
-```cpp
+```nasm
 .=0  
 JMP(R1)  
 ADDC(R0, 1, R1)
 ```
 
 **Program 6**: (executed for two CLK cycles)
-```cpp
+```nasm
 .=0  
 LDR(R31, .+8, R0)  
 ADDC(R0, 1, R1)  
@@ -253,7 +253,7 @@ When Alice was walking back to her hostel this morning, she dropped her Beta CPU
 
 She quickly wrote a diagnostic program that hopefully can detect all these faults at once. Her program is as follows, starting from address 0. 
 
-```cpp
+```nasm
 ADDC(R31, 16, R0)   | 0
 ADD(R31, R0, R0)    | 4
 LD(R31, 16, R1)     | 8
