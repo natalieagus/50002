@@ -165,7 +165,7 @@ A super simple support datapath should have some kind of `ASEL` mux, `BSEL` mux,
 * `WDSEL`: to decide what's fed into the `DATA IN` port of the REGFILE (what's written into `Reg[Rc]` if any).
 
 The figure below illustrates that:
-<img src="https://dropbox.com/s/p9puma2xbs23an8/alusupport.png?raw=1"   >
+<img src="{{ site.baseurl }}/docs/FPGA/images/fpga_applesilicon/alusupport-2.png"  class="center_full"/>
 
 Obviously the control signals required are (coloured in the figure above):
 * `ASEL` selector
