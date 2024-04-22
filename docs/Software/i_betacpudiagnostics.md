@@ -232,7 +232,7 @@ The content at `Mem[constant+8]` will be 8 instead of 12 if only the `RA2SEL` mu
 
 **Explanation**:
 * If the `ASEL` mux is faulty, we will be adding `0` (instead of the content of `R0` which is `8`) with the content of `R1` (which is `4`) and storing it at `R2`. The content of `R2 = 0 + Reg[R1] = 4` instead of the expected `12`.
-* `constant` is equivalent to address `24`, or `0x0018`. This makes bit 15 to bit 11 of the `ST` instruction to be `00000`
+* `constant` is equivalent to address `20`, or `0x0014`. This makes bit 15 to bit 11 of the `ST` instruction to be `00000`
 * If `RA2SEL` mux is faulty, we will be storing the **content** of `R0` (which is `8`) instead of the **content** of `R2` (which might be 4 or 12 depending on whether `ASEL` mux is faulty) 
 
 
