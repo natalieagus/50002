@@ -399,7 +399,14 @@ The control logic should be tailored to generate the control signals your logic 
 
 Some of the signals can connect directly to the appropriate logic, e.g., `ALUFN[5:0]` can connect **directly** to the **ALUFN** inputs of your **ALU**, however some signals like `PCSEL[2:0]` requires some degree of <span style="color:red; font-weight: bold;">post-processing</span> depending on the value of other signals like `Z`. 
 
-We have already provided you with the bare Control Unit ROM as shown in the schematic above. Further processing for control signals: `PCSEL, wasel, wdsel, werf, wr` are needed. 
+We have already provided you with the bare Control Unit ROM as shown in the schematic above. It gives out control signals, <span class="orange-text">excluding</span> the optional opcodes:
+
+<img src="{{ site.baseurl }}//docs/Labs/images/lab4-part1/2024-04-23-13-22-01.png"  class="center_full"/>
+
+{:.warning}
+If you need to implement `MUL` or `DIV` in your Beta CPU for your 1D, please modify the ROM yourself. 
+
+For this lab, further processing for control signals: `PCSEL, wasel, wdsel, werf, wr` are needed, let's do this. 
 
 ### WR and WERF
 We do need to be careful with the write enable signal for main memory (WR) which needs to be **valid** even before the first instruction is fetched from memory. WR is an **input** to the main memory, and recall that ALL inputs need to be VALID (0 is also a valid value!) in order for the main memory to give a valid output data. You should include some additional logic that forces `wr` to `b0` when `reset is 1`. This takes highest priority, hence it is written at the bottom of the `always` block in `control_unit.luc`. 
