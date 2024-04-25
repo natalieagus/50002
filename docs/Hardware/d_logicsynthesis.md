@@ -21,6 +21,15 @@ Singapore University of Technology and Design
 {: .no_toc}
 [You can find the lecture video here.](https://youtu.be/yXBAy432vT8) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
+## Learning Objectives
+* Write the truth table given a functional specification of a combinational device
+* Write the sum-of-products of a boolean expression given a truth table or combinational logic, and vice versa
+* Draw the combinational logic using NAND and NOR gates given the sum-of-products or truth table
+* Simplify boolean expression using boolean algebra and Karnaugh map
+* Explain the workings and applications of multiplexer
+* Use multiplexer as a universal gate implementation
+* Implement boolean expression in read-only memory (ROM)
+
 ## [Overview](https://www.youtube.com/watch?v=yXBAy432vT8&t=0s)
 The purpose of creating combinational devices is to **synthesise logic**, meaning that we create a device that is able to give a certain combination of output given a certain combination input. In other words, a device that adheres to a truth table, i.e: its *functional specification.* 
 
@@ -69,38 +78,34 @@ We can also have functional specifications in terms of **boolean expression**. T
 
 1. Look **only for the rows with output= 1**. In the case of the NAND gate, we look at row 1, 2, and 3. 
 1. For each row in with output = 1, if the value of the input is a 0, then express it with a NOT.
+3. **Sum** all the expressions from the rows with Y=1 to get sum of products.
 
-	> Taking the NAND gate's truth table as example, 
-	> - For row 1 of NAND gate's truth table, we have $$\overline{A} \text{ } \overline{B}$$. 
-	> - For row 2, we have $$\overline{A}B$$. 
-	> - For row 3 we have $$A\overline{B}$$.
-3. Sum all the expressions from the rows with Y=1.
-	> Taking the NAND gate's truth table as example, the sum of product is:
+
+Taking the NAND gate's truth table as example:
+ 
+A | B | Y
+---------|----------|---------
+ 0 | 0 | 1
+ 0 | 1 | 1
+ 1 | 0 | 1
+ 1 | 1 | 0
+
+NAND gate's sum of product is:
 $$\begin{aligned}
 Y = \overline{A} \text{ } \overline{B} + \overline{A}B + A\overline{B}
 \end{aligned}$$
-4. The expression above is called the **sum of products**.
+
 
 *Sometimes in textbooks, it is called as canonical sum of products. They mean the same thing as just "sum of products".*
 
-## [Universal Gates](https://www.youtube.com/watch?v=yXBAy432vT8&t=908s)
-
-  
-
-NAND and NOR gates are **universal**, meaning that each *alone* can implement **any** boolean function. AND, OR, and INV alone aren't sufficient, but together these three can express any boolean expressions (we will see this in the next section). 
-
-We can use just NANDs or just NORs gates to make AND, OR and INV gates:
-
-<img src="https://dropbox.com/s/dflzkxdqvuyypjt/univgates.png?raw=1" class="center_fifty" >
 
 
-Therefore, NANDs and NORs are **universal** gates.
 
 ## [Straightforward Logic Synthesis](https://www.youtube.com/watch?v=yXBAy432vT8&t=1248s)
 
-Recall that the goal of combinational devices is that they are created to adhere to a certain functional specification. We can make various logic gates and combine them to synthesize a more complex logic or truth table. However, there are basic logics that can be used to synthesize any kinds of other (more complex) logic. These are: INV (inverter), AND gate, and OR gate. 
+Combinational devices are designed to meet specific functional specifications. By using basic gates like INV (inverter), AND, and OR, we can synthesize any complex logic or truth table. This foundational approach allows us to <span class="orange-bold">apply the sum of products method</span> to effectively construct these complex functions.
 
-The truth table for OR gate is as follows, that is the output is `1` if either A or B input is `1`:
+The truth table for `OR` gate is as follows, that is the output is `1` if either A or B input is `1`:
 
 $$\begin{matrix}
 A & B & Y\\
@@ -113,7 +118,7 @@ A & B & Y\\
 $$
 
 
-  Given a sum-of-products boolean expression, we can make a combinational device that has that boolean expression as functional specification using **these three types of logics**: INV, AND, and OR with *arbitrary* number of inputs.
+Given a sum-of-products boolean expression, we can make a combinational device that has that boolean expression as functional specification using **these three types of logics**: `INV`, `AND`, and `OR` with *arbitrary* number of inputs.
 
 For example, given the following sum of products expression,
 
@@ -137,14 +142,18 @@ Explanation:
 > 
 > $$\overline{C} \text{ }\overline{B} A$$ means *not C*, *not B*, and *A* combined together as an input to a 3-input AND gate. 
 
-Using these steps, we can come up with the *simplest* (not necessarily the most efficient, cheapest, smallest, etc), most straightforward logic synthesis. 
 
-Notice that if the expression contains many terms summed together, we need bigger OR gate at the output. This causes the size of our device to be bigger, and therefore more expensive. In the later sections, we learn how to ***reduce*** the boolean expression such that we have less number of terms, and thus are able to synthesize the logic more effectively. 
+{:.important}
+By applying the sum-of-products directly with `INV`, `AND` and `OR` gates, we synthesize logic easily, but this is not necessarily the most efficient, cheapest, smallest method available. 
+
 
 ## [Boolean Algebra Properties](https://www.youtube.com/watch?v=yXBAy432vT8&t=1492s)
-Another tool we need to master before being able to minimise or reduce boolean expression is boolean algebra properties. They are useful to manipulate boolean expressions so that we simplify and reduce the terms, while still keeping the logic equivalent. 
 
-Here are the simpler boolean algebra properties that we must know before proceeding to a more complex ones:
+In this section, we learn how to ***reduce*** the boolean expression such that we have less number of terms, and thus are able to synthesize the logic more effectively (cheaper device, smaller in terms of size, use less gates, etc). 
+
+Boolean algebra properties are useful to <span class="orange-bold">manipulate</span> boolean expressions so that we simplify and reduce the terms, while still keeping the logic equivalent. 
+
+Here are some simple boolean algebra properties:
 
 $$\begin{aligned}
 \text{OR rules: } & a+1 = 1, \\
@@ -154,7 +163,7 @@ $$\begin{aligned}
 \text{COMPLEMENT rules: } & a + \bar{a}=1, \\ & a\bar{a}=0 \\ 
 \end{aligned}$$
 
-Below are more laws that are built based on some of the rules above and each other. We do not have to prove each law in this course, but if you're interested, you can look for other references such as [here](https://www.electronics-tutorials.ws/boolean/bool_6.html).
+Below we have more properties that are built based on some of the rules above and each other. <span class="orange-bold">We do not have to prove each law in this course</span>, but if you're interested, you can look for other references such as [here](https://www.electronics-tutorials.ws/boolean/bool_6.html).
 
 $$\begin{aligned}
 \text{Commutative: } & a+b = b+a, \\ &ab = ba\\\\
@@ -191,11 +200,11 @@ ab + \bar{a}c + bc &=  ab + \bar{a}c + (\bar{a}+a)bc\\
 \end{aligned}
 $$
 
-What's important is to **pay attention** to the relationship between each variables. You can easily let $$\bar{a} = x$$ and find the formula applies as well for the inverted version. 
+What's important is to **pay attention** to the <span class="orange-bold">relationship</span> between each variables. You can easily let $$\bar{a} = x$$ and find the formula applies as well for the inverted version. 
  
 ### [DeMorgan's Theorem](https://www.youtube.com/watch?v=yXBAy432vT8&t=1507s)
 
-Finally, the DeMorgan's theorem is useful as a tool for us to manipulate boolean equations as it converts between OR to AND and vice versa using INV. The Theorem states:
+The DeMorgan's theorem is a useful tool for manipulating boolean equations, allowing the conversion of `OR` operations into `AND` operations and vice versa using `INV`. The theorem states:
   
 
 $$\begin{aligned}
@@ -206,7 +215,7 @@ $$\begin{aligned}
 
 ### [Boolean Minimization Example](https://www.youtube.com/watch?v=yXBAy432vT8&t=1663s)
 
-When given a boolean expression, we need to be creative and utilize all properties of boolean algebra to minimise the expression. For example, we can use the *reduction* rule from the boolean algebra cheat-sheet above to perform boolean minimization:
+When given a boolean expression, we need to be creative and utilize all possible properties of boolean algebra to minimise the expression. For example, we can use the *reduction* rule from the boolean algebra cheat-sheet above to perform boolean minimization:
 
 $$\begin{aligned}
 Y &= \overline{C} \text{ }\overline{B} A + \overline{C} B A + CB\overline{A} + CBA\\
@@ -214,13 +223,18 @@ Y &= \overline{C} \text{ }\overline{B} A + \overline{C} B A + CB\overline{A} + C
 &= \overline{C} A + CB 
 \end{aligned}$$
 
+{:.note}
+It takes practice. Don't worry if you don't get it on the first try. 
+
 ### [Karnaugh Map for Boolean Minimisation](https://www.youtube.com/watch?v=yXBAy432vT8&t=1953s)
 
-The Karnaugh Map offers an alternative method to perform boolean minimization. This is a method to easily perform boolean minimization, and **ultimately the end goal is to reduce the digital circuit to its minimum number of gates** (save cost and save space).
+The Karnaugh Map offers an <span class="orange-bold">alternative</span> method to perform boolean minimization. This is a method to easily perform boolean minimization, and **ultimately the end goal is to reduce the digital circuit to its minimum number of gates** (save cost and save space).
 
 
 *The following figure shows a 2-input (by input it just basically means how many input boolean variables), 3-input, and 4-input Karnaugh maps.* **Please do not change the order**, they follow **Gray code configuration** to preserve **adjacency** so rules 1-6 below can apply. 
-> It is possible to rotate them clockwise or anticlockwise but do so only if you understand the logic behind arrangement of Karnaugh map configuration, which is out of this syllabus. 
+
+{:.note}
+It is possible to rotate them clockwise or anticlockwise but do so only if you understand the logic behind arrangement of Karnaugh map configuration, which is out of this syllabus. 
 
 <img src="https://dropbox.com/s/3aaw73p23w2zd4j/k1.png?raw=1"   class="center_seventy" >
 
@@ -231,21 +245,15 @@ For instance, here is an example of a  truth table and its corresponding Karnaug
   
 <img src="https://dropbox.com/s/cmx3apt9l48izd5/k2.png?raw=1" class="center_fifty" >
 
-Then you can **simplify** the Karnaugh Map using these 6 ground rules:
+You can **simplify** the Karnaugh Map using these six fundamental rules:
 
-1. **Groups should contain as many `1` cells** (i.e. cells containing a logic 1) as possible and no blank cells.
-2. Groups can **only** contain 1, 2, 4, 8, 16 or 32... etc. cells (powers of 2).
-3. A `1` cell can only be grouped with **adjacent** `1` cells that are immediately *above, below, left or right* of that cell. 
-   * **No diagonal grouping**
-4. Groups of `1` cells can **overlap**. 
-   * This helps make *smaller groups as large as possible*, which is an advantage in finding the **simplest** solution.
-5. The *top/bottom* and *left/right edges*, and also the 4 **corners** of the map are considered to be **continuous**. 
-    * Larger groups can be made by grouping cells across the top and bottom or left and right edges of the map:
-	* Top row and bottom row (or parts of them) can form one group as long as condition 1-4 are satisfied. 
-	* Leftmost column and rightmost column  (or parts of them)  can also form one group as long as condition 1-4  are satisfied. 
-6. There should be as ***few*** groups as possible.
+1. **Maximize `1` cells in each group**, avoiding any blank cells.
+2. Groups must be **powers of 2**: 1, 2, 4, 8, 16, 32, etc.
+3. **Adjacent grouping only**: `1` cells can be grouped with others immediately to the left, right, above, or below—**no diagonals**.
+4. **Overlapping is allowed**, enabling smaller groups to expand, thus aiding in achieving the simplest solution.
+5. Consider the **map's edges and corners as continuous**: groups can extend over the top and bottom or left and right edges, with corners also able to join these edge groups, provided all other rules are met.
+6. **Minimize the number of groups** to streamline the solution.
 
-  
   
 
 Following the rules above, the simplified example Karnaugh map is:
@@ -254,72 +262,34 @@ Following the rules above, the simplified example Karnaugh map is:
 
   
 To convert this Map back into boolean expression, we need to look at each group and use a little bit of logic:
-
 1. In the **blue group,** the output is  `1` regardless of A, and regardless of C. Hence, the boolean expression for the blue group is just M.
-
 2. In the green group, the output is  `1` regardless of M. Therefore, the boolean expression for the green group is AC.
+3. The complete simplified boolean expression is: $$X = M + AC$$.
 
-3. The complete simplified boolean expression is: X = M + AC.
-	> X = M + AC is logically equivalent to X = $$\bar{A}M\bar{C}$$+$$\bar{A}MC$$+ $$AM\bar{C}$$+$$A\bar{M}C$$+$$AMC$$ (the sum of products of its truth table). 
-	> 
-	> You can also obtain the minimized expression using boolean algebra:
-	> - Reduction rule: $$\bar{A}M\bar{C}$$+$$\bar{A}MC$$ = $$\bar{A}M$$
-	> - Reduction rule: $$AM\bar{C}$$+$$AMC$$ = $$AM$$
-	> - So far we have: X = $$AM+ \bar{A}M+A\bar{M}{C}$$
-	> - We can further reduce the first two terms, resulting in  X = $$M+A\bar{M}{C}$$
-	> - Use absorption rule to absorb $$\bar{M}$$, we end up with X = $$M+AC$$
+$$X = M + AC$$ is logically equivalent to $$X = \bar{A}M\bar{C}$$+$$\bar{A}MC$$+ $$AM\bar{C}$$+$$A\bar{M}C$$+$$AMC$$ (the sum of products of its truth table). 
+
+You can also obtain the minimized expression using boolean algebra:
+- **Reduction** rule: $$\bar{A}M\bar{C}$$+$$\bar{A}MC$$ = $$\bar{A}M$$
+- Apply another **reduction** rule: $$AM\bar{C}$$+$$AMC$$ = $$AM$$
+- So far we have: $$X = AM+ \bar{A}M+A\bar{M}{C}$$
+- We can further reduce the first two terms, resulting in  X = $$M+A\bar{M}{C}$$
+- Use **absorption** rule to absorb $$\bar{M}$$, we end up with X = $$M+AC$$
 
 {: .note}
-Minimised boolean forms are not necessarily unique. The number of terms left in the final expression is unique but its possible to have a different form. 
-
-## [Logic Synthesization with CMOS](https://www.youtube.com/watch?v=yXBAy432vT8&t=2605s)
-We can create a combinational logic device easily given the *minimized* boolean expression, using any of the universal gates:
-* NANDs only
-* NORs only
-* AND, INV, and OR 
-
-Each gate can be created using transistors: PFETs and NFETs arranged in a complementary way. The schematic of each is as follows:
-<img src="https://dropbox.com/s/tnleg2coz9kjpul/andorinv.png?raw=1" class="center_seventy"  >
-
-> The OR and AND gates are simply the NOR and NAND gates with inverter at the output. 
-
-We can also create the device straight using CMOS recipe given the minimised boolean expression (instead of using the universal gates). For example, given this minimised equation that we did earlier:
-$$Y= \overline{C} A + CB$$
-
-It can be made this way with a combination of **universal gates**: 
-> Recall that the AND is actually NAND + INV, and the OR is NOR + INV.
-
-<img src="https://dropbox.com/s/rqc1v5b9uioneef/dev.png?raw=1" class="center_fourty" >
-
-This requires **20 MOSFETs** to build.
-
-{: .note-title}
-> The **freestyle** way
-> 
-> You may design CMOS circuitry without any rules. It's a little like an artwork and <strong>theres more than one way to construct the circuit that produces the same logic</strong>. You can choose to construct the pull-down first or the pull-up first. You can also choose to construct the negation of the circuit and invert the overall output.   Please do not memorise this blindly. At the end of the day, whichever method you choose, it is fine as long as the CMOS circuit produces the <strong>correct logic</strong>. If you want to <i>minimise</i> them though them some careful design is required. It is an art to design a CMOS circuit and it is beyond the scope of this course. 
-
-* **Step 1:** Construct a **pull-down circuitry**: 
-	* for each '+' (OR) we build a parallel NFET circuit
-	* for each $$\cdot$$ (AND) we build a series NFET circuit 
-	Therefore we have two sets of two NFETs in **series**: 
-<img src="https://dropbox.com/s/vsfyv7iefuv19cx/DEVMOS1.png?raw=1"  class="center_thirty"   >
-
-* **Step 2:** Add **inverter** at the output.
-	* In **Step 1** we created a pull-down circuitry that is *activated* when each of the terms in the boolean expression produces an overall `1`. 
-    * E.g: when $$B, C$$ are both 1, the pull-down is activated as current can flow from $$Y$$ to the GND. The effective output at $$Y$$ will be then `0` when $$B,C$$ are both  `1`. 
-	* Since what we want is the *opposite*, we need to put an inverter at the output, that is   $$Y=1$$ when $$B,C$$ are both 1, we need to put an inverter at the output, as shown: 
-	<img src="https://dropbox.com/s/x2ktjw4gqxx979r/devmos2.png?raw=1"  class="center_fourty"   > 
-
-	If what you want is for $$Y$$ to be <code>0</code> when $$B,C$$ are both <code>1</code> then there's no need to put an inverter in the end. Just draw the complementary pullup and call it a day 
-
-* **Step 3:** Construct the **complementary** pull-up circuitry and assemble. Refer to the CMOS recipe in the previous chapter. 
-<img src="https://dropbox.com/s/ft9xplwm26ksgks/devmos3.png?raw=1"   class="center_fourty"  >
-
-This requires **14 MOSFETs** to build, less than the previous design. It is definitely easier (for us) to create a combinational logic device using a bunch of universal gates, but it comes at the cost of money and size. 
-
-Note that the CMOS recipes that we learn in this course also **does not guarantee** that you can build a device with **minimised number of transistors,** given its functional specification. It is an *art* to create the most efficient circuit in terms of money, size, and usage. 
+Minimised boolean forms are <span class="orange-bold">not</span> necessarily unique. The number of terms left in the final expression is unique but its possible to have a different form. 
 
 
+## [Universal Gates](https://www.youtube.com/watch?v=yXBAy432vT8&t=908s)
+ 
+
+NAND and NOR gates are **universal**, meaning that each *alone* can implement **any** boolean function. AND, OR, and INV alone aren't sufficient, but together these three can express any boolean expressions (we will see this in the next section). 
+
+We can use just NANDs or just NORs gates to make AND, OR and INV gates:
+
+<img src="https://dropbox.com/s/dflzkxdqvuyypjt/univgates.png?raw=1" class="center_fifty" >
+
+{:.note}
+Universal gates like NAND and NOR simplify circuit design, reduce manufacturing costs, and enhance reliability by allowing any Boolean function to be implemented using just one type of gate.
 
 
 ## Special Combinational Logic Devices
@@ -468,3 +438,56 @@ For example, the Full Adder has 3 inputs (A, B, $$C_{in}$$), and 2 outputs ($$S$
 Synthesizing combinational logic is not a simple task. There are many ways to realise a functionality, i.e: the **logic** (that the device should implement) represented by the truth table or boolean expression. We can use universal gates (only NANDS, or only NORS), a combination of gates (INV, AND, and OR), or many other ways (multiplexers, ROMs, etc). 
 
 Of course **hardcoding** a truth table using ROM and Multiplexers are convenient, because we do not need to think about simplifying the boolean expression of our truth table (which can get really difficult and complicated when the truth table is large, i.e: complicated functionality). However it comes at a cost: the **cost of the materials** to build the ROM / Multiplexers, and at the **cost of space** (we need use a lot of logic gates to build these). 
+
+# Appendix
+
+
+## [Logic Synthesization with CMOS](https://www.youtube.com/watch?v=yXBAy432vT8&t=2605s)
+We can create a combinational logic device easily given the *minimized* boolean expression, using any of the universal gates:
+* NANDs only
+* NORs only
+* AND, INV, and OR 
+
+Each gate can be created using transistors: PFETs and NFETs arranged in a complementary way. The schematic of each is as follows:
+<img src="https://dropbox.com/s/tnleg2coz9kjpul/andorinv.png?raw=1" class="center_seventy"  >
+
+{:.note}
+The OR and AND gates are simply the NOR and NAND gates with inverter at the output. 
+
+We can also create the device straight using CMOS recipe given the minimised boolean expression (instead of using the universal gates). For example, given this minimised equation that we did earlier:
+$$Y= \overline{C} A + CB$$
+
+It can be made this way with a combination of **universal gates**: 
+
+{:.highlight}
+Recall that the AND is actually NAND + INV, and the OR is NOR + INV.
+
+<img src="https://dropbox.com/s/rqc1v5b9uioneef/dev.png?raw=1" class="center_fourty" >
+
+This requires **20 MOSFETs** to build.
+
+{: .note-title}
+> The **freestyle** way
+> 
+> You may design CMOS circuitry without any rules. It's a little like an artwork and <strong>theres more than one way to construct the circuit that produces the same logic</strong>. You can choose to construct the pull-down first or the pull-up first. You can also choose to construct the negation of the circuit and invert the overall output.   Please do not memorise this blindly. At the end of the day, whichever method you choose, it is fine as long as the CMOS circuit produces the <strong>correct logic</strong>. If you want to <i>minimise</i> them though them some careful design is required. It is an art to design a CMOS circuit and it is beyond the scope of this course. 
+
+* **Step 1:** Construct a **pull-down circuitry**: 
+	* for each '+' (OR) we build a parallel NFET circuit
+	* for each $$\cdot$$ (AND) we build a series NFET circuit 
+	Therefore we have two sets of two NFETs in **series**: 
+<img src="https://dropbox.com/s/vsfyv7iefuv19cx/DEVMOS1.png?raw=1"  class="center_thirty"   >
+
+* **Step 2:** Add **inverter** at the output.
+	* In **Step 1** we created a pull-down circuitry that is *activated* when each of the terms in the boolean expression produces an overall `1`. 
+    * E.g: when $$B, C$$ are both 1, the pull-down is activated as current can flow from $$Y$$ to the GND. The effective output at $$Y$$ will be then `0` when $$B,C$$ are both  `1`. 
+	* Since what we want is the *opposite*, we need to put an inverter at the output, that is   $$Y=1$$ when $$B,C$$ are both 1, we need to put an inverter at the output, as shown: 
+	<img src="https://dropbox.com/s/x2ktjw4gqxx979r/devmos2.png?raw=1"  class="center_fourty"   > 
+
+	If what you want is for $$Y$$ to be <code>0</code> when $$B,C$$ are both <code>1</code> then there's no need to put an inverter in the end. Just draw the complementary pullup and call it a day 
+
+* **Step 3:** Construct the **complementary** pull-up circuitry and assemble. Refer to the CMOS recipe in the previous chapter. 
+<img src="https://dropbox.com/s/ft9xplwm26ksgks/devmos3.png?raw=1"   class="center_fourty"  >
+
+This requires **14 MOSFETs** to build, less than the previous design. It is definitely easier (for us) to create a combinational logic device using a bunch of universal gates, but it comes at the cost of money and size. 
+
+Note that the CMOS recipes that we learn in this course also **does not guarantee** that you can build a device with **minimised number of transistors,** given its functional specification. It is an *art* to create the most efficient circuit in terms of money, size, and usage. 

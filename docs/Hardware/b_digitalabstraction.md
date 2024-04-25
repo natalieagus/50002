@@ -23,6 +23,14 @@ Singapore University of Technology and Design
 
 [You can find the lecture video here. ](https://youtu.be/xkVIr8jrtX0) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
+## Learning Objectives
+* Explain the advantage of digital abstraction
+* Define what combinational logic is
+* Rationalise static discipline of combinational logic
+* Define what noise margin is
+* Calculate and analyse noise margin and noise immunity requirement
+* Draw and analyse the VTC graph
+
 ## [Overview](https://www.youtube.com/watch?v=xkVIr8jrtX0&t=0s)
 
 One of the cheapest ways to encode information in terms of 0s and 1s is using    voltage levels, illustrated in the diagram below. 
@@ -49,9 +57,7 @@ A digital device is any device that uses voltages to encode information in terms
 A combinational device is a specific type of digital device that has the following criteria:
 1.  One or more digital inputs
 2.  One or more digital outputs
-3.  A **functional specification** that details the value of each output for each possible **combination** of inputs (can be illustrated in terms of truth table / boolean expression)
-	> Its circuit performs an operation assigned logically by a boolean expression or truth table.
-
+3.  A **functional specification** that details the value of each output for each possible **combination** of inputs (can be illustrated in terms of truth table / boolean expression) 
 4. A **timing specification** consisting of an upper bound required propagation time for the device to compute the specified output values given a set of valid and stable input value(s)
 
 Later on you will learn another type of digital logic devices called the **sequential** logic device, whose output depends not only on the present input but also on the history of the inputs, hence having a *memory*. 
@@ -86,8 +92,8 @@ Therefore, one can say that **a combinational logic device always obeys the stat
 
 <span style="color:red; font-weight: bold;">However this doesn't mean that the opposite is true.</span>
 
-A device that receives invalid input *does NOT always have to* produce invalid output. **We cannot determine the output of the combinational logic device IF invalid input is given**. Recall that you need to add a **pulldown** resistor at each input for your Mini Hardware Project to give a valid `0` when the switch is **open**. That is because without the pulldown resistor, the input will not be connected to anything (open wire) and this will supply an **invalid input**, resulting in an **undetermined or unpredictable** output for your MHP. In a nutshell, we don't care much and cannot define or guarantee the behaviour of the combinational device if it receives invalid input -- it may or may not produce a valid output.
-
+{:.important}
+A device receiving invalid input doesn't necessarily produce invalid output. The output from a combinational logic device given invalid input remains unpredictable. Remember, for your Mini Hardware Project, include a pulldown resistor at each input to ensure a valid 0 when the switch is open. Without a pulldown resistor, an input left unconnected (open wire) leads to invalid input, which results in uncertain or random output. Essentially, the behavior of a combinational device with invalid input is indeterminate and cannot be precisely defined or assured—it might or might not yield a valid output.
 
 
 
@@ -96,6 +102,7 @@ A device that receives invalid input *does NOT always have to* produce invalid o
 ## [Voltage Specifications and Noise Margin](https://www.youtube.com/watch?v=xkVIr8jrtX0&t=488s)
 
 
+### A case without noise margin
 Consider two digital devices connected in series as shown in the figure below. These devices are called a **buffer**, meaning that they pass the same bit over (if it receives a low voltage, it will produce a low voltage and vice versa). If we were to *naively decide* that any voltage below $$V_{low}$$=`0.5V` as digital bit `0`, and any voltage above $$V_{high}$$=`2.5V` as digital bit `1`, then our device **may violate the static discipline.** 
 
 **Why?**
@@ -113,7 +120,9 @@ Noise can knock the voltage down as well (not just up, it's basically random dis
   
 Device 1 in the figure above **violates** static discipline because given a **valid** input, it may be **unable** to produce a valid output (to **reach** the next device 2), because the `0.5V` produced at the output of Device 1 may meet some disturbances that caused it to be slightly off, e.g: `0.55V`.
 
-Hence, we need to account for the presence of some light **noise**. Instead of naively setting some voltage $$V_{high}$$ and $$V_{low}$$ as we did above, we need to set a *range* of Voltages as valid bit `1` and `0` respectively and need to have something called the **noise margin** to tolerate noise. It is illustrated as the yellow region in the Figure below. The noise margin is formed by setting *four* Voltage specifications:  $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, $$V_{ih}$$, where  $$V_{ol}$$< $$V_{il}$$< $$V_{ih}$$ < $$V_{oh}$$ which **defines** what range of voltage values signifies a **valid** digital bit `1` and a **valid** digital bit `0` *for any combinational logic component in the system*: 
+### The importance of noise margin
+
+We <span class="orange-bold">need</span> to account for the presence of some light **noise**. Instead of naively setting some voltage $$V_{high}$$ and $$V_{low}$$ as we did above, we need to set a *range* of Voltages as valid bit `1` and `0` respectively and need to have something called the **noise margin** to tolerate noise. It is illustrated as the yellow region in the Figure below. The noise margin is formed by setting *four* Voltage specifications:  $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, $$V_{ih}$$, where  $$V_{ol}$$< $$V_{il}$$< $$V_{ih}$$ < $$V_{oh}$$ which **defines** what range of voltage values signifies a **valid** digital bit `1` and a **valid** digital bit `0` *for any combinational logic component in the system*: 
   
 <img src="https://dropbox.com/s/pt0n36pmy9ncyc6/Volt_2.png?raw=1"     >
 
@@ -152,7 +161,7 @@ VTC **does not** tell us how fast the device is. It just captures the static beh
 
 The image below shows the VTC of a **buffer**: a *low* $$V_{in}$$ gives a *low* $$V_{out}$$ and vice versa. 
 
-<img src="https://dropbox.com/s/vod5ltqh4kq9119/vtcbuffer.png?raw=1"   width="60%" alt ="Figure 4"/>
+<img src="https://dropbox.com/s/vod5ltqh4kq9119/vtcbuffer.png?raw=1"   class="center_fifty"/>
 
 
 {: .important}
@@ -170,12 +179,14 @@ Explanation of the VTC figure above:
 - The red zone is called the **forbidden zone**. It is formed by the four voltage specifications: $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, and $$V_{ih}$$ that we set for the entire system. <br>
 - The name *'forbidden zone'* comes from the fact that  any value within this zone means that the device receives **valid** input but is unable to produce a valid output hence **violating the static discipline** and cannot be used as a combinational logic device.
 
+### Can a given device be used as a combinational logic device? 
+
 You can quickly tell if a digital device can be *potentially* be used as a combinational logic device **iff**: you can **find** a set of these four voltage specifications: $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, and $$V_{ih}$$ **whereby its VTC curve  does not cross the forbidden zone** and that $$V_{ol}$$< $$V_{il}$$ < $$V_{ih}$$ < $$V_{oh}$$.
 * We typically begin by *guessing* each value of $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, and $$V_{ih}$$ and check if the curve crosses the forbidden zone (check if static discipline obeyed) formed by these four values. 
 * If static discipline is violated, we either adjust our guess or find another device. 
 * Also, we want to choose  $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, and $$V_{ih}$$ that **maximises noise immunity**. -
 
-If you can satisfy the condition highlighted above, then it means that the device is a combinational logic device. It's VTC curve has to possesses both **characteristics** below:
+If you can satisfy the condition highlighted above, then it means that the device is a combinational logic device. Its VTC curve has to possesses both **characteristics** below:
 
 1.  There exist *some region in the VTC* whereby its **absolute** `Gain` is $$>1$$ . `Gain` is actually a function of $$V_{in}$$ and is **formally** defined as: 
 
@@ -192,9 +203,6 @@ If you can satisfy the condition highlighted above, then it means that the devic
 
 
 	If  absolute `Gain` $$>1$$, then there is a **finite, positive** noise margin. If absolute `Gain`$$=1$$, then there's **zero** noise margin. It is *impossible* to have absolute `Gain` $$<1$$ and still have the four Voltage specifications $$V_{ol}$$ < $$V_{il}$$ < $$V_{ih}$$ < $$V_{oh}$$.
-	  
-	  > You might want to ponder a little and convince yourself why the statement above is true. 
-
 	   Also, having absolute `Gain > 1` **maintains** the signal passed through the system as signal loss is inevitable through the system.
 
 2. The device has a  **Non-linear `Gain`**, meaning that `Gain`  is a **function** of `Vin` and therefore the *gradient* along the *entire* curve varies. 

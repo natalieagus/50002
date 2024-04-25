@@ -3,7 +3,7 @@ layout: default
 permalink: /notes/sequentiallogic
 title: Sequential Logic
 description: Sequential Logic Devices can do what Combinational Logic Devices can't; to produce output that depends on both past and current input. 
-nav_order: 6
+nav_order: 5
 parent: Hardware Related Topics
 ---
 
@@ -21,14 +21,24 @@ Singapore University of Technology and Design
 {: .no_toc}
 [You can find the lecture video here.](https://youtu.be/HlizelEp4Yc) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
+## Learning Objectives
+
+* Draw the model of sequential logic consisting of memory device and combinational logic
+* Explain high level working of a D-latch
+* Explain high level working of edge-triggered flip-flop
+* Rationalise dynamic discipline of sequential logic in terms of t1 and t2 constraints
+* Analyse the relationship between setup time, hold time, contamination delay, and propagation delays
+* Comprehend The Dynamic Discipline
+* Analyse timing requirements, focusing on the roles of Tsetup and Thold
+* Utilize understanding of propagation delay, contamination delay, and the dynamic discipline to evaluate and propose solutions for real-world problems in sequential logic circuits.
+* Reflect on the importance of timing in circuit design (Metastable State)
+
 ## [Overview](https://www.youtube.com/watch?v=HlizelEp4Yc&t=0s)
 
 
-So far we have learned the basics of **combinational logic device**, which is in essence a device that is capable to adhere to a given functional specification (truth table). One apparent feature of a combinational logic device is that its output always depends on the **current** input.  However, external input is *unreliable*, and there's no guarantee that the input will be available for at least $$t_{pd}$$--until the combinational device produces meaningful results. We need to find a way to **synchronize** the external input signal such that there's enough time for the entire circuit to finish its computation properly. 
+We've covered the basics of combinational logic devices, which produce outputs based solely on current inputs and must adhere to specified truth tables. However, external inputs are unreliable and may not persist long enough for the device to process them effectively. To manage this, we need methods to **synchronize** input signals to ensure <span class="orange-bold">sufficient</span> processing time.
 
-We also need to create another type of device, called the sequential logic device, whereby its output depends not only on the current input, but a *series of past inputs* as well.  If a sequential logic device has a finite number of states, it also known as the finite state machine (FSM). The FSM can be seen as an abstract mathematical model of a **sequential** logic function. More about FSM can be learned in the next chapter. 
-
-However, our knowledge so far is not enough to create sequential logic devices. To *synchronize* and *remember* the series of past inputs, we need to have some kind of **storage (memory) device**. 
+Additionally, we need to explore <span class="orange-bold">sequential logic devices</span>, which depend on both current and past inputs. Known as finite state machines (FSMs) when they have a limited number of states, these devices incorporate memory to store and reference past inputs. Further details on FSMs will be discussed in the next chapter.
 
 {: .note-title}
 > Recap
@@ -72,15 +82,13 @@ The term "**pass through**" is used from this point onwards in this chapter to e
    -  Lets call this the **`memory` mode** (or `read` mode in some textbooks).
 
 
-### Using D-Latch
+### Using a D-Latch
 
-We supply input voltage (valid low or high) at wire D, and  simultaneously supply valid high voltage at G (or illustrated as Clock port in the figure below). 
+A D-latch operates by capturing the input voltage (valid low or high) at the D wire when a valid high voltage is applied to the G wire (also shown as the **Clock** port in the diagram below). After the voltage at G switches to low, the D-latch retains the value from D at the time G was high, without needing to maintain D's initial values.
 
-Then after some time, we supply valid low voltage at G. Hopefully at Q now we have the value that was supplied at D when G was high *without having to hold D's value(s) as they were*. 
+By arranging multiple D-latches in parallel, we can create a stable N-bit output that "remembers" the input values without requiring continuous input at the D ports. This stored output can then serve as a reliable input to a combinational logic device for the duration of its processing time (\(t_{pd}\)), mitigating issues with unreliable external inputs.
 
-If we put many of these devices in parallel, we can have a fixed N-bit output that is "remembered" by the device without having to always supply these combination of values at the input ports D. We can then use the output of these memory devices as an input to the combinational logic device for at least as long as its $$t_{pd}$$ (to finish computation). *Hopefully, we then don't have to worry about unreliable external input anymore.* 
-
-The figure below illustrates an example of 4-bit input and corresponding 4-bit output. Each of the device drawn as a rectangle (with the ">" symbol at its lower left corner) is called a **Flip-Flop** (see later section).  They are made up of D-latches. 
+The accompanying figure demonstrates a setup with a 4-bit input and a corresponding 4-bit output. Each rectangle (marked with a ">" at its lower left corner) represents a **Flip-Flop**, which consists of D-latches and will be discussed in a later section.
 
 <img src="https://dropbox.com/s/ruxrkxm1r6kog88/s1.png?raw=1" class="center_seventy"  >
 
@@ -104,58 +112,27 @@ In practice, this is *not acceptable* because we do not want our electronic devi
 {: .highlight } 
 Combinational component within an electronic device requires a certain amount of time <code>tpd</code> to produce meaningful results; and over this time-frame we need to hold its input <strong>stable</strong>, however external input is <strong>unreliable,</strong> so theres <strong>no guarantee</strong> that this requirement is fulfilled. 
 
-
+## Proposed Solution
 As a **solution** to this problem we create another device using D-latches called **D Flip-Flop** (DFF) or more informally a *Register* to **synchronize** external input with the circuit's CLK, and also *switch* between `write` and `memory` mode as we intend it to behave.
 
-A **D Flip-Flop** with a right CLK setup will be able to produce a **valid and stable** output for an entire clock period; *long enough* for any combinational logic connected downstream to finish its computation ($$t_{pd}$$) and produce meaningful output before the next **output** value is produced. 
+A **D Flip-Flop** with a right Clock setup will be able to produce a **valid and stable** output for an entire clock period; *long enough* for any combinational logic connected downstream to finish its computation ($$t_{pd}$$) and produce meaningful output before the next **output** value is produced. 
 
 We address these problems in the next two sections.
 
   
 
-## [The Dynamic Discipline](https://www.youtube.com/watch?v=HlizelEp4Yc&t=1400s)
+### [The Dynamic Discipline](https://www.youtube.com/watch?v=HlizelEp4Yc&t=1400s)
 
-  
-
+{:.highlight}
 The *dynamic discipline* is a contract that is made to address the **first** problem above: the possibility of **storing invalid information** in the memory device. It is imperative to never violate the dynamic discipline to ensure any sequential logic circuits to work properly.
 
-The dynamic discipline states that there are **two timing** **requirements for the input signal supplied at D**, named as $$T_{setup}$$ and $$T_{hold}$$, which lengths are:
+The dynamic discipline states that there are **two timing** **requirements for the input signal supplied at D**, named as $$T_{setup}$$ and $$T_{hold}$$:
 1. $$T_{setup}$$ is defined as  the minimum amount of time that the voltage on wire D needs to be valid/stable **BEFORE** the **clock edge changes from `1` to  `0`** (turning from `write` mode to `memory` mode).
 2. $$T_{hold}$$ is defined as the minimum amount of time that the voltage on wire D needs to be valid/stable **AFTER** the **clock edge reaches a valid  `0` from a previous `1`**.
 
-### Supplementary Section
-If you're interested to know *why* the dynamic discipline is so, read this section. If this is too much for you, you can skip it. You won't exactly lose in exam if you skip it, just that your knowledge wont be whole. 
+These two values are crucial for [later](#sequential-logic-device-timing-constraint-t1-and-t2). 
 
-#### How long is $$T_{setup}$$ and $$T_{hold}$$ approximately?
-{: .note}
-$$T_{setup}$$ is *approximately* measured as $$2 \times t_{pd}$$  of the <span style="color:red; font-weight: bold;">components that make up the D-latch</span>. $$T_{hold}$$ is *approximately* measured as  $$t_{pd}$$ of the components that make up the D-latch. This $$t_{pd}$$ is <span style="color:red; font-weight: bold;">not</span> the same as the $$t_{pd}$$ of the entire sequential logic circuit ([see section below](https://natalieagus.github.io/50002/notes/sequentiallogic#t_pd-and-t_cd-of-sequential-logic-vs-combinational-logic-devices))
-  
-As explained in the previous notes,  $$t_{pd}$$ is the **propagation** delay of the combinational logic devices (components) that make up a D-latch, e.g: a multiplexer, which has a $$t_{pd}$$ value. The multiplexer can be made using a handful NAND gates. To clarify, this $$t_{pd}$$ is the propagation delay of that multiplexer or  components (combinational logic devices) that are used to make up a D-latch.
-
-{: .new-title}
-> Think!
-> 
-> Why are the lengths for $$T_{setup}$$ and $$T_{hold}$$ dependent on the the $$t_{pd}$$ of the components that make up the D-latch? 
-
-
-For $$T_{setup}$$, you can figure this out by estimating **how long** you **should** wait to ensure that the output signal at Q reflects what was supplied at D (requires $$1\times t_{pd}$$), and to ensure that this output at Q maintains this value when CLK at G turns `0` (from Q', requires *another* $$1\times t_{pd}$$). 
-
-
-For $$T_{hold}$$, you can figure this out by realising that CLK is an **input** to the D-latch system as well, and the device needs **some time** ($$1\times t_{pd}$$) to realise that it is in `memory` mode after CLK turns to a valid `0`. Throughout this brief period. of time, the input at D must be held valid/stable. 
-
-#### The Lenient Mux
-
-Notice that Q is *also* an input to the mux. We will meet a <span style="color:red; font-weight: bold;">problem</span> if 1-to-0 transition on G causes the Q output to become invalid at a brief interval (even when D is held stable obeying $$T_{setup}$$ and $$T_{hold}$$). 
-
-{: .highlight}
-Thus, we assume that the mux used in a latch is a **lenient** mux. A lenient mux is a mux where a 1-to-0 transition on G doesn’t affect the validity of Q output. 
-
-In particular, a lenient mux fulfils either of 3 conditions below:
-1. When G turns is 1 (write mode), once D is valid for as long as *half* of $$T_{setup}$$, we guarantee that Q will be stable and valid (reflecting D) **independently** of Q' value. This allows Q to be unaffected by overwriting of Q' when new values from D has just arrived.
-2. When G turns is 1 (write mode), once D is valid for as long as $$T_{setup}$$, we guarantee that Q will be stable and valid (reflecting D) **regardless** of subsequent **transition** of G. This ensures that a 1-to-0 transition on G doesn’t affect the Q output
-3. When G is 0 (memory mode)a and Q has been stable for at least $$T_{hold}$$ (thanks to D being valid for at least $$T_{hold}$$), then Q will not be affected by subsequent transitions on D input. 
-
-## [Edge-Triggered D Flip-Flop ](https://www.youtube.com/watch?v=HlizelEp4Yc&t=2066s)
+### [Edge-Triggered D Flip-Flop ](https://www.youtube.com/watch?v=HlizelEp4Yc&t=2066s)
 
 To address the second problem: the presence of **unstable/invalid output during transition of input**, we need to create another device called the *Edge-Triggered D Flip Flop* (or shortened as DFF) by putting two D-Latches in series as shown:
 
@@ -174,16 +151,20 @@ We can decribe the structure of a Flip-Flop as follows:
   
   
 ### The Beauty of DFF
+
+{:.highlight}
 **How does a Flip-Flop prevent the presence of invalid/unstable output during transition/disturbance of input at D?**
 
 The observer/user gets output only from the output wire of the **slave** latch's Q port, and the observer/user supplies input only to the **master** latch's D port.
 
 Notice that CLK is a signal that **periodically** changes from `0` to `1` and vice versa.
 
-When CLK signal is `0`, the G port of **master** latch will receive a `1` (due to the inverter) and the G port of **slave** flip flop will receive a `0` **at the same time**. This means that the **master** latch is in "`write` mode", i.e: it lets signal from its D wire through to its Q port, while the **slave** latch is in "`memory` mode", i.e: slave's output depends on **its own** memory  Q' and not affected by input on $$\star$$.
+When CLK signal is `0`, the G port of **master** latch will receive a `1` (due to the inverter) and the G port of **slave** flip flop will receive a `0` **at the same time**. 
+- This means that the **master** latch is in "`write` mode", i.e: it lets signal from its D wire through to its Q port, while the **slave** latch is in "`memory` mode", i.e: slave's output depends on **its own** memory  Q' and not affected by input on $$\star$$.
 
 When CLK signal is `1`, the G port of **master** latch will receive a `0` due to the inverter and the G wire of **slave** latch will receive a 1.
-This means that the **master** latch is in "`memory` mode", i.e: master's output depends on its own memory  Q' and is not affected by any value on input port D. Meanwhile, the **slave** latch is on "`write` mode", i.e: it lets signal from the $$\star$$ wire to be passed through its slave input port D.
+- This means that the **master** latch is in "`memory` mode", i.e: master's output depends on its own memory  Q' and is <span class="orange-bold">not</span> affected by any value on input port D. 
+- Meanwhile, the **slave** latch is on "`write` mode", i.e: it lets signal from the $$\star$$ wire to be passed through its slave input port D.
 
 {: .highlight}
 Hence, **only ONE of the two D-Latches is on "`write` mode" at a time** or equivalently, **only one D-latch is on "`memory` mode" at a time**. Unlike a single D-latch alone, this Flip-Flop configuration **prevents** a *direct* reflection of the input of the system (supplied by the user) to the output of the system. 
@@ -198,7 +179,8 @@ Notice two further behaviors in the Flip-Flop:
 
 1. Unlike the $$\star$$, the signal at Q is **stable throughout an entire clock period**, and change *only* in the **next** clock period. In comparison, the $$\star$$  is only stable **half the time** when the master latch is at `memory` mode, but reflects ever-changing D-input signal during `write` mode. 
 2. The edge-triggered flip-flop in this particular configuration, where the master is the one that receives the **inverted** CLK signal produces **new** value at Q (reflects the input at D) at every **rising edge** of the CLK. 
-	> It is as if we are able to ***capture*** the instantaneous value of D at each CLK-rise edge, and **reflect**/produce it at Q for that **entire period** of the CLK. 
+
+It is as if we are able to ***capture*** the instantaneous value of D at each CLK-rise edge (like a camera shutter), and produce it at Q (stable) for that **entire period** of the CLK. 
 
 {: .important}
 You can also make the slave latch to be the one that receives the inverted CLK signal, and the value at Q reflects the input at D at each **falling edge** of the CLK. The name "edge-triggered" comes from the fact that the **output at port Q**  of the slave **changes** only when the CLK edge changes (in our case, at every rising *edge*). 
@@ -214,37 +196,25 @@ A simplified anatomy is shown below:
 
 You will meet this device [later on ](https://natalieagus.github.io/50002/notes/betacpu#detailed-anatomy-of-the-regfile). 
 
-## [Flip-Flop Timing Constraint](https://www.youtube.com/watch?v=HlizelEp4Yc&t=3458s)
+## D [Flip-Flop Timing Constraint](https://www.youtube.com/watch?v=HlizelEp4Yc&t=3458s)
 
 
 Recall that the *dynamic discipline* ($$T_{setup}$$ and $$T_{hold}$$) ensure that we do not end up storing invalid input signals. In the flip-flop configuration, we **connect** two D-latches together.   Hence the dynamic discipline for the slave latch has to be **obeyed** by the master latch because the *output* of the master latch is the *input* to the slave latch. 
 
-To obey the dynamic discipline, there exist this **timing constraint** for the Flip-Flop configuration:
+To obey the dynamic discipline, there exist this **timing constraint** for the D Flip-Flop configuration:
 
 $$t_{CD_{master}} > t_{H_{slave}}$$
 
-### Reason
-
-Imagine the exact moment when the INV CLK seen by master (latch) changes from `0` to `1`, at the same time, the CLK signal seen by slave (latch)  changes from `1` to `0`. This transition by the CLK is **not immediate** and there is a short time window where the CLK goes from (valid) `1` to invalid value to (valid) `0`. 
-
-This implies that the master goes into `write` mode while the slave goes into `memory` mode *simultaneously*.
-
-However, the $$\star$$ at the output of the master cannot change *immediately* in order to fulfil the $${t_{H}}$$ requirement of the slave. 
-
-The $$\star$$ has to retain its **previous** valid value (when the clock was valid) and **cannot immediately** do the following before the $${t_{H}}$$ requirement of the slave is fulfilled:
-- Become invalid due to transition in the CLK value, or
-- Reflect whatever new input is given at D port of the master latch, even though the master latch is at the `write` mode. 
-
-
-This means the **contamination** delay of the master latch (time taken on signal on $$\star$$ is be invalid after CLK at G port  becomes invalid) has to be **larger** than the hold time of the slave latch *so that the Flip-Flop system obeys the dynamic discipline.* 
+{:.highlight}
+Head to [Appendix](#dff-timing-constraint) if you're interested to learn why. 
 
   
 
 ## [Sequential Logic Device Timing Constraint (t1 and t2)](https://www.youtube.com/watch?v=HlizelEp4Yc&t=2974s)
-We can now use a Flip-Flop in our circuit as a 'memory' device that we can put in series, either before or/and after any combinational logic circuit. The **dynamic discipline** has to always be obeyed at any part of the sequential logic circuit/device. 
+We can integrate Flip-Flops into our circuits as 'synchronization' or 'memory' devices, ensuring stable output for at least one clock cycle. These can be placed either before or after any combinational logic circuit. To ensure reliable operation of such sequential logic circuits or devices, adherence to the **dynamic discipline** is crucial at all times. This discipline ensures that all parts of the circuit properly manage timing, charge, and signal integrity to function correctly.
 
 {: .warning}
-Due to the Dynamic Discipline, we have **two** timing constraints called **$$t_1$$ and $$t_2$$** that should **always** apply in **ANY** path between two (one upstream and one downstream) connecting Flip-Flops  (regardless of how many CLs are there in the middle of the two Flip-Flops) in a SL circuit. 
+Due to Dynamic Discipline, we have **two** timing constraints called **$$t_1$$ and $$t_2$$** that should **always** apply in **ANY** path between two (one upstream and one downstream) connecting Flip-Flops  (regardless of how many CLs are there in the middle of the two Flip-Flops) in a SL circuit. 
 
 Take into example a very simple combination as shown in the figure below, consisted of two Flip-Flops and one CL device in between. Let's name the Flip-Flop R1 on the left as the "upstream" Flip-Flop and the Flip-Flop R2 on the right as the "downstream" Flip-Flop: 
 
@@ -258,36 +228,9 @@ From the diagram above, we can define two timing constraints for this particular
 - $$t_1$$ : $$t_{CD} R_1 + t_{CD} CL \geq t_{H} R_2$$
 - $$t_2$$ : $$t_{PD} R_1 + t_{PD} CL + t_S R_2 \leq t_{CLK}$$
 
+{:.note}
+You may read [this supplementary document](https://dropbox.com/s/gi4r2ea1tdv5x4d/Seq_Logic_Timing_Extras_2020.pdf?dl=1) to know more about timing computations for sequential logic device. If you're interested to find the **reasoning** behind t1 and t2 constraints, read this [appendix](t1-and-t2-constraint-derivation) section. 
 
-
-### Further Explanation
-#### t1 constraint
-The $$t_1$$ constraint ensures that the $$t_H$$ requirement of the downstream register, R2, is fulfilled by the devices thats put upstream (before it), that is CL and R1 in the example above. 
-- When the CLK rises at $$t_i$$, both R1 and R2 are "*capturing*" different values, **simultaneously**. 
-- R1 is receiving *current* input value at $$t_i$$, while R2 is receiving the *computed* old input value that was produced by R1 at $$t_{i-1}$$. 
-- The devices upstream of R2 has to **help** to hold on to this *old*  $$t_{i-1}$$ values for the $$t_H$$ of R2 to be fulfilled before responding to the rising edge of the clock and producing new values. 
-
-#### t2 constraint
-The $$t_2$$ constraint ensures that the clock period is **long enough** for three things to complete:
-- Valid signal to be produced at the output of R1 and 
-- Signal to *propagate* through CL in between, and 
-- Signal to be set-up at the downstream register R2 (for `memory` mode).
-
-{: .warning}
-Once again, BOTH $$t_1$$ and $$t_2$$ constraints must be fulfilled within **any paths between two connecting DFFs** in a circuit, in order for the overall circuit to obey the dynamic discipline.
-
-#### tpd of CL
-We can call the $$t_{PD} CL$$ (propagation delay of the CL) as the time taken to do **actual work** or **logic computation**. 
-
-{: .new-title}
-> Think!
-> 
-> It should be clear by now why the input to this CL must be stable for at least $$t_{pd}$$ for it to have meaningful output, and how our new circuit with DFFs (obeying dynamic discipline, $$t_1$$, and $$t_2$$ constraint) guarantees this -- something that unreliable external input alone cannot guarantee if it were to be fed directly to the CL units.
-
-The propagation or contamination delays of a Flip-Flop is not considered a logic computation, because unlike combinational logic devices (that can be made to implement functionalities such as addition, subtraction, boolean expressions, etc), a Flip-Flop **does not implement** any other special functionalities except to function as a memory device. 
-  
-
-**Read [this supplementary document](https://dropbox.com/s/gi4r2ea1tdv5x4d/Seq_Logic_Timing_Extras_2020.pdf?dl=1) to know more about timing computations for sequential logic device.**
 
 
 ## [$$t_{pd}$$ and $$t_{cd}$$ of Sequential Logic vs Combinational Logic Devices](https://www.youtube.com/watch?v=HlizelEp4Yc&t=2974s)
@@ -298,7 +241,6 @@ In the previous chapter, we learned about the definition $$t_{CD}$$ and $$t_{PD}
 
 
 ### Subtle Difference
-Note the **subtle difference** between the $$t_{PD}$$ and $$t_{CD}$$ of a combinational vs a sequential device. 
 
 In **combinational** devices, there is **no input CLK** and units with *feedback* paths like the Flip Flops involved. $$t_{PD}$$ of a combinational device is the time measured from the moment a **valid** input is fed to the circuit to the moment it produces a **valid** output of the circuit, and $$t_{CD}$$ is the time measured from the moment an **invalid** input is fed to the circuit to the moment it produces an **invalid** output.
 
@@ -312,8 +254,7 @@ In any sequential logic circuit we use a **single synchronous clock**, meaning t
 
 **Why is this an issue?**
 
-In practice, it is **not possible** for any arbitrary input to always be synchronised with the clock, i.e: to obey the $$t_S$$ and $$t_H$$ requirements (of the external input facing 'upstream' DFF) at all times. 
-> For instance, when you type on your keyboard, you aren't able to synchronise that keyboard presses with your CPU clock, are you?  
+In practice, it is **not possible** for any arbitrary input to always be synchronised with the clock, i.e: to obey the $$t_S$$ and $$t_H$$ requirements (of the external input facing 'upstream' DFF) at all times. For instance, when you type on your keyboard, you aren't able to synchronise that keyboard presses with your CPU clock, are you?  
 
 ### Violating the Dynamic Discipline
 Recall that dynamic discipline is crucial for any sequential logic circuit to work properly. We are now going to investigate what happens if **dynamic discipline is violated**.
@@ -334,8 +275,6 @@ When <span style="color:red; font-weight: bold;">dynamic discipline is violated<
 > Due to the existence of a feedback loop in the D-latch as shown, it has a unique property where there exist a point in its voltage characteristics function whereby **Vin = Vout**. 
 
 <img src="https://dropbox.com/s/8jiw0mlsq8xvzsv/dff.png?raw=1" class="center_thirty" >
-
-
 
 We can measure and plot $$V_{in}$$ (Q') versus $$V_{out}$$ (Q) in the D-latch, and come up with a VTC plot as follows:
 
@@ -407,34 +346,6 @@ The only thing we can do is to **minimise** the metastable state's probability f
 {: .highlight}
 **Note** that this comes at the cost of price, responsiveness, and size of the device. 
 
-## About CPU Clock
-
-{: .highlight}
-This is a **supplementary knowledge**, for those who are curious only. 
-
-Throughout this lecture, we have learned how clocks make it **easier** to **synchronize** various combinational logic devices. 
-
-{: .important}
-If you have difficulties remembering **why** synchronisation is required, remember **assembly line**. Ever seen an assembly line? People and machines working in sync to get the job done in the fastest and most efficient manner? <span style="color:red; font-weight: bold;">Remember the sync part, that is the key.</span> How are they so synchronized? 
-
-<figure>
-<img src="https://th-thumbnailer.cdn-si-edu.com/0jP0vHeCZLZ_24H9q6zAw5J_oTk=/1000x750/filters:no_upscale()/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer/1c/11/1c113495-5153-4040-b7ea-5a37acf4d525/ford_assembly_line_-_1913.jpg"  class="center_fifty"/>
-<figcaption style="text-align: center">The Ford assembly line in 1913. Wikimedia Commons/public domain.</figcaption>
-</figure>
-
-Our CPU is very similar to that. It's a giant synchronous circuit consisted of billions of transistors working together to compute results together. A CPU is typically reported with a clk rate (something around 3-4 Ghz in 2023) -- that's our clock signal: a **timing signal**, like a conductor in an orchestra or the constant humming of machines in a factory that keeps up the assembly line's **tempo**.
-
-
-Our combinational logic devices will still work (to an extent) without adding clocks, but its functionality will be primitive. It will not be able to process series of inputs and outputs in an orderly (pipelined) fashion, and it will not be able to compute an output based on sequences of input (no memory device).
-
-{: .highlight}
-**But where do clocks come from? How are they made and how can they produce such a high frequency for our CPUs to run?**
-
-The clock signal is commonly (but <span style="color:red; font-weight: bold;">not</span> always, there are other techniques too) produced **mechanically** using [quartz crystals oscillators](https://www.allaboutcircuits.com/technical-articles/understanding-the-operation-of-quartz-crystal-oscillators/). When we apply a voltage source to a small thin piece of quartz crystal, it begins to change its **shape** and *vibrate* (a characteristic known as the [piezo-electric effect](https://www.explainthatstuff.com/piezoelectricity.html)). This characteristics produces a mechanical force. The frequency of which the crystal is going to oscillate varies, depending on the oscillator's topology. We typically call this the **base frequency** of our clock. We then can build other circuits to multiply (boost) or divide (slow down) this frequency to run different components in our PC at different speed depending on the specifications. 
-
-For example in a multicore CPU, each core might have an independent multiplier circuit. Cores that are underutilised can run slower while cores under heavy load can run faster (e.g: [Intel Turbo Boost](https://www.intel.sg/content/www/xa/en/gaming/resources/turbo-boost.html)). Your RAM also need a different clock speed than your CPUs. 
-
-
 
 
 
@@ -450,5 +361,116 @@ As stated above, a **sequential** logic device has a *general* structure as show
 <img src="https://dropbox.com/s/7crg33w0e7yg2hn/Q1.png?raw=1"    class="center_seventy"   >
 
 During each clock period, it should be able to compute the next value (next state), and output value. The output at any point in time, is always affected by the current state, which is the state computed in the previous clock period / time step. Hence the name **sequential logic** comes from the fact that it is a type of **logic** circuit whose output depends **not only on the present** value of its input signals but on the *sequence of past inputs, (the input history) as well.*
+
+In order for sequential logic devices to work, we need to obey the dynamic discipline and the t1 and t2 constraints. Failure to obey that might put the device into the metastable state. 
+
+# Appendix
+
+## Tsetup and Thold
+If you're interested to know *why* the dynamic discipline has those specific constraints (Tsetup and Thold), read this section. If this is too much for you, you can skip it. You won't exactly lose in exam if you skip it, just that your knowledge wont be whole. 
+
+#### How long is $$T_{setup}$$ and $$T_{hold}$$ approximately?
+{: .note}
+$$T_{setup}$$ is *approximately* measured as $$2 \times t_{pd}$$  of the <span style="color:red; font-weight: bold;">components that make up the D-latch</span>. $$T_{hold}$$ is *approximately* measured as  $$t_{pd}$$ of the components that make up the D-latch. This $$t_{pd}$$ is <span style="color:red; font-weight: bold;">not</span> the same as the $$t_{pd}$$ of the entire sequential logic circuit ([see section below](https://natalieagus.github.io/50002/notes/sequentiallogic#t_pd-and-t_cd-of-sequential-logic-vs-combinational-logic-devices))
+  
+As explained in the previous notes,  $$t_{pd}$$ is the **propagation** delay of the combinational logic devices (components) that make up a D-latch, e.g: a multiplexer, which has a $$t_{pd}$$ value. The multiplexer can be made using a handful NAND gates. To clarify, this $$t_{pd}$$ is the propagation delay of that multiplexer or  components (combinational logic devices) that are used to make up a D-latch.
+
+{: .new-title}
+> Think!
+> 
+> Why are the lengths for $$T_{setup}$$ and $$T_{hold}$$ dependent on the the $$t_{pd}$$ of the components that make up the D-latch? 
+
+
+For $$T_{setup}$$, you can figure this out by estimating **how long** you **should** wait to ensure that the output signal at Q reflects what was supplied at D (requires $$1\times t_{pd}$$), and to ensure that this output at Q maintains this value when CLK at G turns `0` (from Q', requires *another* $$1\times t_{pd}$$). 
+
+
+For $$T_{hold}$$, you can figure this out by realising that CLK is an **input** to the D-latch system as well, and the device needs **some time** ($$1\times t_{pd}$$) to realise that it is in `memory` mode after CLK turns to a valid `0`. Throughout this brief period. of time, the input at D must be held valid/stable. 
+
+#### The Lenient Mux
+
+Notice that Q is *also* an input to the mux. We will meet a <span style="color:red; font-weight: bold;">problem</span> if 1-to-0 transition on G causes the Q output to become invalid at a brief interval (even when D is held stable obeying $$T_{setup}$$ and $$T_{hold}$$). 
+
+{: .highlight}
+Thus, we assume that the mux used in a latch is a **lenient** mux. A lenient mux is a mux where a 1-to-0 transition on G doesn’t affect the validity of Q output. 
+
+In particular, a lenient mux fulfils either of 3 conditions below:
+1. When G turns is 1 (write mode), once D is valid for as long as *half* of $$T_{setup}$$, we guarantee that Q will be stable and valid (reflecting D) **independently** of Q' value. This allows Q to be unaffected by overwriting of Q' when new values from D has just arrived.
+2. When G turns is 1 (write mode), once D is valid for as long as $$T_{setup}$$, we guarantee that Q will be stable and valid (reflecting D) **regardless** of subsequent **transition** of G. This ensures that a 1-to-0 transition on G doesn’t affect the Q output
+3. When G is 0 (memory mode)a and Q has been stable for at least $$T_{hold}$$ (thanks to D being valid for at least $$T_{hold}$$), then Q will not be affected by subsequent transitions on D input. 
+
+
+## DFF Timing Constraint 
+
+To obey the dynamic discipline, there exist this **timing constraint** for the D Flip-Flop configuration:
+
+$$t_{CD_{master}} > t_{H_{slave}}$$
+
+Imagine the exact moment when the INV CLK seen by master (latch) changes from `0` to `1`, at the same time, the CLK signal seen by slave (latch)  changes from `1` to `0`. This transition by the CLK is **not immediate** and there is a short time window where the CLK goes from (valid) `1` to invalid value to (valid) `0`. 
+
+This implies that the master goes into `write` mode while the slave goes into `memory` mode *simultaneously*.
+
+However, the $$\star$$ at the output of the master cannot change *immediately* in order to fulfil the $${t_{H}}$$ requirement of the slave. 
+
+The $$\star$$ has to retain its **previous** valid value (when the clock was valid) and **cannot immediately** do the following before the $${t_{H}}$$ requirement of the slave is fulfilled:
+- Become invalid due to transition in the CLK value, or
+- Reflect whatever new input is given at D port of the master latch, even though the master latch is at the `write` mode. 
+
+
+This means the **contamination** delay of the master latch (time taken on signal on $$\star$$ is be invalid after CLK at G port  becomes invalid) has to be **larger** than the hold time of the slave latch *so that the Flip-Flop system obeys the dynamic discipline.* 
+
+
+## t1 and t2 Constraint Derivation
+### t1 constraint
+The $$t_1$$ constraint ensures that the $$t_H$$ requirement of the downstream register, R2, is fulfilled by the devices thats put upstream (before it), that is CL and R1 in the example above. 
+- When the CLK rises at $$t_i$$, both R1 and R2 are "*capturing*" different values, **simultaneously**. 
+- R1 is receiving *current* input value at $$t_i$$, while R2 is receiving the *computed* old input value that was produced by R1 at $$t_{i-1}$$. 
+- The devices upstream of R2 has to **help** to hold on to this *old*  $$t_{i-1}$$ values for the $$t_H$$ of R2 to be fulfilled before responding to the rising edge of the clock and producing new values. 
+
+### t2 constraint
+The $$t_2$$ constraint ensures that the clock period is **long enough** for three things to complete:
+- Valid signal to be produced at the output of R1 and 
+- Signal to *propagate* through CL in between, and 
+- Signal to be set-up at the downstream register R2 (for `memory` mode).
+
+{: .warning}
+Once again, BOTH $$t_1$$ and $$t_2$$ constraints must be fulfilled within **any paths between two connecting DFFs** in a circuit, in order for the overall circuit to obey the dynamic discipline.
+
+### tpd of CL
+We can call the $$t_{PD} CL$$ (propagation delay of the CL) as the time taken to do **actual work** or **logic computation**. 
+
+{: .new-title}
+> Think!
+> 
+> It should be clear by now why the input to this CL must be stable for at least $$t_{pd}$$ for it to have meaningful output, and how our new circuit with DFFs (obeying dynamic discipline, $$t_1$$, and $$t_2$$ constraint) guarantees this -- something that unreliable external input alone cannot guarantee if it were to be fed directly to the CL units.
+
+The propagation or contamination delays of a Flip-Flop is not considered a logic computation, because unlike combinational logic devices (that can be made to implement functionalities such as addition, subtraction, boolean expressions, etc), a Flip-Flop **does not implement** any other special functionalities except to function as a memory device. 
+  
+
+## About CPU Clock
+
+{: .highlight}
+This is a **supplementary knowledge**, for those who are curious only. 
+
+Throughout this lecture, we have learned how clocks make it **easier** to **synchronize** various combinational logic devices. 
+
+{: .important}
+If you have difficulties remembering **why** synchronisation is required, remember **assembly line**. Ever seen an assembly line? People and machines working in sync to get the job done in the fastest and most efficient manner? <span style="color:red; font-weight: bold;">Remember the sync part, that is the key.</span> How are they so synchronized? 
+
+<figure>
+<img src="https://th-thumbnailer.cdn-si-edu.com/0jP0vHeCZLZ_24H9q6zAw5J_oTk=/1000x750/filters:no_upscale()/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer/1c/11/1c113495-5153-4040-b7ea-5a37acf4d525/ford_assembly_line_-_1913.jpg"  class="center_fifty no-invert"/>
+<figcaption style="text-align: center">The Ford assembly line in 1913. Wikimedia Commons/public domain.</figcaption>
+</figure>
+
+Our CPU is very similar to that. It's a giant synchronous circuit consisted of billions of transistors working together to compute results together. A CPU is typically reported with a clk rate (something around 3-4 Ghz in 2023) -- that's our clock signal: a **timing signal**, like a conductor in an orchestra or the constant humming of machines in a factory that keeps up the assembly line's **tempo**.
+
+
+Our combinational logic devices will still work (to an extent) without adding clocks, but its functionality will be primitive. It will not be able to process series of inputs and outputs in an orderly (pipelined) fashion, and it will not be able to compute an output based on sequences of input (no memory device).
+
+{: .highlight}
+**But where do clocks come from? How are they made and how can they produce such a high frequency for our CPUs to run?**
+
+The clock signal is commonly (but <span style="color:red; font-weight: bold;">not</span> always, there are other techniques too) produced **mechanically** using [quartz crystals oscillators](https://www.allaboutcircuits.com/technical-articles/understanding-the-operation-of-quartz-crystal-oscillators/). When we apply a voltage source to a small thin piece of quartz crystal, it begins to change its **shape** and *vibrate* (a characteristic known as the [piezo-electric effect](https://www.explainthatstuff.com/piezoelectricity.html)). This characteristics produces a mechanical force. The frequency of which the crystal is going to oscillate varies, depending on the oscillator's topology. We typically call this the **base frequency** of our clock. We then can build other circuits to multiply (boost) or divide (slow down) this frequency to run different components in our PC at different speed depending on the specifications. 
+
+For example in a multicore CPU, each core might have an independent multiplier circuit. Cores that are underutilised can run slower while cores under heavy load can run faster (e.g: [Intel Turbo Boost](https://www.intel.sg/content/www/xa/en/gaming/resources/turbo-boost.html)). Your RAM also need a different clock speed than your CPUs. 
 
 

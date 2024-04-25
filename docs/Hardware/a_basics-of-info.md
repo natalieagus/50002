@@ -20,6 +20,14 @@ Singapore University of Technology and Design
 {: .no_toc}
 [You can find the lecture video here. ](https://youtu.be/IicB30kA3pY) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
+## Learning Objectives
+
+* Calculate the amount of information received in bits (probability)
+* Encode information and calculate the minimum number of bits
+* Convert numbers from and to decimal-binary, binary-hex, decimal-hex
+* Apply 2’s complement
+* Model information in terms of bits
+
 ## [Overview](https://www.youtube.com/watch?v=IicB30kA3pY&list=PLklpDKpv-EBj1agIq4vB1iB6ahMT8_2A_&index=1&t=0s)
 
 In this course, we are going to learn how to build the **general-purpose digital device** that we call *computer* these days from the **bottom up** (hardware to software), hence our punny tagline: *full-stack developer*. We will start with understanding how we can encode information in terms of **voltages**, and then how to utilize transistors to synthesize logic. We can use them to create a bigger -- more complex programmable system, and eventually with a properly designed instruction set, we can understand how a general purpose programmable machine is made. 
@@ -109,7 +117,7 @@ To compute the 2's Complement representation of $$5$$ and represent a negative v
  - **Step 1**: inverse all 0s into 1s and vice versa on the *original* binary number
 - **Step 2:** add 1 **to the number in step 1**
 
-### Example:
+### Example
 
 `0 0 1 1 = 3` $$\rightarrow$$ we want to turn this into -3, so we do the steps below: 
 - **Step 1**: 1 1 0 0 (inversed)

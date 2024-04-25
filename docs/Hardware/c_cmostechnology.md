@@ -20,7 +20,17 @@ Singapore University of Technology and Design
 # The CMOS Technology
 {: .no_toc}
 [You can find the lecture video here. ](https://youtu.be/JqgZcV_1IU4)You can also **click** on each header to bring you to the section of the video covering the subtopic. 
+
+## Learning Objectives
+* Explain types of MOSFETs: PFETs and NFETs
+* Explain how to build CMOS inverter from field effect transistor (FET)
+* Experiment with the mechanism of pull up and pull down transistors
+* Explain how CMOS works and the importance of its complementary nature 
+* Construct simple boolean equations given some CMOS circuits
+* Compute propagation delay and contamination delay
+* Calculate and analyse timing specification of a combinational circuit
   
+
 ## [Overview](https://www.youtube.com/watch?v=JqgZcV_1IU4&t=0s)
 Recall that the ideal behaviors and characteristics of a **combinational logic device** are:
 
@@ -69,7 +79,7 @@ There are two types of FETs: the **NFET** and the **PFET**.
 2.  **The PFET** : the majority of the charge carrier for the **bulk** are electrons (n-type semiconductor). The majority of the charge carrier for the **source and drain** are holes (p-type semiconductor). Typically, the bulk is connected to `VDD` to keep the PN junction *reverse biased*
 
 {: .note}
-Please watch the [post-reading video](https://www.youtube.com/watch?v=cJxBlO5NMGs&list=PLklpDKpv-EBhCVUAZDDRWEGZzR_It-FSo&index=3) or refer to the [later](https://natalieagus.github.io/50002/notes/cmostechnology#supplementary-sections) section if you are unclear about what is a PN junction, p-type, or n-type semiconductors.
+Please watch the [post-reading video](https://www.youtube.com/watch?v=cJxBlO5NMGs&list=PLklpDKpv-EBhCVUAZDDRWEGZzR_It-FSo&index=3) or refer to the [later](https://natalieagus.github.io/50002/notes/cmostechnology#appendix) section if you are unclear about what is a PN junction, p-type, or n-type semiconductors.
 
 
 Some terms we need to set straight before we proceed:
@@ -86,7 +96,7 @@ The circuit symbol for NFET and PFET are shown as below. Note that the bulk of N
 
 ## Switching NFETs and PFETs ON/OFF
 
-See the figure below and its corresponding explanation to understand better how NFET and PFET operates. The two drawings on top are PFETS (left: OFF and right: ON). The two drawings below are NFETS (left: OFF and right: ON). You might want to refer to this Figure as well when reading the **Supplementary Sections** below. 
+See the figure below and its corresponding explanation to understand better how NFET and PFET operates. The two drawings on top are PFETS (left: OFF and right: ON). The two drawings below are NFETS (left: OFF and right: ON). You might want to refer to this Figure as well when reading the **Appendix** below. 
 
 <img src="https://dropbox.com/s/px5ev6j9ae22ceg/pnfet.png?raw=1"  >	  
 
@@ -135,57 +145,6 @@ See the figure below and its corresponding explanation to understand better how 
 > 
 > MOSFETs operates using **voltages**. No current flows from the gate towards source/drain since the gate is insulated from source and drain. This is unlike common (cheaper) PNP and NPN transistor (standard bipolar junction transistor -- BJT) that operates using current. The "output" that we get at the drain of either PFET or NFET is a result of the connection between Source and Drain due to the presence / absence of voltage in the gate.  
 
-
-## Supplementary Sections
-
-Please refer to this section if you have not already understand about p-type and n-type semiconductors, PN junction, and source-drain terminal naming.
-
-  
-### P-type and N-type Semiconductors
-
-{: .important}
-**Not to be confused with PFET and NFET.**
-
-In the **p-type** semiconductor there are plenty of **acceptor atoms** and in the **n-type** semiconductor there are plenty of **extra electrons (donor atoms)**. We can say that a p-type region is where the majority of the carriers are holes and an n-type region is where the majority of the carriers are electrons. 
-
-To be precise, an electron is one of the *constituents* of an atom, having a negative charge. An **acceptor** atom has for example 3 electrons in *valence shell* and can **accept** one electron to complete the covalent bonding. Thus it gains one extra electron and acquires **negative charge**. On the other hand, a donor atom has 5 electrons (one extra) in valence shell and can donate one extra electron. It thus acquires unit positive charge in the process.
-
-  
-
-### Depletion Region
-
-When p-type and n-type semiconductors are placed together, the free electrons from n-type will **flow over (diffuse)** to the p-type and fill its holes (impurities). Filling up a hole results in a negatively charged ion at the p-type semiconductor, as illustrated as the *gray
-circles* in Figure above. Equally, these free electrons leaving the n-type leaves behind a **positively charged ion** at the n-type semiconductor. This is illustrated as the yellow circles. 
-
-Eventually, a space-charge builds up forming an **electric field** as denoted in the left drawings (the yellow circles and the grey circles form electric field), *preventing* more free electrons from the n-type side to the p-type side, thereby forming an insulating layer called **depletion region**.
-
-  
-
-### P-channel or N-channel Formation
-
-For NFETs, when there's presence of high (positive) voltage at the gate, it repels the extra holes at the p-type bulk. Basically, a positive voltage applied to the gate attracts electrons (which are minority in the p-type substrate) to the interface between the gate dielectric and the two n-types semiconductors (drain and source). 
-
-These electrons form a conducting **n-type channel** between the source and the drain, called the **inversion layer**. When there's *potential difference* between the drain and the source, the current will flow from drain to source through this inversion layer. 
-
-For PFETs the opposite happens. When there's presence of low (negative) voltage at the gate, it repels the extra electrons at the n-type bulk. Basically, holes (which are minority in the n-type substrate) are the majority in the region between the gate dielectric and the two p-types semiconductors, forming a conducting **p-type channel** (inversion layer). When there's potential difference between drain and source, then the current will flow from source to drain through this inversion layer. 
-
-{: .note}
-The position of the source and drain in PFET is switched , compared to what is depicted for NFET. Read the next section for details.
-
-  
-
-### Naming of Source and Drain  
-
-The naming of the Source and Drain terminal depends on the **majority** of the charge carrier. The **majority** charge carrier is always meant to be **drained** at D and **sourced** at S, meaning that it flows from S to D.
-
-In PFETs, current flows from Source to Drain, because the majority of the charge carrier is holes (positively charged). In NFETs, current flows from Drain to Source, because the majority of the charge carrier is electrons (negatively charged).
-
-{: .note}
-Current (`I`) **cannot flow out back to the Gate** because there's a capacitor there (**infinite** resistance). The function of the gate capacitor is to create electric field enough to pull either electrons up to the gate in NFETS or holes up to gate in PFETs to create a conductive n-type (electrons) or p-type(holes) channel.
-
-### Reverse Bias in PN Junction
-
-The bulk of the PFET is connected to the `VDD` while the bulk of the NFET is connected to the `GND`. We do this to keep the PN junction in each FET to stay in the *reverse biased* state by default, until they're switched **on**.  A simple explanation on why we need to keep them in reverse biased state by default is so that it encourages the presence of the depletion region hence preventing major *current leaks* across the junction when the FET is **off**. You may watch [this](https://youtu.be/cJxBlO5NMGs?t=295) video that we made if you'd like to know more about reverse biasness (and other stuffs like the PN junction diode, and P/N type semiconductors), but these details are out of our syllabus. 
 
 ## [Complementary MOS circuitry](https://www.youtube.com/watch?v=JqgZcV_1IU4&t=1185s)
 
@@ -259,7 +218,7 @@ Now we consider several cases. In Case 1, we consider what the output will be wh
 
 Notice how there's parallel PFET in the pull-up, and series NFET in the pull-down. This is exactly the **recipe** for **CMOS complement**, ensuring that there will be no combination of input that will cause both pull-up and pull-down circuits to be **ON**. 
 
-
+{:.important}
 As practice, you can try to trace what happens when `A=0, B=0`, and when `A=1,  B=0` and construct a truth table for this simple circuit. 
 
 ## [Logic Gates](https://www.youtube.com/watch?v=JqgZcV_1IU4&t=1860s)
@@ -341,4 +300,53 @@ We can assemble a few FETs to implement any truth table or Boolean functions (we
 
 > You will try this in Lab Adder, where you are tasked to build an combinational logic circuit called the **adder**. 
 
+# Appendix
 
+Please refer to this section if you are interested to learn more about p-type and n-type semiconductors, PN junction, and source-drain terminal naming.
+
+  
+### P-type and N-type Semiconductors
+
+{: .important}
+**Not to be confused with PFET and NFET.**
+
+In the **p-type** semiconductor there are plenty of **acceptor atoms** and in the **n-type** semiconductor there are plenty of **extra electrons (donor atoms)**. We can say that a p-type region is where the majority of the carriers are holes and an n-type region is where the majority of the carriers are electrons. 
+
+To be precise, an electron is one of the *constituents* of an atom, having a negative charge. An **acceptor** atom has for example 3 electrons in *valence shell* and can **accept** one electron to complete the covalent bonding. Thus it gains one extra electron and acquires **negative charge**. On the other hand, a donor atom has 5 electrons (one extra) in valence shell and can donate one extra electron. It thus acquires unit positive charge in the process.
+
+  
+
+### Depletion Region
+
+When p-type and n-type semiconductors are placed together, the free electrons from n-type will **flow over (diffuse)** to the p-type and fill its holes (impurities). Filling up a hole results in a negatively charged ion at the p-type semiconductor, as illustrated as the *gray
+circles* in Figure above. Equally, these free electrons leaving the n-type leaves behind a **positively charged ion** at the n-type semiconductor. This is illustrated as the yellow circles. 
+
+Eventually, a space-charge builds up forming an **electric field** as denoted in the left drawings (the yellow circles and the grey circles form electric field), *preventing* more free electrons from the n-type side to the p-type side, thereby forming an insulating layer called **depletion region**.
+
+  
+
+### P-channel or N-channel Formation
+
+For NFETs, when there's presence of high (positive) voltage at the gate, it repels the extra holes at the p-type bulk. Basically, a positive voltage applied to the gate attracts electrons (which are minority in the p-type substrate) to the interface between the gate dielectric and the two n-types semiconductors (drain and source). 
+
+These electrons form a conducting **n-type channel** between the source and the drain, called the **inversion layer**. When there's *potential difference* between the drain and the source, the current will flow from drain to source through this inversion layer. 
+
+For PFETs the opposite happens. When there's presence of low (negative) voltage at the gate, it repels the extra electrons at the n-type bulk. Basically, holes (which are minority in the n-type substrate) are the majority in the region between the gate dielectric and the two p-types semiconductors, forming a conducting **p-type channel** (inversion layer). When there's potential difference between drain and source, then the current will flow from source to drain through this inversion layer. 
+
+{: .note}
+The position of the source and drain in PFET is switched , compared to what is depicted for NFET. Read the next section for details.
+
+  
+
+### Naming of Source and Drain  
+
+The naming of the Source and Drain terminal depends on the **majority** of the charge carrier. The **majority** charge carrier is always meant to be **drained** at D and **sourced** at S, meaning that it flows from S to D.
+
+In PFETs, current flows from Source to Drain, because the majority of the charge carrier is holes (positively charged). In NFETs, current flows from Drain to Source, because the majority of the charge carrier is electrons (negatively charged).
+
+{: .note}
+Current (`I`) **cannot flow out back to the Gate** because there's a capacitor there (**infinite** resistance). The function of the gate capacitor is to create electric field enough to pull either electrons up to the gate in NFETS or holes up to gate in PFETs to create a conductive n-type (electrons) or p-type(holes) channel.
+
+### Reverse Bias in PN Junction
+
+The bulk of the PFET is connected to the `VDD` while the bulk of the NFET is connected to the `GND`. We do this to keep the PN junction in each FET to stay in the *reverse biased* state by default, until they're switched **on**.  A simple explanation on why we need to keep them in reverse biased state by default is so that it encourages the presence of the depletion region hence preventing major *current leaks* across the junction when the FET is **off**. You may watch [this](https://youtu.be/cJxBlO5NMGs?t=295) video that we made if you'd like to know more about reverse biasness (and other stuffs like the PN junction diode, and P/N type semiconductors), but these details are out of our syllabus. 
