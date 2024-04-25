@@ -168,12 +168,17 @@ Contents that are stored on the disk swap space does **not** have a `PA`. If the
 
   
 ### [Pagetable](https://www.youtube.com/watch?v=19wS4GC6mbQ&t=1715s)
+
+
+
 The OS Kernel maintains a **Pagetable** (sometimes it is called **pagemap** too) that keeps track of the translation between each `VA` of each **process** to its corresponding `PA`. It stores mapping of the higher $$v$$ bits of virtual address (called the **`VPN`** - Virtual Page Number) to a corresponding **`PPN`** (physical page number). 
 
 {: .new-title}
 > Pagetable
+>
+> Pagetable is a data structure used by the operating system to store mappings between virtual addresses and physical addresses. Each entry in the pagetable contains information about where a specific block of virtual memory is stored on the physical memory. The CPU uses the pagetable to translate virtual addresses to physical addresses during program execution.
 > 
-> The *Pagetable* contains **all possible combination of virtual address of a process**, but not all `VA` has corresponding `PA` at a time in the RAM (it may be in the disk).
+> It contains **all possible combination of virtual address of a process**, but not all `VA` has corresponding `PA` at a time in the RAM (it may be in the disk). 
 
 The MMU utilizes the Pagetable to **translate** every memory reference requests from the CPU to an actual, physical address as illustrated below:
 
