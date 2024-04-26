@@ -20,13 +20,41 @@ Singapore University of Technology and Design
 {: .no_toc}
 [You can find the lecture video here. ](https://youtu.be/IicB30kA3pY) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
-## Learning Objectives
+## Detailed Learning Objectives
 
-* Calculate the amount of information received in bits (probability)
-* Encode information and calculate the minimum number of bits
-* Convert numbers from and to decimal-binary, binary-hex, decimal-hex
-* Apply 2’s complement
-* Model information in terms of bits
+1. **Understand the Foundation of Digital Devices:**
+  - Learn the basic concept of encoding information using electrical signals.
+  - Understand how bits represent data in electronic devices and their role in computation.
+
+2. **Explore Number Systems and Encoding:**
+  - Gain proficiency in converting between binary, decimal, octal, and hexadecimal number systems.
+  - Comprehend the use of prefixes and suffixes in different number systems to indicate bases.
+
+3. **Master 2's Complement for Signed Numbers:**
+  - Understand how 2's complement is used to represent signed integers in binary form.
+  - Learn the process of converting positive numbers to their negative counterparts using 2's complement.
+
+4. **Grasp Various Encoding Techniques:**
+  - Recognize fixed length length encoding methods.
+  - Understand character encoding standards like ASCII and Unicode and their significance in data representation.
+
+5. **Comprehend the Significance of Bytes in Digital Storage:**
+  - Learn why bytes are used as the standard unit of digital information and storage.
+  - Understand how data storage capacities are measured and reported in terms of bytes.
+
+6. **Calculate Information Quantity Based on Probability:**
+  - Understand the relationship between the probability of an event and the amount of information it provides.
+  - Learn how to compute the information content of events using logarithmic measures.
+
+7. **Apply Knowledge to Practical Digital System Design:**
+  - Explore the historical context and evolution of digital devices from mechanical systems to modern electronic computers.
+  - Understand the practical constraints in early computing, such as cost and size, and how they influenced design decisions.
+
+8. **Lay the Groundwork for Building General-Purpose Computers:**
+  - Begin the process of learning how to design and build a general-purpose programmable machine.
+  - Understand the transition from specific-purpose devices to general-purpose computing platforms.
+
+These objectives aim to equip students with a comprehensive understanding of digital systems from the ground up, preparing them to engage in more advanced studies and applications in computer science and engineering.
 
 ## [Overview](https://www.youtube.com/watch?v=IicB30kA3pY&list=PLklpDKpv-EBj1agIq4vB1iB6ahMT8_2A_&index=1&t=0s)
 

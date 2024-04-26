@@ -22,13 +22,40 @@ Singapore University of Technology and Design
 [You can find the lecture video here.](https://youtu.be/yXBAy432vT8) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
 ## Learning Objectives
-* Write the truth table given a functional specification of a combinational device
-* Write the sum-of-products of a boolean expression given a truth table or combinational logic, and vice versa
-* Draw the combinational logic using NAND and NOR gates given the sum-of-products or truth table
-* Simplify boolean expression using boolean algebra and Karnaugh map
-* Explain the workings and applications of multiplexer
-* Use multiplexer as a universal gate implementation
-* Implement boolean expression in read-only memory (ROM)
+
+1. **Understand Combinational Logic Devices:**
+  - Learn how combinational logic devices synthesize logic to produce specific outputs based on given inputs, adhering to functional specifications or truth tables.
+  - Explore how functional specifications are expressed through truth tables for different logic gates like NAND and AND.
+
+2. **Explore Multi-input Logic Gates:**
+  - Understand the concept of multi-input gates and recognize the computational possibilities and limitations of different gate types.
+  - Comprehend that the number of possible logic gates increases exponentially with the number of inputs.
+
+3. **Apply Sum of Products Method:**
+  - Learn to convert truth tables into Boolean expressions using the sum of products method.
+  - Understand the process of creating combinational logic expressions that align with specified truth tables.
+
+4. **Synthesize Logic Using Basic Gates:**
+  - Master the use of basic logic gates (INV, AND, OR) to synthesize any given Boolean expression.
+  - Explore straightforward logic synthesis to build complex combinational devices from basic components.
+
+5. **Utilize Boolean Algebra for Logic Minimization:**
+  - Apply Boolean algebra properties to manipulate and simplify Boolean expressions.
+  - Explore various Boolean algebra rules and their applications in reducing logic complexity.
+
+6. **Implement Universal Gates:**
+  - Recognize NAND and NOR gates as universal gates capable of implementing any Boolean function.
+  - Learn to construct basic logic functions using only NAND or NOR gates.
+
+7. **Understand Special Combinational Logic Devices:**
+  - Examine the functionality and application of multiplexers and demultiplexers in digital circuits.
+  - Learn how multiplexers can implement any Boolean function by selecting among multiple inputs.
+
+8. **Investigate the Use of ROMs for Hardcoding Logic:**
+  - Explore the use of Read-Only Memories (ROMs) to permanently encode specific logic functions.
+  - Understand the physical layout and logic implications of using ROMs in digital circuit design.
+
+These objectives are designed to provide students with a thorough understanding of how combinational logic devices are conceptualized, designed, and implemented in digital electronics, fostering a foundation for more complex system designs.
 
 ## [Overview](https://www.youtube.com/watch?v=yXBAy432vT8&t=0s)
 The purpose of creating combinational devices is to **synthesise logic**, meaning that we create a device that is able to give a certain combination of output given a certain combination input. In other words, a device that adheres to a truth table, i.e: its *functional specification.* 

@@ -9,7 +9,7 @@ nav_order: 18
 # 50.002 Hardware Related Topics 
 {: .no_toc}
 
-These topics are taught before the recess week. They are **tested** during our Midterm examination. Below we list the **learning objectives** of each topic. 
+These topics are taught before the recess week. They are **tested** during our Midterm examination. Below we list the **learning objectives** of each topic. Please find the detailed learning objective on the respective notes.  
 
 ## [Basics of Information](https://natalieagus.github.io/50002/notes/basicsofinformation)
 1. Calculate the amount of information received in bits (probability)

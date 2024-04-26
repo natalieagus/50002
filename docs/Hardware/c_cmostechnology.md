@@ -21,27 +21,54 @@ Singapore University of Technology and Design
 {: .no_toc}
 [You can find the lecture video here. ](https://youtu.be/JqgZcV_1IU4)You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
-## Learning Objectives
-* Explain types of MOSFETs: PFETs and NFETs
-* Explain how to build CMOS inverter from field effect transistor (FET)
-* Experiment with the mechanism of pull up and pull down transistors
-* Explain how CMOS works and the importance of its complementary nature 
-* Construct simple boolean equations given some CMOS circuits
-* Compute propagation delay and contamination delay
-* Calculate and analyse timing specification of a combinational circuit
-  
+## Detailed Learning Objectives
+
+
+1. **Understand the Properties of Combinational Logic Devices:**
+  - Learn the ideal characteristics of a combinational logic device including noise tolerance, power dissipation, and functional reliability.
+  - Comprehend the significance of noise margins and their relationship to the gain of the Voltage Transfer Characteristic (VTC).
+
+2. **Explore the Basics of MOSFETs:**
+  - Understand the structure and operation of Metal-Oxide Semiconductor Field-Effect Transistors (MOSFETs).
+  - Identify the roles of the gate, drain, source, and body in MOSFET operation.
+
+3. **Differentiate Between NFET and PFET:**
+  - Compare the characteristics and functions of N-type and P-type FETs.
+  - Learn how NFETs and PFETs are used to implement different logic functions based on their configuration and voltage levels.
+
+4. **Learn CMOS Technology for Logic Devices:**
+  - Understand how Complementary MOS (CMOS) technology utilizes both NFETs and PFETs to create efficient logic circuits.
+  - Explore the concept of pull-up and pull-down networks within CMOS circuits.
+
+5. **Analyze the CMOS Complementary Recipe:**
+  - Study the complementary nature of pull-up and pull-down circuits in CMOS technology to prevent short circuits and ensure stable logic states.
+  - Apply the complementary MOS circuitry to understand basic logic gates like NAND and NOR.
+
+6. **Master Logic Gate Fundamentals:**
+  - Identify different types of logic gates and their operations.
+  - Understand how logic gates are implemented using CMOS technology to fulfill specific logic functions.
+
+7. **Discuss Timing Specifications in Combinational Logic Devices:**
+  - Learn about propagation delay and contamination delay as critical timing specifications in digital circuits.
+  - Understand how these delays impact the performance and reliability of logic circuits.
+
+These objectives aim to provide students with a comprehensive understanding of the basic building blocks of digital electronics, focusing on MOSFETs and their application in combinational logic devices through CMOS technology.
 
 ## [Overview](https://www.youtube.com/watch?v=JqgZcV_1IU4&t=0s)
-Recall that the ideal behaviors and characteristics of a **combinational logic device** are:
 
-1.  The device should be able to **tolerate** some amount of errors due to its *Noise Margins.* The Noise Margin exists if its VTC gain $$>1$$.
-2.  If we have **high gain**, that means we can have **more noise margin**. *Take some time to convince yourself that this is true.*
-3.  The device should be cheap, and small sized. *We do not want to have bulky devices, do we?*
-4.  The device should have **zero power dissipation** when input voltages aren't changing. That's why the device must have a nonlinear gain.
-5.  Otherwise when voltage is changing from, `0` to `1` or `1` to `0`, then power within the device has to dissipate **easily**, meaning that the change is swift, reliable, and quick. *We always want our computers to be fast, don't we?*
-6.  The device has to be **functional**, meaning that it conforms to the assigned **truth table** (**logic**) at all times. *We do not want unpredictable "buggy" behavior with our devices.*
+In this chapter, we are learning a particular component called the **MOSFET** that can be used as a <span class="orange-bold">building block</span> for our combinational logic device. It has all the characteristics mentioned above.   
 
-In this chapter, we are learning a particular component called the **MOSFET** that can be used as a building block for our combinational logic device. It has all the characteristics mentioned above.   
+{:.new-title}
+> Recall 
+>
+> The ideal behaviors and characteristics of a **combinational logic device** are:
+> 1.  The device should be able to **tolerate** some amount of errors due to its *Noise Margins.* The Noise Margin exists if its VTC gain $$>1$$.
+> 2.  If we have **high gain**, that means we can have **more noise margin**. *Take some time to convince yourself that this is true.*
+> 3.  The device should be cheap, and small sized. *We do not want to have bulky devices, do we?*
+> 4.  The device should have **zero power dissipation** when input voltages aren't changing. That's why the device must have a nonlinear gain.
+> 5.  Otherwise when voltage is changing from, `0` to `1` or `1` to `0`, then power within the device has to dissipate **easily**, meaning that the change is swift, reliable, and quick. *We always want our computers to be fast, don't we?*
+> 6.  The device has to be **functional**, meaning that it conforms to the assigned **truth table** (**logic**) at all times. *We do not want unpredictable "buggy" behavior with our devices.*
+
 
 ## [The MOSFET](https://www.youtube.com/watch?v=JqgZcV_1IU4&t=180s)
 
