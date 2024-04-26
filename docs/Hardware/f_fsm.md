@@ -91,14 +91,13 @@ Suppose we have a simple digital lock machine, that will open only if we give th
  
   <img src="https://dropbox.com/s/peuby3etfi3twvx/Q2%202.png?raw=1"  class="center_seventy" >
 
-That **S_X** in bold represents the *initial* state. The **arrows** are the possible *transitions* between states. The little numbers beside the arrows are the kind of *input* required for state transition to happen. The word $$U$$ inside each state circle is the *output* of each state. If it is unlocked, $$U=1$$, otherwise $$U=0$$ for a locked output 
+The **SX** state in bold represents the *initial* state. The **arrows** are the possible *transitions* between states. The little numbers beside the arrows are the kind of *input* required for state transition to happen. The word $$U$$ inside each state circle is the *output* of each state. If it is unlocked, $$U=1$$, otherwise $$U=0$$ for a locked output 
 
 * When input `0110` is entered in that *exact* sequence, you'll land at `S_3` -- and the lock will be **unlocked**. 
 * If at `S_0, S_1,` or `S_3` you *mistakenly* entered `0` instead of `1` (the correct subsequent digit to enter), then its counted as you *restarted* to `S_0` (not `S_X` -- because the first digit of the password is `0`). 
 * If at `S_3` you entered `1`, then you land at `S_1` because its counted that the latest correct sequence so far is `01` (the `0` refers to the input entered that caused transition from `S2` to `S_3`).
 
-There are **five** states in total, and we can encode them using 3 bits: `000, 001, 010, 011`, and `110` for `S_X, S_0, S_1, S2`, and `S_3` respectively. 
-> Since we have 5 states, we need at least $$\log_2(5) = 3$$ (rounded up) bits to represent the states, *any* 5 distinct values  from `000` to `111`. **This is called encoded representation** of the states.
+There are **five** states in total, and we can encode them using 3 bits: `000, 001, 010, 011`, and `110` for `S_X, S_0, S_1, S2`, and `S_3` respectively. Since we have 5 states, we need at least $$\log_2(5) = 3$$ (rounded up) bits to represent the states, *any* 5 distinct values  from `000` to `111`. **This is called encoded representation** of the states.
 
 Then, we can represent the functionality of the FSM in terms of a truth table below
 
@@ -131,21 +130,21 @@ The output column in the figure above contains the output that depends on the cu
 
   
 
-There are two types of FSM (and equivalently two ways to draw the state transition diagram). The lock state transition diagram  shown in the previous section is called the **Moore** machine.
+There are two types of FSM (and equivalently two ways to draw the state transition diagram). The digitallock state transition diagram  shown in the previous section is called the **Moore** machine.
 
-Notice that the the output is *drawn on the state (circle)*. This means that the output of the machine  depends on the *current* state. 
+{:.highlight-title}
+> Output depends solely on state
+> 
+> Notice that the the output is *drawn on the state (circle)*. This means that the output of the machine  depends on the *current* state. 
 
 The second type of FSM is called the **Mealy** machine, and when we can draw the state transition diagram for Mealy machines by *drawing the output on the transition arrows*. This means that the output of the machine depends on both the *current* input and *current* state. 
 
-We can implement the same features (of a machine) using either Moore or Mealy configuration, for example, suppose we have a digital lock that can be opened with the password `011`. 
-> This is similar to the digital lock in the previous section that requires the password `0110` to open, just that this is a *shorter* version to make it more compact to explain the topic. 
-
-The state diagram for a Moore implementation of this lock and a Mealy implementation of this lock is as shown: 
+We can implement the <span class="orange-bold">same</span> features (of a machine) using either Moore or Mealy configuration, for example, suppose we have a digital lock that can be opened with the password `011`. The state diagram for a Moore implementation of this lock and a Mealy implementation of this lock is as shown: 
 
 <img src="https://dropbox.com/s/yirju0klzdsbj9y/Q3.png?raw=1"   >
 
 
-We have 4 states for the Moore machine, so we can encode the states as `00, 01, 10,` and `11` for states `S_0, S_1, S2,` and `S_3` respectively. 
+We have 4 states for the Moore machine, so we can encode the states as `00, 01, 10,` and `11` for states `S0, S1, S2,` and `S3` respectively. 
 
 The truth table for the Moore Machine above is (combinations that don't apply to the FSM is omitted):
 
@@ -166,7 +165,7 @@ S_i &  In & S_{i+1} & Out\\
 $$
 
 
-For the Mealy machine, we have **less** states and we can simply encode the states as `00, 01,` and `10` for `S_0, S_1`, and `S2` respectively. The truth table for the Mealy Machine above is:
+For the Mealy machine, we have **less** states and we can simply encode the states as `00, 01,` and `10` for `S0, S1`, and `S2` respectively. The truth table for the Mealy Machine above is:
 
 $$
 \begin{matrix}
@@ -185,12 +184,12 @@ $$
 **Conclusion:** Both tables have the same abstract functionality: which is a lock that unlocks once we key in the right password (`011`). We can implement this lock either as a Moore or a Mealy machine. 
 
 {: .note}
-*One apparent difference is that a Mealy machine takes less number of states to implement, and a Moore lock machine takes 1 cycle *slower* to **unlock** than a Mealy lock machine. We will compare the pros and cons on each machine further in the later section.
+One apparent difference is that a Mealy machine takes less number of states to implement, and a Moore lock machine takes 1 cycle *slower* to **unlock** than a Mealy lock machine. We will compare the pros and cons on each machine further in the later section.
 
 ## [Building a State Machine](https://www.youtube.com/watch?v=efLcdpqlAyI&t=987s)
 
 
-We can build an FSM using Flip-Flops or registers, and combinational logic units such as using ROMs, or multiplexers among others. At first, we can transform the Moore Machine truth table in the previous section, pasted here again for easier reference, into its boolean equation form:
+We can build an FSM using Flip-Flops or registers, and combinational logic units such as using ROMs, or multiplexers among others. At first, we can transform the Moore Machine truth table in the previous section. Here it is for your reference:
 
 $$
 \begin{matrix}
@@ -265,17 +264,7 @@ $$
 > 
 > Can you minimise the equation above further? 
 
-Now that we have the boolean equations for each machine ready, we can simply construct the machine using 2-bit Flip-Flops / Registers, and a combinational logic device. 
-
-One possible schematic for the Moore version of the lock is :
-
-<img src="https://dropbox.com/s/6trfvoracwgajwl/moore_1.png?raw=1" class="center_fifty"  >
-
- One possible schematic for the Mealy version of the lock is:
- 
- <img src="https://dropbox.com/s/bu45lxkolwzbj8n/meally_1.png?raw=1" class="center_fifty"  >
- 
-Both diagrams above are obtained **after** minimising the boolean expression. There are other ways to construct them machine, such as using only NAND gates, only NOR gates, only multiplexers, or ROMs. Try it yourself as practice.
+If you're interested to see how these FSM can be manifested into hardware, see this [Appendix section](#hardware-representation-of-digital-lock-fsm). 
 
 
 ## [Differences between Moore and Mealy Machine](https://www.youtube.com/watch?v=efLcdpqlAyI&t=1552s)
@@ -306,7 +295,7 @@ On the other hand, a Mealy machine has these characteristics:
   
 
 ### Further Observation
-A Mealy machine can seem *faster* or *more responsive* than the Moore machine since the output can  be produced approximately $$t_{pd}$$ (or almost immediately if $$t_{pd}$$ of the last CL unit is small) after input arrives. However  the output of a Moore machine is only obtained in the **next CLK cycle**. 
+A Mealy machine may seem *faster* or *more responsive* than the Moore machine since the output can  be produced approximately $$t_{pd}$$ (or almost immediately if $$t_{pd}$$ of the last CL unit is small) after input arrives. However  the output of a Moore machine is only obtained in the **next CLK cycle**. 
 
 One CLK period typically takes much longer than the $$t_{pd}$$ of that smaller CL (at the output of the Flip-Flop) because:
 - Dynamic discipline has to be obeyed, thus $$t_{pd}$$ of the bigger CL should be smaller than the CLK period 
@@ -328,18 +317,14 @@ The truth table will look something like this for any *arbitrary* FSM with  $$i$
 In short, we need **to create a combinational logic device** that conforms to the FSM's truth table. We have learned several ways to create such devices:
 
 1.  By creating a ROM: use a demultiplexer, with each output bit soldered to conform to the truth table
-
 1.  By deriving the sum of products and use a INV, AND, and OR gates
-
 1.  By deriving the minimal boolean expression and create CMOS circuitry using CMOS recipe
 
 
 
   
 
-Given $$i$$ input bits, $$s$$ state bits, and $$o$$ output bits we have a total combination of $$2^{i+s}$$ input-state combinations, and each input-state pair has $$o$$ bits as an output.  
-
-Hence, the number of possible FSMs that can be captured with $$i$$ input bits, $$o$$ output bits, and $$s$$ state bits is $$2^{(o+s)2^{i+s}}$$ FSMs.
+Given $$i$$ input bits, $$s$$ state bits, and $$o$$ output bits we have a total combination of $$2^{i+s}$$ input-state combinations, and each input-state pair has $$o$$ bits as an output.  Hence, the number of possible FSMs that can be captured with $$i$$ input bits, $$o$$ output bits, and $$s$$ state bits is $$2^{(o+s)2^{i+s}}$$ FSMs.
 
 {: .warning-title}
 > Important
@@ -354,10 +339,9 @@ Hence, the number of possible FSMs that can be captured with $$i$$ input bits, $
 -  Therefore we have $$2^{(o+s)2^{i+s}}$$ different FSMs
 
 
-{: .note-title}
-> Example
-> 
-> If $$i=1, o=1, s=1$$, then we can have $$256$$ different FSMs. The picture below shows 4 examples of the 256 different FSMS to paint a clearer picture. The shaded region (input-state combinations) are always the same, but the two columns on its right (next state-output combinations) always differ by at least one bit to define a *different* FSM. 
+### Example
+
+If $$i=1, o=1, s=1$$, then we can have $$256$$ different FSMs. The picture below shows 4 examples of the 256 different FSMS to paint a clearer picture. The shaded region (input-state combinations) are always the same, but the two columns on its right (next state-output combinations) always differ by at least one bit to define a *different* FSM. 
 
   
 
@@ -397,7 +381,8 @@ Having less states will result in less bits to represent the states in the machi
 
 In this chapter, we have learned that we can build an FSM to compute many types of functions, such as implementing the *digital lock*. Some problems however, cannot be computed using FSMs, so the notion of FSMs alone is not enough to be an *ultimate* computing device that we need. 
 
->Remember that the goal of this course is to teach you how to build a **general-purpose computer** from the ground up. A *general-purpose computer* is supposed to an *ultimate computing device,* able to solve *various computational problems and tasks* such as your math homework, running video games, rending graphics, playing music or video, browsing the web, and many more. 
+{:.note}
+Remember that the goal of this course is to teach you how to build a **general-purpose computer** from the ground up. A *general-purpose computer* is supposed to an *ultimate computing device,* able to solve *various computational problems and tasks* such as your math homework, running video games, rending graphics, playing music or video, browsing the web, and many more. 
 
 A classic simple example that cannot be computed using FSM is the **parenthesis checker** problem.
 
@@ -409,4 +394,20 @@ By definition, an FSM needs a **finite** amount of states. It is able to impleme
 > The Turing Machine
 > 
 > We know that we can definitely write a program that performs parenthesis checking easily, so we know that our computers aren't just a *simple* FSM. In the next chapter, we will learned another class of machine called the **Turing Machine** that can tackle this issue. 
+
+# Appendix
+
+## Hardware Representation of Digital Lock FSM 
+
+When the boolean equations for each digital lock machine ready, we can simply construct the machine using 2-bit Flip-Flops / Registers, and a combinational logic device. 
+
+One possible schematic for the Moore version of the lock is :
+
+<img src="https://dropbox.com/s/6trfvoracwgajwl/moore_1.png?raw=1" class="center_fifty"  >
+
+ One possible schematic for the Mealy version of the lock is:
+ 
+ <img src="https://dropbox.com/s/bu45lxkolwzbj8n/meally_1.png?raw=1" class="center_fifty"  >
+ 
+Both diagrams above are obtained **after** minimising the boolean expression. There are other ways to construct them machine, such as using only NAND gates, only NOR gates, only multiplexers, or ROMs. Try it yourself as practice.
 
