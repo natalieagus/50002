@@ -21,7 +21,13 @@ Singapore University of Technology and Design
 # Turing Machine and Programmability
 {: .no_toc}
 [You can find the lecture video here.](https://youtu.be/cmfDBAiogA0) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
-  
+
+## Learning Objectives
+* Explain the workings of hypothetical Turing Machine
+* Derive the concept of programmability in Turing machine
+* Recognize the connection between Turing Machines and functions, and how functions can be computable
+* Justify the significance of the computer science revolution
+ 
 ## [Overview](https://www.youtube.com/watch?v=cmfDBAiogA0&t=0s)
 
 A Finite State Machine does not keep track of the number of states it *visited*, it is only aware of the current state *it is in*. Therefore it is unable to solve problems like detecting palindrome or checking balanced parenthesis. There is no way to tell whether you have visited a state for the first time, or for the $$n^{th}$$ time. 

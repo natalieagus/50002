@@ -20,6 +20,14 @@ Singapore University of Technology and Design
 # Beta CPU Diagnostics
 {: .no_toc}
 
+## Learning Objectives
+
+* Handle synchronous and asynchronous interrupts.
+* Analyze the Beta Datapath structure and function.
+* Identify anomalies within the Beta CPU Architecture.
+* Explore testing and troubleshooting techniques for the Beta CPU.
+* Implement alternative correcting measures in faulty Beta Datapath.
+
 In this chapter, we'll focus on understanding and fixing problems in the Beta CPU, specifically looking at its datapath. We'll learn how to find out which datapath might be faulty using simple testing software to spot these issues, and figure out what code changes can help when parts of the system aren't working correctly. Our goal is about getting to know the Beta CPU datapath better and being able to fix it whenever possible. We will also learn how to handle **interrupts** in Beta datapath.
 
 

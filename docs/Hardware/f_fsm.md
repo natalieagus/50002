@@ -20,6 +20,13 @@ Singapore University of Technology and Design
 # Finite State Machine
 {: .no_toc}
 [You can find the lecture video here.](https://youtu.be/efLcdpqlAyI) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
+## Learning Objectives
+
+* Define finite state machine and its purpose
+* Draw a valid state transition diagram given a specification
+* Derive FSM equivalence and FSM reduction
+* Identify two different types of state machine and their pros and cons: Moore and Mealy
+* Implement finite state machine in a hardware
 
 ## [Overview](https://www.youtube.com/watch?v=efLcdpqlAyI&t=0s)
 

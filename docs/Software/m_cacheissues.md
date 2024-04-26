@@ -20,6 +20,15 @@ Singapore University of Technology and Design
 {: .no_toc}
 [You can find the lecture video here.](https://youtu.be/2OARjqLK4io) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
+## Learning Objectives
+
+* Explain various cache design issues
+* Explain the differences between fully-associative cache, direct-mapped cache, and n-way set-associative cache
+* Evaluate various cache policies: write and replacement
+* Synthesise basic caching algorithm in the event of HIT or MISS
+* Recognise the differences between byte and word addressing
+* Benchmark various cache designs
+
 ## [Overview](https://www.youtube.com/watch?v=2OARjqLK4io&t=0s)
 
 Recall that  **cache** is a small and fast (and expensive, made of `SRAM`) memory unit assembled near the CPU core, which function is to reduce the **average** time and energy required for the CPU to access some requested data `Mem[A]` located in the Main Memory (RAM). You know them commercially as the L1, L2, or L3 caches. We simplify them in this course by just referring to them as a single level *cache*.

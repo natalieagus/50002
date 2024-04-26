@@ -21,6 +21,15 @@ Singapore University of Technology and Design
 {: .no_toc}
 [You can find the lecture video here.](https://youtu.be/h1KGzAbJH4Q) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
+## Learning Objectives
+
+* Describe Von Neumann model of computer architecture
+* Recognise the difference between an Instruction Set Architecture (ISA) and its implementation
+* Explain how basic representation of Beta machine model (ISA) and instruction encoding works
+* Describe memory addressing conventions
+* Illustrate two basic Beta instruction formats in terms of bits allocations
+* Convert Beta assembly instruction to its binary representation and vice versa
+
 ## [Overview](https://www.youtube.com/watch?v=h1KGzAbJH4Q&t=0s)
 To create a programmable control system suitable for *general* purposes (like the Universal Turing Machine), we need to define a set of instructions for that system, such that it is able to support a rich repertoire of operations. 
 

@@ -19,7 +19,14 @@ Singapore University of Technology and Design
 # Asynchronous Handling of I/O Devices
 {: .no_toc}
 There's no pre-recorded video for this chapter as the file that was uploaded on YouTube was corrupted (no sound). Please attend the class instead as this chapter is very short and simple anyway. It is a precursor to what you'll learn in Term 5.  
-  
+
+## Learning Objectives
+* Explain the role of OS for scheduling processes related to I/O
+* Define interrupt latency and explain interrupt enable/disable bit
+* Explain various scheduling policies (weak, strong)  and their impact on latency
+* Demonstrate real-world applications on recurring interrupts
+* Design suitable scheduling policies based on various deadlines
+ 
 ## Overview
 
 {: .note-title}

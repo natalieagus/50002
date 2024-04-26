@@ -19,6 +19,14 @@ Singapore University of Technology and Design
 # Virtual Memory
 {: .no_toc}
 [You can find the lecture video here.](https://youtu.be/19wS4GC6mbQ) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
+
+## Learning Objectives
+* Describe how virtual memory works
+* Explain simple page map design
+* Calculate page map arithmetic given a page map specification
+* Explain the role of translation look-ahead buffer 
+* Describe how demand paging works illustrates the workings of context switching
+* Analyse the benefits and drawbacks of context switching
  
 ## [Overview](https://www.youtube.com/watch?v=19wS4GC6mbQ&t=0s)
 

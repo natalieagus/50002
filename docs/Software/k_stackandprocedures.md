@@ -20,6 +20,15 @@ Singapore University of Technology and Design
 {: .no_toc}
 [You can find the lecture video here.](https://youtu.be/u4TETujaNuk) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
+## Learning Objectives
+
+* Understand the necessity of functions and stacks for reusable program execution.
+* Explain the role and functions of the linkage pointer, base pointer, stack pointer, and activation record.
+* Describe the Beta procedure linkage convention in its entirety.
+* Demonstrate the ability to draw the stack frame details of a procedure call.
+* Analyze and draw the stack frame details of a recursive procedure call.
+* Analyze and inspect a function stack paused during execution, accounting for each content.
+
 ## [Overview](https://www.youtube.com/watch?v=u4TETujaNuk&t=0s)
  
 In the previous chapter, we learned the basics of how to naively compile C-language into $$\beta$$ assembly language. $$\beta$$ UASM provides a layer of abstraction such that we don't need to bother ourselves with the details on how to load each and every bytes of instruction onto the memory unit, or keeping up with accounting matters such as physical memory addresses (we can replace these with *labels* instead). 

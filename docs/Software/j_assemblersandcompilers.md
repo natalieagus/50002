@@ -21,6 +21,12 @@ Singapore University of Technology and Design
 {: .no_toc}
 [You can find the lecture video here.](https://youtu.be/Hhq3RhZcngQ) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
+## Learning Objectives
+
+* Explain the concept and purpose of software abstraction
+* Write more complex programs using Beta Assembly language in bsim (Beta Simulator), utilising labels and macros
+* Hand compile basic C code expressions (int, arrays, conditionals, loops) into Beta assembly language
+
 ## [Overview](https://www.youtube.com/watch?v=Hhq3RhZcngQ&t=49s)
 The goal of this chapter is to help us understand how to improve the programmability of the $$\beta$$ (or any ISA in general). The $$\beta$$ machine language is encoded into 32-bit instructions each. 
 

@@ -20,6 +20,14 @@ Singapore University of Technology and Design
 {: .no_toc}
 [You can find the lecture video here.](https://youtu.be/4pizOgCT11k) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
+## Learning Objectives
+* Explain the high level concept of virtual machine as processes in isolation
+* Justify the role of an operating system kernel in supporting the idea of virtual machines via multiplexing
+* Explain the significance of hardware support for OS multiplexing
+* Recognise the dual mode of operation
+* Recognise the differences between synchronous and asynchronous interrupts
+* Explain the differences between user and kernel mode
+
 ## [Overview](https://www.youtube.com/watch?v=4pizOgCT11k&t=0s)
 
 {: .highlight}

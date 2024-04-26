@@ -21,6 +21,14 @@ Singapore University of Technology and Design
 {: .no_toc}
 [You can find the lecture video here.](https://youtu.be/4T9MR8BSzt0) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
+## Learning Objectives
+* Implement the datapath for Beta ISA
+* Explain different types of datapaths: ALU operation, Load & Store operation, and the Control Unit
+* Construct the complete Beta CPU datapath for all instruction classes
+* List the output of control logic for different instructions
+* Synthesise new beta instructions with given existing datapath
+* Benchmark the performance of Beta CPU
+
 ## [Overview](https://www.youtube.com/watch?v=4T9MR8BSzt0&t=0s)
 
 In the previous chapter, we were introduced to the $$\beta$$ ISA, a CPU **blueprint** that specifies what instructions the CPU can process, how it interacts with the memory unit, the basic CPU components, instruction formats, and many more. 

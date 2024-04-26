@@ -20,6 +20,15 @@ Singapore University of Technology and Design
 {: .no_toc}
 [You can find the lecture video here.](https://youtu.be/m5_u3sQ9bXo) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
+## Learning Objectives
+
+* Recognise the motivation behind memory hierarchy 
+* Present the workings behind simple SRAM and DRAM technologies
+* Compare and contrast the pros and cons between cache, physical/main memory (RAM) and secondary memory (disk)
+* Explain the concept locality of reference
+* Explain the caching idea
+* Identify two different cache designs: FA and DM and justify its benefits and drawback
+
 ## [Overview](https://www.youtube.com/watch?v=m5_u3sQ9bXo&t=0s)
 
   
