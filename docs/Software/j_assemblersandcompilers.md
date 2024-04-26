@@ -23,9 +23,36 @@ Singapore University of Technology and Design
 
 ## Learning Objectives
 
-* Explain the concept and purpose of software abstraction
-* Write more complex programs using Beta Assembly language in bsim (Beta Simulator), utilising labels and macros
-* Hand compile basic C code expressions (int, arrays, conditionals, loops) into Beta assembly language
+
+1. **Understand the Concept of Abstraction in Software Engineering**
+   - Learn the definition and importance of abstraction in software engineering and computer science.
+   - Understand how abstraction helps in managing complexity by hiding unnecessary details and allowing focus on higher-level problems.
+
+2. **Explore Software Tools for Abstraction**
+   - Examine different tools and software that provide layers of abstraction in computing, including assemblers, compilers, and interpreters.
+   - Understand the role of operating systems and applications in abstracting resource management, security details, and other underlying complexities.
+
+3. **Learn About Language Abstraction Levels**
+   - Study the progression from machine language to high-level programming languages through assembly language, and how each level abstracts the complexity of the underlying hardware.
+   - Discover how language constructs like subroutines, modules, and polymorphism further abstract programming tasks.
+
+4. **Understand Assemblers and Their Role in Programming**
+   - Define what an assembler is and how it functions as a primitive compiler to translate assembly language into machine language.
+   - Learn about UASM and its role in providing a symbolic representation for the Beta assembly language.
+
+5. **Grasp the Functionality and Usage of UASM**
+   - Understand the anatomy of an assembler using the UASM example, and how UASM helps in translating symbolic language into binary.
+   - Learn about the various components of UASM files including basic values, symbols, labels, and macroinstructions.
+
+6. **Differentiate Between Interpreters and Compilers**
+   - Compare and contrast interpreters and compilers in terms of how they execute high-level languages.
+   - Understand the trade-offs between these tools in terms of execution speed, error detection, and ease of debugging.
+
+7. **Translate High-Level Constructs to Machine Language**
+   - Practice translating high-level language constructs, such as variable declarations, arrays, conditionals, and loops, into Beta machine language.
+   - Explore the strategies for optimizing the translation process to reduce instruction count and memory operations.
+
+These objectives aim to equip students with a deep understanding of how software abstraction layers work to simplify programming and enhance the usability of computing systems. Students will gain practical skills in using assemblers and understanding the transformation of high-level constructs into executable machine code.
 
 ## [Overview](https://www.youtube.com/watch?v=Hhq3RhZcngQ&t=49s)
 The goal of this chapter is to help us understand how to improve the programmability of the $$\beta$$ (or any ISA in general). The $$\beta$$ machine language is encoded into 32-bit instructions each. 

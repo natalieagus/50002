@@ -16,17 +16,42 @@ Information Systems Technology and Design
 <br>
 Singapore University of Technology and Design
 
-# Virtual Machine
+# Virtual Machine (Virtual Processor)
 {: .no_toc}
 [You can find the lecture video here.](https://youtu.be/4pizOgCT11k) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
-## Learning Objectives
-* Explain the high level concept of virtual machine as processes in isolation
-* Justify the role of an operating system kernel in supporting the idea of virtual machines via multiplexing
-* Explain the significance of hardware support for OS multiplexing
-* Recognise the dual mode of operation
-* Recognise the differences between synchronous and asynchronous interrupts
-* Explain the differences between user and kernel mode
+## Detailed Learning Objectives
+
+
+- **Understand the Concept of a Virtual Processor**
+  - Explain the operational model where each process perceives itself as operating on a dedicated machine.
+  - Discuss how this abstraction benefits multitasking and resource management.
+  
+- **Describe the Role of the Operating System Kernel**
+  - Detail the OS kernel's role in process management and resource allocation.
+  - Highlight the kernel's responsibilities in maintaining system security and process isolation.
+
+- **Explain Process Context and Isolation**
+  - Define the components that make up a process context and their importance in the OS.
+  - Explain how the OS uses process context to maintain each process in isolation from others.
+
+- **Identify the Mechanisms Supporting Dual Mode Operation**
+  - Describe the functions and importance of Kernel and User modes in operating systems.
+  - Discuss how these modes prevent unauthorized access and ensure system stability.
+
+- **Detail OS Multiplexing and Context Switching Techniques**
+  - Explore how operating systems share hardware resources among processes.
+  - Describe the role of context switching and how asynchronous interrupts facilitate this process.
+
+- **Explore Hardware Requirements for OS Multiplexing**
+  - Analyze the essential hardware features that support OS multiplexing.
+  - Discuss the mechanisms like interrupts and dual mode operation that ensure efficient process management.
+
+- **Understand Synchronous and Asynchronous Interrupts**
+  - Differentiate between synchronous and asynchronous interrupts and their roles in system operations.
+  - Describe how these interrupts interact with the OS to handle program execution and error management.
+
+These learning objectives are designed to give a comprehensive understanding of how virtual machines function within operating systems, emphasizing the essential roles of the OS kernel and necessary hardware support.
 
 ## [Overview](https://www.youtube.com/watch?v=4pizOgCT11k&t=0s)
 

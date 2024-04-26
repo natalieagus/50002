@@ -21,7 +21,7 @@ Singapore University of Technology and Design
 {: .no_toc}
 [You can find the lecture video here.](https://youtu.be/4T9MR8BSzt0) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
-## Learning Objectives
+## Detailed Learning Objectives
 
 1. **Understand Control Logic and CPU Instruction Handling**
    - Learn how the Control Logic unit decodes the OPCODE of instructions and outputs appropriate control signals to manipulate the datapath for executing various instructions.
