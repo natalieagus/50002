@@ -72,7 +72,7 @@ The Turing Machine is loosely referred to as an "infinite state machine" due to 
 
 A Turing Machine is often represented as an "arrow" and a series of input written on a "tape", as drawn in the figure below:
  
-<img src="https://dropbox.com/s/n41r5z8o2p5dpea/tmeg.png?raw=1"  class="center_seventy" >
+<img src="https://dropbox.com/s/n41r5z8o2p5dpea/tmeg.png?raw=1"  class="center_fifty" >
 
 ### How it Works
 The idea is to **imagine** that we have a physical machine (like a typewriter machine or something), called the Turing Machine, which can read a sequence of inputs written on an *infinitely long* "*tape*" (its basically an array).
@@ -84,10 +84,11 @@ Like an FSM, the Turing Machine also has a **specification**, illustrated by the
 The **pointer** of the machine (black arrow)  represents our current input read on the tape. 
 To operate the machine, we can *move the tape* left and right to shift the arrow, or you can *move the arrow* left and right. They are the same. 
 
-{: .warning}
-Note that in order to move the arrow  to the **right**, we need to equivalently move the tape to the **left**. **In practice**, we move the tape, not the arrow.  
+There exists  a **HALT** state which signifies the end state, and a **START** state similar to FSM. 
 
-There exists  a **HALT** state where you reach the end-state, and of course a **START** state as well. 
+{: .note}
+In order to move the arrow  to the **right**, we need to equivalently move the tape to the **left**. **In practice**, we move the tape, not the arrow.  
+
 
 
 ### Operating a Turing Machine
@@ -102,8 +103,7 @@ Then look at the **functional** specification table to know where to go next.
 {: .important}
 It is important to write first, and then move the tape/arrow, not the other way around. So the sequence at each time step is: *read*-***write***-*move*. 
 
-Repeat step (1) and (2) until we arrive at a **HALT** state.
-> Depending on what we write onto the tape, we will end up with a different sequences on the tape when we reach a **HALT** state. 
+Repeat step (1) and (2) until we arrive at a **HALT** state. Depending on what we write onto the tape, we will end up with a different sequences on the tape (different than the starting sequence) when we reach a **HALT** state. 
 
 
 ## Example 1: [An Increment Machine](https://www.youtube.com/watch?v=cmfDBAiogA0&t=274s)
@@ -247,9 +247,113 @@ A few famous examples are the as follows:
 - And of course: the Halting Function: Determine whether a program will "crash" (or halt) on a given input, like some kind of *crash detector*.
 
 {: .note}
-You are <span style="color:red; font-weight: bold;">NOT</span> required to come up with a proof on whether a given function is computable or uncomputable. Do look up any of the examples above and trace its proofs **out of your own hobby**.
+You are <span style="color:red; font-weight: bold;">NOT</span> required to come up with a proof on whether a given function is computable or uncomputable. Do look up any of the examples above and trace its proofs **out of your own hobby**. You can also read about the Halting Function in the [appendix](#the-halting-function) below. It is a classic example of uncomputable function. 
 
-### The Halting Function
+
+## [Universal Function](https://www.youtube.com/watch?v=cmfDBAiogA0&t=2561s)
+
+{: .new-title}
+> Definition
+> 
+> The universal function is defined as:
+> 
+> $$ f_{U}(K,j) = T_K[j]$$ 
+
+Let's say we can write a specification $$U$$ that realises this function. This means that a Turing Machine that runs $$U$$ is a Turing machine that is capable of ***simulating* an arbitrary Turing machine on arbitrary input**. This is called a **Universal Turing Machine**.
+
+The universal machine essentially achieves this by reading both the specification of the machine $$K$$ that we are going to **simulate** as well as the input $$j$$ to that machine from its own tape. A more familiar term for this "specification" is simply a *program*.
+
+{: highlight}
+The universal function is a model of our **general purpose computers**. **Our computers are essentially a machine that simulates other machine**: it is a calculator, a gaming console, a video player, a music player, a telephone, a chatting device, and many others. 
+
+Our computer can emulate and be **any** machine when we task it to run any program and its input. It can be a text editor, video game emulator, video player, music player, radio, telephone, camera, and many more. 
+
+### Example
+
+Back to the notion of universal function $$U$$ above, a Universal function has two inputs $$K$$, and $$j$$. Let's build a Turing machine with this specification, and symbolise it as $$T_U(K, j)$$. 
+
+* The "specification" $$K$$ is basically a **program** that specifies which computable functions we want to simulate.  
+* $$j$$, is the data tape $$T_K$$ is going supposed to read.
+
+We can create  a Turing Machine $$K$$ to run on input $$j$$: $$T_K[j]$$, but of course **this machine $$T_K$$ can only perform function $$K$$.**  Meanwhile, $$T_U$$: our universal machine, **interprets** the data, $$K$$ and $$j$$  is **capable of emulating the behavior of  $$T_K[j]$$** (without having to build $$T_K$$). 
+
+Therefore with $$T_U$$, we no longer need to make any other Turing Machine $$T_K$$ that can only compute function $$K$$**, because $$T_U$$ can emulate the behavior of any Turing Machine**. As mentioned above, the closest actual realisation of $$T_U$$ is basically our **general purpose computer**. It can run programs and perform computations just as intended.  We can simply write any new program $$K$$, and execute it on $$T_U$$ using some input $$j$$. 
+
+{:.highlight-title}
+> General Purpose Computer 
+> 
+> We no longer need different machines to accomplish different tasks: watch TV shows, listen to music, and chat with our friends. We just need our computer to do all of these different tasks.
+
+### That Infinitely Long Tape
+**Where is that "infinitely long tape" in our computers?**
+
+Well, technically, our computers have *a very long tape* (i.e: its RAM or Memory), where its programs and inputs (and outputs) are stored. It is large enough to make us feel like it is infinite when it is not. By definition, a computer can in fact be realised using an FSM (not strictly a Turing Machine because infinitely long tape doesn't exist), just that we probably would need **billions** of states to do so. 
+
+  
+## [The Computer Science Revolution](https://www.youtube.com/watch?v=cmfDBAiogA0&t=2875s)
+
+
+Imagine the hassle and inconvenience if we need to build a different physical machine $$T_M$$ each time we need to compute a new function $$f_M$$ (again these are not just algebraic functions, but more like "tasks": decoding video format, browsing the internet, etc).
+
+For example, suppose we want to make a **physical machine** that can perform **sorting** where it receives an array of integer as an input. 
+
+We probably need other "simpler" (physical) machines that can perform comparison, addition, shifting, etc because all these parts are required to do the former tasks. This is very complex to do as we have many things to consider:
+* How do we **connect** these machines together? Do we solder thousands of wires manually?
+* How **big** or heavy, or costly is this final machine going to be?
+* If we need to add or compare $$N$$ terms together, how many "adder" machines do we need? Can we reuse them? Or do we order $$N$$ duplicates of these physical adder machine? 
+
+In order to be efficient, we need to **replace** each of these hardwares with a *coded description* of that piece of hardware (i.e: a software), then it's easy to cut, change, mix, and modify them around. Writing a merge-sort algorithm is so much easier compared to building a physical machine that can perform sorting. Also, programs can easily receive another program as input and output other programs. 
+
+**This is the universal Turing Machine:** a <span class="orange-bold">*coded description*</span> of a piece of hardware. It allows us to migrate from a hardware paradigm into a software paradigm. People are no longer spending their time sitting in workshops making physical systems but they are now sitting in front of computers writing programs.
+
+{: .highlight}
+To tie things up, here we have learned how Turing machine works, and  its advantage over  FSM. Our final goal is to realise a **Universal Turing machine**, that is a machine that is **programmable** so that it can be used for a **general purpose**.
+
+## [Summary: Programmability ](https://www.youtube.com/watch?v=cmfDBAiogA0&t=3197s)
+[You may want to watch the post lecture videos here. ](https://youtu.be/p0plIDiBEj0)
+
+The concept of a universal Turing Machine is an *ideal abstraction*, since we can never create a machine with infinitely long tape. However, physically creating something that is "infinite" is not possible. We can only create a very long "tape" such that it appears "infinite" to some extent. 
+
+If we manage to create a physical manifestation of Universal Turing Machine, we need to ensure that this machine is **programmable**. This can be achieved by designing an **instruction set** so that we can write "programs" / "algorithms" *using these instruction set*. Hence, allowing it to emulate the behavior of whatever machine $$k$$ when running the program with its corresponding input $$j$$ on this machine. 
+
+{: .new-title}
+> Instruction Set
+> 
+> An instruction set is a set of standard *basic* commands that we can use as **building blocks** so that we can write a bigger programs that will cause the machine running it to emulate complex tasks. We are probably familiar with some examples: `x86` and `ARM64`. More examples can be found [here](https://en.wikipedia.org/wiki/Comparison_of_instruction_set_architectures). 
+
+For **example**, we are familiar with high level programming languages, such as C/C++, Java, and Python.  You can write a program using any of these languages, lets say a calculator app. When we *compile* or *interpret*, and then *run* the program, our code is translated into **a set of instructions** that are understandable by our computers (we call this an **executable**), hence turning it into a calculator. We can also write another program, lets say a music player app, and translate it to yet another **set of instructions** that are understandable by our computers. When we run this program, our computer turns into a music player. 
+
+Therefore, we can say that our computer is **programmable**, because the program that we wrote is translated into **a set of instructions** that our machine can understand. 
+* It is **reconfigurable**, and is able to perform a plethora of different tasks depending on what apps we make, install, and run on it
+* It commonly has **undefined** function at the time of manufacture: some people buy computers to watch movies, to browse, to edit photos, to code, to write books, to play games, etc. 
+  * This is different from simple washing machines that comes with preset functions 
+
+In the next chapter, we will learn further on how our general purpose computer is programmable by designing a proper **instruction set** for it. 
+
+# Appendix
+
+## Sample Manifestation of a Turing Machine
+
+This section tells us one of the ways to realise the incrementer Turing Machine sample above as an actual machine using hardware components that we have learned in the earlier weeks.
+
+First, we need to encode the logic of the machine in terms of binary values. We can use 2 bits to represent the state: `S_0`, `S_1`, and `HALT` and 2 bits to represent the input/output characters: `0`, `1`, `*` and `+` each. 
+<img src="https://dropbox.com/s/uowbhzkfjyu3ysx/encodedTM.png?raw=1"   class="center_seventy">
+
+We also must create a kind of *addressable input tape (**memory unit** that stores the data)*. Imagine that we can address each bit in the input tape as such, where `ADDRS` is an `n-bit` arbitrary starting address:
+<img src="https://dropbox.com/s/vhfx5fxt48syi2t/addressableInput.png?raw=1"  class="center_seventy" >
+
+Since we want to read and write **two** bits of input and output at a time (i.e: *at each clock cycle*), we can "move the tape" by advancing or reducing the value of `Current Address` *(that we supply to the addressable memory unit)* by 2 at each clock cycle. 
+
+{: .note}
+It is impossible to have "infinitely large" memory unit, so in practice we simply have a **large enough** memory unit such that it appears infinite for the particular usage. 
+ 
+We can then construct some kind of *machine control system* (the unit represented as the *arrow* in the TM diagram). This is similar to how we build an FSM using combinational logic devices to **compute** the TM's 2-bit output data, next `address`, and the next state, given current `address`, current state,  and 2-bit input data based on the functional specification stated in the truth table above. 
+
+<img src="{{ site.baseurl }}/assets/contentimage/turing_machine/tm-realise.png"  class="center_fifty"/>
+The diagram above shows a rough schematic on how we can realise the abstract concept of a Turing Machine with a specification that does *increment* by building a (*non-programmable*) physical machine that can only do this **one task**. 
+
+
+## The Halting Function
 
 {: .warning}
 This section is <span style="color:red; font-weight: bold;">difficult</span>, and is solely written for a <span style="color:red; font-weight: bold;">deeper understanding</span> about uncomputable function. You are **not required** to derive this proof during exams.
@@ -365,101 +469,3 @@ while True:
 ```
 
 However, we won't know if this program will ever stop or not. You may need to run it until *forever* ends (which is impossible).
-
-
-## [Universal Function](https://www.youtube.com/watch?v=cmfDBAiogA0&t=2561s)
-
-{: .new-title}
-> Definition
-> 
-> The universal function is defined as:
-> 
-> $$ f_{U}(K,j) = T_K[j]$$ 
-
-Let's say we can write a specification $$U$$ that realises this function. This means that a Turing Machine that runs $$U$$ is a Turing machine that is capable of ***simulating* an arbitrary Turing machine on arbitrary input**. This is called a **Universal Turing Machine**.
-
-The universal machine essentially achieves this by reading both the specification of the machine $$K$$ that we are going to **simulate** as well as the input $$j$$ to that machine from its own tape. A more familiar term for this "specification" is simply a *program*.
-
-{: highlight}
-The universal function is a model of our **general purpose computers**. **Our computers are essentially a machine that simulates other machine**: it is a calculator, a gaming console, a video player, a music player, a telephone, a chatting device, and many others. 
-
-Most importantly: our computer can emulate and be **any** machine when we task it to run any program and its input. It can be a text editor, video game emulator, video player, music player, radio, telephone, camera, and many more. 
-
-### Example
-
-Back to the notion of universal function $$U$$ above, a Universal function has two inputs $$K$$, and $$j$$. Let's build a Turing machine with this specification, and symbolise it as $$T_U(K, j)$$. 
-
-* The "specification" $$K$$ is basically a **program** that specifies which computable functions we want to simulate.  
-* $$j$$, is the data tape $$T_K$$ is going supposed to read.
-
-We can create  a Turing Machine $$K$$ to run on input $$j$$: $$T_K[j]$$, but of course **this machine $$T_K$$ can only perform function $$K$$.**  Meanwhile, $$T_U$$: our universal machine, **interprets** the data, $$K$$ and $$j$$  is **capable of emulating the behavior of  $$T_K[j]$$** (without having to build $$T_K$$). 
-
-Therefore with $$T_U$$, we no longer need to make any other Turing Machine $$T_K$$ that can only compute function $$K$$**, because $$T_U$$ can emulate the behavior of any Turing Machine**. As mentioned above, the closest actual realisation of $$T_U$$ is basically our **general purpose computer**. It can run programs and perform computations just as intended.  We can simply write any new program $$K$$, and execute it on $$T_U$$ using some input $$j$$. 
-
-We no longer need different machines to accomplish different tasks: watch TV shows, listen to music, and chat with our friends. We just need our computer to do all of these different tasks.
-
-### That Infinitely Long Tape
-**Where is that "infinitely long tape" in our computers?**
-
-Well, technically, our computers have *a very long tape* (i.e: its RAM or Memory), where its programs and inputs (and outputs) are stored. It is large enough to make us feel like it is infinite when it is not. By definition, a computer can in fact be realised using an FSM (not strictly a Turing Machine because infinitely long tape doesn't exist), just that we probably would need **billions** of states to do so. 
-
-  
-## [The Computer Science Revolution](https://www.youtube.com/watch?v=cmfDBAiogA0&t=2875s)
-
-
-Imagine the hassle and inconvenience if we need to build a different physical machine $$T_M$$ each time we need to compute a new function $$f_M$$ (again these are not just algebraic functions, but more like "tasks": decoding video format, browsing the internet, etc).
-
-For example, suppose we want to make a **physical machine** that can perform **sorting** where it receives an array of integer as an input. 
-
-We probably need other "simpler" (physical) machines that can perform comparison, addition, shifting, etc because all these parts are required to do the former tasks. This is very complex to do as we have many things to consider:
-* How do we **connect** these machines together? Do we solder thousands of wires manually?
-* How **big** or heavy, or costly is this final machine going to be?
-* If we need to add or compare $$N$$ terms together, how many "adder" machines do we need? Can we reuse them? Or do we order $$N$$ duplicates of these physical adder machine? 
-
-In order to be efficient, we need to **replace** each of these hardwares with a *coded description* of that piece of hardware (i.e: a software), then it's easy to cut, change, mix, and modify them around. Writing a merge-sort algorithm is so much easier compared to building a physical machine that can perform sorting. Also, programs can easily receive another program as input and output other programs. 
-
-**This is the universal Turing Machine:** a *coded description* of a piece of hardware. It allows us to migrate from a hardware paradigm into a software paradigm. People are no longer spending their time sitting in workshops making physical systems but they are now sitting in front of computers writing programs.
-
-{: .highlight}
-To tie things up, here we have learned how Turing machine works, and  its advantage over  FSM. Our final goal is to realise a **Universal Turing machine**, that is a machine that is **programmable** so that it can be used for a **general purpose**.
-
-## [Summary: Programmability ](https://www.youtube.com/watch?v=cmfDBAiogA0&t=3197s)
-[You may want to watch the post lecture videos here. ](https://youtu.be/p0plIDiBEj0)
-
-The concept of a universal Turing Machine is an *ideal abstraction*, since we can never create a machine with infinitely long tape. However, physically creating something that is "infinite" is not possible. We can only create a very long "tape" such that it appears "infinite" to some extent. 
-
-If we manage to create a physical manifestation of Universal Turing Machine, we need to ensure that this machine is **programmable**. This can be achieved by designing an **instruction set** so that we can write "programs" / "algorithms" *using these instruction set*. Hence, allowing it to emulate the behavior of whatever machine $$k$$ when running the program with its corresponding input $$j$$ on this machine. 
-
-{: .new-title}
-> Instruction Set
-> 
-> An instruction set is a set of standard *basic* commands that we can use as **building blocks** so that we can write a bigger programs that will cause the machine running it to emulate complex tasks. We are probably familiar with some examples: `x86` and `ARM64`. More examples can be found [here](https://en.wikipedia.org/wiki/Comparison_of_instruction_set_architectures). 
-
-For **example**, we are familiar with high level programming languages, such as C/C++, Java, and Python.  You can write a program using any of these languages, lets say a calculator app. When we *compile* or *interpret*, and then *run* the program, our code is translated into **a set of instructions** that are understandable by our computers (we call this an **executable**), hence turning it into a calculator. We can also write another program, lets say a music player app, and translate it to yet another **set of instructions** that are understandable by our computers. When we run this program, our computer turns into a music player. 
-
-Therefore, we can say that our computer is **programmable**, because the program that we wrote is translated into **a set of instructions** that our machine can understand. 
-* It is **reconfigurable**, and is able to perform a plethora of different tasks depending on what apps we make, install, and run on it
-* It commonly has **undefined** function at the time of manufacture: some people buy computers to watch movies, to browse, to edit photos, to code, to write books, to play games, etc. 
-  * This is different from simple washing machines that comes with preset functions 
-
-In the next chapter, we will learn further on how our general purpose computer is programmable by designing a proper **instruction set** for it. 
-
-## Appendix: Sample Manifestation of a Turing Machine
-
-This section tells us one of the ways to realise the incrementer Turing Machine sample above as an actual machine using hardware components that we have learned in the earlier weeks.
-
-First, we need to encode the logic of the machine in terms of binary values. We can use 2 bits to represent the state: `S_0`, `S_1`, and `HALT` and 2 bits to represent the input/output characters: `0`, `1`, `*` and `+` each. 
-<img src="https://dropbox.com/s/uowbhzkfjyu3ysx/encodedTM.png?raw=1"   class="center_seventy">
-
-We also must create a kind of *addressable input tape (**memory unit** that stores the data)*. Imagine that we can address each bit in the input tape as such, where `ADDRS` is an `n-bit` arbitrary starting address:
-<img src="https://dropbox.com/s/vhfx5fxt48syi2t/addressableInput.png?raw=1"  class="center_seventy" >
-
-Since we want to read and write **two** bits of input and output at a time (i.e: *at each clock cycle*), we can "move the tape" by advancing or reducing the value of `Current Address` *(that we supply to the addressable memory unit)* by 2 at each clock cycle. 
-
-{: .note}
-It is impossible to have "infinitely large" memory unit, so in practice we simply have a **large enough** memory unit such that it appears infinite for the particular usage. 
- 
-We can then construct some kind of *machine control system* (the unit represented as the *arrow* in the TM diagram). This is similar to how we build an FSM using combinational logic devices to **compute** the TM's 2-bit output data, next `address`, and the next state, given current `address`, current state,  and 2-bit input data based on the functional specification stated in the truth table above. 
-
-<img src="{{ site.baseurl }}/assets/contentimage/turing_machine/tm-realise.png"  class="center_fifty"/>
-The diagram above shows a rough schematic on how we can realise the abstract concept of a Turing Machine with a specification that does *increment* by building a (*non-programmable*) physical machine that can only do this **one task**. 

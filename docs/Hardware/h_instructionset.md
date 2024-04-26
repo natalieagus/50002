@@ -64,7 +64,7 @@ We can create a machine that is simply *programmable*, but it also has to suppor
 * A **rich** repertoire of operations 
 * Ability to *generate* a new program and then **execute** it 
 
-In this document, we will begin by understanding what does it mean to simply create a (basic) *programmable* machine, and how the current general-purpose computer model is both programmable and possess these three features. 
+We will begin by understanding what does it mean to simply create a (basic) *programmable* machine, and how the current general-purpose computer model is both programmable and possess these three features. 
  
 
 ## [An Example of a Basic Programmable Control System](https://www.youtube.com/watch?v=h1KGzAbJH4Q&t=134s)
@@ -90,7 +90,8 @@ R1 and R2 units are **not a regular dff**. They accept an additional control sig
 * If $$\text{A}_{\text{LE}}$$ is `1`, then the current **input** to R1 will be reflected as R1's output in the next clock cycle. It's like "enabling" the R1, allowing it to "remember" new value. 
 * If $$\text{A}_{\text{LE}}$$ is `0`, then R1 will continue to produce it's **old** value as an output, whatever last value it was remembered when $$\text{A}_{\text{LE}}$$ *was* `0` some time in the past. When $$\text{A}_{\text{SEL}}$$ is `0`, new values at the **input** node of R1 will be **ignored**. 
 
-> The **detailed** anatomy of R1 and R2 units are similar to [this section in your next lecture](https://natalieagus.github.io/50002/notes/betacpu#detailed-anatomy-of-the-regfile). The `WERF` signal in your Beta CPU is analogous to these register's `LE` signals. 
+{:.note}
+The **detailed** anatomy of R1 and R2 units are similar to [this section in your next lecture](https://natalieagus.github.io/50002/notes/betacpu#detailed-anatomy-of-the-regfile). The `WERF` signal in your Beta CPU is analogous to these register's `LE` signals. 
 
 Other notable components of $$M$$:
 * A decrement unit symbolised as `-1`
@@ -178,7 +179,9 @@ The generic anatomy of a Von Neumann architecture is shown above. The four *main
   
 ### [The Basic Anatomy of a Central Processing Unit](https://www.youtube.com/watch?v=h1KGzAbJH4Q&t=1773s)
 
-**The CPU is a part of the computer that executes instructions. A series of these executable instructions is called a computer program**.  Before building a CPU, one usually design a *figurative blueprint* for how the CPU **operates** and how all the **internal systems interact with each other**. This blueprint is called the *Instruction Set Architecture*.  There many different types of ISAs a CPU can be built on. Some of the common ISA families are x86 (found in desktops and laptops) and ARM (found in embedded and mobile devices). 
+**The CPU is a part of the computer that executes instructions. A series of these executable instructions is called a computer program**.  
+
+Before building a CPU, one usually design a *figurative blueprint* for how the CPU **operates** and how all the **internal systems interact with each other**. This blueprint is called the *Instruction Set Architecture*.  There many different types of ISAs a CPU can be built on. Some of the common ISA families are x86 (found in desktops and laptops) and ARM (found in embedded and mobile devices). 
 
 A basic anatomy of the CPU is shown below, consisted of four major components: the Data Path, Internal Storage called REGFILE, consisted of many Registers (e.g: D Flip-Flops), the Arithmetic Logic Unit (ALU), and a Control Unit (FSM). 
 
@@ -215,53 +218,46 @@ The CPU is essentially the "brain" of the computing device. It is be able to:
 ### [The Memory Unit ](https://www.youtube.com/watch?v=h1KGzAbJH4Q&t=2245s) 
 The CPU is able to *read* **and** *write* bits of data to and from a memory unit connected to it -- an expandable **storage device** (we know it as RAM in practice). As the name suggests, this device does **NOT** execute or compute anything, it simply **retains** (store) information. 
 
-The "*data*" that is stored in this expandable resource pool  is not just simply **data**, i.e: images, videos, documents, <span style="color:red; font-weight: bold;">addresses</span> etc,  but **also instructions** that make up a *program*. This is where your instruction resides when it is *about* to be **executed** by the CPU. To the eyes of the Memory Unit, they're all just **data**. 
+The "*data*" that is stored in this expandable resource pool  is not just simply **data**, i.e: images, videos, documents, <span style="color:red; font-weight: bold;">addresses</span> etc,  and **also instructions** that make up a *program*. This is where your instruction resides when it is *about* to be **executed** by the CPU. To the eyes of the Memory Unit, they're all just **data**. 
 
 The bigger the size of your memory unit, the more data you can store within it. We usually know this as RAM commercially, and we will have them in the size of 8GB, 16GB, or 32GB in modern computers (at least in 2022 when this document was written). 
 
 #### [Memory Addressing Convention](https://www.youtube.com/watch?v=h1KGzAbJH4Q&t=2515s)
 Since the memory unit can **store** a huge amount of data (in Gigabytes), the CPU must be able to *read* just a particular $$N$$ bits of relevant data from the memory unit. It is able to do this by giving an **address** as an input to the memory unit. The memory unit **receives this address** and output the data stored at the given address. 
 
-To *write* onto the memory unit, the CPU must provide **two inputs** to the Memory Unit: the **address** where this $$N$$ bits of data should be stored, and the data itself. 
+To *write* onto or *read* from the memory unit, the CPU must provide **two inputs** to the Memory Unit: 
+1. **Address**: the **address** where this $$N$$ bits of data should be stored or loateded from
+2. **Content**: the data itself. 
 
-We will learn more about the anatomy of the memory unit later on, but for now we can think of it as a device that can store a huge amount of data, separated into addressable segments that can hold $$N$$ bit of data each, as shown in the figure below. It generally receives three kinds of input, 1-bit WE signal (write enable), address, and data input (bit size varies, depending on how much data can the memory holds). 
+We will learn more about detailed anatomy of the memory unit later on, but for now we can think of it as a device that can store a huge amount of data, separated into <span class="orange-bold">addressable segments</span> that can hold $$N$$ bit of data each, as shown in the figure below. <span class="orange-bold">The value of $$N$$ is typically 8 bits (1 byte) unless otherwise stated</span>. 
 
-{: .new-title}
-> Think!
-> 
-> Think of a memory unit as similar to a storage facility that has a large amount of storage units. Each unit has the same volume, and it can store a bunch of objects in it. People usually can rent these units to place their belongings. 
-> 
->If we rent such unit, we are typically given an *address* -- some kind of index to identify the unit that is ours. The $$N$$-bit data is the "object" that we put in a storage unit (addressable segment), and the *memory address* is the identifier of the storage unit location where the data is held.
+The entire device generally receives three kinds of input, 1-bit WE signal (write enable), address, and data input (bit size varies, depending on how much data can the memory holds). The figure below illustrate a <span class="orange-bold">byte addressable</span> memory unit where $$N$$ is 8 bits.
 
 
 <img src="https://dropbox.com/s/42f2xrubviwc5oj/ramaddr.png?raw=1"  class="center_seventy" >
 
 
-{: .important-title}
-> Important
+{: .note-title}
+> Memory unit (RAM) is a storage "facility"
 > 
-> Below are the list of  **conventions** that explain why we illustrate the memory unit as above. 
->  
-> 1. We illustrate the memory unit to have four segments per row. *This is only for illustration purposes,* so that we can read them on paper more easily. In practice, it doesn't matter how you physically arrange the segments. 
-> 2. Each segment can contain exactly 8 bits of data (1 byte) -- this is done **by convention**. 
-> 1. Each segment of 8 bits (1 byte) is addressable. Therefore we say that by **convention**, data in the memory unit is **byte addressable.** 
-> 2. In each *row* (series of 4 segments), lower addresses are written on the right, and higher addresses on the left (hence address 0 is given for the most upper right segment and so on).
-> 3. Each *row* contains $$4\times8$$ bits in total $$=32$$ bits. 
-> 4. A memory unit typically receives $$N$$ bits of data input. Similarly, it typically outputs $$N$$ bits of data at a time, where $$N=32$$ or $$N=64$$. **In this course, we will learn a 32-bit toy architecture (called the $$\beta$$) and therefore we will always $$N=32$$.** Therefore we will illustrate the memory unit to always have four 8-bit segments per row in this course -- because it receives input or produce output in chunks of 32-bit data at time. Modern computers in the 21st century typically adopt the $$64$$ bit architecture (so we have *64-bit words* for these architecture) . 
-> 7. The number of bits that can be received in ADDR input port is either **fixed** **(also 32 bits for this course)** or **depends on how many bits** are needed to address all the segments in the memory unit. For example, if we have a memory unit of size $$128$$ KB = $$128 \times 1024 = 131072$$ bytes, we need **at least** $$\log_2(131072) = 17$$ address bits. It is alright to receive more address bits. 
+> Think of a memory unit as similar to a storage facility that has a large amount of storage units. Each unit has the same volume, and it can store a bunch of objects in it. People usually can rent these units to place their belongings. 
+> 
+>If we rent such unit, we are typically given an *address* -- some kind of index to identify the unit that is ours. The $$N$$-bit data is the "object" that we put in a storage unit (addressable segment), and the *memory address* is the identifier of the storage unit location where the data is held.
+
+#### Capacity
 
 {: .new-title}
 > Think!
 > 
 > What is the **maximum** amount of bits that a memory unit can store with $$32$$ address bits? 
 
-In the figure above, each *row* contains $$4\times8$$ bits in total $$=32$$ bits. We call a block of `32` bits as a **word.** Since the memory unit is byte addressable, a 32-bit word has *four* addresses. **By convention, we select the smallest of the four addresses to be the overall address of the word**.  
-* So for example in the figure above, the first *word* (in the first row), has address `0x0000`.
+In the figure above, each *row* contains $$4\times8$$ bits in total $$=32$$ bits. We call a block of `32` bits as a **word** because we will be learning about 32-bit CPU architecture. Since the memory unit is commonly byte addressable, a 32-bit word has *four* addresses. **By convention, we select the smallest of the four addresses to be the overall address of the word**.  
+* The first *word* (in the first row), has address `0x0000`.
 * The subsequent *word* in the second row has address `0x0004`, and so on. 
 * **Each subsequent word has their addresses increased by 4**.  
 
 {: .note}
-The definition of a *word* actually may depend on the ISA. The computer model that we learn for this course is a 32-bit architecture, **therefore we define 1 `WORD` to be 32 bits.** 
+The size of a *WORD* actually may depend on the ISA. The computer model that we learn for this course is a 32-bit architecture, **therefore we define 1 WORD to be 32 bits.
   
 ### [Programmability of a Von Neumann Machine](https://www.youtube.com/watch?v=h1KGzAbJH4Q&t=2881s)
   
@@ -278,10 +274,16 @@ We can clearly see how electronic devices that are designed based on this model 
 > 
 > How do we design an instruction set that makes for a general purpose programmable device? **Designing an instruction set is a mix of engineering and art:** we need to design an instruction set  that is compact, uniform, versatile, fast, and so on. The solution is simple: **trial by simulation** (try and error!) is our best technique for making choices.  
 
-In this course, we will learn the $$\beta$$ **instruction set** -- an **instruction set architecture** (ISA), a CPU ***blueprint*** that defines an *abstract* model of  a general-purpose computer. It specifies many crucial information that describes how a CPU should work, such as what instructions the CPU can process, how it interacts with the memory unit, the basic CPU components, instruction formats, and many more.  
+In this course, we will learn the $$\beta$$ **instruction set** -- an **instruction set architecture** (ISA).
 
-Its **implementation**: the $$\beta$$ **CPU**, is a 32-bit Von Neumann-based toy CPU created by MIT as a teaching tool to introduce students to *programmable datapaths* and *instruction sets*, among all others. We can write any algorithm using a mixture of $$\beta$$ instructions. The CPU can emulate any machine behaviour that we want by executing it. 
+{:.note-title}
+> ISA
+> 
+> An ISA is a CPU ***blueprint*** that defines an *abstract* model of  a general-purpose computer. It specifies many crucial information that describes how a CPU should work, such as what instructions the CPU can process, how it interacts with the memory unit, the basic CPU components, instruction formats, and many more.  
 
+Its **implementation**: <span class="orange-bold">the $$\beta$$ **CPU**</span>, is a 32-bit Von Neumann-based toy CPU created by MIT as a teaching tool to introduce students to *programmable datapaths* and *instruction sets*, among all others. We can write any algorithm using a mixture of $$\beta$$ instructions. The CPU can emulate any machine behaviour that we want by executing it. This architecture is very similar to other RISC-based architectures that's gaining popularity as of 2024, so don't worry: you're not learning obsolete things. 
+
+{:.note}
 Modern ISAs (e.g: ARM, x86) and its corresponding CPU architecture is certainly much more complex than the $$\beta$$, however the $$\beta$$ is more than sufficient for us to understand and appreciate the basic concepts of programmable datapath and instruction sets. Some notable ISA in the past are [6502](https://www.masswerk.at/6502/6502_instruction_set.html), [AVR](http://ww1.microchip.com/downloads/en/devicedoc/atmel-0856-avr-instruction-set-manual.pdf), and [32-bit x86](http://www.cs.virginia.edu/~evans/cs216/guides/x86.html). 
 
 
@@ -292,14 +294,13 @@ Recall that in order for a machine to be **programmable** (used for general purp
 
 Beside defining the machine's operation types, the ISA should also define the supported data types, the *registers* (How many internal registers are there? How to address them? etc), and various other fundamental features such as addressing mode, input and output, and many more.  
 
-Let's dive in to the $$\beta$$ ISA right away.   
 
 
 ### [$$\beta$$ ISA Format](https://www.youtube.com/watch?v=h1KGzAbJH4Q&t=3169s)
 
 Each instruction that the $$\beta$$ supports is written in a **specific encoding.** There are in total of 32 distinct operations/instructions that the $$\beta$$ should be able to execute, each having its own operation encoding (`OPCODE`). 
 
-{: note-title}
+{: .note-title}
 > Read the manual!
 > 
 > The complete documentation on each instruction in detail can be found [here](https://dropbox.com/s/2hzbawz9v51g6fu/beta_documentation.pdf?dl=0).  
@@ -317,7 +318,9 @@ The $$\beta$$ is a **general-purpose** 32-bit architecture. All registers are 32
 * **The REGFILE registers** (internal storage in CPU): contains 32 registers in total (**and each register is 32 bits wide**), *addressable* with 5 bits to identify `R0` to `R31` respectively. 
 	* All registers except `R31` can be read or written with new values.
 	* For `R31`: when read, it is always 0; when written, the new value is discarded.
-	*    Notation:  In **register transfer language**, the content of register with address `A` is often denoted as : `Reg[A]`. The symbol `Rx` refers to the address of a particular register `x` in the REGFILE. The symbol `Reg[Rx]` refers to the **content** of that register. 
+
+
+In **register transfer language**, the content of register with address `A` is often denoted as : `Reg[A]`. The symbol `Rx` refers to the address of a particular register `x` in the REGFILE. The symbol `Reg[Rx]` refers to the **content** of that register. 
 
 Its machine model is summarised in the figure below:
 <img src="https://dropbox.com/s/v7j3tlf46f4k75c/beta_cpu_simp.png?raw=1" class="center_seventy"  >
@@ -470,7 +473,7 @@ Don't worry yet as of now. What we need to know (and get familiar with) is simpl
 
 ## [Preview: The $$\beta$$ CPU](https://www.youtube.com/watch?v=h1KGzAbJH4Q&t=4478s)
 
-The $$\beta$$ CPU falls under the family of RISC (reduced instruction set computing) processor. This type of computer processor possesses a small but highly optimised set of instructions, and are currently used for smartphones and tablet computers, among other devices. 
+The $$\beta$$ CPU falls under the family of **RISC** (reduced instruction set computing) processor. This type of computer processor possesses a small but highly optimised set of instructions, and are currently used for smartphones and tablet computers, among other devices. 
 
 The full anatomy of the (general-purpose) $$\beta$$ datapath is shown in the Figure below. Remember that this is an **implementation** of the $$\beta$$ instruction set architecture (i.e: its abstraction).  This circuitry is therefore able to execute any $$\beta$$ instruction as intended within a clock cycle. 
 
@@ -502,7 +505,23 @@ To create a general purpose computers, we need to:
 
 The $$\beta$$ ISA and its implementation, the $$\beta$$ CPU fulfils both requirement. If used to execute proper instruction, it should be able to emulate what Machine $$M$$ is able to do. 
 
-### Programming Factorial for the $$\beta$$ CPU
+# Appendix
+
+## Memory Unit Convention
+
+<img src="https://dropbox.com/s/42f2xrubviwc5oj/ramaddr.png?raw=1"  class="center_seventy" >
+
+Below are the list of  **conventions** that explain why we illustrate the memory unit as above. 
+ 
+1. We illustrate the memory unit to have four segments per row. *This is only for illustration purposes,* so that we can read them on paper more easily. In practice, it doesn't matter how you physically arrange the segments. 
+2. Each segment can contain exactly 8 bits of data (1 byte) -- this is done **by convention**. 
+1. Each segment of 8 bits (1 byte) is addressable. Therefore we say that by **convention**, data in the memory unit is **byte addressable.** You can have memory units that are word addressable as well. The same logic applies. 
+2. In each *row* (series of 4 segments), lower addresses are written on the right, and higher addresses on the left (hence address 0 is given for the most upper right segment and so on).
+3. Each *row* contains $$4\times8$$ bits in total $$=32$$ bits. 
+4. A memory unit typically receives $$N$$ bits of data input. Similarly, it typically outputs $$N$$ bits of data at a time, where $$N=32$$ or $$N=64$$. **In this course, we will learn a 32-bit toy architecture (called the $$\beta$$) and therefore we will always $$N=32$$.** Therefore we will illustrate the memory unit to always have four 8-bit segments per row in this course -- because it receives input or produce output in chunks of 32-bit data at time. Modern computers in the 21st century typically adopt the $$64$$ bit architecture (so we have *64-bit words* for these architecture) . 
+7. The number of bits that can be received in ADDR input port is either **fixed** **(also 32 bits for this course)** or **depends on how many bits** are needed to address all the segments in the memory unit. For example, if we have a memory unit of size $$128$$ KB = $$128 \times 1024 = 131072$$ bytes, we need **at least** $$\log_2(131072) = 17$$ address bits. It is alright to receive more address bits. 
+
+## Programming Factorial for the $$\beta$$ CPU
 So how do we write the code to do factorial in a way that $$\beta$$ CPU can execute?  
 
 Suppose we have the simple factorial program written in $$C$$. 
@@ -547,7 +566,7 @@ ans: LONG(0)
 
 Of course then the final step is to **convert** this into machine language and load it to the Memory Unit, and allow the PC of the $$\beta$$ machine to execute the first line of instruction (ADDC) . 
 
-> You can actually do this! **Open** `bsim.jar` in your `/50002` lab starter kit, **paste** the assembly code above and run it. 
+To see how the code works in person, **open** `bsim.jar` in your `/50002` lab starter kit, **paste** the assembly code above and run it. 
 <img src="https://dropbox.com/s/oo514c8yuq48ies/bsimsample.png?raw=1"  class="center_seventy"  >
 
 When the machine halts, we should have the answered stored somewhere in the memory unit, thus effectively enabling $$\beta$$ machine to emulate the ability of Machine $$M$$ without changing its datapath. We will learn more about how to hand assemble and manually execute the code soon. Right now, this is here to give you a *preview* of what is to come in the next few weeks. 

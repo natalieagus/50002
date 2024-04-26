@@ -67,7 +67,7 @@ We will go through the function of each instruction and understand how the given
   
 
 ## [Instruction Cycles](https://www.youtube.com/watch?v=4T9MR8BSzt0&t=119s)
-At each clock cycle, the CPU has to first **fetch** the current instruction from the Memory and **decode** its `OPCODE`. 
+At each clock cycle, the CPU has to first **fetch** the current instruction from the Memory and **decode** its `OPCODE`. This instruction tells the CPU what to *do* for this clock cycle.  
 
 ### Instruction Fetch
 
@@ -116,12 +116,11 @@ The $$\beta$$ CPU  is comprised of the following standard parts that typically m
 ### [Program Counter and Physical Memory Unit](https://www.youtube.com/watch?v=4T9MR8BSzt0&t=402s)
 
  
-The PC is a 32-bit register (i.e: a set of **32** 1-bit registers). Its job is to store the address of the **current** instruction that is executed. 
->For now, we can safely assume that the initial content of the `PC` REG is always `0x0` (32 bits). 
+The PC is a 32-bit register (i.e: a set of **32** 1-bit registers). Its job is to store the address of the **current** instruction that is executed. For now, we can safely assume that the initial content of the `PC` REG is always `0x0` (32 bits). 
 
 The datapath of the components involving the PC and the Physical Memory is shown in the figure below:
 
-<img src="/50002/assets/contentimage/beta/pc.png"  class="center_seventy"/>
+<img src="/50002/assets/contentimage/beta/pc.png"  class="center_full"/>
 
 The memory unit is neatly segmented into **instruction** memory and **data** memory for the sake of **learning** and **simplicity**. In reality, this might not always be the case. Your operating system will do the memory management for you and decide where in the physical memory each process should reside and run. 
 
@@ -132,7 +131,9 @@ Two important things happened **at the same time** at every CPU clock cycle:
 	*  If `PCSEL!=0` and `RESET=0`, then the value in the PC REG will be equivalent to either of the inputs to the PCSEL mux (depending on what `PCSEL` value is). 
 
 #### RESET
-If `RESET=1` then the value of the PC REG in the next cycle will be equivalent to `RESET`. We will learn what `RESET` is in the later weeks but in short, if `RESET=1`, then the value in the `PC` REG will will be set to `0x80000000` in the **next** clock cycle *instead of being increased by 4* or whichever other address that the supposed current instruction should compute. You will learn in the Virtual Machine chapter on why the MSB of `RESET` is `1` instead of `0`, but for now you can take its purpose as simply *resetting* the machine and eventually putting content of `PC` REG content back to `0` (restarting the program). 
+If `RESET=1` then the value of the PC REG in the next cycle will be equivalent to `RESET`. We will learn what `RESET` is in the later weeks but in short, if `RESET=1`, then the value in the `PC` REG will will be set to `0x80000000` in the **next** clock cycle *instead of being increased by 4* or whichever other address that the supposed current instruction should compute. 
+
+You will learn in the Virtual Machine chapter on why the MSB of `RESET` is `1` instead of `0`, but for now you can take its purpose as simply *resetting* the machine and eventually putting content of `PC` REG content back to `0` (restarting the program). 
 
 {: .note}
 > Setting `PC=RESET` means that we will **execute** whatever instruction that resides at `0x80000000` in the next cycle. The instruction that resides in the `RESET` address is called the **reset handler**. It is usually a standard routine to **restart your computer**/devices. 
@@ -178,7 +179,7 @@ To understand how the Write Enable `WE` signal works more clearly, we need to di
 {: .note-title}
 > The Special Register `R31`
 > 
-> R31's content is  always  0x00000000, regardless of what values are written to it. Therefore it is not a regular register like the other 30 registers in the REGFILE. It is simply giving out 0x00000000 as output when RA1 or RA2 is 11111, which is illustrated as the 0 on the rightmost part of each read muxes.
+> R31's content is  always  `0x00000000`, regardless of what values are written to it. Therefore it is not a regular register like the other 30 registers in the REGFILE. It is simply giving out `0x00000000` as output when RA1 or RA2 is 11111, which is illustrated as the 0 on the rightmost part of each read muxes.
 
 <img src="/50002/assets/contentimage/beta/regfile_detailed.png"  class="center_seventy"/>
 
@@ -202,7 +203,7 @@ The timing diagram for read and write is shown below. Please take some time to s
 Notice how the new data denoted as `new Reg[A]` supplied at port `WD` (to be written onto `Reg[A]`) must fulfill both $$t_S$$ and $$t_h$$ requirement of the hardware. 
 
 {: .important-title}
-> Register Content (32 bits) vs Register Address (5 bits) in the REGFILE
+> Register Content (32 bits) vs Register Address (5 bits)
 > 
 > The <span style="color:red; font-weight: bold;">CONTENT</span> of a Register `Ra` in a REGFILE is **distinct** from the <span style="color:red; font-weight: bold;">ADDRESS</span> of Register `Ra` in the REGFILE. For instance, you can store the value `0xDEADBEEF` in Register `R3`. The address of this register is 3 (`0b00011`) but the content is `0xDEADBEEF`. 
   
