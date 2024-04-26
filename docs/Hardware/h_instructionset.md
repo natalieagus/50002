@@ -229,12 +229,15 @@ To *write* onto or *read* from the memory unit, the CPU must provide **two input
 1. **Address**: the **address** where this $$N$$ bits of data should be stored or loateded from
 2. **Content**: the data itself. 
 
-We will learn more about detailed anatomy of the memory unit later on, but for now we can think of it as a device that can store a huge amount of data, separated into <span class="orange-bold">addressable segments</span> that can hold $$N$$ bit of data each, as shown in the figure below. <span class="orange-bold">The value of $$N$$ is typically 8 bits (1 byte) unless otherwise stated</span>. 
-
-The entire device generally receives three kinds of input, 1-bit WE signal (write enable), address, and data input (bit size varies, depending on how much data can the memory holds). The figure below illustrate a <span class="orange-bold">byte addressable</span> memory unit where $$N$$ is 8 bits.
-
+The memory device generally receives three kinds of input, 1-bit WE signal (write enable), address, and data input (bit size varies, depending on how much data can the memory holds). The figure below illustrate a <span class="orange-bold">byte addressable</span> memory unit where $$N$$ is 8 bits.
 
 <img src="https://dropbox.com/s/42f2xrubviwc5oj/ramaddr.png?raw=1"  class="center_seventy" >
+
+We will learn more about detailed anatomy of the memory unit later on, but for now we can think of it as a device that can store a huge amount of data, separated into <span class="orange-bold">addressable segments</span> that can hold $$N$$ bit of data each <span class="orange-bold">The value of $$N$$ is typically 8 bits (1 byte) unless otherwise stated</span>. The figure below shows two separate cases of the **same** memory content, when $$N=8$$ (byte addressable) and when $$N=32$$ (word addressable).  
+
+<img src="{{ site.baseurl }}/docs/Hardware/images/labs-MEM UNIT.drawio.png"  class="center_full"/>
+
+
 
 
 {: .note-title}

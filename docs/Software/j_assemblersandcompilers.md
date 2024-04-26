@@ -104,6 +104,10 @@ This layer includes interpretive software tools such as the Operating System and
 > An assembler is technically a program for writing programs. It also can be called as a *primitive compiler*. 
 
 Its job is to parse a symbolic **language** (assembly language) used to represent instructions for the CPU to execute. 
+
+{:.highlight-title}
+> `beta.uasm`
+> 
 > In this course, we utilise `beta.uasm` and `bsim` as our assembler. `bsim` also contains the "hardware" of our toy Beta CPU, and it only **understands** machine language in terms of 1s and 0s (the 32-bit instructions loaded at each CLK cycle). 
 
 The aseembler enables us to write programs for our Beta CPU symbolic language called **beta assembly language** for our `bsim` to execute.  
@@ -126,15 +130,14 @@ A UASM source file contains (in symbolic text) **values of successive bytes to b
 > Read the bsim Documentation
 >
 > Please <span style="color:red; font-weight: bold;">read</span>  the `bsim` [documentation](https://www.dropbox.com/scl/fi/psjv77mobp12srafj3us2/bsim.pdf?rlkey=qismnxs1al85qyorj1rxit7ow&dl=1) to know more about the syntax of the Beta assembly language.  
+>
+> You can head to the [appendix](#appendix) if you would like to know more about *how* and assembler work. 
 
 
-### Basic Values
-Basic values comprise of **Decimals**, **binary** (with `0b` prefix), and **hexadecimal** (with `0x` prefix). All these will be loaded (from **low** to **high** address) as 1 byte each, separated by spaces. 
+The next few sections explains the **syntax** that's acceptable by the Beta Assembler. We will use the same syntax in exams and problem sets.
 
-For example, if we have 4 different values to be stored: `5`, then `6`, then `7`, then `8`, it will be stored as  `08 07 06 05` as a **consecutive** 8 bytes in memory. `05` gets the lowest address, and `08` gets the highest address. Anything that requires more than 1 byte to represent/store, such as values like: `256 257 258 259` will be **truncated** into 1 byte only, and resulted as the following in memory (only remainder left): `03 02 01 00`. This is why it is important to establish the concept of **data type**. 
 
-{: .note}
-A typical ASCII char takes 1 byte per character and an `int` data type occupies 8 bytes.
+
 
 ### Symbols
 Symbols can be defined using the `=` sign allows us to "rename"  basic values (like defining variables):
@@ -145,9 +148,11 @@ y = 0x1004
 
 R0 = 0 
 R1 = 1
+R2 = 2
 
 ADDC(R0, x, R1) | equivalent to ADDC(0x0, 0x1000, 0x1)
 ADDC(R1, y, R1) | equivalent to ADDC(0x1, 0x1004, 0x1) 
+ADDC(R1, R2, R3) | not an error, equivalent to ADDC(0x1, 0x2, 0x3)
 ```
 
 ### The dot variable
@@ -160,7 +165,7 @@ ADDC(R0, 3, R1) | means to put (load) this instruction at address 0x100
 ```
 
 ### Labels
-Labels are symbols that represent memory addresses. It is defined using the `:`. 
+Labels are symbols that represent memory addresses. It is defined using the `:`. For instance, `begin_loop` is a label. 
   
 ```nasm
 . = 0x100
@@ -176,130 +181,11 @@ HALT()
 > 
 > `ADDC` is loaded at address `0x100`. Since `ADDC`'s length is 4 bytes, `SUBC` is loaded at the subsequent address : `0x104`.
 
-### Macroinstructions
-Macroinstructions parameterized abbreviations, also known as aliases or shorthands. There are plenty of Beta assembly language macros supported in `bsim` and you have to read the [documentation](https://drive.google.com/file/d/1Tq_Hg-jbZVPKDJZ4O6OZWYF4_8ywakbi/view?usp=share_link) to find out more. 
-
-There are two important basic macros in particular: `WORD` and `LONG` which allows us to assemble input `x` that is more than 256 into longer streams of bytes
-* There are two ways of storing bytes in memory: the **little endian** format where lowest byte stored at the lowest address and vice versa, and the **big endian** format where the highest byte is stored at the lowest address and vice versa. 
-* The $$\beta$$ CPU follows the **little-endian** format
-
-This diagram (taken from [here](https://en.wikipedia.org/wiki/Endianness)) represents the differences between the two. In short, it's just how we **choose** to store our data. Since the $$\beta$$ CPU follows the **little-endian** format. It loads data byte-by-byte to the memory, and the **least** significant byte of our data into the memory with the **lowest** address. 
- 
-<img src="{{ site.baseurl }}/assets/images/j_assemblersandcompilers/2022-11-02-16-04-25.png"  class="center_fifty"/>
-
-{: .note-title}
-> Just FYI, out of syllabus
-> 
-> Here is the relevant implementaiton of `WORD` and `LONG` in `beta.uasm`. 
-
-```nasm
-.macro WORD(x) x%256 (x/256)%256 
-.macro LONG(x) WORD(x) WORD(x >> 16)
-```
-
-#### Endianess
-{: .note}
-This section is  FYI only, it is out of our syllabus. 
-
-Suppose we want to store the word `0xDEADBEEF` to memory address `0x0`. We start by loading `0xEF` to address `0x0`, then `0xBE` to address `0x1`, and so on. This is so tedious to do. Using the **macro**: `LONG(0xDEADBEEF)` has the same effect as storing: `0xEF 0xBE 0xAD 0xDE` to memory in sequence from low to high memory address, resulting in the following: 
-
-| Address      | 0x0 | 0x1 | 0x2 | 0x3 |
-| ----------- | ----------- |----------- | ----------- | ----------- |
-| Content      | 0xEF       | 0xBE | 0xAD | 0xDE| 
-
-
-If one were to store `0xDEADBEEF` in big-endian format, it will result in: 
-
-| Address      | 0x0 | 0x1 | 0x2 | 0x3 |
-| ----------- | ----------- |----------- | ----------- | ----------- |
-| Content      | 0xDE       | 0xAD | 0xBE | 0xEF| 
-
-
-### `bsim` Memory Address Display
-Our `bsim.jar` program displays the memory address the other way around, that is **high address** on the **left** and **low address** on the **right**, so our little-endian format in $$\beta$$ *looks like* the big-endian format for easy debugging: 
-
-| Address      | 0x3 | 0x2 | 0x1 | 0x0 |
-| ----------- | ----------- |----------- | ----------- | ----------- |
-| Content      | 0xDE       | 0xAD | 0xBE | 0xEF| 
-
-#### Convenient Macros
-$$\beta$$ instructions are also created by writing **convenient** **macroinstructions**. For example, we want to load the following instruction into memory:
-
-```nasm
-OPCODE  Rc	  	Ra    	c
-110000 	00000 	11111	1000 0000 0000 0000
-```
-
-{: .highlight}
-**Notice** that the above is an `ADDC` instruction, to add contents of `R31` with `-32768` and store it at `R0`. 
-
-**Without any macros**, we would need to load them in the different order (remember, the Beta follows little-endian arrangement):
-
-```nasm
-00000000    10000000    00011111    11000000
-|                       |  |        |     |
-|                       |  |        |     |-Rc[4:3]
-|                       |  |-Ra[4:0]|
-|-c[15:0]               |-Rc[2:0]   |-OPCODE[5:0]	  	   
-```
-With this arrangement, `OPCODE=110000` is stored at a higher address than `Rc`, and `Rc=00000` is at a higher memory address than `Ra`, and 16-bit constant `c` is at the lowest memory address of the entire word. 
-
-It should be obvious that writing the above instruction in little-endian compatible form is so unintuitive. We need to chop the original instruction into 1 byte chunks and "load" them from *right* to *left* so they're stored from lowest to highest memory location to follow the little-endian format. 
-
-With a slight improvement from macro `LONG`, we can write them naturally as: 
-```nasm
-LONG(0b11000000000011111000000000000000)
-```
-
-Better yet, we can define a macro called `betaopc` and `ADDC` that relies on the former: 
-
-```cpp
-.macro betaopc(OP,RA,CC,RC) {
-	.align 4
-	LONG((OP<<26)+((RC%32)<<21)+((RA%32)<<16)+(CC % 0x10000))
-}
-.macro ADDC(RA,C,RC) betaopc(0x30,RA,C,RC)
-```
-
-Then we can use the `ADDC` symbol to easily to load our instruction above in a more intuitive way: 
-```cpp
-ADDC(R15, -32768, R0)
-```
-
-{: .important}
-**In summary,** the file `beta.uasm` given for your lab provides support for all $$\beta$$ instructions so that we can write instructions for $$\beta$$ in a *much more intuitive way without caring about the details on how to load these values properly into memory* (**abstraction provided**). We can now **finally** write instructions using <span style="color:red; font-weight: bold;">symbols</span> (called `macros`) like `ADD, SUB, MUL, JMP, CMPLEC, BEQ, BNE`, and more instead of writing it in machine languages **thanks to this assembler**.
-
-```nasm
-| BETA Instructions:
-
-|| OP instructions (other OP like SUB, CMPLE, etc should work the same)
-.macro ADD(RA,RB,RC) betaop(0x20,RA,RB,RC)
-.macro AND(RA,RB,RC) betaop(0x28,RA,RB,RC)
-.macro MUL(RA,RB,RC) betaop(0x22,RA,RB,RC)
-
-|| OPC instructions (other OPC like SUBC, CMPLEC, etc should work the same)
-.macro ADDC(RA,C,RC) betaopc(0x30,RA,C,RC)
-.macro ANDC(RA,C,RC) betaopc(0x38,RA,C,RC)
-.macro MULC(RA,C,RC) betaopc(0x32,RA,C,RC) 
-
-...
-|| Memory Access instructions
-.macro LD(RA,CC,RC) betaopc(0x18,RA,CC,RC)
-.macro ST(RC,CC,RA) betaopc(0x19,RA,CC,RC)
-.macro LDR(CC, RC) betabr(0x1F, R31, RC, CC)
-
-
-|| Transfer Control instructions
-.macro betabr(OP,RA,RC,LABEL)	betaopc(OP,RA,((LABEL-.)>>2)-1, RC)
-.macro JMP(RA, RC) betaopc(0x1B,RA,0,RC)
-.macro BEQ(RA,LABEL,RC) betabr(0x1D,RA,RC,LABEL)
-.macro BNE(RA,LABEL,RC) betabr(0x1E,RA,RC,LABEL)
-```
 
 ## Beta Extended Macroinstructions
 We augment the basic Beta instruction set with the following macros, making it easier to express certain common operations:
 
-<img src="{{ site.baseurl }}/assets/contentimage/j_assemblersandcompilers/2024-03-15-11-20-04.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/assets/contentimage/j_assemblersandcompilers/2024-03-15-11-20-04.png"  class="center_fifty"/>
 
 {: .note}
 We will use these extended macroinstructions in exam and problem sets. 
@@ -463,6 +349,132 @@ We will address some of these questions in the next chapter.
 {: .note}
 Creating an optimised compiler is not a trivial task. For now, don't worry too much about it. We simply only need to hand assemble C into $$\beta$$ assembly language, and have a general idea on what a compiler, interpreter, and assembler are for -- that is to enhance the programmability of a computer by providing **software abstraction.** If you're interested, you can choose to take compiler related electives in the future. 
 
+# Appendix: More About `beta.uasm`
+
+
+### Basic Values Loading Into Memory
+Basic values comprise of **Decimals**, **binary** (with `0b` prefix), and **hexadecimal** (with `0x` prefix). All these will be loaded (from **low** to **high** address) as 1 byte each, separated by spaces. 
+
+For example, if we have 4 different values to be stored: `5`, then `6`, then `7`, then `8`, it will be stored as  `08 07 06 05` as a **consecutive** 8 bytes in memory. `05` gets the lowest address, and `08` gets the highest address. Anything that requires more than 1 byte to represent/store, such as values like: `256 257 258 259` will be **truncated** into 1 byte only, and resulted as the following in memory (only remainder left): `03 02 01 00`. This is why it is important to establish the concept of **data type**. 
+
+{: .note}
+A typical ASCII char takes 1 byte per character and an `int` data type occupies 8 bytes.
+
+### Assembler Macroinstructions
+Macroinstructions parameterized abbreviations, also known as aliases or shorthands. There are plenty of Beta assembly language macros supported in `bsim` and you have to read the [documentation](https://drive.google.com/file/d/1Tq_Hg-jbZVPKDJZ4O6OZWYF4_8ywakbi/view?usp=share_link) to find out more. 
+
+There are two important basic macros in particular: `WORD` and `LONG` which allows us to assemble input `x` that is more than 256 into longer streams of bytes
+* There are two ways of storing bytes in memory: the **little endian** format where lowest byte stored at the lowest address and vice versa, and the **big endian** format where the highest byte is stored at the lowest address and vice versa. 
+* The $$\beta$$ CPU follows the **little-endian** format
+
+This diagram (taken from [here](https://en.wikipedia.org/wiki/Endianness)) represents the differences between the two. In short, it's just how we **choose** to store our data. Since the $$\beta$$ CPU follows the **little-endian** format. It loads data byte-by-byte to the memory, and the **least** significant byte of our data into the memory with the **lowest** address. 
+ 
+<img src="{{ site.baseurl }}/assets/images/j_assemblersandcompilers/2022-11-02-16-04-25.png"  class="center_fifty"/>
+
+
+Here is the relevant implementaiton of `WORD` and `LONG` in `beta.uasm`. 
+
+```nasm
+.macro WORD(x) x%256 (x/256)%256 
+.macro LONG(x) WORD(x) WORD(x >> 16)
+```
+
+
+More complex $$\beta$$ instructions are also created by writing these **convenient** **macroinstructions**. For example, we want to load the following instruction into memory:
+
+```nasm
+OPCODE  Rc	  	Ra    	c
+110000 	00000 	11111	1000 0000 0000 0000
+```
+
+{: .highlight}
+**Notice** that the above is an `ADDC` instruction, to add contents of `R31` with `-32768` and store it at `R0`. 
+
+**Without any macros**, we would need to load them in the different order (remember, the Beta follows little-endian arrangement):
+
+```nasm
+00000000    10000000    00011111    11000000
+|                       |  |        |     |
+|                       |  |        |     |-Rc[4:3]
+|                       |  |-Ra[4:0]|
+|-c[15:0]               |-Rc[2:0]   |-OPCODE[5:0]	  	   
+```
+With this arrangement, `OPCODE=110000` is stored at a higher address than `Rc`, and `Rc=00000` is at a higher memory address than `Ra`, and 16-bit constant `c` is at the lowest memory address of the entire word. 
+
+It should be obvious that writing the above instruction in little-endian compatible form is so unintuitive. We need to chop the original instruction into 1 byte chunks and "load" them from *right* to *left* so they're stored from lowest to highest memory location to follow the little-endian format. 
+
+With a slight improvement from macro `LONG`, we can write them naturally as: 
+```nasm
+LONG(0b11000000000011111000000000000000)
+```
+
+Better yet, we can define a macro called `betaopc` and `ADDC` that relies on the former: 
+
+```cpp
+.macro betaopc(OP,RA,CC,RC) {
+	.align 4
+	LONG((OP<<26)+((RC%32)<<21)+((RA%32)<<16)+(CC % 0x10000))
+}
+.macro ADDC(RA,C,RC) betaopc(0x30,RA,C,RC)
+```
+
+Then we can use the `ADDC` symbol to easily to load our instruction above in a more intuitive way: 
+```cpp
+ADDC(R15, -32768, R0)
+```
+
+{: .important}
+**In summary,** the file `beta.uasm` given for your lab provides support for all $$\beta$$ instructions so that we can write instructions for $$\beta$$ in a *much more intuitive way without caring about the details on how to load these values properly into memory* (**abstraction provided**). We can now **finally** write instructions using <span style="color:red; font-weight: bold;">symbols</span> (called `macros`) like `ADD, SUB, MUL, JMP, CMPLEC, BEQ, BNE`, and more instead of writing it in machine languages **thanks to this assembler**.
+
+```nasm
+| BETA Instructions:
+
+|| OP instructions (other OP like SUB, CMPLE, etc should work the same)
+.macro ADD(RA,RB,RC) betaop(0x20,RA,RB,RC)
+.macro AND(RA,RB,RC) betaop(0x28,RA,RB,RC)
+.macro MUL(RA,RB,RC) betaop(0x22,RA,RB,RC)
+
+|| OPC instructions (other OPC like SUBC, CMPLEC, etc should work the same)
+.macro ADDC(RA,C,RC) betaopc(0x30,RA,C,RC)
+.macro ANDC(RA,C,RC) betaopc(0x38,RA,C,RC)
+.macro MULC(RA,C,RC) betaopc(0x32,RA,C,RC) 
+
+...
+|| Memory Access instructions
+.macro LD(RA,CC,RC) betaopc(0x18,RA,CC,RC)
+.macro ST(RC,CC,RA) betaopc(0x19,RA,CC,RC)
+.macro LDR(CC, RC) betabr(0x1F, R31, RC, CC)
+
+
+|| Transfer Control instructions
+.macro betabr(OP,RA,RC,LABEL)	betaopc(OP,RA,((LABEL-.)>>2)-1, RC)
+.macro JMP(RA, RC) betaopc(0x1B,RA,0,RC)
+.macro BEQ(RA,LABEL,RC) betabr(0x1D,RA,RC,LABEL)
+.macro BNE(RA,LABEL,RC) betabr(0x1E,RA,RC,LABEL)
+```
+
+#### Endianess
+
+Suppose we want to store the word `0xDEADBEEF` to memory address `0x0`. We start by loading `0xEF` to address `0x0`, then `0xBE` to address `0x1`, and so on. This is so tedious to do. Using the **macro**: `LONG(0xDEADBEEF)` has the same effect as storing: `0xEF 0xBE 0xAD 0xDE` to memory in sequence from low to high memory address, resulting in the following: 
+
+| Address      | 0x0 | 0x1 | 0x2 | 0x3 |
+| ----------- | ----------- |----------- | ----------- | ----------- |
+| Content      | 0xEF       | 0xBE | 0xAD | 0xDE| 
+
+
+If one were to store `0xDEADBEEF` in big-endian format, it will result in: 
+
+| Address      | 0x0 | 0x1 | 0x2 | 0x3 |
+| ----------- | ----------- |----------- | ----------- | ----------- |
+| Content      | 0xDE       | 0xAD | 0xBE | 0xEF| 
+
+
+### `bsim` Memory Address Display
+Our `bsim.jar` program displays the memory address the other way around, that is **high address** on the **left** and **low address** on the **right**, so our little-endian format in $$\beta$$ *looks like* the big-endian format for easy debugging: 
+
+| Address      | 0x3 | 0x2 | 0x1 | 0x0 |
+| ----------- | ----------- |----------- | ----------- | ----------- |
+| Content      | 0xDE       | 0xAD | 0xBE | 0xEF| 
 
 
 
