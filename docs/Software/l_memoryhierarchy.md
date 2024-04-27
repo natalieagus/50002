@@ -96,12 +96,13 @@ The  materials that make up the external memory unit should be *cheaper* (than t
 In this chapter, we will learn a couple more technologies that are commonly used to create 1-bit memory cell. They're called **SRAM** and **DRAM**, with varying *cost* and *latency*. They're summarised below:
 
 $$\begin{matrix}
-\text{Types} &\text{Space} & \text{Latency} & \text{Cost}\\
+\text{Types} &\text{Space} & \text{Latency} & \text{Cost} & \text{Volatile}\\
 \hline
-\text{Register} & 100\text{'s of bytes} & 20ps & \$\$\$\$ \\
-\text{SRAM} & 100\text{'s of Kbytes} & 1ns & \$\$\$ \\
-\text{DRAM} & 100\text{'s of Mbytes} & 40ns & \$\\ 
-\text{Disk} & 100\text{'s of Gbytes} & 10 ms & c \\
+\text{Register} & 100\text{'s of bytes} & 20ps & \$\$\$\$ &\text{Yes}\\
+\text{SRAM} & 100\text{'s of Kbytes} & 1ns & \$\$\$ &\text{Yes}\\
+\text{DRAM} & 100\text{'s of Mbytes} & 40ns & \$&\text{Yes}\\
+\text{NAND Flash (SSD)} & 100\text{'s of Gbytes} & 400 us & cc&\text{No}\\ 
+\text{Disk} & 100\text{'s of Gbytes} & 10 ms & c&\text{No}\\
 \hline
 \end{matrix}$$
 
@@ -110,7 +111,9 @@ $$\begin{matrix}
 {: .important-title}
 > Goal
 > 
-> Bear in mind that our ultimate goal is to have **large** memory space at a **cheap** cost and **minimum** latency. We can do that by incorporating the concept of **memory hierarchy** in our computer system.  
+> Bear in mind that our ultimate goal is to have **large** memory space at a **cheap** cost and **minimum** latency. We can do that by incorporating the concept of **memory hierarchy** in our computer system.
+>
+
 
   
 
@@ -130,19 +133,24 @@ There are two other features to note:
 1. The **word** line: set to high voltage to "access" the cell
 2. The two **complementary bit** lines. These two complementary bit lines are connected to a **sense amplifier**. 
 
-A sense amplifier's role is to sense the low power signal difference from both bitlines and amplify the small voltage swing to recognizable logic level so the data can be interpreted properly by logic outside the memory. It is commonly made using 2 to 6 transistors. 
+The cell has both a bit line and a complement bit line because it is **faster** to tell the *difference* between voltage values than to wait until a valid voltage value reaches acceptable level in a single bit line. A sense amplifier's role is to sense the low power signal **difference** from both bitlines and amplify the small voltage swing to recognizable logic level so the data can be interpreted **quickly** by logic units outside the memory. 
+
+ The cell above shows a cell with bit `1` **stored** as its content. That is because when you activate the WORD line, the value `1` will be present at the bit line. <span class="orange-bold">This signifies the value of the cell</span>. 
+
+{:.important}
+For illustration purposes, the placement of the value `1` at the side of bit line <span class="orange-bold">matters</span>. If that value were to be `0`, then this cell is said to store bit value `0`.  
 
 #### To Read 
-To read from an SRAM cell, we do:
+To **read** from an SRAM cell:
 * Supply high voltage to the **word** line. This will connect the source and the drain of both NFETs. 
-* In turn, current flows to the bit line on the right and its complement on the left. 
+* In turn, current flows to the bit line on the right and its **complement** on the left. 
 * The sense amp at the end of both bit-lines will compute the difference and amplify the small voltage difference to a **valid** 1-bit logic level.
 
-For example, if the sense amp computes a `+ve`difference between $$V_{\text{bit}} - V_{\overline{\text{bit}}}$$, then it corresponds to logic `1` and vice versa. In the figure above, the value of this cell is initially `1`. 
+For example, if the sense amp computes a `+ve`difference between $$V_{\text{bit}} - V_{\overline{\text{bit}}}$$, then it corresponds to logic `1` and vice versa. As mentioned, the value of the cell in the figure above is `1`. 
 
 
 #### To Write 
-To write to an SRAM cell, we do:
+To write to an SRAM cell:
 * Supply high voltage to the **word** line. 
 * Then, drive a **strong** high voltage or **strong** low voltage **through the bit line and its complement** as shown to *overwrite* the existing cell's value.  
 
@@ -162,6 +170,7 @@ To read from a DRAM cell, we do:
 * Supply high voltage to the **word** line, and this will switch the NFET `on`.
 * Read the output voltage on the bit line.
   * Charges can flow to the bit line when there's direct connection between the capacitor and the bit-line.
+  * There's no sense amp in a DRAM cell, hence reading is *slow* (compared to reading an SRAM cell) because we need to **wait** for some time for the charge to accumulate at the bit line and give a *valid* digital voltage value.
 
 {: .note}
 We don't really need to dive into details of how capacitor work. The ability of the capacitor to store a charge is called *capacitance*, and it is affected by the dielectric materials of the plates and the plates' dimension. 
@@ -172,66 +181,29 @@ To write to a DRAM cell, we do:
 * Supply strong `1` or `0` through the **bit** line to charge or discharge the capacitor. 
 
 #### DRAM Issue
-The major problem with DRAM is that the capacitor ***will leak charge*** over time, so the voltage value stored in the cells will fade (get corrupted) over time. To tackle this problem, each DRAM cell has to be **refreshed** very frequently to keep the data intact. 
-
-These refresh cycles cause DRAM to be ***significantly slower*** than SRAM, although a DRAM cell is cheaper to make as compared to an SRAM cell (fewer number of transistors in a DRAM cell). 
+The major problem with DRAM is that the capacitor ***will leak charge*** over time, so the voltage value stored in the cells will fade (get corrupted) over time. To tackle this problem, each DRAM cell has to be **refreshed** very frequently to keep the data intact. These refresh cycles cause DRAM to be ***significantly slower*** than SRAM, although a DRAM cell is cheaper to make as compared to an SRAM cell (fewer number of transistors in a DRAM cell). 
 
 
 ### Application
 In practice, our computers' physical memory (RAM) uses DRAM technology. We typically use 8 GB, 16 GB, and 32 GB in consumer grade PCs at the time this document is written (year 2023). Our CPU **cache** uses SRAM technology. We usually see the following specs when we shop for a CPU. The column "cache" refers to CPU cache which is commonly built using SRAMs. 
 
-<img src="{{ site.baseurl }}/assets/images/l_memoryhierarchy/2022-11-07-09-47-10.png"  class="center_fourty"/>
+<img src="{{ site.baseurl }}/assets/images/l_memoryhierarchy/2022-11-07-09-47-10.png"  class="center_fifty"/>
+
 
 
 
 ### Transistors Used
 
-An SRAM cell requires **6** transistors to build, while a DRAM cell requires **1** transistor + **1** capacitor. 
+An SRAM cell requires **6** transistors to build (plus sense amps), while a DRAM cell requires **1** transistor + **1** capacitor. 
 
 A D Flip-Flop uses 2 D-latches plus an inverter. Assume that we can build a D-latch using 1 multiplexer (consisted of 4 NAND gates), and each NAND gate requires 4 transistors to build. This makes the transistor count to build a 1-bit DFF at **34** transistors. 
 
+The number of transistors used **affects** the cost of each memory unit greatly. 
 
-###  [Disk](https://www.youtube.com/watch?v=m5_u3sQ9bXo&t=1019s)
+### Tertiary Storage
 
-A disk (also known as Hard Disk Drive) is an old-school *mechanical* data storage device. Data is typically  *written* onto a round, spinning aluminum that's been coated with **magnetic material** that we call a "disk". Several of these round platters are put together on a shaft, and they make up a cylinder. The cylinders are able to **spin** at around 7000 revolutions per minute. 
+Disk, NAND Flash or NOR Flash (SSD) are types of tertiary storage units. Unlike SRAMs, DRAMs, and DFFs, are **non volatile**, meaning that they are able to retain data even without being plugged to a power source. The details about tertiary storage units is out of syllabus. You can read the [Appendix](#appendix) to seek further information if you're interested. 
 
-Each round disk can be separated into concentric circles sections we call **track**, and each track can be further separated into sectors as shown below. Each sector contains a fixed number of bits.
-
-<img src="https://dropbox.com/s/x32k130rfu8h7fm/disk.png?raw=1"   class="center_fourty">
-
-A disk is able to retain its information even after they're not directly plugged to power supply anymore. Therefore, unlike Register, SRAM, and DRAM that are volatile, **a disk is a type of low-power and non-volatile storage device**. Non-volatile memory that relies on mechanism such magnetic field changes to encode information takes far longer to change its values.
-
-#### To Write and Read to Disk
-To perform a read or write to a disk, **the device has to mechanically move the head of the disk and access a particular sector**. This takes up **a lot of time,** and thus resulting in **large latency** for both read and write. 
-
-The writing is done by a magnetic head, mounted at the end of an actuator arm that pivots in such a way that *the head can be positioned over any part of the platter*. The same head may also read the stored data. Each platter has its own read and write head, but all heads are mounted on a common arm assembly. 
-
-#### Accessing Data on Disk
-The CPU itself cannot directly address anything on a disk, therefore any data/instruction that the CPU needs to access **must** be migrated (copied over) from Disk to RAM/Physical Memory first before the CPU can do anything with it. 
- 
-To access any data on disk, the CPU has to first give the command for a chosen *block of data* from some sectors to be copied into the RAM. After the entire block of data is in the RAM, then the CPU can start accessing the specific 32-bit data (or `n` bits, depending on the architecture). 
-
-{: .highlight}
-Unlike in a RAM, we typically cannot just read a single word of data from the Disk. We need to migrate a whole **sector**. This is reasonable in practice since we rarely just need *only* single word of data. We typically need a whole sector of data to run our applications. You may watch this animated video to understand [how disk works](https://www.youtube.com/watch?v=oEORcCQ62nQ) better. 
-
-#### Addressing Data on Disk
-In short, data addressing on disk <span style="color:red; font-weight: bold;">does not work the same</span> way like how we address data in RAM / Physical Memory. **The details on how data is addressed and stored on disk is out of our syllabus**. It highly depends on the Operating System and disk format (e.g: NTFS, APFS, etc). If you're curious, you may read further details [here](https://tldp.org/HOWTO/Unix-and-Internet-Fundamentals-HOWTO/disk-layout.html) on how UNIX system stores data on disk. 
-
-If you have the time and are interested about how data is managed and stored on non-volatile storage devices, you can [give this video a watch](https://www.youtube.com/watch?v=Cj8-WNjaGuM) and follow the series of lectures. 
-
-
-#### Other non-volatile storage device: NAND Flash and NOR flash
-
-{: .warning}
-> This section is **out of syllabus**, but created for the sake of knowledge completeness since flash drive is the dominant technology at the time this article is written in 2023. You may [watch this wonderful animated video](https://www.youtube.com/watch?v=5Mh3o886qpg) to find out how SSDs which uses flash-drive technology work to store your data before reading the summary in this section.
-
-There's one other commonly used non-volatile memory that we can use as storage with **faster** read/write operation in general. We commonly know this as the **Solid-State Drive (SSD)**. An SSD is more expensive than a plain old HDD of the same size. 
-
-SSDs use a type of memory chip called **NAND flash** memory. NAND devices store a **small** amount of electrical charge on a floating gate when the cell is programmed. Its cell has **very high resistance**, and its capacitance can hold a charge for a **long period of time**. However, unlike in a DRAM-based memory, we <span style="color:red; font-weight: bold;">cannot</span> change one cell value quickly at a time in a flash memory. 
- 
-**NOR** Flash is another alternative which offers a much faster read speed and random-access capabilities, making it suitable for storing and executing code in devices such as cell phones.  NAND Flash offers high storage density and a smaller cell sizes and is comparably lower in cost. Hence **NAND** is often preferred for file storage in consumer applications. 
-
-To **change** its values, we need to reset and rewrite an entire large block at once, which is a much slower process for a write as compared to a RAM. The charge stored in the NAND flash can still **fade** over time if we never power it back up anymore. Therefore it is <span style="color:red; font-weight: bold;">important</span> to power the flash storage from time to time to retain its data. If you're curious you can read more about how HDD and SSD work [here](https://dropbox.com/s/tlaek0wyljpr74s/Hard%20Drives%3A%20How%20Do%20They%20Work%3F%20%E2%80%93%20Techbytes.pdf?dl=1) to understand how each of the work and the pros and cons of each device. 
   
 ##  [Memory Addressing](https://www.youtube.com/watch?v=m5_u3sQ9bXo&t=1177s)
 
@@ -345,27 +317,10 @@ The FA cache has the following generic structure:
 `TAG` and `DATA` are made of SRAM cells:
 * `TAG` contains  **all bits** of address `A`.
 * `DATA` contains all bits of `Mem[A]`.
-	> It will be 32 bits of data and 32 bits of address for $$\beta$$ CPU. 
 
-Note the presence of a device called the [**tri-state buffer**](https://www.youtube.com/watch?v=fRq6WACpsVo):
+For $$\beta$$ CPU, we have 32 bits of `TAG` and 32 bits of `DATA`.  Note the presence of a device called the [**tristate buffer**](https://www.youtube.com/watch?v=fRq6WACpsVo). Refer to the appendix if you'd like to find out more. 
 
-<img src="https://dropbox.com/s/hu22kodm6etknl5/tsbuffer.png?raw=1"  class="center_twenty"    >
 
-It has the following truth-table:<br>
-
-$$\begin{matrix}
-A & X & Y \\
-\hline
-0 & 1 & 0 \\
-1 & 1 & 1 \\
-0 & 0 & \text{High-Z} \\
-1 & 0 & \text{High-Z}  \\
-\end{matrix}$$
-
-{: .new-title}
-> High impedance 
-> 
-> High impedance (or High-Z) is a state when the output **is not driven** by any of the input(s). We can equivalently say that the output is *neither high (1) nor low (0)* and is  *electrically disconnected* from the circuit.
 
 
 
@@ -373,7 +328,7 @@ A & X & Y \\
 
 1.  **Expensive,** made up of SRAMS for both `TAG` and `Data` (content) field (i.e: 64 bits in total for $$\beta$$) and lots of other hardware: 	
 	* Bitwise comparator at each *cache line* (i.e: an "entry": `TAG`-`Content`, illustrated as a *row* in the figure above). 
-	* Tri-state buffer at each row
+	* Tristate buffer required at each cache line (row)
 	* Large `OR` gate to compute `HIT`
 2.  **Very fast**, it does **parallel** lookup when given an incoming address:
 	* Comparison between incoming address and all `TAG` in each cache line  happens **simultaneously**.
@@ -386,12 +341,12 @@ FA cache is often used as the **gold standard** on how well a cache should perfo
 
 The DM cache has the following generic structure:
 
-<img src="https://dropbox.com/s/eu74l2gi23380mp/dmcache.png?raw=1"      >
+<img src="https://dropbox.com/s/eu74l2gi23380mp/dmcache.png?raw=1"  class="center_seventy"    >
   
 {:.important}
-Notice the `00` omitted at the back. This is because we are using **byte addressing**, but we are storing 1 word in each cache line. 
+Notice the `00` omitted at the back. This is because we are using **byte addressing**. In byte addressing, the last two bits are always `00` and carries **no information**. Therefore they shouldn't be used as part of the `k` bits in the DM cache. 
 
-#### Comparison with FA Cache
+### DM vs FA Cache
 Characteristics of DM cache (in [comparison](https://www.youtube.com/watch?v=m5_u3sQ9bXo&t=3052s) to FA cache) are:
 1. **Cheaper:** less SRAM is used as the `TAG` field **contains only the T-upper bits** of address `A`. 
 	* Also less of other hardwares: only 1 bit-wise comparator (to compare T-bits) needed. 
@@ -418,3 +373,90 @@ We use a **hierarchy** of memory technology in our computer system to give it an
 We were then introduced to two basic types of cache design that can be integrated into our CPU: the FA cache (gold standard, very expensive) and DM cache (cheaper, but suffers contention and slightly slower than FA cache). 
 
 In the next chapter, we will learn various **cache issues** and how to tackle them to meet our goal of having a "fast" and "cheap" computer with massive storage space.
+
+# Appendix
+
+##  [Disk](https://www.youtube.com/watch?v=m5_u3sQ9bXo&t=1019s)
+
+A disk (also known as Hard Disk Drive) is an old-school *mechanical* data storage device. Data is typically  *written* onto a round, spinning aluminum that's been coated with **magnetic material** that we call a "disk". Several of these round platters are put together on a shaft, and they make up a cylinder. The cylinders are able to **spin** at around 7000 revolutions per minute. 
+
+Each round disk can be separated into concentric circles sections we call **track**, and each track can be further separated into sectors as shown below. Each sector contains a fixed number of bits.
+
+<img src="https://dropbox.com/s/x32k130rfu8h7fm/disk.png?raw=1"   class="center_fourty">
+
+A disk is able to retain its information even after they're not directly plugged to power supply anymore. Therefore, unlike Register, SRAM, and DRAM that are volatile, **a disk is a type of low-power and non-volatile storage device**. Non-volatile memory that relies on mechanism such magnetic field changes to encode information takes far longer to change its values.
+
+### To Write and Read to Disk
+To perform a read or write to a disk, **the device has to mechanically move the head of the disk and access a particular sector**. This takes up **a lot of time,** and thus resulting in **large latency** for both read and write. 
+
+The writing is done by a magnetic head, mounted at the end of an actuator arm that pivots in such a way that *the head can be positioned over any part of the platter*. The same head may also read the stored data. Each platter has its own read and write head, but all heads are mounted on a common arm assembly. 
+
+### Accessing Data on Disk
+The CPU itself cannot directly address anything on a disk, therefore any data/instruction that the CPU needs to access **must** be migrated (copied over) from Disk to RAM/Physical Memory first before the CPU can do anything with it. 
+ 
+To access any data on disk, the CPU has to first give the command for a chosen *block of data* from some sectors to be copied into the RAM. After the entire block of data is in the RAM, then the CPU can start accessing the specific 32-bit data (or `n` bits, depending on the architecture). 
+
+{: .highlight}
+Unlike in a RAM, we typically cannot just read a single word of data from the Disk. We need to migrate a whole **sector**. This is reasonable in practice since we rarely just need *only* single word of data. We typically need a whole sector of data to run our applications. You may watch this animated video to understand [how disk works](https://www.youtube.com/watch?v=oEORcCQ62nQ) better. 
+
+### Addressing Data on Disk
+In short, data addressing on disk <span style="color:red; font-weight: bold;">does not work the same</span> way like how we address data in RAM / Physical Memory. **The details on how data is addressed and stored on disk is out of our syllabus**. It highly depends on the Operating System and disk format (e.g: NTFS, APFS, etc). If you're curious, you may read further details [here](https://tldp.org/HOWTO/Unix-and-Internet-Fundamentals-HOWTO/disk-layout.html) on how UNIX system stores data on disk. 
+
+If you have the time and are interested about how data is managed and stored on non-volatile storage devices, you can [give this video a watch](https://www.youtube.com/watch?v=Cj8-WNjaGuM) and follow the series of lectures. 
+
+
+## Other non-volatile storage device: NAND Flash and NOR flash
+
+{: .warning}
+> This section is **out of syllabus**, but created for the sake of knowledge completeness since flash drive is the dominant technology at the time this article is written in 2023. You may [watch this wonderful animated video](https://www.youtube.com/watch?v=5Mh3o886qpg) to find out how SSDs which uses flash-drive technology work to store your data before reading the summary in this section.
+
+There's one other commonly used non-volatile memory that we can use as storage with **faster** read/write operation in general. We commonly know this as the **Solid-State Drive (SSD)**. An SSD is more expensive than a plain old HDD of the same size. 
+
+SSDs use a type of memory chip called **NAND flash** memory. NAND devices store a **small** amount of electrical charge on a floating gate when the cell is programmed. Its cell has **very high resistance**, and its capacitance can hold a charge for a **long period of time**. However, unlike in a DRAM-based memory, we <span style="color:red; font-weight: bold;">cannot</span> change one cell value quickly at a time in a flash memory. 
+ 
+**NOR** Flash is another alternative which offers a much faster read speed and random-access capabilities, making it suitable for storing and executing code in devices such as cell phones.  NAND Flash offers high storage density and a smaller cell sizes and is comparably lower in cost. Hence **NAND** is often preferred for file storage in consumer applications. 
+
+To **change** its values, we need to reset and rewrite an entire large block at once, which is a much slower process for a write as compared to a RAM. The charge stored in the NAND flash can still **fade** over time if we never power it back up anymore. Therefore it is <span style="color:red; font-weight: bold;">important</span> to power the flash storage from time to time to retain its data. If you're curious you can read more about how HDD and SSD work [here](https://dropbox.com/s/tlaek0wyljpr74s/Hard%20Drives%3A%20How%20Do%20They%20Work%3F%20%E2%80%93%20Techbytes.pdf?dl=1) to understand how each of the work and the pros and cons of each device. 
+
+
+##  [Memory Addressing](https://www.youtube.com/watch?v=m5_u3sQ9bXo&t=1177s)
+
+{: .note}
+This section refers to how bytes are addressed in the Main Memory (Physical Memory/RAM) and not on disk. 
+
+In practice, **billions** of DRAM cells are assembled together to form a large memory unit up to Terabytes in size. Each *byte* (8 cells) has a specific address. This analogous to a large apartment building with many fixed-size units within it, and each unit is assigned an **address**. The CPU will supply a memory address to read from or write to in each clock cycle. 
+
+### Decoding
+To **decode** an address, we can split the address into higher `N` address bits (selecting one of the rows) and lower `M` address bits (selecting a group of the columns), then read the information out of the bitlines as shown in the figure: 
+
+<img src="https://dropbox.com/s/kc5atqtnyuo5dg7/decoding.png?raw=1"  class="center_seventy"   >
+
+We often read **hundreds** of bits in parallel as there may be more than 1 CPU core in the system that can request a multitude of memory access operations simultaneously. For example, one *row* might contains hundreds of bit lines, and the lower `M` address bits will select which of group of 32 bits (or 64 bits, depending on the ISA) we want to read. 
+
+## Tristate Buffer
+
+<img src="https://dropbox.com/s/hu22kodm6etknl5/tsbuffer.png?raw=1"  class="center_thirty"    >
+A tristate buffer, also known as a three-state buffer, is an electronic circuit component that is used to control data flow on a bus or between circuit components. It can operate in three different states:
+
+1. **Output High**: The buffer outputs a high voltage level, representing a binary '1'.
+2. **Output Low**: The buffer outputs a low voltage level, representing a binary '0'.
+3. **High Impedance (High-Z)**: The buffer is effectively disconnected from the circuit, neither outputting nor sinking current. This state allows other devices to drive the line without interference from the buffer.
+
+The primary function of a tristate buffer is to allow multiple circuits to share a single output line or data bus without connecting their outputs together at the same time, which could cause conflicts or damage. This is crucial in digital electronics, particularly in systems where bus architectures are used, allowing only one device to speak at a time while others remain silent. The use of tristate buffers helps in reducing power consumption and avoiding signal contention on shared lines.
+
+
+It has the following truth-table:<br>
+
+$$\begin{matrix}
+A & X & Y \\
+\hline
+0 & 1 & 0 \\
+1 & 1 & 1 \\
+0 & 0 & \text{High-Z} \\
+1 & 0 & \text{High-Z}  \\
+\end{matrix}$$
+
+{: .new-title}
+> High impedance 
+> 
+> High impedance (or High-Z) is a state when the output **is not driven** by any of the input(s). We can equivalently say that the output is *neither high (1) nor low (0)* and is  *electrically disconnected* from the circuit.
