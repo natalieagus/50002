@@ -61,9 +61,14 @@ These objectives aim to equip students with a comprehensive understanding of how
  
 In the previous chapter, we learned the basics of how to naively compile C-language into $$\beta$$ assembly language. $$\beta$$ UASM provides a layer of abstraction such that we don't need to bother ourselves with the details on how to load each and every bytes of instruction onto the memory unit, or keeping up with accounting matters such as physical memory addresses (we can replace these with *labels* instead). 
 
-In this chapter, we will learn about **function call procedures**, and why we need to understand another concept called the *stacks*. Both will allow us to have <span style="color:red; font-weight: bold;">reusable</span> code fragments which we normally know as **functions** that we can **call** as needed.
+In this chapter, we will learn about how to **compile functions** using the **function call procedures**, and how we can utilise the *stack* data structure for this. Both will allow us to have <span style="color:red; font-weight: bold;">reusable</span> code fragments which we normally know as **functions** that we can **call** as needed.
 
 ## [Procedures and Functions](https://www.youtube.com/watch?v=u4TETujaNuk&t=66s)
+
+{:.note-title}
+> Definition
+> 
+> A function is a fixed set of procedure / instructions. It is a <span class="orange-bold">reusable</span> piece of instruction that we can repeatedly call with different **parameters**.
 
 ### Motivation
 Consider the following declaration and implementation of function `fact`  below. It receives one argument `int n`, and returns an `int`. 
@@ -78,8 +83,7 @@ int fact(int n){
 }
 ```
 
-{: .highlight}
-A function is a fixed set of procedure / instructions.  
+  
 
 We can call it anywhere afterwards:
 ```cpp
@@ -147,8 +151,8 @@ int result_6 = fact(99);
 > * Is **parameterizable** (can access or receive a predefined number of arguments).
 > * Has **local variables**, which cannot be accessed anymore once the function returned. 
 
-### Return Value
-Once a function returns, the CPU needs to know how to return to the *caller*, i.e: to know where is the return address of the caller. 
+### Return Address and Return Value
+Once a function returns, the CPU needs to know how to return to the *caller*, i.e: to know where is the **return** address of the caller, and then **pass** that return value to the caller.
 
 For example, given this simple code: 
 ```cpp
@@ -185,7 +189,7 @@ We also need to establish a system where:
 * The function is expected to place a return value (if any) in a **known** memory location by the caller who will then access it
 * The CPU can find the address of the caller, i.e: where instruction (8) is in memory. 
 
-{: note-title}
+{: .note-title}
 > Procedure Linkage Problem
 > 
 > These *needs* above become a problem that we need to solve if we want to have reusable segments of code. This is called the **procedure linkage problem**.
@@ -208,8 +212,8 @@ These issues can be solved by establishing a kind of **procedure linkage convent
 > 
 > We label `R29` as `SP` (***Stack Pointer***), and `R27` as `BP` (***Base Pointer***). We label `R28` as `LP` (***Linkage Pointer***). 
 
-{: .highlight}
-The function caller and the function itself (the callee) must obey a strict <span style="color:red; font-weight: bold;">procedure</span> that conforms to the procedure linkage convention. 
+
+The function caller and the function itself (the callee) must obey a strict <span style="color:red; font-weight: bold;">procedure</span> that conforms to the procedure linkage convention. There are many different procedure linkage convention if we dive into the details (depending on how the **compiler** is made), but the general idea remain **similar**. Please **abstract** these ideas away as you learn this topic.
 
 A function **caller** <span style="color:red; font-weight: bold;">MUST</span> obey the following **sequence** :
 1. Put arguments on the **stack**
@@ -287,7 +291,7 @@ ADDC(R31, 5, R1) | instructions
 
 This is done to tell the CPU that the stack **starts** at address `0x010C` onwards, so that whatever content stored in the earlier addresses will <span style="color:red; font-weight: bold;">not</span> be overwritten by the stack. 
 
-{: new-title}
+{: .new-title}
 > What if we don't `ALLOCATE`?
 > 
 > The stack will start at address 0. Typically what is stored address `0` is the **first executable instruction** (i.e: the beginning of our program). We usually don't want to overwrite any instructions. 
@@ -406,10 +410,10 @@ The function `fact` is called twice, so we have **two** callers. We can hand ass
 
 #### **Firstly**, Allocate some memory space for caller variables and instructions
 
-To allocate memory space for **global variables**, we can either:
-* Write them below all of the instructions
-* Write them above of all the instructions, but since `PC` starts at `0`, we can't execute "variables". We need the first instruction to `BRANCH` to the address of the first line of instruction.
-* Use the `.` operator to load them at the desired memory location, e.g: `0x01B0`
+To allocate memory space for **global variables**, we can use any of the following methods (it's up to the **compiler** programmer's discretion):
+1. Write them **below** all of the instructions
+2. Write them **above** of all the instructions, but since `PC` starts at `0`, we can't execute "variables". We need the first instruction to `BRANCH` to the address of the first line of instruction.
+3. Use the `.` operator to load them at the desired memory location, e.g: `0x01B0`
 	* Define labels and its values
 	* Then, redirect the instruction back at address `0` using the `.` operator again
 
@@ -458,19 +462,18 @@ HALT()
 > 
 > A callee must adhere to the following <span style="color:red; font-weight: bold;">properties</span>: 
 > * Leave the state of all *registers* in REGFILE except `R0` **unchanged** upon returning to the caller. 
-> *  Leave *stack data* **unchanged**  upon returning to the caller. 
+> * Leave *stack data* **unchanged**  upon returning to the caller. 
 
-This is possible by callee sequences into two parts: callee entry sequence and callee exit/return sequence. 
+The callee sequences has two parts: callee **entry** sequence and callee **exit/return** sequence. 
 
 The entry sequence is consisted of five steps:
 1. `PUSH(LP)` : to preserve the state of `LP` which contains the return address to the caller of this function.
 2. `PUSH(BP)`: to preserve the state of `Reg[R27]`
-3. `ADD(SP, R31, BP)`: move the content of `SP` to `BP`.  This is to set the **stack frame base** for this function call. 
-	> We have a macro for this: `MOVE(SP, BP)`
+3. `ADD(SP, R31, BP)`: move the content of `SP` to `BP`.  This is to set the **stack frame base** for this function call. Note that we have a convenient Beta macro for this: `MOVE(SP, BP)`
 4. Push all registers that we will use for the computation (except `R0`)
 5. Load arguments from the stack 
 
-Afterwards, we then proceed with actually implementing the function (this is the actual work). 
+Afterwards, we then proceed with actually implementing the function (this is the actual **work**). 
 
 Continuing our assembly code, writing **Step 1 to Step 3** of the entry procedure is straightforward. 
 ```nasm
@@ -480,7 +483,7 @@ PUSH(BP) | (2)
 MOVE(SP, BP) | (3) 
 ```
 
-Now to figure out (4), we need to know the registers that we will use for computation of `fact`. 
+Now to figure out Step (4), we need to know the registers that we will use for computation of `fact`. 
 
 Recall the *implementation* of the function `fact`: 
 ```nasm
@@ -535,6 +538,7 @@ The exit sequence is consisted of six steps:
 2. Restore all registers' state that were used by the function computations using `POP`, in **reverse** order. 
 3. `ADD(BP, R31, SP)`: move the content of `BP` to `SP`.  This is to set the stack pointer back to the **stack frame base** for this function call. 
 	> Remember, we need to leave the stack state as per the original state when the function returns. Hence, whatever stuffs that are added to the stack by this function must be removed. 
+	>
 	> We can also use the macro for this: `MOVE(BP, SP)`
 4. `POP(BP)` : restore `Reg[BP]` to its original value
 5. `POP(LP)` : restore `Reg[LP]` to its original value -- remember, this register **contains the caller's *return* address.**
@@ -559,7 +563,7 @@ JMP(LP, R31) | (6)
 {: .new-title}
 > Think! 
 > 
-> Why do we need to "clear" the callee stack when it returns? 
+> **Why** do we need to "clear" the callee stack when it returns to the caller?  
 
 ### Reusing Functions
 Now to call `fact` for the second time, we can simply write another calling sequence. **The `fact` instructions remain intact and reusable.** 
@@ -767,45 +771,14 @@ It will obtain the following addresses:
 
 <img src="https://dropbox.com/s/ae8mgejz3jgyavo/instr_eg.png?raw=1" class="center_fifty" >
 
-> This screenshot is taken from `bsim` just before we branch to `fact` for the first time with argument `3`. That is why the `PC` is pointing to address `0x0010`. 
+{:.note}
+This screenshot is taken from `bsim` just before we branch to `fact` for the first time with argument `3`. That is why the `PC` is pointing to address `0x0010`. 
 
 
 Notice that as mentioned, the address of instruction `DEALLOCATE(1)` (macro for `SUBC(SP, 4, SP)`) is `0x0014`.
 
-### About the PC
-{: note}
-This section is a deep dive to appreciate the dynamic discipline of the regfile. You can skip it if you want.
 
-We have learned before that `PC` register always contain the address of the *next* instruction to be executed. 
-
-There's one subtle point to realise: when the `PC` is currently pointing to an address `A`, the instruction at `A` is actually <span style="color:red; font-weight: bold;">already computed</span> computed in the current cycle, but the result (of this computation) hasn't been stored, yet. The result will only be stored (in some register or memory address) only in the next cycle.
-
-{: .note-title}
-> Dynamic Discipline of the REGFILE
-> 
-> Remember that memory write is synchronized with the clock. See [this](http://127.0.0.1:4000/50002/notes/betacpu#the-static-and-dynamic-discipline-of-the-regfile) section if you forgot. 
-
-Take for example this particular execution state in the  $$\beta$$ CPU:
-
-<img src="https://dropbox.com/s/raqf5k421kfi2i7/pc_state.png?raw=1" class="center_seventy"  >
-
-The **current** content of register `PC` is `0x004`, that is where instruction: `ADDC(R31, 3, R1)` resides.
-
-The **output** of `ADDC` **has already been computed** in this cycle, as denoted in the blue value at the output port of the ALU: `0x00000003`. 	
-* All values in blue are computed values (in this  cycle) due to this current instruction `ADDC`.
-
-However, notice `Reg[R1]` still contains `0` and not the new result `3` *yet*. In this cycle, we are still trying to **write** `3` into `R1`.
-
-Only at the next cycle,`Reg[R1]` finally stores the new value `3`. The figure below shows the state of the $$\beta$$ CPU at the following cycle:
-
-<img src="https://dropbox.com/s/qzf1rxs5rshfzeo/pc_state_2.png?raw=1" class="center_seventy"  >
-
-Therefore, what we *actually mean* when we say that the `PC` always point to the `next` instruction executed is precisely that the **result** will only be synchronized in the **next** cycle (but computation is done in the current cycle). 
-
-{: .note}
-Don't worry too much about it. It's just some subtle detail to appreciate. 
-
-## An Example with Multiple Arguments
+## An Example with Multiple Arguments: `PUSH` in reverse order
 
 Consider the following function with multiple arguments:
 ```cpp
@@ -816,7 +789,8 @@ int y(int m, int x, int c){
 int result = y(2, 5, 3);
 ```
 
-In order to call this function, we need to push each argument in the *reverse* order: 
+In order to call this function, we need to **push** each argument in the **reverse** order to the stack, before calling (branching) to this function. That is, last argument is pushed first, and the first argument is pushed last: 
+
 ```nasm
 .include beta.uasm 
 . = 0x0CC
@@ -829,9 +803,9 @@ ADDC(R31, 3, R3) | third argument
 
 || Calling Sequence
 || Push arguments in the reverse order
-PUSH(R3) 
-PUSH(R2)
-PUSH(R1) 
+PUSH(R3) | push third argument first
+PUSH(R2) | then push second argument
+PUSH(R1) | finally push the first argument last
 
 || Branch to the function
 BEQ(R31, y, LP)
@@ -875,6 +849,9 @@ POP(BP)
 POP(LP)
 JMP(LP, R31)
 ```
+
+{:.important}
+The reason we `PUSH` arguments into the stack in the **reverse order**: last argument first, first argument last, is so that `BP-12` will **consistently** be the **first** argument regardless of how many arguments this function has. This **convention** makes it easier for the compiler. To access other argument `i`, we simply **load** from `BP-4*(i+2)`.  
 
 ## Tough Problems
 
@@ -928,3 +905,36 @@ It is extremely important to change the content of `SP` (reserved stack pointer 
 We also **reserve** two other registers: `R27: BP` and `R28: LP` for this purpose, so that we know where to get the function arguments from the stack, and return address (back to the caller). We do not use these registers `R27, R28, and R29` for other purposes. 
 
 The callee has to leave *stack data* **unchanged**  upon returning to the caller, that is to clear whatever data that was put in the stack during its execution. As a result, we might find **dangling pointers:** pointer that points to an address that is no longer used when we try to access a function's local variable long after the function has returned. 
+
+# Appendix
+
+## About the PC
+{: note}
+This section is a deep dive to appreciate the dynamic discipline of the regfile. You can skip it if you want.
+
+We have learned before that `PC` register always contain the address of the *next* instruction to be executed. 
+
+There's one subtle point to realise: when the `PC` is currently pointing to an address `A`, the instruction at `A` is actually <span style="color:red; font-weight: bold;">already computed</span> computed in the current cycle, but the result (of this computation) hasn't been stored, yet. The result will only be stored (in some register or memory address) only in the next cycle.
+
+{: .note-title}
+> Dynamic Discipline of the REGFILE
+> 
+> Remember that memory write is synchronized with the clock. See [this](http://127.0.0.1:4000/50002/notes/betacpu#the-static-and-dynamic-discipline-of-the-regfile) section if you forgot. 
+
+Take for example this particular execution state in the  $$\beta$$ CPU:
+
+<img src="https://dropbox.com/s/raqf5k421kfi2i7/pc_state.png?raw=1" class="center_seventy"  >
+
+The **current** content of register `PC` is `0x004`, that is where instruction: `ADDC(R31, 3, R1)` resides. The **output** of `ADDC` **has already been computed** in this cycle, as denoted in the blue value at the output port of the ALU: `0x00000003`. 	
+* All values in blue are computed values (in this  cycle) due to this current instruction `ADDC`.
+
+However, notice `Reg[R1]` still contains `0` and not the new result `3` *yet*. In this cycle, we are still trying to **write** `3` into `R1`.
+
+Only at the next cycle,`Reg[R1]` finally stores the new value `3`. The figure below shows the state of the $$\beta$$ CPU at the following cycle:
+
+<img src="https://dropbox.com/s/qzf1rxs5rshfzeo/pc_state_2.png?raw=1" class="center_seventy"  >
+
+Therefore, what we *actually mean* when we say that the `PC` always point to the `next` instruction executed is precisely that the **result** will only be synchronized in the **next** cycle (but computation is done in the current cycle). 
+
+{: .note}
+Don't worry too much about it. It's just some subtle detail to appreciate. 
