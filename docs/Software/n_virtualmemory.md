@@ -21,41 +21,31 @@ Singapore University of Technology and Design
 [You can find the lecture video here.](https://youtu.be/19wS4GC6mbQ) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
 ## Detailed Learning Objectives
+1. **Understand the Concept of Memory in Computing Systems**
+   - Explain the differences between a program and a process in terms of memory usage.
+   - Describe how executable instructions and stack allocations influence process memory structure.
 
-1. **Overview of Memory Segmentation**:
-   - Discusses the segmentation of a process's memory into executable instructions, stack, and heap, explaining how each segment is utilized during the runtime of a process. The overview also clarifies the distinction between a program and a process, emphasizing operational dynamics.
+2. **Examine the Role and Functionality of Virtual Memory**
+   - Define virtual memory and discuss its significance in modern computing.
+   - Explore how virtual memory enables the illusion of a large memory space on systems with limited physical memory.
 
-2. **Utilizing Swap Space**:
-   - Explains the necessity of swap space for managing multiple processes simultaneously, especially when the physical memory capacity (like 32GB) is exceeded by the requirements of running applications (like a 77GB game).
+3. **Learn About Memory Paging and Page Management**
+   - Understand the concept of paging as a method to manage memory efficiently.
+   - Describe the structure of a page and how it facilitates efficient data transfer between memory and storage.
 
-3. **Virtual Memory Definition**:
-   - Introduces virtual memory as a technique that abstracts storage resources to allow multiple processes to share limited physical storage seamlessly and to give the illusion of a large memory space.
+4. **Investigate the Process of Address Translation Using the MMU**
+   - Explain the role of the Memory Management Unit (MMU) in translating virtual addresses to physical addresses.
+   - Identify the components of the MMU and their functions in the context of address translation.
 
-4. **Memory Paging**:
-   - Describes memory paging as a scheme to efficiently transfer data between the disk and physical memory. It breaks down the terminology around pages, including how pages are addressed through Physical Page Number (PPN) and Page Offset (PO).
+5. **Explore the Mechanisms of Demand Paging**
+   - Define demand paging and discuss its role in memory management.
+   - Analyze the process of handling page faults and the criteria for replacing pages in memory.
 
-5. **Virtual Memory Mechanics**:
-   - Details the functionality of virtual memory, highlighting the role of the Memory Management Unit (MMU) in translating virtual addresses (VA) to physical addresses (PA) using page tables.
+6. **Context Switching in Operating Systems**
+   - Discuss the concept of context switching and its importance in multitasking environments.
+   - Explain how the operating system manages multiple processes through context switching.
 
-6. **Pagetable Function and Structure**:
-   - Explains the pagetable's role in mapping virtual addresses to physical locations, detailing the structure of pagetable entries including flags like dirty and resident bits, and their implications for memory management.
-
-7. **Demand Paging**:
-   - Covers the concept of demand paging, where data is not loaded from disk to memory until necessary. It includes the handling of page faults by the OS Kernel, which loads data into physical memory on an as-needed basis.
-
-8. **Translation Lookaside Buffer (TLB)**:
-   - Introduces the TLB as a cache for pagetable entries to speed up the translation process from virtual addresses to physical addresses, noting its high hit rate due to the locality of reference.
-
-9. **Handling Page Faults and Paging Strategy**:
-   - Discusses how the OS handles page faults by loading the required pages from disk to RAM and describes strategies for replacing pages in memory when necessary, using policies like Least Recently Used (LRU).
-
-10. **Context Switching**:
-    - Explains how modern CPUs use context switching to manage multiple processes, making it appear as if multiple applications are running simultaneously on a single processor.
-
-11. **Using Cache with Virtual Memory**:
-    - Discusses configurations where the cache can be placed before or after the MMU, detailing the implications of each setup and how addresses are handled in each scenario.
-
-The notes effectively synthesize complex concepts in virtual memory management, providing clarity on how processes interact with physical and virtual memory systems to enable efficient and secure multitasking in modern computers.
+These learning objectives aim to equip students with a comprehensive understanding of how virtual memory and related concepts function within computer systems, emphasizing their role in managing limited physical resources effectively.
  
 ## [Overview](https://www.youtube.com/watch?v=19wS4GC6mbQ&t=0s)
 

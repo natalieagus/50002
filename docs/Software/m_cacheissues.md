@@ -22,42 +22,35 @@ Singapore University of Technology and Design
 
 ## Learning Objectives
 
+1. **Understand Cache Memory and Its Role**
+  - Describe the function of cache in reducing CPU access time to memory.
+  - Identify the types of cache (L1, L2, L3) and understand their general function without detailed architectural differences.
+2. **Learn Cache Design Parameters**
+  - Explain the significance of cache size, block size, associativity, and read/write/replacement policies in cache design.
+  - Analyze how each parameter affects cache performance and cost.
+3. **Differentiate Cache Types: DM and FA**
+  - Compare and contrast Direct Mapped (DM) and Fully Associative (FA) caches.
+  - Discuss the pros and cons of each type concerning performance, cost, and risk of contention.
+4. **Explore Associativity in Caches**
+  - Define what associativity is in the context of caches and its importance in reducing contention.
+  - Understand N-Way Set Associative Cache as a hybrid approach between DM and FA caches.
+5. **Dive into Cache Replacement Policies**
+  - Examine common replacement strategies like Least Recently Used (LRU), Least Recently Replaced (LRR), and Random replacement.
+  - Discuss the hardware overhead and application scenarios for each replacement policy.
+6. **Investigate Cache Write Policies**
+  - Understand different write policies including Write-Through, Write-Back, and Write-Behind.
+  - Evaluate the trade-offs and complexities associated with each write policy.
+7. **Study Cache Block Size Considerations**
+  - Analyze the impact of block size on cache efficiency and performance.
+  - Explain the trade-offs between fetching large blocks (pros) and the risk of fetching unused words (cons).
+8. **Learn About Cache Helper Bits**
+  - Understand the function of helper bits like Valid, Dirty, and LRU bits in cache operations.
+  - Discuss the storage requirements and implications of each type of helper bit on cache design.
+9. **Cache Performance Metrics and Benchmarking**
+  - Learn how to measure cache performance using HIT and MISS rates.
+  - Use benchmarks to determine the effectiveness of different cache configurations and replacement policies.
 
-1. **Introduction to Cache Memory**
-   - Describes cache as a small, fast, and expensive memory unit made of SRAM, located near the CPU core. It's used to reduce the time and energy required for the CPU to access data from the main memory (RAM).
-
-2. **Cache Design Issues**
-   - Discusses four primary design issues: Associativity, Replacement Policy, Block Size, and Write Policy.
-   - Associativity determines how many cache lines an address can be mapped to.
-   - Replacement policy decides which cache entry to replace on a cache miss.
-   - Block size determines the amount of data written to cache at one time.
-   - Write policy dictates when data is written from cache to main memory.
-
-3. **Comparison of FA and DM Cache**
-   - Provides a detailed comparison of Fully Associative (FA) and Direct Mapped (DM) caches across various metrics such as TAG field, performance, cost, contention risk, and associativity.
-
-4. **N-Way Set Associative Cache (NWSA)**
-   - Introduces NWSA as a hybrid design between FA and DM caches, aiming to reduce the contention problem seen in DM caches by introducing a degree of associativity.
-
-5. **Cache Replacement Policies**
-   - Explains common strategies like Least Recently Used (LRU), Least Recently Replaced (LRR), and Random replacement, discussing their implications, overheads, and use cases.
-
-6. **Cache Block Size**
-   - Discusses the trade-offs involved in determining the cache block size, emphasizing the balance between fetching enough data to utilize locality of reference and the risk of fetching unused data.
-
-7. **Write Policies in Cache**
-   - Describes strategies such as Write-through, Write-back, and Write-behind, focusing on their operational differences and the implications for cache and main memory coherence.
-
-8. **Helper Bits in Cache**
-   - Explains the role of helper bits like Valid and Dirty bits in managing cache operations and ensuring the integrity and efficiency of cache data management.
-
-9. **Cache Operations**
-   - Details the caching algorithms for read/load and write/store requests, explaining how cache interacts with CPU requests and how data is managed within the cache and between the cache and main memory.
-
-10. **Summary and Further Learning**
-    - Concludes with a summary of the key points discussed in the chapter and points to additional resources for extended learning.
-
-These notes are designed to provide students with a comprehensive understanding of cache memory and its critical role in enhancing CPU performance by reducing access times to frequently used data. They cover theoretical aspects and practical implications of cache management, crucial for optimizing modern computing architectures.
+These learning objectives are designed to guide students through understanding cache memory, its design considerations, and operational strategies in a computer system architecture course.
 
 ## [Overview](https://www.youtube.com/watch?v=2OARjqLK4io&t=0s)
 
