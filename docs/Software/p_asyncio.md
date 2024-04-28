@@ -102,7 +102,7 @@ Kernel serves as an intermediary program between any I/O devices (hardware) and 
 This special SVC instruction allows processes to "communicate" with the Kernel by trapping (stopping) its own operation and transferring CPU control to the Kernel (entered via the `ILLOP` handler). The `ILLOP` handler saves the states of the calling process, before it checks if the `OPCODE` of the instruction that triggers the trap is some known value, e.g: `000001`.  If its `OPCODE` is indeed `000001`, it will branch to a generic `SVC_handler`, else it will branch to error exception handler (which will probably terminate the calling process). 
 
 {:.note}
-You may refer to this [Appendix](supervisor-call-implementation) section to know how SVC is actually implemented in other architectures. The idea remains generally similar. 
+You may refer to this [Appendix](#supervisor-call-implementation) section to know how SVC is actually implemented in other architectures. The idea remains generally similar. 
 
 ### SVC Handler
 The `SVC` handler does the following routine:
@@ -150,7 +150,7 @@ The function `getchar()` is translated into `SVC(j)` (among other things). The v
 {:.note-title}
 > What if requested char is not available?
 >
-> When a process uses `getchar()`, the character it requests may not be immediately available if the user hasn't yet pressed a key. In such cases, the kernel may block the calling process—putting it on hold—and switch to running another process until the required keystroke occurs. You may read this [appendix](process-scheduling) section to find out more.  
+> When a process uses `getchar()`, the character it requests may not be immediately available if the user hasn't yet pressed a key. In such cases, the kernel may block the calling process—putting it on hold—and switch to running another process until the required keystroke occurs. You may read this [appendix](#process-scheduling) section to find out more.  
 
 ## Asynchronous Input Handling
 {: .new-title}
@@ -207,7 +207,7 @@ The computer is connected to multiple I/O devices (disk, keyboard, mouse, printe
 There are two different policies that can be adopted to handle I/O interrupts: weak and strong policy. 
 
 {:.note}
-We will only elaborate (in theory) each policy briefly. Please refer to the [appendix](kernel-i/o-management) section if you'd like to know more about its implementation in the Kernel and the required hardware support. 
+We will only elaborate (in theory) each policy briefly. Please refer to the [appendix](#kernel-i/o-management) section if you'd like to know more about its implementation in the Kernel and the required hardware support. 
 
 ### Weak Policy
 A **Weak policy** is non-preemptive. This means that the machine has a **fixed** ordering of device handling, but it will not pre-empt current service. It will only reorder requests in the interrupt **queue** based on the types of devices.  
@@ -220,7 +220,7 @@ A **Strong policy** is <span class="orange-bold">preemptive</span>.  This means 
 If the CPU is currently running a handler of lower priority, it will be forced to perform a **context switch** to run the handler with the higher priority (required to service the interrupt). The interrupted handler can be **resumed** later on (not completely restarted, as its old state was saved) after the interrupting higher has finished execution. 
 
 {: .note}
-Handlers of the same priority level **can never** interrupt each other. Refer to the [appendix](setting-beta-cpu-handler-priority-level) section on how the Beta CPU may set handler priority level. 
+Handlers of the same priority level **can never** interrupt each other. Refer to the [appendix](#setting-beta-cpu-handler-priority-level) section on how the Beta CPU may set handler priority level. 
 
 ### Recurring Interrupts 
 
@@ -372,7 +372,7 @@ The keyboard service time is spread out (red region) due to preemptive interrupt
 #### Missing Deadline
 The priority ordering Disk  > Printer  > Keyboard in Case 3 above **does not** fulfil the deadline for Printer or Keyboard when either **weak** or **strong** policy is used since the worst-case latency + service time for each Printer and Keyboard exceeds their deadline. 
 
-Therefore, this scenario is simply <span class="orange-bold">not feasible</span> and we need to relax one of the device's deadline. Give this [appendix](missing-i/o-deadline) section a read if you'd like to know more about the real-world consequences of missing those deadlines.  
+Therefore, this scenario is simply <span class="orange-bold">not feasible</span> and we need to relax one of the device's deadline. Give this [appendix](#missing-i/o-deadline) section a read if you'd like to know more about the real-world consequences of missing those deadlines.  
 
 
 {: .new-title}
@@ -385,7 +385,7 @@ Therefore, this scenario is simply <span class="orange-bold">not feasible</span>
 > As further practice, ask yourselves if there exist **another** priority ordering such as Printer  > Disk  > Keyboard that can meet the **original** deadline with **strong policy**. 
 
 
-If you're interested in reading more about *how* the values of deadline, max latency, and frequency (or period) is set in practice, give this section in [Appendix](setting-i/o-requirements) a read. 
+If you're interested in reading more about *how* the values of deadline, max latency, and frequency (or period) is set in practice, give this section in [Appendix](#setting-i/o-requirements) a read. 
 
 ### Effective Interrupt Load
 

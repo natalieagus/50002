@@ -257,7 +257,7 @@ From the diagram above, we can define two timing constraints for this particular
 - $$t_2$$ : $$t_{PD} R_1 + t_{PD} CL + t_S R_2 \leq t_{CLK}$$
 
 {:.note}
-You may read [this supplementary document](https://dropbox.com/s/gi4r2ea1tdv5x4d/Seq_Logic_Timing_Extras_2020.pdf?dl=1) to know more about timing computations for sequential logic device. If you're interested to find the **reasoning** behind t1 and t2 constraints, read this [appendix](t1-and-t2-constraint-derivation) section. 
+You may read [this supplementary document](https://dropbox.com/s/gi4r2ea1tdv5x4d/Seq_Logic_Timing_Extras_2020.pdf?dl=1) to know more about timing computations for sequential logic device. If you're interested to find the **reasoning** behind t1 and t2 constraints, read this [appendix](#t1-and-t2-constraint-derivation) section. 
 
 
 

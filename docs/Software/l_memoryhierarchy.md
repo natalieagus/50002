@@ -202,7 +202,7 @@ The number of transistors used **affects** the cost of each memory unit greatly.
 
 ### Tertiary Storage
 
-Disk, NAND Flash or NOR Flash (SSD) are types of tertiary storage units. Unlike SRAMs, DRAMs, and DFFs, are **non volatile**, meaning that they are able to retain data even without being plugged to a power source. The details about tertiary storage units is out of syllabus. You can read the [Appendix](#appendix) to seek further information if you're interested. 
+Disk, NAND Flash or NOR Flash (SSD) are types of tertiary storage units. Unlike SRAMs, DRAMs, and DFFs, are **non volatile**, meaning that they are able to retain data even without being plugged to a power source. The details about tertiary storage units is out of syllabus. You can read the [Appendix](#disk) to seek further information if you're interested. 
 
   
 ##  [Memory Addressing](https://www.youtube.com/watch?v=m5_u3sQ9bXo&t=1177s)
@@ -318,7 +318,7 @@ The FA cache has the following generic structure:
 * `TAG` contains  **all bits** of address `A`.
 * `DATA` contains all bits of `Mem[A]`.
 
-For $$\beta$$ CPU, we have 32 bits of `TAG` and 32 bits of `DATA`.  Note the presence of a device called the [**tristate buffer**](https://www.youtube.com/watch?v=fRq6WACpsVo). Refer to the appendix if you'd like to find out more. 
+For $$\beta$$ CPU, we have 32 bits of `TAG` and 32 bits of `DATA`.  Note the presence of a device called the [**tristate buffer**](https://www.youtube.com/watch?v=fRq6WACpsVo). Refer to the [appendix](#tristate-buffer) if you'd like to find out more. 
 
 
 

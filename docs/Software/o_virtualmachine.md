@@ -147,7 +147,7 @@ The arrow illustrates the flow of execution in time:
 3. The interrupt handler (part of the Kernel) takes control of the CPU when hardware interrupt occurs, and **saves** the  current **context** (PC, Registers, etc)  of P1 to a dedicated space **(Kernel Stack)** in the Memory Unit  (*so that P1's progress is not lost and can be resumed later on*) before performing a **context switch**.
 4. After the context switch is complete, `P2` runs and progresses for some time `t` before another *hardware interrupt* occurs. The entire context switch process is repeated to pause `P2`, resume `P1`, and so forth. 
 
-Refer to [appendix](timer interrupt) section if you'd like to know how this timer interrupt is set. 
+Refer to [appendix](#timer-interrupt) section if you'd like to know how this timer interrupt is set. 
 
 {: .note}
 Note that some books might call a process' **context** (PC, Registers, Stack, etc) as its **state** as well. 

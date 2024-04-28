@@ -131,7 +131,7 @@ A UASM source file contains (in symbolic text) **values of successive bytes to b
 >
 > Please <span style="color:red; font-weight: bold;">read</span>  the `bsim` [documentation](https://www.dropbox.com/scl/fi/psjv77mobp12srafj3us2/bsim.pdf?rlkey=qismnxs1al85qyorj1rxit7ow&dl=1) to know more about the syntax of the Beta assembly language.  
 >
-> You can head to the [appendix](#appendix) if you would like to know more about *how* and assembler work. 
+> You can head to the [Appendix](#appendix) if you would like to know more about *how* and assembler work. 
 
 
 The next few sections explains the **syntax** that's acceptable by the Beta Assembler. We will use the same syntax in exams and problem sets.
@@ -349,7 +349,9 @@ We will address some of these questions in the next chapter.
 {: .note}
 Creating an optimised compiler is not a trivial task. For now, don't worry too much about it. We simply only need to hand assemble C into $$\beta$$ assembly language, and have a general idea on what a compiler, interpreter, and assembler are for -- that is to enhance the programmability of a computer by providing **software abstraction.** If you're interested, you can choose to take compiler related electives in the future. 
 
-# Appendix: More About `beta.uasm`
+# Appendix
+
+This section gives more elaboration about `beta.uasm` assembler implementation.
 
 
 ### Basic Values Loading Into Memory

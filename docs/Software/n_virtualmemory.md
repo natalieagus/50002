@@ -370,7 +370,7 @@ Upon execution of the first few lines of instruction of the process's entry poin
 The OS Kernel will then handle this "missing" page and start copying them over to the physical memory from the swap space (or other parts of disk if it's first-time access ever), hence turning these pages to be **resident**, which means that it has a `PPN` assigned to it. The kernel then updates the corresponding entry of the page table and the TLB.
 
 {: .highlight}
-Many page faults will occur as the process begins its execution **until most of the working set of pages are in physical memory** (not the entire process, as some processes can be way larger than the actual size of your physical memory, e.g: your video games). If you're interested to know how `VA` is mapped to swap space, [refer to this section](mapping-va-to-swap-space) in Appendix. 
+Many page faults will occur as the process begins its execution **until most of the working set of pages are in physical memory** (not the entire process, as some processes can be way larger than the actual size of your physical memory, e.g: your video games). If you're interested to know how `VA` is mapped to swap space, [refer to this section](#mapping-va-to-swap-space) in Appendix. 
 
 In other words, the OS  Kernel <span class="orange-bold">bring only necessary pages</span> that are going to be executed onto the physical memory as the process runs, abd thus the name **demand paging** for this technique.
 
@@ -506,7 +506,7 @@ The context number can be appended to the requested `VPN` to find its correct `P
 
 With context numbering, we do not have to **flush** (reset) the TLB whenever the CPU changes context, that is when switching the execution of one process with another. It only needs to **update** the page table pointer so that it points to the start of the page table section for this new context. 
 
-If you're interested to know more about how the page table pointer is updated in practice using the context number, refer to this section in [appendix](page-table-pointer).
+If you're interested to know more about how the page table pointer is updated in practice using the context number, refer to this section in [Appendix](#page-table-pointer).
   
 
 ## [Using Cache with Virtual Memory](https://www.youtube.com/watch?v=19wS4GC6mbQ&t=3696s)
