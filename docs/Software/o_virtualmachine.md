@@ -72,7 +72,12 @@ A few of its important role include memory management, I/O handling, and process
 
 
 ### [A Process Context](https://www.youtube.com/watch?v=4pizOgCT11k&t=336s)
-In the previous chapter, we learned that each process has its own *`VA` to `PA`mapping* we call as part of a process **context**, hence allowing it to run on its own *virtual memory*.
+In the previous chapter, we learned that each process has its own *`VA` to `PA`mapping* we call as part of a process **context**, hence allowing it to run on its own *virtual memory*. Each process also needs to have its own **context**.
+
+{:.new-title}
+> Definition
+>
+> The term "process context" refers to the set of information that represents a process's state at any given time, enabling the operating system to save and restore its state as needed, especially during a switch from one process to another. 
 
 Assigning a separate context for each process has two crucial benefits:
 
@@ -97,19 +102,21 @@ These processes are **isolated** from one another, meaning that `Pi` cannot acce
 
 <img src="https://dropbox.com/s/fvo6fllqrwwg2qr/context.png?raw=1"  class="center_fourty"  >
 
-
+### Writing a Kernel 
 Writing an Operating System Kernel is not a trivial task as one has to take into consideration a plethora of issues (security, performance, memory management, scheduling, etc). However with its presence, it makes easier to write all other programs. 
 
-{: .note}
-An OS Kernel provides a layer of **abstraction**, allowing each program to run on a  **virtual machine**, devoid of any knowledge and care about any other processes.
+{: .note-title}
+> Abstraction
+> 
+> An OS Kernel provides a layer of **abstraction**, allowing each program to run on a  **virtual machine**, devoid of any knowledge and care about any other processes.
 
 
-## [Building a Virtual Machine ](https://www.youtube.com/watch?v=4pizOgCT11k&t=710s)
+## [Building a Virtual Processor ](https://www.youtube.com/watch?v=4pizOgCT11k&t=710s)
 
 ###  [Hardware Supported Kernel Mode and User Mode](https://www.youtube.com/watch?v=4pizOgCT11k&t=798s)
 To support a safe virtual machine for each process, we need to establish the notion of **dual mode system**, that is a system that has a **Kernel Mode** (privileged mode) and a **User Mode** (non-privileged mode): 
 
-* The OS Kernel runs in *full privilege* mode called the **Kernel Mode**, and it oversees the execution of all processes in the computer system, handles real I/O devices, and emulate virtual I/O device for each process. 
+* The OS Kernel runs in *full privilege* mode called the **Kernel Mode**, and it's code is made with the ability to oversee the execution of all processes in the computer system, handles real I/O devices, and emulate virtual I/O device for each process. 
 
 * All other programs do **not** have such *privileged* features like the kernel. We call these programs as running in *non-privileged* **mode** called the **User Mode** with limited access to any hardware resources:
 	* No direct access to actual hardware 
@@ -118,6 +125,7 @@ To support a safe virtual machine for each process, we need to establish the not
 
 The Kernel will **handle** the need of these programs running in user mode for access to various hardware resources: access to I/O devices, interprocess communication, allocation/deallocation of  shared memory space, etc.  
 
+{:.note}
 This is a **major benefit**: programs can be easily written as if they have *absolute* access to *all* hardware resources (not just the physical memory), without having to worry about sharing them with other running processes. 
 
 
@@ -134,26 +142,29 @@ The main idea of OS multiplexing is illustrated below using two processes `P1` a
 <img src="https://dropbox.com/s/p5r7q2uit6vbdkz/process.png?raw=1"  class="center_seventy"  >
   
 The arrow illustrates the flow of execution in time:
-* At first, the CPU runs some task from `P1`. 
-* After some time `t`, imagine that a *timed  interrupt* (caused by other asynchronous hardware, e.g: a *timer*) occurs. This causes the CPU to execute part of the kernel program that handles such **asynchronous interrupt**, hence *pausing* the execution of `P1`.
-* This interrupt handler (part of the Kernel code) takes control of the CPU when hardware interrupt occurs, and **saves** the  current **context** (PC, Registers, etc)  of P1 to a dedicated space **(Kernel Stack)** in the Memory Unit  (*so that P1's progress is not lost and can be resumed later on*) before performing a **context switch**.
-* After the context switch is complete, `P2` runs and progresses for some time `t` before another *hardware interrupt* occurs. The entire context switch process is repeated to pause `P2`, resume `P1`, and so forth. 
+1. At first, the CPU runs some task from `P1`. 
+2.  After some time `t`, imagine that a *timed  interrupt* (caused by other asynchronous hardware, e.g: a *timer*) occurs. This causes the CPU to execute part of the kernel program that handles such **asynchronous interrupt**, hence *pausing* the execution of `P1`. 
+3. The interrupt handler (part of the Kernel) takes control of the CPU when hardware interrupt occurs, and **saves** the  current **context** (PC, Registers, etc)  of P1 to a dedicated space **(Kernel Stack)** in the Memory Unit  (*so that P1's progress is not lost and can be resumed later on*) before performing a **context switch**.
+4. After the context switch is complete, `P2` runs and progresses for some time `t` before another *hardware interrupt* occurs. The entire context switch process is repeated to pause `P2`, resume `P1`, and so forth. 
 
+Refer to [appendix](timer interrupt) section if you'd like to know how this timer interrupt is set. 
 
 {: .note}
 Note that some books might call a process' **context** (PC, Registers, Stack, etc) as its **state** as well. 
 
-During **context switch**, two things happen:
+During **context switch** from `P1` context to `P2` context, two things should happen:
 1. The Kernel loads the context of `P2` to the CPU (and also the required resources, mapping, etc), and
 2. Resume the execution of `P2`. 
 
 
-In practice, the interrupt handler will examine the cause of the asynchronous interrupt. In the event of **periodic** interrupt caused by a timer, the handler will delegate the task to the  **kernel scheduler** whose job is to decide which process to run next, and prepare the **necessary** information and context to load this process back into the CPU so that the selected process may resume smoothly. When the scheduler returns to the handler, the handler resumes execution of the CPU by simply setting `PC` $$\leftarrow$$ `Reg[XP] - 4`. 
+In practice, the interrupt handler will examine the <span class="orange-bold">cause</span> of the asynchronous interrupt. In the event of **periodic** interrupt caused by a timer, the handler will delegate the task to the  **kernel scheduler** whose job is to decide which process to run next, and prepare the **necessary** information and context to load this process back into the CPU so that the selected process may resume smoothly. When the scheduler returns to the handler, the handler resumes execution of the CPU by simply setting `PC` $$\leftarrow$$ `Reg[XP] - 4`. 
 
 The key hardware that allows for OS Multiplexing is the **asynchronous hardware interrupt**. We will simply call asynchronous interrupt as just "interrupt" for simplicity. There also exist a synchronous interrupt which we call as "trap" instead (see the later chapters). 
 
-{: .note}
-The term **asynchronous** comes from the fact that the interrupt will **NOT** be synchronised with the CPU clock. It can come at any moment. Inputs that causes these async interrupts include keyboard presses, mouse clicks, and scheduler's timer. On the other hand, there are interrupts that are **sychronous** (with the CPU clock), for example **faulty instructions** will trigger a synchronous interrupt (trap). Unlike mouse clicks that can arrive at any time, execution of (faulty) instruction is **synchronous** with the CPU clock. 
+{: .note-title}
+> Async Interrupt
+> 
+> The term **asynchronous** comes from the fact that the interrupt will **NOT** be synchronised with the CPU clock. It can come at any moment. Inputs that causes these async interrupts include keyboard presses, mouse clicks, and scheduler's timer. On the other hand, there are interrupts that are **sychronous** (with the CPU clock), for example **faulty instructions** will trigger a synchronous interrupt (trap). Unlike mouse clicks that can arrive at any time, execution of (faulty) instruction is **synchronous** with the CPU clock. 
   
 
 ## [Hardware Support for OS Multiplexing ](https://www.youtube.com/watch?v=4pizOgCT11k&t=1285s)
@@ -186,7 +197,7 @@ At each CLK cycle, the Control Unit always checks whether `IRQ` is `1` or `0`.
 {: .note-title}
 > `IRQ` is Asynchronous
 > 
-> Note that `IRQ` may turn to be `1` asynchronously, e.g: in the "*middle*" or even towards the end of a particular CPU CLK cycle.  However the Control Unit is synchronised with CPU CLK. Therefore, this may only *trigger* an interrupt in the next CPU CLK tick. The exact implementation is <span class="orange-bold">hardware dependent</span>. 
+> Note that `IRQ` may turn to be `1` asynchronously, e.g: in the "*middle*" or even towards the end of a particular CPU CLK cycle.  However the Control Unit is synchronised with CPU CLK. Therefore, this may only *trigger* an interrupt in the next CPU CLK tick. The exact implementation is <span class="orange-bold">hardware dependent</span>, but here's a general idea:
 > * If `IRQ==0`, the Control Unit produces all control signals as dictated by `OPCODE` received.
 > * Else if `IRQ==1`, the Control Unit *traps* the PC onto the interrupt handler located at `XAddr`, by setting `PCSEL` value into `100`; *so that the PC points to `XAddr` in the next clock cycle.* 
 >	* At the same time, it stores the address of the *next* instruction (`PC+4`) at Register `XP` (`R30`).  
@@ -207,8 +218,9 @@ If (IRQ==1 && PC31 == 0):
 
 The asynchronous interrupt handler is part of the Kernel's code which <span style="color:red; font-weight: bold;">ENTRY POINT</span> must be located at `XAddr`, which is usually pre-determined memory address. In $$\beta$$ CPU, `XAddr` is set at `0x8000 0008`. Since `XAddr` is just one word of instruction, it is typically a `BR` to another address in memory that contains the instruction for the rest of the handler. 
 
-The first few instructions of the interrupt handler typically saves current process states (`R0` to `R30` contents, PC state, stack, and others) in **process table**. 
+The first few instructions of the interrupt handler typically saves current process states (`R0` to `R30` contents, PC state, stack, and others) in the **process table**. 
 
+#### Process Table
 {: .new-title}
 > Process Table
 > 
@@ -217,7 +229,7 @@ The first few instructions of the interrupt handler typically saves current proc
 
 <img src="https://dropbox.com/s/ypgac0w1uotc471/proctable.png?raw=1"   class="center_fifty" >
 
-Then, the handler will figure out which specific **service routine** needs to be called to service the interrupt, e.g: scheduler, or I/O routines. Afterwards, the service routine returns back to this interrupt handler. The handler finally sets  `PC` $$\leftarrow$$ `Reg[XP]-4`. 
+Afterwards, the handler will figure out which specific **service routine** needs to be called to service the interrupt, e.g: scheduler, or I/O routines. Afterwards, the service routine returns back to this interrupt handler. The handler finally sets  `PC` $$\leftarrow$$ `Reg[XP]-4`. 
 
 {: .new-title}
 > Think!
@@ -255,11 +267,11 @@ That means we can divide the physical memory address space into two sections:
 
 Kernel program and kernel data (privileged information, data structures, etc) are stored in the **kernel space**. The rest of the program in the system live in the **user space**. 
 
+
 #### User Mode Restrictions
-With this notion, it is easy to enforce restricted access to the kernel space.
 
 ##### Restricted Branch
-Programs running in user mode (`PC31 == 0`) can **never** branch or jump to instructions in the kernel space. Computations of next instruction address in`BEQ`, `BNE`, and `JMP` cannot change `PC31` value from `0` to `1`. 
+Programs running in user mode (`PC31 == 0`) can **never** branch or jump to instructions in the kernel space placed at higher memory address (`0x8000000` onwards). Computations of next instruction address in`BEQ`, `BNE`, and `JMP` cannot change `PC31` value from `0` to `1`. 
 
 ##### Restricted Memory Access
 Programs runing in user mode (`PC31 == 0`) can never load/store to data from/to the kernel space. Computations of addresses in `LD`, `LDR` and `ST` **ignores** the MSB. 
@@ -271,35 +283,110 @@ Entry to the kernel mode can only be done via restricted entry points. In $$\bet
 2. Illegal operations (setting PC to `ILLOP: 0x8000 0004`), or
 3. Reset (setting PC to `RESET: 0x8000 0000`)
 
+{:.important}
+We may also assume that we will never use the entire 32-bit address space for the $$\beta$$ CPU, thereforew we can utilise its MSB as a "status" flag. However, we lose the address "space" protection. Suppose we place Kernel code at address `0x00ABCC00`. There's nothing that can stop a user program from branching directly to this address (unlike if we place the kernel code at address `0x80ABCC00`). This is just one of the <span class="orange-bold">consequences</span> of using `PC31` as the CPU status. There has to be other additional hardware unit in place to protect the kernel space in the RAM. 
 
-## Additional Sections
-These sections are not tested and are written solely to complete the knowledge.
 
-### [Reentrancy](https://www.youtube.com/watch?v=4pizOgCT11k&t=2045s) 
 
-When the CPU is in the kernel mode (`PC31 == 1`), i.e: handling an interrupt, it is important to consider whether or not we should allow **more interrupts** to occur. 
+## [Synchronous Interrupt: Trap and Exception](https://www.youtube.com/watch?v=4pizOgCT11k&t=2120s)
+Both Trap and Exception falls under **synchronous interrupt** category. This is a situation when the CPU executes a **faulty** instruction. This include illegal operations (instructions with `OPCODE` that doesn't correspond to the ISA), and **exceptions**: division by zero, invalid memory access, invalid transfer of control (`BR/JMP`).  
 
-{: .highlight}
-Handlers which are interruptible are said to be **re-entrant**.
+Executing any of these faulty instructions caused any process running in user mode to **trap** itself into the kernel mode because the `PC` will be directed to execute the trap handler (e.g: `PC` $$\leftarrow$$ `ILLOP`). This handler is part of the Kernel code, and it will examine the cause of the trap. It will also perform the appropriate action that will "handle" this faulty event: e.g: crash (terminate) the calling process or other services. 
 
-$$\beta$$ CPU's handlers are set to be **non re-entrant**. Interrupts are **disabled** when it is in kernel mode and `IRQ` signal is <span style="color:red; font-weight: bold;">ignored</span> in the hardware when `PC31 == 1`.
-
-This means that while user programs are interruptible, kernel programs are **not**. The reason behind disabling interrupt while being in the Kernel mode is to prevent the Kernel from **corrupting** itself. 
+### Trap
 
 {: .new-title}
-> Why?
+> Definition
 > 
-> Consider the scenario where the interrupt handler is in the middle of saving program states. Allowing another interrupt to occur in the middle of a save might cause data **loss** (corruption). 
+> A user process may intentionally execute an **illegal instruction** to **trap** itself to the kernel mode and gain access to its **services**. This is also known as making a **Supervisor Call** or a **System Call**. Control to the trap-calling process will be return after the requested service is completed. We will learn more about this next term. 
 
-The **drawback** to an uninterruptible kernel is that there's no way to get the system to work again if the kernel is buggy and runs into an infinite loop, except via hard reset. **The kernel program has to be written very carefully so as not to contain such bugs**. In practice, kernel bugs exists and we often know this as [*kernel panic* or the *blue screen of death*](https://en.wikipedia.org/wiki/Kernel_panic). 
+I/O devices **are actually shared** among all processes in the system, but  their programs are written with complete disregard for other processes in the memory. Therefore, user processes may utilise **traps** to synchronously interrupt themselves, and *legally* switch to the Kernel mode whenever they need access to the I/O devices (or other kernel services).  
+
+User processes do not have *privileged* access, meaning that they do not directly control the use of* any hardware (I/O) devices, such as getting keyboard input, mouse click, perform disk saves, etc. It needs to **trap** itself to the Kernel program and execute **specific** parts of the Kernel code to obtain access to these I/O devices. 
 
 
-### Implementation of Timer
+As said above, the event of transferring control of the CPU to OS Kernel synchronously / voluntarily when a process needs Kernel's services is known as the **system call** (a.k.a: **SVC**, or **supervisor call**). This can be done by leaving the index of the requested service at `Reg[R0]` and executing a specific illegal operation (an instruction with `OPCODE` not corresponding to any other instruction in the ISA). In `bsim`, this `OPCODE` is chosen to be `1`. 
 
-{: .warning}
-This section is written for those who are curious about how exactly our Kernel scheduler works with the Hardware Timer and perform context switching. If you're not comfortable with hardware (basically our 1D project), you may skip this section. 
+There are many types of Kernel services, one of them includes read/write access from/to the I/O devices. They are typically indexed, and the process needs to leave the index of the needed system call in `Reg[R0]` before trapping itself to the Kernel Program. 
 
-To support timesharing, there has to be some sort of mechanism that will periodically interrupts the execution of an ongoing process so that another process can be swapped in. For instance, if we have a single core CPU and two running processes P1 and P2, we would like to run P1 for `n` clock cycles, and then *pausing it*. Afterwards, the Kernel scheduler will run P2 for another `n` clock cycles before pausing P2 as well and resume the execution of P1. This round robin scheduling will be repeated until one of the processes terminate. If `n` is small and the CPU clock frequency is large enough, there will be the illusion that P1 and P2 (to the eyes of the user) runs in the single core CPU **simultaneously**. 
+The datapath in the event of *illegal operation* is:
+
+<img src="/50002/assets/contentimage/beta/illop.png"  class="center_seventy"/>
+
+During this event, 
+* Control unit sets `PCSEL = 011`, and saves `PC+4` into `Reg[XP]`
+* The PC will execute the instruction at location `ILLOP` in the next cycle where the illegal operation handler resides.   
+* The illop handler will  look at `Reg[R0]` and invoke the right service routine to provide the requested service. 
+	* Upon returning, the service routine will put its return the result in `Reg[R0]`. 
+* The illop handler resumes the execution of the originating process:
+	* `JMP[XP]`
+
+{:.note} 
+There's no need to do `Reg[XP] = Reg[XP]-4` because we don't wish to re-invoke the Trap / SVC when we return to the calling process.
+
+#### Trap Example
+One common scenario where a process running in user mode needs the Kernel service is when it asks for keyboard / mouse input, for example:
+
+```cpp
+int c;
+c = getchar();
+printf("%s", c);
+```
+
+The function  `getchar` contains several instructions that perform a **supervisor call** in order to fetch any character input from the keyboard. When translated into **assembly**, the supervisor call is made by trapping the process into the illop handler, thus **transferring** CPU control to the Kernel so that it can fetch any character input from the keyboard. The process execution can be **resumed** only after the  `getchar` task is done. That is why we notice that our process "hangs" (didn't execute the next `print` line until a user entered an input with a return carriage). 
+
+Finally, this C process stores the character input left at `Reg[R0]` by the Kernel into memory location `c`. 
+
+### Exceptions
+The details about exceptions are out of this syllabus, and you will learn more about this next term. The major difference between Exceptions and Trap is that Exceptions are caused by **truly** faulty instructions and the program causing these exceptions are typically <span style="color:red; font-weight: bold;">terminated</span> by the Kernel. We commonly understand this phenomenon as "crashing" programs.
+
+  
+
+## [Summary](https://www.youtube.com/watch?v=4pizOgCT11k&t=2495s)
+[You may want to watch the post lecture videos here. ](https://youtu.be/uG1HEKdJpxY)
+ 
+In summary, we have learned how the presence of OS Kernel and hardware support provide an abstraction for each running process, thus allowing them to run in an isolated manner; on their own virtual machine.  
+
+The Kernel **manages**  the execution of all processes, as well as all I/O devices, and provides **services** to all these processes. There are two ways to transfer CPU control between user programs to kernel programs:
+* Firstly, is through **asynchronous interrupt**: `IRQ` is set to `1` 
+* Secondly, is through **synchronous interrupt**: when the process generates an **exception** hence **trapping** itself to the handler and enters Kernel mode. 
+
+During either case of interrupt, `PC+4` is stored at `Reg[XP]` so that the system knows how to resume the process later on. 
+
+The $$\beta$$ Kernel called the [TinyOS](https://github.com/natalieagus/lab-tinyOS) that you will encounter in 50005 is **non-reentrant** (the CPU cannot be interrupted while in Kernel Mode). It is a simple Kernel. In practice, most modern [UNIX Kernels are reentrant](https://www.oreilly.com/library/view/understanding-the-linux/0596002130/ch01s06.html). Careful writing and construction of the Kernel program is required. 
+
+# Appendix
+
+## Timer Interrupt
+The kernel uses a hardware timer to enforce context switches, ensuring that no single process monopolizes the CPU, thus allowing for efficient multitasking and fair CPU time distribution among all processes. Here’s how this is typically set up and managed:
+
+### Setting the Timer for Context Switches:
+
+1. **Timer Configuration**: The kernel configures a hardware timer to generate an interrupt at regular intervals. This interval is often referred to as the "time slice" or "quantum". The duration of this time slice can vary depending on the scheduling policy of the operating system.
+
+2. **Timer Interrupt**: When the timer interval expires, the hardware timer generates an interrupt that is handled by the CPU.
+
+3. **Interrupt Service Routine (ISR)**: This interrupt triggers an Interrupt Service Routine (ISR) managed by the kernel. The ISR is a special function within the kernel that responds to the timer interrupt.
+
+4. **Context Switch**: During the ISR, the kernel performs several tasks, including saving the state (context) of the currently running process and determining which process to run next based on the scheduling algorithm. The kernel then loads the context of the next process to be executed, effectively performing a context switch.
+
+5. **Resuming Execution**: After the context switch, the newly selected process begins or resumes execution, using the CPU until the next timer interrupt occurs or until the process voluntarily relinquishes the CPU (e.g., waiting for I/O operations to complete).
+
+### Placement and Types of Timers:
+
+- **Hardware Timer**: The timer used for context switching is a physical hardware timer on the computer’s motherboard or integrated into the CPU itself. Common types include programmable interval timers (PIT), high precision event timers (HPET), and advanced programmable interrupt controllers (APIC).
+
+- **Dedicated Timer Chips**: Some systems may use dedicated timer chips like the Intel 8253 or 8254, which have historically been used in PC architectures.
+
+- **System-on-Chip (SoC) Timers**: In more integrated systems, such as those in embedded devices or modern PCs and servers, timers might be part of the SoC alongside the CPU, memory controllers, and other peripherals.
+
+This hardware timer is crucial because it ensures that the operating system maintains control over the CPU and can enforce its scheduling policies, keeping the system responsive and stable by preventing any single process from running too long without interruption.
+
+
+
+### An example with Beta CPU 
+
+As mentioned above, to support timesharing, there has to be some sort of mechanism that will periodically interrupts the execution of an ongoing process so that another process can be swapped in. For instance, if we have a single core CPU and two running processes P1 and P2, we would like to run P1 for `n` clock cycles, and then *pausing it*. Afterwards, the Kernel scheduler will run P2 for another `n` clock cycles before pausing P2 as well and resume the execution of P1. This round robin scheduling will be repeated until one of the processes terminate. If `n` is small and the CPU clock frequency is large enough, there will be the illusion that P1 and P2 (to the eyes of the user) runs in the single core CPU **simultaneously**. 
 
 {: .highlight}
 **Rapid context switching** between P1 and P2 gives the illusion of **parallel execution**. This phenomenon is called **concurrency**.
@@ -354,70 +441,21 @@ Although not written,  `save_location` is a label, representing an address to st
   
 
 
+## [Reentrancy](https://www.youtube.com/watch?v=4pizOgCT11k&t=2045s) 
 
-## [Synchronous Interrupt: Trap and Exception](https://www.youtube.com/watch?v=4pizOgCT11k&t=2120s)
-Both Trap and Exception falls under **synchronous interrupt** category. This is a situation when the CPU executes a **faulty** instruction. This include illegal operations (instructions with `OPCODE` that doesn't correspond to the ISA), and **exceptions**: division by zero, invalid memory access, invalid transfer of control (`BR/JMP`).  
+When the CPU is in the kernel mode (`PC31 == 1`), i.e: handling an interrupt, it is important to consider whether or not we should allow **more interrupts** to occur. 
 
-Executing any of these faulty instructions caused any process running in user mode to **trap** itself into the kernel mode because the `PC` will be directed to execute the trap handler (e.g: `PC` $$\leftarrow$$ `ILLOP`). This handler is part of the Kernel code, and it will examine the cause of the trap. It will also perform the appropriate action that will "handle" this faulty event: e.g: crash (terminate) the calling process or other services. 
+{: .highlight}
+Handlers which are interruptible are said to be **re-entrant**.
 
-### Trap
+$$\beta$$ CPU's handlers are set to be **non re-entrant**. Interrupts are **disabled** when it is in kernel mode and `IRQ` signal is <span style="color:red; font-weight: bold;">ignored</span> in the hardware when `PC31 == 1`.
+
+This means that while user programs are interruptible, kernel programs are **not**. The reason behind disabling interrupt while being in the Kernel mode is to prevent the Kernel from **corrupting** itself. 
 
 {: .new-title}
-> Definition
+> Why?
 > 
-> A user process may intentionally execute an **illegal instruction** to **trap** itself to the kernel mode and gain access to its **services**. This is also known as making a **Supervisor Call** or a **System Call**. Control to the trap-calling process will be return after the requested service is completed. We will learn more about this next term. 
+> Consider the scenario where the interrupt handler is in the middle of saving program states. Allowing another interrupt to occur in the middle of a save might cause data **loss** (corruption). 
 
-I/O devices **are actually shared** among all processes in the system, but  their programs are written with complete disregard for other processes in the memory. Therefore, user processes may utilise **traps** to synchronously interrupt themselves, and *legally* switch to the Kernel mode whenever they need access to the I/O devices (or other kernel services).  
-
-User processes do not have *privileged* access, meaning that they do not directly control the use of* any hardware (I/O) devices, such as getting keyboard input, mouse click, perform disk saves, etc. It needs to **trap** itself to the Kernel program and execute **specific** parts of the Kernel code to obtain access to these I/O devices. 
-
-
-As said above, the event of transferring control of the CPU to OS Kernel synchronously / voluntarily when a process needs Kernel's services is known as the **system call** (a.k.a: **SVC**, or **supervisor call**). This can be done by leaving the index of the requested service at `Reg[R0]` and executing a specific illegal operation (an instruction with `OPCODE` not corresponding to any other instruction in the ISA). In `bsim`, this `OPCODE` is chosen to be `1`. 
-
-There are many types of Kernel services, one of them includes read/write access from/to the I/O devices. They are typically indexed, and the process needs to leave the index of the needed system call in `Reg[R0]` before trapping itself to the Kernel Program. 
-
-The datapath in the event of *illegal operation* is:
-
-<img src="/50002/assets/contentimage/beta/illop.png"  class="center_seventy"/>
-
-During this event, 
-* Control unit sets `PCSEL = 011`, and saves `PC+4` into `Reg[XP]`
-* The PC will execute the instruction at location `ILLOP` in the next cycle where the illegal operation handler resides.   
-* The illop handler will  look at `Reg[R0]` and invoke the right service routine to provide the requested service. 
-	* Upon returning, the service routine will put its return the result in `Reg[R0]`. 
-* The illop handler resumes the execution of the originating process:
-	* `JMP[XP]`
-
-{:.note} 
-There's no need to do `Reg[XP] = Reg[XP]-4` because we don't wish to re-invoke the Trap / SVC when we return to the calling process.
-
-One common scenario where a process running in user mode needs the Kernel service is when it asks for keyboard / mouse input, for example:
-
-```cpp
-int c;
-c = getchar();
-printf("%s", c);
-```
-
-The function  `getchar` contains several instructions that perform a **supervisor call** in order to fetch any character input from the keyboard. When translated into **assembly**, the supervisor call is made by trapping the process into the illop handler, thus **transferring** CPU control to the Kernel so that it can fetch any character input from the keyboard. The process execution can be **resumed** only after the  `getchar` task is done. That is why we notice that our process "hangs" (didn't execute the next `print` line until a user entered an input with a return carriage). 
-
-Finally, this C process stores the character input left at `Reg[R0]` by the Kernel into memory location `c`. 
-
-### Exceptions
-The details about exceptions are out of this syllabus, and you will learn more about this next term. The major difference between Exceptions and Trap is that Exceptions are caused by **truly** faulty instructions and the program causing these exceptions are typically <span style="color:red; font-weight: bold;">terminated</span> by the Kernel. We commonly understand this phenomenon as "crashing" programs.
-
-  
-
-## [Summary](https://www.youtube.com/watch?v=4pizOgCT11k&t=2495s)
-[You may want to watch the post lecture videos here. ](https://youtu.be/uG1HEKdJpxY)
- 
-In summary, we have learned how the presence of OS Kernel and hardware support provide an abstraction for each running process, thus allowing them to run in an isolated manner; on their own virtual machine.  
-
-The Kernel **manages**  the execution of all processes, as well as all I/O devices, and provides **services** to all these processes. There are two ways to transfer CPU control between user programs to kernel programs:
-* Firstly, is through **asynchronous interrupt**: `IRQ` is set to `1` 
-* Secondly, is through **synchronous interrupt**: when the process generates an **exception** hence **trapping** itself to the handler and enters Kernel mode. 
-
-During either case of interrupt, `PC+4` is stored at `Reg[XP]` so that the system knows how to resume the process later on. 
-
-The $$\beta$$ Kernel called the [TinyOS](https://github.com/natalieagus/lab-tinyOS) that you will encounter in 50005 is **non-reentrant** (the CPU cannot be interrupted while in Kernel Mode). It is a simple Kernel. In practice, most modern [UNIX Kernels are reentrant](https://www.oreilly.com/library/view/understanding-the-linux/0596002130/ch01s06.html). Careful writing and construction of the Kernel program is required. 
+The **drawback** to an uninterruptible kernel is that there's no way to get the system to work again if the kernel is buggy and runs into an infinite loop, except via hard reset. **The kernel program has to be written very carefully so as not to contain such bugs**. In practice, kernel bugs exists and we often know this as [*kernel panic* or the *blue screen of death*](https://en.wikipedia.org/wiki/Kernel_panic). 
 
