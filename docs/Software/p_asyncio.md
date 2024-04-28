@@ -66,7 +66,9 @@ Each I/O device actually independently of the CPU. They do not operate with the 
 * They have their own simple processing unit (logic devices), and memory units to contain temporary data, e.g: preset mouse clicks or custom keyboard key value that will eventually be fetched by the CPU. 
 * They're typically orders of magnitude **slower** than a CPU in operation and data processing. 
 
-> Further details on how I/O devices work are beyond the scope of this course. Right now it is sufficient to think of them as independent devices, asynchronous from the CPU. 
+{:.note}
+Further details on how I/O devices work are beyond the scope of this course. Right now it is sufficient to think of them as independent devices, asynchronous from the CPU. 
+
 
 In this chapter, we will learn how I/O requests are **handled**. The main idea for asynchronous I/O handling is as follows:
 * Each process that requires **usage** of I/O devices will  have to make a <span style="color:red; font-weight: bold;">supervisor call</span>. This **traps** to the Kernel mode, and the Kernel will handle this request. 
@@ -92,25 +94,26 @@ Kernel serves as an intermediary program between any I/O devices (hardware) and 
 ## The Supervisor Call
 
 {: .new-title}
-> SVC
+> SVC in Beta CPU
 > 
 > The SVC is a 32-bit instruction that triggers an `ILLOP`, hence **trapping** the process onto the Kernel whenever it is executed. In $$\beta$$'s Tint OS , the `SVC` has the opcode: `000001` and the remaining 26 bits can be used to "*index*" the Kernel service requested.  
 
-In our supplementary Lab (Tiny OS), we have only 8 service routines by default. Hence only 3 lower bits of the instruction will encode the index of the requested service routines. 
 
-This special SVC instruction allows processes to "communicate" with the Kernel by trapping (stopping) its own operation and transferring CPU control to the Kernel (entered via the `ILLOP` handler). The `ILLOP` handler saves the states of the calling process, before it checks if the `OPCODE` of the instruction that triggers the trap is indeed `000001`. 
+This special SVC instruction allows processes to "communicate" with the Kernel by trapping (stopping) its own operation and transferring CPU control to the Kernel (entered via the `ILLOP` handler). The `ILLOP` handler saves the states of the calling process, before it checks if the `OPCODE` of the instruction that triggers the trap is some known value, e.g: `000001`.  If its `OPCODE` is indeed `000001`, it will branch to a generic `SVC_handler`, else it will branch to error exception handler (which will probably terminate the calling process). 
 
-If its `OPCODE` is indeed `000001`, it will branch to a generic `SVC_handler`, else it will branch to error exception handler (which will probably terminate the calling process). 
+{:.note}
+You may refer to this [Appendix](supervisor-call-implementation) section to know how SVC is actually implemented in other architectures. The idea remains generally similar. 
 
 ### SVC Handler
 The `SVC` handler does the following routine:
 1. Examine the last faulting instruction, 
 2. Extract its lower `N` bits and 
-3. Branch to the appropriate service routine as requested by the calling process based on the value of `N`: 
-   
-Here's the extracted code snippet from the TinyOS lab ([`tinyOS.uasm` file](https://github.com/natalieagus/lab-tinyOS)):
+3. Branch to the appropriate service routine as requested by the calling process based on the value of `N`
+
+#### Sample Implementation of SVC Handler 
+Here's a sample code snippet for an `SVC_Handler` function in Beta CPU: 
 ```nasm
-SVC_Handler: 
+SVC_Handler:  
 LD(XP, -4, R0)	| examine the faulting instruction
 ANDC(R0, Nx{b1}, R0) | mask out lower N bits, if N == 4, then we have 0xF, or if N is 7 then we have 0x7F
 SHLC(R0, 2, R0) | make a word index
@@ -118,9 +121,11 @@ LD(R0, SVCtbl, R0) | load service table entry
 JMP(R0) | jump to the appropriate handler
 ```
 
-`SVCtbl` is a **label** for specific Kernel subroutines, such as writing output or fetching input from each devices. `UUO` is a macro that directs the PC to each subroutine: `HaltH`, `WrMsgH`. You can read `lab6.uasm` to for more details. 
+`SVCtbl` is a **label** for specific Kernel subroutines. It is a simple data structure containing entry points to many other SVC handlers, such as writing output or fetching input from each devices. `UUO` is a **macro** that directs the PC to each subroutine: `HaltH`, `WrMsgH`. 
 
 ```
+.macro UUO(ADR) LONG(ADR+PC_SUPERVISOR)	| Auxiliary Macros
+
 SVCTbl: UUO(HaltH) | SVC(0): User-mode HALT instruction
 UUO(WrMsgH) | SVC(1): Write message
 UUO(WrChH) | SVC(2): Write Character
@@ -131,30 +136,32 @@ UUO(SignalH) | SVC(6): Signal(S), S in R3
 UUO(YieldH) | SVC(7): Yield()
 ```
 
-### Example SVC
+### Example SVC Application
 One common example where `SVC` is made is when a process checks for keyboard input. Processes running in user mode do not have direct access to any of the hardware, so they cannot simply check the keyboard for new keystrokes. Moreover, the keyboard is **shared** for usage by many processes running in the system, for example: text editors, web browsers, video game, etc.  
 
-For example, the execution of `getchar()` in C in the previous notes triggers a supervisor call. This means that the process needs to switch to the Kernel mode, and the Kernel helped to check if there's such input from the keyboard. 
+For example, the execution of `getchar()` in C triggers a supervisor call. This means that the process needs to switch to the Kernel mode, and the Kernel helped to check if there's such input from the keyboard. 
 
-The function `getchar()` is translated into `SVC(j)` (among other things):
-> The value of `j` is OS dependent. 
+The function `getchar()` is translated into `SVC(j)` (among other things). The value of `j` is OS dependent. 
 
 `SVC(j)` **traps** the calling user process, switching it to the Kernel mode and execute Kernel `ILLOP` handler. It eventually examines the value of `j` and branch to the appropriate service **routine** that is able fetch the input for the keyboard: `GetKeyH`. Instructions in `GetKeyH` fetches the requested  (assuming there's an input), and  leave it in `Reg[R0]` 
 
-`GetKeyH` returns to the  remaining of the `ILLOP` handler. It **restores** the state of the calling process and resume it. Finally, the calling process can now get the requested keyboard character from `Reg[R0]`
+`GetKeyH` returns to the  remaining of the `ILLOP` handler. It **restores** the state of the calling process and resume it. Finally, the calling process can now get the requested keyboard character from `Reg[R0]`.
+
+{:.note-title}
+> What if requested char is not available?
+>
+> When a process uses `getchar()`, the character it requests may not be immediately available if the user hasn't yet pressed a key. In such cases, the kernel may block the calling process—putting it on hold—and switch to running another process until the required keystroke occurs. You may read this [appendix](process-scheduling) section to find out more.  
 
 ## Asynchronous Input Handling
-Since I/O devices are asynchronous, an efficient way has to be devised to pass **new inputs**  to the CPU to be stored in the physical memory. 
-
 {: .new-title}
 > Asynchronous input
 > 
-> We **cannot guarantee** that there's any process that asks for an input at the **exact moment** *that new input* is detected by  the I/O devices. Therefore, the Kernel has to temporarily **store** these new inputs in the Kernel Space until there's some process that asks for it (and then it can be *cleared* from the Kernel Space).  
+> We **cannot guarantee** that there's any process that asks for an input at the <span class="orange-bold">exact moment</span> *that new input* is detected by  the I/O devices. Therefore, the Kernel has to temporarily **store** these new inputs in the Kernel Space until there's some process that asks for it (and then it can be *cleared* from the Kernel Space).  
 
 ### Interrupt-Driven System
 Most modern system is **interrupt-driven**, with the following characteristics. 
 
-Any I/O device can *request* for an I/O interrupt;  in the presence of new input or update, etc. This will interrupt the execution of the current process in the CPU, causing the PC to switch to `XAddr` (*interrupt handler*). 
+Any I/O device can *request* for an I/O interrupt;  in the presence of new input or update, etc. This will <span class="orange-bold">interrupt</span> the execution of the current process in the CPU, causing the PC to switch to `XAddr` (*interrupt handler*). 
 
 The interrupt handler does the following:
   1. **Saves** the states of the interrupted process,
@@ -171,10 +178,11 @@ It is imperative to realise that when a process requests for a keystroke (e.g: a
 
  <img src="https://www.dropbox.com/s/h0e8epak5kz505o/rth.png?raw=1"  class="center_seventy"  >
 
-When I/O interrupt requests are made by devices, they may not be immediately **serviced** by the Kernel. The figure above illustrates a general timeline from when a particular **interrupt request** is first made to the moment it is serviced.
+When asynchronous I/O interrupt requests are made by external devices, they may not be immediately **serviced** by the Kernel. The figure above illustrates a general timeline from when a particular **interrupt request** is first made to the moment it is serviced.
 
 ### Deadline
-{: .new-title}
+
+{: .note-title}
 > Deadline
 > 
 > Each interrupt request usually have a <span style="color:red; font-weight: bold;">deadline</span>, and the Kernel has to finish servicing the request before the said deadline. 
@@ -183,7 +191,7 @@ For example, the Kernel has to service each keyboard input interrupt request **q
 
 ### Latency
 
-{: .new-title}
+{: .note-title}
 > Latency
 > 
 > Latency is defined as the amount of elapsed time from interrupt is first requested up until  the Kernel **BEGIN** servicing it. 
@@ -196,7 +204,10 @@ The Kernel scheduler in the kernel has to ensure that the interrupt request is s
 
 The computer is connected to multiple I/O devices (disk, keyboard, mouse, printer, monitor, etc). Each device is capable of making asynchronous interrupt requests. Whenever multiple interrupt requests are invoked, the Kernel has to decide how to schedule these interrupt requests.
 
-There are two different policies that can be adopted to handle I/O interrupts.
+There are two different policies that can be adopted to handle I/O interrupts: weak and strong policy. 
+
+{:.note}
+We will only elaborate (in theory) each policy briefly. Please refer to the [appendix](kernel-i/o-management) section if you'd like to know more about its implementation in the Kernel and the required hardware support. 
 
 ### Weak Policy
 A **Weak policy** is non-preemptive. This means that the machine has a **fixed** ordering of device handling, but it will not pre-empt current service. It will only reorder requests in the interrupt **queue** based on the types of devices.  
@@ -204,27 +215,13 @@ A **Weak policy** is non-preemptive. This means that the machine has a **fixed**
 For example, it will prioritise mouse click over keyboard presses by default at all times. However, if a request to handle mouse click comes and  the CPU is already handling keyboard press request, it will not interrupt the current keyboard press service. 
 
 ### Strong Policy
-A **Strong policy** is **preemptive**.  This means that it allows interrupt **handlers** with lower priority to be interrupted **only** by other handlers with *higher* priority level. 
+A **Strong policy** is <span class="orange-bold">preemptive</span>.  This means that it allows interrupt **handlers** with lower priority to be interrupted **only** by other handlers with *higher* priority level. 
 
-If the CPU runs a handler of lower priority, it will be forced to perform a **context switch** to run the handler with the higher priority (required to service the interrupt). The interrupted handler can be **resumed** later on (not completely restarted, as its old state was saved) after the interrupting higher has finished execution. 
-
-{: .note}
-Handlers of the same priority level **can never** interrupt each other.
-
-### Setting Handler Priority Level
-In the Beta CPU, the **priority level** for each interrupt handler can be implemented using the  higher `p` bits of `PC`. As an implication, the actual **location** of the handler in memory decides its priority level. Some hardware tweaks on the CPU is needed to support this feature, but we don't have to dwell too deep into that at this point. 
+If the CPU is currently running a handler of lower priority, it will be forced to perform a **context switch** to run the handler with the higher priority (required to service the interrupt). The interrupted handler can be **resumed** later on (not completely restarted, as its old state was saved) after the interrupting higher has finished execution. 
 
 {: .note}
-Note that other CPU architecture uses special registers that indicate handler priority level and not necesarily the `PC` register. This example is for illustration purposes only.
+Handlers of the same priority level **can never** interrupt each other. Refer to the [appendix](setting-beta-cpu-handler-priority-level) section on how the Beta CPU may set handler priority level. 
 
-<img src="https://dropbox.com/s/7w7oy1jyaa5trnq/pc.png?raw=1"     class="center_fifty"  >
-
-The number of bits of `p` depends on how many priority levels you want the machine to have, e.g: 3 bits for 8 priority levels.
-
-{: .note}
-This is analogous to what we have learned before. A system two mode: Kernel and User mode, is differentiated only with the MSB of the PC -- `1` for Kernel mode (hence enabling the highest privilege) and `0` for user mode. 
-
-  
 ### Recurring Interrupts 
 
 Some interrupts may arrive **periodically**, for example if we are expecting a huge incoming scanned data from a printer, the interrupts might occur periodically as the printer is ready to send the data chunk by chunk.
@@ -232,13 +229,13 @@ Some interrupts may arrive **periodically**, for example if we are expecting a h
 {: .important-title}
 > The Consequence
 > 
-> If higher priority interrupts happen at a high rate, requests with lower priorities might be interrupted repeatedly -- potentially resulting in **starvation**. 
+> If higher priority interrupts happen at a high rate, requests with lower priorities might be interrupted repeatedly -- potentially resulting in <span class="orange-bold">starvation</span>. 
 
 There is no easy solution to this issue, each scheduling policy has their own pros and cons. 
 
 ## Worked Example on Scheduling Policies
 
-Each scheduling policy has its own pros and cons. Non-preemptive Kernel is simpler to develop, but without it the device with the slowest service time constraints response to the fastest devices. With preemption, latency for higher priority devices is not affected by service times of the lower priority devices. However, this additional feature will complicate the Kernel code. 
+Each scheduling policy has its own pros and cons. Non-preemptive Kernel (Weak Policy) is simpler to develop, but without it the device with the slowest service time constraints response to the fastest devices. With preemption (Strong Policy) latency for higher priority devices is not affected by service times of the lower priority devices. However, this additional feature will complicate the Kernel code. 
 
 We will use some examples to understand how each policy works. 
 
@@ -252,9 +249,11 @@ Consider a computer that has three devices: disk, keyboard and printer. Each has
 | Printer | 0.4 |3 | 1
 
 {: .note-title}
-> Sample Explanation
+> Period
 > 
-> The keyboard will throw an interrupt once every 10ms (or 1000 times per second). It has to be **serviced** within 3ms from the time the interrupt occurs, and it requires 0.8ms for the CPU to service the request. The same idea works for Disk and Printer. 
+> The value of "period" indicates how often each device will trigger an async interrupt.
+> 
+> For instance, the keyboard will throw an interrupt once every 10ms (or 1000 times per second). It has to be **serviced** within 3ms from the time the interrupt occurs, and it requires 0.8ms for the CPU to service the request. The same idea works for Disk and Printer. 
 
 ### Case 1: Without scheduling
 
@@ -267,9 +266,9 @@ Without any scheduling measure, the worst case latency seen **by each device** i
 | Printer | 0.4 |3 | 1 |1.3
 
 {: .note-title}
-> Sample Explanation
+> Explanation
 > 
-> Without any scheduling, it is a first-come-first-serve basis. At t=0, all 3 requests arrive at the same time, but we don't know the exact ordering. For Keyboard, the worst case latency is that Disk and Printer arrived split second earlier than itself, hence it has to wait for the two devices to finish their service requests before Keyboard can start to be serviced. The same idea works for Disk and Printer. 
+> Without any scheduling policy in place, it is a first-come-first-serve basis. At t=0, all 3 requests arrive at the same time, but we don't know the exact ordering. For Keyboard, the worst case latency is that Disk and Printer arrived split second earlier than itself, hence it has to wait for the two devices to finish their service requests before Keyboard can start to be serviced. The same idea works for Disk and Printer. 
 
 
 ### Case 2: Weak, Non-Preemptive Policy
@@ -344,36 +343,40 @@ The worst-case latency for each device is now:
 {: .important-title}
 > Deadline still not met
 > 
-> The deadline for both Keyboard and Printer is still not met. The **worst case latency** only signifies the time taken from the moment the request arrives to the moment the service begins. It does not signifies anything about when the servicing will **complete**. Since Printer's worst case latency is 0.5ms and its service time is 0.4ms, it will surely <span style="color:red; font-weight: bold;">exceeds</span> the deadline of 0.7ms!. 
+> The deadline for both Keyboard and Printer is still not met. The **worst case latency** only signifies the time taken from the moment the request arrives to the moment the service begins. It does not signifies anything about when the servicing will **complete**. Since Printer's worst case latency is 0.5ms and its service time is 0.4ms, it will surely <span style="color:red; font-weight: bold;">exceeds</span> the deadline of 0.7ms! 
  
 To understand this more clearly, let's draw an interrupt timeline diagram.
 
-#### Interrupt Timeline
+#### Interrupt Timeline Diagram
 The interrupt requests from these devices are recurring with certain **frequency** (or period). For example, the keyboard interrupt occurs once every 10ms, and so on. 
 
 We can draw the timeline of these interrupts as follows:
-<img src="https://dropbox.com/s/vn644mg6ifqnqd1/irqstimeline.png?raw=1"  class="center_seventy"  >
+<img src="https://dropbox.com/s/vn644mg6ifqnqd1/irqstimeline.png?raw=1"  class="center_full"  >
 
 Since the disk has the highest priority, it will be serviced first. Once finished, the printer will be serviced. 
 
 After both disk and printer are serviced, the keyboard is serviced at `t=0.9`. However, it will be interrupted by the printer at `t=1`. Therefore, the keyboard service time is <span style="color:red; font-weight: bold;">spread</span> out due to interrupts from printer and disks: 
 
-<img src="https://dropbox.com/s/5wodlj3hwpx9ltm/interruptsvc.png?raw=1"    >
+<img src="https://dropbox.com/s/5wodlj3hwpx9ltm/interruptsvc.png?raw=1"  class="center_full"   >
 
 {: .note}
-The keyboard service time is spread out (red region) due to interrupts from printer and disks
+The keyboard service time is spread out (red region) due to preemptive interrupts from printer and disks
 
 {: .new-title}
-> Think!
+> Self Interrupt
 > 
-> If we use **strong** policy, and priority ordering **Disk $$>$$ Printer $$>$$ Keyboard** (same as above), we know that disk can always pre-empt other ongoing services. Can disk request interrupt any ongoing disk request? Most importantly, is it possible for **two** or more requests from disk to be present at the same time (one in queue and one is currently serviced by the CPU)? Hint: compare disk's interrupt period with its service time.
+> If we use **strong** policy, and priority ordering **Disk $$>$$ Printer $$>$$ Keyboard** (same as above), we know that disk can always pre-empt other ongoing services. Can disk request interrupt any ongoing Disk request? Is it possible for **two** or more requests from disk to be present at the same time (one in queue and one is currently serviced by the CPU)? 
+> 
+> Hint: compare disk's interrupt period with its service time.
 
 #### Missing Deadline
 The priority ordering Disk  > Printer  > Keyboard in Case 3 above **does not** fulfil the deadline for Printer or Keyboard when either **weak** or **strong** policy is used since the worst-case latency + service time for each Printer and Keyboard exceeds their deadline. 
 
+Therefore, this scenario is simply <span class="orange-bold">not feasible</span> and we need to relax one of the device's deadline. Give this [appendix](missing-i/o-deadline) section a read if you'd like to know more about the real-world consequences of missing those deadlines.  
+
 
 {: .new-title}
-> Think!
+> New deadline
 > 
 > Suppose we have the same hardware priority ordering: **Disk $$>$$ Printer $$>$$ Keyboard** (same as Case 2 above).
 > 
@@ -381,6 +384,8 @@ The priority ordering Disk  > Printer  > Keyboard in Case 3 above **does not** f
 > 
 > As further practice, ask yourselves if there exist **another** priority ordering such as Printer  > Disk  > Keyboard that can meet the **original** deadline with **strong policy**. 
 
+
+If you're interested in reading more about *how* the values of deadline, max latency, and frequency (or period) is set in practice, give this section in [Appendix](setting-i/o-requirements) a read. 
 
 ### Effective Interrupt Load
 
@@ -399,7 +404,10 @@ The Effective Interrupt Load (in %) from each device is therefore:
 * Disk: $$500 \times 0.0005 = 0.25 = 25.0\%$$
 * Printer: $$1000 \times 0.0004 = 0.4 = 40.0\%$$
  
-The total Interrupt load of these devices on the CPU is therefore the sum of those three: 73%. The remaining fraction: 27% is what is left for processes to use to do actual computation. A computer will not be able to run any other processes if the Interrupt load reaches 100%. This is one of the possible reasons on why your older computer "freezes" for a moment when you overwhelm it with inputs (e.g: backing up to external disk, typing furiously, opening hundreds of background processes at the same time).
+{:.highlight}
+The total Interrupt load of these devices on the CPU is therefore the sum of those three: 73%. The remaining fraction: 27% is what is left for processes to use to do actual computation. 
+
+A computer will <span class="orange-bold">not</span> be able to run any other processes if the Interrupt load reaches 100%. This is one of the possible reasons on why your older computer "freezes" for a moment when you overwhelm it with inputs (e.g: backing up to external disk, typing furiously, opening hundreds of background processes at the same time).
 
  
 ## Summary
@@ -420,6 +428,244 @@ We have come to the end of this course, and we have learned quite a great deal o
 
 Next term we will build on this knowledge and learn more about the fuller extent of the role of an OS Kernel: supporting interprocesses communcation, synchronizing between processes, and guarding shared resources between processes running in the system. 
 
+# Appendix
 
+## Supervisor Call Implementation
 
+In both x86 and ARM architectures, a system call (also known as a supervisor call or SVC) allows user-mode applications to safely request services and perform operations that require higher privilege levels, typically provided by the operating system kernel. Here’s how system calls are implemented in these two architectures:
 
+### x86 Architecture
+In x86 systems, system calls can be made through several mechanisms, depending on the operating system and the specific processor features available:
+
+1. **INT Instruction**: Traditionally, system calls in x86 were made using the software interrupt instruction `INT`. For example, on older versions of Microsoft Windows, `INT 0x2E` was used to invoke system services, while Linux used `INT 0x80`.
+
+2. **SYSCALL/SYSRET Instructions**: Modern x86 processors provide the `SYSCALL` and `SYSRET` instructions, which are designed for fast system call entry and exit. These are used in modern Linux and Windows systems and offer a more efficient way to switch to kernel mode compared to software interrupts.
+
+3. **SYSENTER/SYSEXIT Instructions**: Introduced by Intel as part of their SpeedStep technology, these instructions provide another method to perform fast system calls, optimized for quickly transitioning between user and kernel mode.
+
+Each method involves switching the CPU to a higher privilege level (kernel mode), where the operating system kernel can safely execute the requested operation before returning to user mode.
+
+### ARM Architecture
+In ARM, the approach to system calls is somewhat different and can vary more significantly between processor models and operating systems:
+
+1. **SVC Instruction**: The ARM architecture uses a specific instruction called `SVC` (Supervisor Call), previously known as `SWI` (Software Interrupt), for making system calls. This instruction causes the processor to switch from user mode to supervisor mode, triggering an exception that is handled by the kernel.
+
+2. **Secure Monitor Call (SMC)**: In systems with TrustZone technology, `SMC` is used for secure system calls that involve switching to a secure execution environment.
+
+The `SVC` instruction in ARM is followed by a number that typically serves as an index to the system call that the application wants to execute. For example, `SVC 0` might correspond to the system call for exiting a process. The kernel has a handler that interprets this number, performs the requested operation, and then returns control to user space.
+
+### Piggybacking on Illegal Instructions
+In some systems, especially older or more constrained environments, system calls can be piggybacked on illegal operation codes (opcodes). When an illegal opcode is executed, it triggers an undefined instruction exception that the kernel handles. The kernel then checks if the exception corresponds to a legitimate system call encoded in an illegal instruction, allowing the system to repurpose this mechanism for system calls. This method is less common and generally not used in modern general-purpose systems due to its inefficiency and the potential for confusing genuine illegal operations with system calls.
+
+{:.note}
+Both x86 and ARM have optimized these mechanisms over time to balance the security and performance implications of switching between user and kernel modes.
+
+### RISCV Architecture
+RISC-V, like ARM and x86, provides mechanisms for implementing system calls, but with its own unique approach consistent with its modular and extensible ISA (Instruction Set Architecture). Here’s how system calls are handled in RISC-V architectures:
+
+#### Environment Call (ECALL) and Return (ERET)
+
+1. **ECALL (Environment Call)**: In RISC-V, the system call mechanism is provided by the `ECALL` instruction. This instruction is used by user-mode applications to enter the supervisor or machine mode, depending on the current privilege level of the process, to request services performed by the operating system kernel.
+
+2. **MRET and SRET (Machine/Supervisor Return)**: After the system call is processed, the kernel mode software uses either `MRET` (Machine Return) or `SRET` (Supervisor Return) instructions to return to the previous privilege level. These instructions help in returning to the user mode after the system call has been serviced, ensuring a smooth transition back to the process that made the call.
+
+#### How ECALL Works
+
+- **Triggering an Exception**: The `ECALL` instruction causes an immediate transfer of control to a predefined exception handler based on the current privilege level (e.g., from user to supervisor mode). This is similar to a trap or interrupt.
+- **Exception Handling**: The processor jumps to an exception handler address specified in the `stvec` (Supervisor Trap-Vector Base-Address Register) or `mtvec` (Machine Trap-Vector Base-Address Register), where the kernel's system call dispatcher is located.
+- **Dispatcher**: The kernel dispatcher examines registers to determine which system call is being requested. System call parameters are typically passed through registers, and the system call number might also be in a register, as defined by the ABI (Application Binary Interface).
+- **Return**: After the system call is executed, control is returned to the user program via `SRET` or `MRET`, which also restores the relevant context.
+
+#### Advantages of RISC-V's Approach
+
+RISC-V’s approach to system calls via `ECALL` is designed to be simple yet efficient, aligning with the overall RISC-V philosophy of keeping the core instruction set minimal while allowing for extensions. This simplicity facilitates easier implementation and verification, essential for security and reliability in modern computing environments.
+
+RISC-V continues to evolve, and its approach to system calls exemplifies its flexibility and adaptability, making it suitable for a wide range of applications from embedded systems to high-performance computing.
+
+## Process Scheduling
+
+When a process invokes a function like `getchar()`, which reads a character from standard input, there can be a situation where the character is not immediately available—for example, if the user has not yet pressed a key. Here's how the operating system, particularly its kernel, handles such a scenario:
+
+- **Blocking the Process**: If the character data is not available, the kernel will block the process that called `getchar()`. This means the process is put into a waiting state where it does not consume CPU resources while it waits for the input to become available.
+
+- **Context Switch**: With the process that called `getchar()` now blocked, the kernel performs a context switch. This switch involves saving the state of the currently running process and loading the state of another process that is ready to run. This ensures that the CPU is used efficiently, not wasting cycles on a process that is simply waiting.
+
+- **Interrupt Handling**: Input from the keyboard is typically handled via interrupts. When the user finally presses a key, an interrupt is generated by the keyboard hardware. The kernel's interrupt handler will then process this interrupt.
+
+- **Unblocking the Process**: Once the interrupt indicates that the key press has occurred and the character is available, the kernel will move the previously blocked process back to a ready state. This transition involves updating the process's status and placing it back in the queue for execution.
+
+- **Resuming Execution**: When the scheduler next selects this process for execution, the state of the process is restored, and `getchar()` can now return the newly available character data to the process.
+
+This mechanism of blocking, context switching, and unblocking allows the operating system to manage resources efficiently and ensure that the system remains responsive even when some processes are waiting for input or other events.
+
+## Kernel I/O Management
+
+The kernel's handling of asynchronous I/O (input/output) operations and priority implementations, whether weak or strong, involves complex mechanisms that ensure efficient system performance and resource utilization. Here’s a detailed look at how these concepts are managed:
+
+### Asynchronous I/O Handling
+
+Asynchronous I/O allows processes to perform other tasks without waiting for I/O operations to complete, enhancing overall system efficiency and responsiveness. Here's how it's typically handled:
+
+1. **Non-Blocking Requests**: When a process initiates an asynchronous I/O request, it issues a non-blocking call that immediately returns control to the process. The process can continue executing while the I/O operation is handled in the background.
+
+2. **Kernel I/O Scheduling**: The kernel manages these I/O requests through its I/O scheduler, which prioritizes I/O operations based on various factors, including the type of device and the urgency of the requests.
+
+3. **Completion Notification**: Once the I/O operation is complete, the kernel notifies the process. This can be handled through different mechanisms, such as callbacks, signals, or polling. A callback involves the kernel executing a specified function when the I/O completes, while signals involve the kernel sending a signal to the process, and polling requires the process to periodically check the status of the operation.
+
+### Priority Implementations (Weak vs. Strong)
+
+Priority in process scheduling and resource allocation can be categorized as weak or strong priority implementations:
+
+1. **Weak Priority**: In systems with weak priority, while processes are given priorities, these are used as suggestions rather than strict rules. Higher priority processes are generally scheduled before lower priority ones, but the system may occasionally allow lower priority processes to run to ensure fairness or prevent starvation.
+
+2. **Strong Priority**: Systems with strong priority strictly adhere to the priority levels assigned to each process. A higher priority process will always preempt a lower priority process, and lower priority processes won't execute until all higher priority processes have completed their tasks or are blocked/waiting.
+
+### Kernel's Role in Priority Management
+
+- **Process Scheduler**: The kernel's scheduler uses priority information to determine the order of process execution. It allocates CPU time based on process priority, adjusting the scheduling as necessary to accommodate real-time requirements or user-configured priorities.
+
+- **Real-Time Scheduling**: In systems that support real-time operations, the scheduler often implements strong priority policies to meet timing constraints. Real-time schedulers typically use algorithms like Rate Monotonic Scheduling (RMS) or Earliest Deadline First (EDF) to manage processes with strict execution requirements.
+
+- **Resource Allocation**: Beyond CPU scheduling, priority may also influence other aspects of resource allocation, such as memory access, disk I/O prioritization, and access to peripheral devices.
+
+The kernel's handling of asynchronous I/O and priority is critical for maintaining system performance and stability, especially in environments where multiple processes compete for limited resources or where real-time processing is required.
+
+### Hardware Support for Handler Priority Level
+
+The concept of I/O priority at the hardware level involves several mechanisms within the CPU and associated hardware that help the operating system kernel manage and prioritize I/O operations. This is crucial in systems where I/O performance can significantly impact overall system responsiveness and throughput. Here’s how I/O priority is typically handled at the hardware level:
+
+### Hardware Support for I/O Priority
+
+1. **DMA (Direct Memory Access) Controllers**:
+   - DMA controllers enable devices to transfer data directly to/from main memory without constant CPU intervention, freeing up CPU resources for other tasks.
+   - Some advanced DMA controllers support priority levels, allowing higher priority I/O operations to preempt lower priority ones. This can be crucial in systems where certain I/O operations are time-sensitive.
+
+2. **Interrupt Controllers**:
+   - Modern CPUs use advanced programmable interrupt controllers, such as the Advanced Programmable Interrupt Controller (APIC) in x86 architectures.
+   - These controllers can prioritize interrupts from various I/O devices. Higher priority interrupts can be configured to preempt lower priority ones, ensuring that critical I/O operations are handled more promptly.
+
+3. **I/O Schedulers in Storage Controllers**:
+   - Storage controllers, especially in RAID configurations or enterprise-level SSDs, often have their own built-in I/O schedulers.
+   - These schedulers can prioritize I/O operations based on predefined rules or dynamically based on system load and I/O operation characteristics.
+
+4. **Network Interface Cards (NICs)**:
+   - Modern NICs can prioritize network packets based on Quality of Service (QoS) parameters, which is especially important in network-intensive applications.
+   - Some NICs also support offloading of certain network-related processing tasks from the CPU, effectively prioritizing network I/O at the hardware level.
+
+### Integration with Operating System
+
+- **Driver and Kernel Support**:
+   - Device drivers play a critical role in implementing I/O priority by interacting directly with the hardware features. These drivers must be designed to take advantage of hardware capabilities like DMA prioritization and interrupt handling.
+   - The kernel itself must support these features through its subsystems, such as the interrupt handling system and the block device layer.
+
+- **I/O Priority in the Kernel**:
+   - Operating systems often extend hardware I/O prioritization capabilities with software strategies. For example, Linux uses the Completely Fair Scheduler (CFS) for CPU scheduling and has several I/O schedulers (CFQ, Deadline, NOOP) that manage how block I/O operations are prioritized and dispatched.
+   - The kernel can also manage I/O priority through its virtual memory system, by prioritizing page-in (reading from disk into RAM) and page-out (writing from RAM to disk) operations.
+
+### Challenges and Considerations
+
+- **Hardware Limitations**:
+   - While hardware support can significantly improve I/O performance, the actual effectiveness depends on the specific capabilities and configurations of the hardware.
+   - Compatibility between different hardware components and consistency in performance across different loads and conditions can also be challenging.
+
+- **Complexity**:
+   - Managing I/O priority at both the hardware and software levels adds complexity to system design and operation.
+   - Ensuring that priority settings at the hardware level align with the overall system priorities set at the software level requires careful tuning and coordination.
+
+In summary, I/O priority at the hardware level involves a mix of DMA prioritization, interrupt prioritization, and specialized controllers with built-in scheduling capabilities. Effective use of these features requires tight integration with the operating system's kernel and careful management to ensure that I/O operations contribute positively to system performance and responsiveness.
+
+## Setting Beta CPU Handler Priority Level
+In the Beta CPU, the **priority level** for each interrupt handler can be implemented using the  higher `p` bits of `PC`. As an implication, the actual **location** of the handler in memory decides its priority level. Some further hardware tweaks on the CPU is needed to support this feature, but we don't have to dwell too deep into that at this point. 
+
+{: .note}
+Note that other CPU architecture uses special registers that indicate handler priority level and not necesarily the `PC` register. This example is for illustration purposes only.
+
+<img src="https://dropbox.com/s/7w7oy1jyaa5trnq/pc.png?raw=1"     class="center_fifty"  >
+
+The number of bits of `p` depends on how many priority levels you want the machine to have, e.g: 3 bits for 8 priority levels.
+
+{: .note}
+This is analogous to what we have learned before. A system two mode: Kernel and User mode, is differentiated only with the MSB of the PC -- `1` for Kernel mode (hence enabling the highest privilege) and `0` for user mode. 
+
+## Setting I/O Requirements
+The period of interrupt, maximum latency, or deadlines for devices such as keyboards, printers, mice, and other peripherals are typically determined by a combination of device specifications, driver implementations, and operating system requirements. Here’s how these parameters are established and computed in the real world:
+
+### Device Specifications
+
+1. **Manufacturer Specifications**:
+   - Device manufacturers define the base operational parameters of a device, including its capabilities and limitations regarding data transmission rates, response times, and interrupt frequencies. 
+   - For example, a keyboard might be designed to generate an interrupt every time a key is pressed or released, while a printer might generate interrupts for status changes such as "ready" or "out of paper."
+
+2. **Hardware Capabilities**:
+   - The design of the hardware itself, including the microcontroller used in the device and its I/O interfaces, sets certain limitations and capabilities for handling interrupts.
+
+### Operating System and Driver Implementation
+
+1. **Driver Configuration**:
+   - Device drivers, which serve as intermediaries between the operating system and the hardware, are configured to handle interrupts based on the device's specifications and the needs of the OS.
+   - Drivers can implement buffering strategies, debouncing algorithms for keyboards, or flow control mechanisms, all of which can affect how interrupts are managed.
+
+2. **OS Policies and Mechanisms**:
+   - The operating system may have policies for managing device interrupts, which can include settings for priorities and handling mechanisms to ensure responsiveness or to meet real-time requirements.
+   - For instance, an OS might prioritize mouse and keyboard interrupts over slower devices like printers to maintain a responsive user interface.
+
+### Computation and Adjustment of Interrupt Periods
+
+1. **Real-Time Operating System (RTOS) Requirements**:
+   - In systems where timing is critical (real-time systems), the interrupt period might be carefully calculated to ensure that the system can meet specific deadlines. This involves real-time analysis and possibly simulations during the system design phase.
+   - RTOSes often use a combination of static settings (defined at design-time based on worst-case scenarios) and dynamic adjustments (at runtime based on current system load and performance metrics).
+
+2. **Empirical Testing and Performance Tuning**:
+   - Device behavior under various conditions can be empirically tested to determine optimal interrupt frequencies and handling strategies.
+   - Performance tuning might involve adjusting the interrupt rate based on observed system performance and application requirements.
+
+3. **Feedback from the System**:
+   - Some advanced systems implement feedback mechanisms where the device driver or the device itself can adjust the rate of interrupts based on feedback from the operating system about current load and performance.
+
+### Example in Real-World Devices
+
+- **Keyboard**: The interrupt period is typically determined by the hardware capability to detect key presses and the necessity to debounce mechanical switches to avoid multiple interrupts for a single press. The OS driver handles these interrupts by reading the key press data and possibly managing an internal queue to process inputs as they come.
+  
+- **Mouse**: Interrupts are generated based on movement detection or button presses. The frequency of interrupts can be adjusted (in some advanced mice) to balance responsiveness with system load.
+
+- **Printer**: Interrupts might be less frequent, triggered by events such as job completion or error states. The system needs to ensure that these interrupts are handled in a timely manner to manage print jobs efficiently.
+
+In summary, the decision on the period of interrupt and maximum latency is a multi-faceted process involving hardware capabilities, software implementation, and real-world testing and tuning to meet specific application needs and system performance requirements.
+
+## Missing I/O Deadline 
+Missing a deadline in systems that rely on timely computing can have varying consequences depending on the type of system and the criticality of the task. The impact of missing a deadline is often categorized into how it affects system functionality and user experience. Here’s an overview of what can happen:
+
+### Soft Real-Time Systems
+In soft real-time systems, deadlines are important but not absolutely critical. Missing a deadline can degrade system performance and user experience but doesn't cause catastrophic failure. Here are some examples:
+
+- **Media Streaming**: If a video player misses frame rendering deadlines, the result might be decreased video quality or brief stutters. Although undesirable, this does not disrupt the primary function of the system.
+- **Web Servers**: Slower response times due to missed deadlines can lead to poor user experience but typically don’t disrupt service availability.
+
+### Hard Real-Time Systems
+In hard real-time systems, deadlines are critical, and missing a deadline can lead to system failure or serious consequences. These systems are often safety-critical.
+
+- **Automotive Systems**: In an automotive control system, such as a brake control system, missing a deadline might mean failing to apply brakes in time, potentially leading to an accident.
+- **Aerospace and Aviation**: Control systems in aircraft must respond within specified time frames. Missing a deadline could disrupt the operation of the aircraft, leading to dangerous situations.
+
+### Real-Time Financial Systems
+In financial trading systems, missing a deadline might mean missing the best moment to execute a high-value trade, potentially resulting in significant financial loss.
+
+### Consequences of Missing Deadlines
+
+1. **Degraded Performance**: In less critical scenarios, missing deadlines might simply result in reduced system performance, which can affect efficiency and user satisfaction.
+
+2. **System Instability**: In more severe cases, missing deadlines can lead to system instability. Tasks may accumulate, leading to a snowball effect where subsequent deadlines are also missed, worsening the situation.
+
+3. **Safety Risks**: In systems where safety is a concern, missing deadlines can directly endanger human lives.
+
+4. **Economic Impact**: Missed deadlines in commercial systems can lead to financial loss, either through direct operational impacts or due to the loss of customer trust and business reputation.
+
+### Management Strategies
+To mitigate the risks of missing deadlines, systems designers use several strategies:
+
+- **Priority Scheduling**: Ensuring that the most critical tasks have the highest priority and preempt less critical tasks.
+- **Redundancy**: Implementing redundant systems that can take over if one component fails to meet its deadline.
+- **Time Budgeting**: Allocating sufficient time buffers and realistically assessing task completion times to ensure deadlines are met.
+- **Load Shedding**: Temporarily reducing functionality or quality of service to maintain critical operations during high load periods.
+
+Overall, the handling and prioritization of tasks in systems with stringent deadline requirements are crucial for maintaining operational integrity, safety, and user satisfaction. Missing a deadline is a significant event that system designers strive to avoid through careful planning and robust system design.
