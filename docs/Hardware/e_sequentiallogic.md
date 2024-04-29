@@ -384,7 +384,9 @@ You may want to watch the post lecture videos here:
 * [Part 3: D-Flip Flop or Registers](https://youtu.be/X6kxFjAHkSw)
 * [Part 4: Synchronisation](https://youtu.be/eK4JCv1oADo)
 
-As stated above, a **sequential** logic device has a *general* structure as shown below:
+A sequential logic device is a type of digital circuit where the output not only depends on the current inputs but also on the **history** of inputs, storing information about past events. This behavior is achieved through the use of storage elements like flip-flops or latches. These devices are fundamental in creating memory and more complex processing units within digital systems, enabling the implementation of functions such as counters, shift registers, and state machines.
+
+A **sequential** logic device has a *general* structure as shown below:
 
 <img src="https://dropbox.com/s/7crg33w0e7yg2hn/Q1.png?raw=1"    class="center_seventy"   >
 

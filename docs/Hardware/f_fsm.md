@@ -395,6 +395,8 @@ By definition, an FSM needs a **finite** amount of states. It is able to impleme
 > 
 > We know that we can definitely write a program that performs parenthesis checking easily, so we know that our computers aren't just a *simple* FSM. In the next chapter, we will learned another class of machine called the **Turing Machine** that can tackle this issue. 
 
+Finally, we learned how to **minimise** an FSM while keeping its functionality equivalent to save resources. 
+
 # Appendix
 
 ## Hardware Representation of Digital Lock FSM 
