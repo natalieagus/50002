@@ -316,9 +316,16 @@ Given the $$t_{pd}$$ and $$t_{cd}$$ for the NAND gate: $$t_{pd} = 4 ns$$, $$t_{c
 ## Summary
 [You may want to watch the post lecture videos here.](https://youtu.be/cJxBlO5NMGs)
 
-We begin the chapter by understanding how a MOSFET can be used as the most basic building block (element) in digital circuits. There are two types of FETs, namely NFET and PFET, that can be "activated" (switched on) or "deactivated" (switched off) using proper voltages supplied at its gate. 
+This chapter CMOS technology delves into the fundamentals of using MOSFETs (Metal-Oxide Semiconductor Field-Effect Transistors) in designing combinational logic circuits. Here are the key points:
 
-It takes time for these FETs to work, e.g: reacting to the input voltage at its gate and establish a (low or high) voltage value at its drain. Therefore it is important to specify the *timing specifications* of a combinational logic device so that users may know how long the device takes to *react* (to a new valid input, or to an invalid input). 
+1. **MOSFETs Basics**: Explains the structure and operation of NFETs and PFETs, highlighting their roles in creating logic circuits.
+2. **Complementary CMOS**: Discusses the use of complementary pairs of NFETs and PFETs to form stable, efficient logic gates.
+3. **Logic Gates**: Describes how basic logic gates like NAND and NOR are formed using CMOS technology.
+4. **Timing Specifications**: Covers critical timing aspects like propagation and contamination delays that affect circuit performance.
+
+We elaborate on how CMOS technology underpins the design of efficient and reliable digital circuits. Through detailed discussions on MOSFETs and their applications, we illustrate how different types of MOSFETs (NFETs and PFETs) are used in tandem to ensure that digital logic circuits are both power-efficient and functionally reliable. Key concepts like the design of logic gates and the impact of timing delays on circuit performance are also explained, emphasizing the practical importance of these designs in modern electronics.
+
+We begin the chapter by understanding how a MOSFET can be used as the most basic building block (element) in digital circuits. There are two types of FETs, namely NFET and PFET, that can be "activated" (switched on) or "deactivated" (switched off) using proper voltages supplied at its gate. It takes *time* for these FETs to produce a valid voltage value, e.g: reacting to the input voltage at its gate and establish a (low or high) voltage value at its drain. Therefore it is important to specify the *timing specifications* of a combinational logic device so that users may know how long the device takes to *react* (to a new valid input, or to an invalid input). 
 
 {: .note}
 Knowing how long the combinational device takes to react (at most) tells us how *often* (e.g: at what rate) can we supply  new inputs to the device, and how fast the device can process/compute a *batch* of input values. 

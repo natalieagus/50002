@@ -506,6 +506,14 @@ To create a general purpose computers, we need to:
 * **Design a general purpose data path** (architecture), which can be used to efficiently solve most problems, and
 * **Design a proper instruction set** to allow for easier ways to control it. 
 
+
+The notes explore the design of the Beta Instruction Set Architecture (ISA), which serves as a foundational model to understand the functionalities of a programmable machine. Key aspects include:
+- **General-purpose Programmability**: The ISA defines a set of operations that allows the Beta machine to emulate other programs, thus highlighting the essence of programmability in modern computing.
+- **Instruction Characteristics**: Each instruction in the Beta ISA is encoded into 32-bits and executed atomically, meaning one instruction per clock cycle, which emphasizes efficiency and simplicity in processing.
+- **Register and Memory Model**: The architecture includes 33 registers, each 32 bits wide, and a memory unit that interacts through specific instructions like load and store. This model underpins the handling of data and instructions in a systematic and accessible manner.
+- **Instruction Encoding**: Two main types of encoding are detailed—Type 1 (without literals) for direct register operations, and Type 2 (with literals) for operations involving constants. This distinction helps in optimizing the instruction set for various computational needs.
+- **Practical Application**: The notes stress the importance of understanding the Beta documentation thoroughly to effectively utilize these concepts in designing and implementing low-level machine language programs.
+
 The $$\beta$$ ISA and its implementation, the $$\beta$$ CPU fulfils both requirement. If used to execute proper instruction, it should be able to emulate what Machine $$M$$ is able to do. 
 
 # Appendix

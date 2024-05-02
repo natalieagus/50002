@@ -563,18 +563,26 @@ Page must be fetched from the swap space and copied over to the Physical Memory.
 ## [Summary](https://www.youtube.com/watch?v=19wS4GC6mbQ&t=4180s) 
 [You may want to watch the post lecture videos here. ](https://youtu.be/oe_WHpAmgqM)
 
-As a summary, *virtual Memory* is a **memory management technique** that provides an **abstraction** of the storage resources so that programs can be written as if they have **full access** to the physical memory without having to consider where other processes reside. 
+Virtual Memory is a **memory management technique** that provides an **abstraction** of the storage resources so that programs can be written as if they have **full access** to the physical memory without having to consider where other processes reside. It allows computers to handle large and multiple applications beyond the physical memory limits by using disk space as an extension of RAM. It employs a memory management scheme called paging, where the Memory Management Unit (MMU) plays a critical role in translating virtual addresses to physical locations using page tables. Techniques such as demand paging and the use of Translation Lookaside Buffers (TLB) optimize this process, making efficient use of system resources and improving application performance.
 
-A small hardware called the **MMU** is created as part of the CPU board to support this technique. 
+{:.note}
+The Virtual Memory is crucial for handling multiple processes in modern computing environment
 
-Since each process is running in an **isolated** manner from one another (in its own *virtual space*, unaware of the presence of other processes), the OS **Kernel** can switch execution between programs -- giving the users an *illusion* as if these processes are running **simultaneously** with just a single CPU. The procedure that allows for this to happen seamlessly is called **rapid context switching.**
+Here are the key learning points: 
+1. **Virtual Memory Basics**: Explains virtual memory as a technique that simulates more memory space than is physically available, using disk space for excess data.
+2. **Memory Paging**: Introduces paging as a method for efficient memory use, detailing how pages are moved between disk and RAM.
+3. **Address Translation**: Covers the role of the Memory Management Unit (MMU) in converting virtual addresses to physical addresses.
+4. **Page Table Management**: Describes the structure and use of page tables in maintaining the mapping of virtual to physical addresses.
+5. **Demand Paging and TLB**: Discusses demand paging for handling page faults and the use of Translation Lookaside Buffers (TLB) to improve address translation efficiency.
+
+In the next chapter, we will learn how Virtual Memory is used to create Virtual Processor (Virtual Machine). Specifically, to learn how the OS Kernel is specially privileged **program** (not a process, but you may not be able to understand this statement fully now and that's okay) is responsible of managing hardware resources in a system and scheduling processes to share these limited resources, thus allowing each process  to run independently on its own ***virtual machine.*** The OS Kernel is responsible for <span class="orange-bold">process scheduling</span>. Each process is running in an **isolated** manner from one another (in its own *virtual space*, unaware of the presence of other processes), the OS **Kernel** can switch execution between programs -- giving the users an *illusion* as if these processes are running **simultaneously** with just a single CPU. The procedure that allows for this to happen seamlessly is called **rapid context switching.**
 
 {: .highlight}
 Context switching allows for **timesharing** among several processes, that is to share the CPU amongst multiple process executions. 
 
 The OS Kernel simply loads the appropriate context number and page table pointer when switching among processes. This way, the CPU can have access to instructions or data required to execute each process and switch executions between processes. 
 
-In the next chapter we will learn more about how the OS Kernel is specially privileged **program** (not a process, but you may not be able to understand this statement fully now and that's okay) is responsible of managing hardware resources in a system and scheduling processes to share these limited resources, thus allowing each process  to run independently on its own ***virtual machine.*** 
+
 
 
 # Appendix

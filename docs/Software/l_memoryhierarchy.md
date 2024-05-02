@@ -370,8 +370,28 @@ In this chapter, we are given a glimpse of various memory technology: from slowe
 
 We use a **hierarchy** of memory technology in our computer system to give it an illusion that it is running at a high (SRAM level) speed at the size and cost of a Disk. The idea is to use a small, but fast (and expensive) device made of SRAMs to **cache** most recently and frequently used information, and refer to the physical memory or disk as rarely as possible. The memory hierarchy idea is possible only because the locality of reference allows us to predict and keep a small copy of recently used instruction and data in **cache**.  
 
-We were then introduced to two basic types of cache design that can be integrated into our CPU: the FA cache (gold standard, very expensive) and DM cache (cheaper, but suffers contention and slightly slower than FA cache). 
+Here are the key concepts:
+1. **Levels of Memory**:
+   - **Registers**: The fastest and most expensive type of memory, located within the CPU itself, used for immediate operations.
+   - **Cache Memory**: Slightly slower than registers, cache is also more expensive than main memory but offers faster access to frequently used data through techniques like L1, L2, and L3 caches.
+   - **Main Memory (RAM)**: Provides larger storage capacity at lower speed and cost compared to cache. It is the main area where program applications and data in current use are kept so that they can be quickly reached by the CPU’s operations.
+   - **Secondary Storage**: Includes devices like hard drives and SSDs, which provide substantial storage capacity at much lower costs and slower access times compared to RAM.
 
+2. **Locality of Reference**:
+   - Utilizes the principle that programs tend to access a relatively small portion of their address space at any instant in time. This can be spatial, where data close to recently accessed data is accessed soon, or temporal, where recently accessed data is likely to be accessed again soon.
+
+3. **Performance Implications**:
+   - The memory hierarchy is designed to provide the CPU with the fastest possible access to data. The efficiency of memory hierarchy affects the overall performance of computing systems, as faster data access times can significantly enhance the speed at which programs execute.
+
+4. **Virtual Memory**:
+   - An extension of physical memory that allows for larger program execution than the available physical memory and supports safe memory sharing among multiple processes.
+
+5. **Cache Coherence and Management**:
+   - Ensures that an alteration of the values in one cache is immediately reflected in all other caches where that data might be stored, which is crucial in multi-core processors.
+
+By understanding the structure and function of the memory hierarchy, systems can be designed to efficiently handle varied process demands, improving both the speed and performance of computer systems.
+
+We were then introduced to two basic types of cache design that can be integrated into our CPU: the FA cache (gold standard, very expensive) and DM cache (cheaper, but suffers contention and slightly slower than FA cache). 
 In the next chapter, we will learn various **cache issues** and how to tackle them to meet our goal of having a "fast" and "cheap" computer with massive storage space.
 
 # Appendix

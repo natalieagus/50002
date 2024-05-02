@@ -58,7 +58,7 @@ Singapore University of Technology and Design
 
 A Finite State Machine does not keep track of the number of states it *visited*, it is only aware of the current state *it is in*. Therefore it is unable to solve problems like detecting palindrome or checking balanced parenthesis. There is no way to tell whether you have visited a state for the first time, or for the $$n^{th}$$ time. 
 
-The Turing Machine is a **mathematical** model of computation that defines an abstract **machine**. It is a machine that is able to implement **any** functionalities that FSM can implement, and it doesn't face this limitation that FSM has. 
+The Turing Machine is a **mathematical** model of computation that defines an abstract **machine**, invented by Alan Turing in 1936. It is a machine that is able to implement **any** functionalities that FSM can implement, and it doesn't face this limitation that FSM has. 
 
 {: .note}
 The Turing Machine is loosely referred to as an "infinite state machine" due to its ability to move along an infinite tape. The tape, theoretically, has an unlimited length, allowing the Turing machine to transition between an infinite number of states. **However**, this is **not** to be confused with certain context of infinite state machine: systems with continuous state spaces, allowing for a continuous range of values such as analog machines or continuous systems in control theory.
@@ -309,17 +309,58 @@ In order to be efficient, we need to **replace** each of these hardwares with a 
 {: .highlight}
 To tie things up, here we have learned how Turing machine works, and  its advantage over  FSM. Our final goal is to realise a **Universal Turing machine**, that is a machine that is **programmable** so that it can be used for a **general purpose**.
 
-## [Summary: Programmability ](https://www.youtube.com/watch?v=cmfDBAiogA0&t=3197s)
+## [Summary](https://www.youtube.com/watch?v=cmfDBAiogA0&t=3197s)
 [You may want to watch the post lecture videos here. ](https://youtu.be/p0plIDiBEj0)
 
-The concept of a universal Turing Machine is an *ideal abstraction*, since we can never create a machine with infinitely long tape. However, physically creating something that is "infinite" is not possible. We can only create a very long "tape" such that it appears "infinite" to some extent. 
+A Turing machine is a **theoretical** computing machine invented by Alan Turing in 1936, which is used to model the logic of any computer algorithm. Here are the key characteristics of a Turing machine:
 
-If we manage to create a physical manifestation of Universal Turing Machine, we need to ensure that this machine is **programmable**. This can be achieved by designing an **instruction set** so that we can write "programs" / "algorithms" *using these instruction set*. Hence, allowing it to emulate the behavior of whatever machine $$k$$ when running the program with its corresponding input $$j$$ on this machine. 
+1. **Infinite Tape**: The Turing machine uses an infinite tape as its memory. This tape is divided into cells, each capable of holding a single symbol. This tape acts both as the device's memory and as a mechanism for moving data.
+
+2. **Read/Write Head**: The machine has a head that can read and write symbols on the tape and move the tape left or right one cell at a time. This allows the machine to modify its input data and to store the output data.
+
+3. **Finite Set of States**: Similar to a finite state machine, a Turing machine has a finite number of states. At any given moment, the machine is in one of these states.
+
+4. **Initial State**: The operation of a Turing machine begins from an initial state, which is predefined.
+
+5. **Transition Function**: This function dictates the behavior of the machine. It determines what the machine does based on its current state and the symbol it reads on the tape. Specifically, it tells the machine which symbol to write, which direction to move the tape (left, right, or stay), and what the next state should be.
+
+6. **Accepting and Rejecting States**: The Turing machine can have special states called accepting (or final) and rejecting states. Reaching an accepting state means the machine has successfully completed the computation and accepted the input. Reaching a rejecting state means the computation has finished but the input is not accepted.
+
+7. **Universality and Computability**: A Turing machine can simulate any other Turing machine. This concept, known as the universality of Turing machines, implies that any computational problem that can be solved by some algorithm can be solved by a Turing machine. This forms the basis for the Church-Turing thesis, which posits that the Turing machine can model any computation that can be performed by a "reasonable" computing device.
+
+8. **Non-determinism (in some variants)**: While the classical Turing machine is deterministic, there are variants like the non-deterministic Turing machine where the transition function allows for multiple possible actions from the same state with the same input symbol. This does not increase the computational power (in terms of what can be computed) but can affect the complexity and efficiency of the computation.
+
+The Turing machine remains a central object of study in the theory of computation and is fundamental in understanding what it means for a function to be computable. The concept of a universal Turing Machine is an *ideal abstraction*, since we can never create a machine with infinitely long tape. However, physically creating something that is "infinite" is not possible. We can only create a very long "tape" such that it appears "infinite" to some extent. 
+
+If we manage to create a physical manifestation of Universal Turing Machine, we need to ensure that this machine is **programmable**. A programmable machine is a device that can perform a sequence of operations or tasks according to a **set of instructions or software**. These instructions can be **changed**, allowing the machine to carry out different tasks at different times. The concept is <span class="orange-bold">central to the idea of computers and automation</span>. Here are the key characteristics of a programmable machine:
+
+1. **Hardware and Software Separation**: Programmable machines consist of both hardware (the physical components) and software (the instructions or programs). The software instructs the hardware on what tasks to perform and how to perform them. This separation allows the same hardware to perform different functions depending on the software it runs.
+
+2. **Memory for Storage**: These machines have memory where they can store the program instructions, operational data, and intermediate results. Memory might be volatile (such as RAM) or non-volatile (such as hard drives or flash memory).
+
+3. **Processing Unit**: A central processing unit (CPU) or processor executes the instructions provided by the software. It performs basic arithmetic, logic, controlling, and input/output operations as directed by the instructions.
+
+4. **Input/Output Mechanisms**: Programmable machines have ways to receive input and produce output. Inputs can be from keyboards, sensors, network connections, or other data sources. Outputs might be to displays, actuators, other machines, or network connections.
+
+5. **Programmability**: The defining feature of these machines is their programmability. They can be programmed to perform a wide range of tasks, from simple repetitive operations to complex algorithms involving decision-making and optimization.
+
+6. **Control System**: They often include a control system that manages the execution of the program, handling tasks such as fetching instructions, decoding them, executing them, and then handling the next instruction cycle.
+
+7. **Flexibility and Versatility**: Due to their programmability, these machines can adapt to different functionalities and requirements. This makes them versatile tools in numerous applications, from household appliances to complex industrial machinery.
+
+8. **Automation Capability**: Programmable machines can automate processes. Automation can increase efficiency, reduce human error, and perform tasks that might be too complex, dangerous, or tedious for humans.
+
+Programmable machines form the basis of modern computing and are fundamental to various fields, including robotics, manufacturing, communications, and consumer electronics. Their development and enhancement continue to drive innovation across industries.
+
+### Instruction Set
+
+The Turing machine's theoretical model of computation highlights the universal capability to execute any computable function, serving as a conceptual ancestor to modern programmable machines, which operate based on <span class="orange-bold">practical instruction sets</span>. These instruction sets provide the specific **commands** that programmable machines use to manipulate data and perform operations, embodying the abstract principles of the Turing machine in tangible, operational systems.
 
 {: .new-title}
 > Instruction Set
 > 
 > An instruction set is a set of standard *basic* commands that we can use as **building blocks** so that we can write a bigger programs that will cause the machine running it to emulate complex tasks. We are probably familiar with some examples: `x86` and `ARM64`. More examples can be found [here](https://en.wikipedia.org/wiki/Comparison_of_instruction_set_architectures). 
+
 
 For **example**, we are familiar with high level programming languages, such as C/C++, Java, and Python.  You can write a program using any of these languages, lets say a calculator app. When we *compile* or *interpret*, and then *run* the program, our code is translated into **a set of instructions** that are understandable by our computers (we call this an **executable**), hence turning it into a calculator. We can also write another program, lets say a music player app, and translate it to yet another **set of instructions** that are understandable by our computers. When we run this program, our computer turns into a music player. 
 

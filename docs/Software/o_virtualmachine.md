@@ -344,8 +344,19 @@ The details about exceptions are out of this syllabus, and you will learn more a
 
 ## [Summary](https://www.youtube.com/watch?v=4pizOgCT11k&t=2495s)
 [You may want to watch the post lecture videos here. ](https://youtu.be/uG1HEKdJpxY)
- 
-In summary, we have learned how the presence of OS Kernel and hardware support provide an abstraction for each running process, thus allowing them to run in an isolated manner; on their own virtual machine.  
+
+Virtual machines are crucial in modern computing, allowing multiple processes to run simultaneously on a single physical machine. This is achieved through a combination of hardware and software optimizations, including the use of a virtual processor for each process. The operating system kernel plays a pivotal role in this setup, managing resources, ensuring security, and maintaining process isolation. Advanced hardware support, such as dual mode operation and specialized interrupt handling, further enables the efficient multiplexing of resources and smooth context switching. This not only enhances system stability and performance but also ensures that applications run seamlessly without interfering with each other.
+
+This chapter covers various aspects of how operating systems manage multiple processes using virtualization technology, in particular: how the presence of OS Kernel and hardware support provide an abstraction for each running process, thus allowing them to run in an isolated manner; on their own virtual machine. Here are the key points:
+
+
+1. **Concept of a Virtual Processor**: Discusses how each process operates as if it has its own dedicated hardware, facilitated by the operating system.
+2. **Operating System Kernel**: Explains the kernel's role in managing resources, ensuring security, and isolating processes.
+3. **Process Context and Isolation**: Details the structure that allows processes to operate independently and securely.
+4. **Dual Mode Operation**: Outlines the mechanisms that distinguish between kernel and user modes, ensuring proper access control.
+5. **OS Multiplexing and Context Switching**: Describes how the OS handles multiple processes, sharing hardware resources efficiently through context switching.
+6. **Hardware Support**: Analyzes the hardware requirements that enable efficient multitasking and resource allocation among processes.
+
 
 The Kernel **manages**  the execution of all processes, as well as all I/O devices, and provides **services** to all these processes. There are two ways to transfer CPU control between user programs to kernel programs:
 * Firstly, is through **asynchronous interrupt**: `IRQ` is set to `1` 

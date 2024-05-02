@@ -252,7 +252,15 @@ I_{8\rightarrow 3}(X) = \log_2 \left( \frac{8}{3} \right) = 1.42 \text{ bits}
 ## [Summary](https://www.youtube.com/watch?v=IicB30kA3pY&list=PLklpDKpv-EBj1agIq4vB1iB6ahMT8_2A_&index=1&t=2094s)
 [You may want to watch the post lecture videos here.](https://youtu.be/UPIoYYLG718) 
 
-This chapter quickly summarises how we can represent integers using different number systems, especially the binary number system that is especially useful for our computers since they can only store information in terms electrical voltages (representing simply strings of `1`s and `0`s). 
+This chapter quickly summarises how we can represent integers using different number systems, especially the binary number system that is especially useful for our computers since they can only store information in terms electrical voltages (representing simply strings of `1`s and `0`s). It touches on how digital devices use various number systems to process and store information efficiently. The use of 2's complement for handling signed numbers is critical in arithmetic operations. Understanding different encoding techniques is essential for interpreting data correctly across different systems. Additionally, the concepts from information theory are applied to measure and manage data in computing, highlighting the importance of efficient data handling and storage in digital systems.
+
+Here are the key points:
+
+1. **Number Systems**: It discusses binary, decimal, octal, and hexadecimal number systems, emphasizing their use in encoding data in computers.
+2. **2's Complement**: Explains how signed integers are represented using 2's complement, enabling the representation of negative numbers in binary form.
+3. **Encoding Methods**: Describes various encoding methods, including fixed and variable length encodings, and character encodings like ASCII and Unicode.
+4. **Information Theory**: Details how information can be quantified based on the probability of events, using logarithmic measures.
+
 
 Given $$X$$ bits,
 

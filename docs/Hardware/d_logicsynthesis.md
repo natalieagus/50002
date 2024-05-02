@@ -462,11 +462,9 @@ For example, the Full Adder has 3 inputs (A, B, $$C_{in}$$), and 2 outputs ($$S$
 ## [Summary](https://www.youtube.com/watch?v=yXBAy432vT8&t=4421s)
 [You may want to watch the post lecture videos here.](https://youtu.be/oo58e54SHjs)
 
-Synthesizing combinational logic is not a simple task. There are many ways to realise a functionality, i.e: the **logic** (that the device should implement) represented by the truth table or boolean expression. We can use universal gates (only NANDS, or only NORS), a combination of gates (INV, AND, and OR), or many other ways (multiplexers, ROMs, etc).
+Synthesizing combinational logic is not a simple task. There are many ways to realise a functionality, i.e: the **logic** (that the device should implement) represented by the truth table or boolean expression. We can use universal gates (only NANDS, or only NORS), a combination of gates (INV, AND, and OR). We can start synthesizing using the truth table, constructing the sum of products, and then minimising the boolean expression. Karnaugh map or properties of boolean algebra can be used to simplify boolean expressions, resulting in less number of logic gates required in the end to synthesize the same logic unit. 
 
-We then touch on special combinational logic devices that are commonly used: ROM, Multiplexer, and Decoder. 
-
-**Hardcoding** a truth table using ROM and Multiplexers are convenient, because we do not need to think about simplifying the boolean expression of our truth table (which can get really difficult and complicated when the truth table is large, i.e: complicated functionality). However it comes at a cost: the **cost of the materials** to build the ROM / Multiplexers, and at the **cost of space** (we need use a lot of logic gates to build these). 
+We then touch on special combinational logic devices that are commonly used: ROM, Multiplexer, and Decoder. We can utilise those to synthesize logic too, however they tend to be more expensive and takes up more space (physically larger). For instance **hardcoding** a truth table using ROM and multiplexers are convenient, because we do not need to think about simplifying the boolean expression of our truth table which can get really difficult and complicated when the truth table is large, i.e: complicated functionality.
 
 # Appendix
 

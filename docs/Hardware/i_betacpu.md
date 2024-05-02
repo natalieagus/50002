@@ -667,12 +667,23 @@ You may want to watch the post lecture videos here:
 * [Part 1: Beta Datapath](https://youtu.be/IXiSoP_0Kvc)
 * [Part 2: Beta Datapath Analysis - this is difficult!](https://youtu.be/4MmUEeAKmxc)
 
-In this document we have  extensively cover how to create the $$\beta$$ CPU datapath given its ISA (blueprint). 
 
-We can run some instructions written in machine language (`0`s and `1`s), but obviously it is not user friendly at all, not to mention that this CPU alone *does not support reusable instructions* (we know them as **functions**). 
+This chapter focuses on the architecture and operation of the \(\beta\) CPU, designed as an educational tool to help understand the principles of CPU design and operation. Key topics covered include:
 
-The next lecture introduces us to assemblers and compilers, which are softwares created to help us utilise the $$\beta$$ CPU better (program more easily) so that we can be more focused on designing our program, and less time *writing* the program. 
+- **CPU Components and Functions**: The architecture includes a Program Counter (PC), Register Files (REGFILE), Arithmetic Logic Unit (ALU), and a Control Unit (CU). Each component plays a critical role, with the PC determining the sequence of operations, REGFILE storing temporary data, ALU performing arithmetic and logical operations, and the CU directing all these activities based on the decoded instructions.
 
+- **Memory Interaction**: Instructions are fetched from memory and executed by the CPU. This process involves the PC fetching the instruction address, the memory returning the instruction data, and the CU decoding and executing these instructions.
+
+- **Control Logic and Signals**: The control unit uses various signals derived from the opcode of each instruction to control the flow of data and operations within the CPU. This includes signals for selecting operation types and directing data paths within the CPU.
+
+- **Datapaths**: The CPU's datapaths are configured based on the type of instruction being executed, which can involve direct arithmetic operations, memory access, or control transfer instructions. These paths dictate how data moves through the CPU and how results are stored or used.
+
+- **Instruction Set and Encoding**: The Beta CPU uses a specific set of instructions, each encoded in a standard format that the CU can interpret. This includes simple arithmetic operations to more complex memory and control instructions.
+
+In short, we provide a detailed insight into how a simplified yet functional CPU operates, mirroring larger, more complex systems used in real-world computing (especially RISC family).
+
+
+We can run these instructions written in machine language (`0`s and `1`s), but obviously it is not user friendly at all, not to mention that this CPU alone *does not support reusable instructions* (we know them as **functions**). The next lecture introduces us to assemblers and compilers, which are softwares created to help us utilise the $$\beta$$ CPU better (program more easily) so that we can be more focused on designing our program, and less time *writing* the program. 
 
 
 

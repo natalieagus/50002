@@ -379,7 +379,20 @@ Having less states will result in less bits to represent the states in the machi
 ## [FSM Limitations and Summary](https://www.youtube.com/watch?v=efLcdpqlAyI&t=2375s)
 [You may want to watch the post lecture videos here.](https://youtu.be/XJQaAG9xLoI)
 
-In this chapter, we have learned that we can build an FSM to compute many types of functions, such as implementing the *digital lock*. Some problems however, cannot be computed using FSMs, so the notion of FSMs alone is not enough to be an *ultimate* computing device that we need. 
+In this chapter, we have learned that we can build an FSM to compute many types of functions, such as implementing the *digital lock*. A finite state machine is a **mathematical** model of computation used to design both computer programs and sequential logic circuits. It is an abstract machine that can be in exactly one of a finite number of states at any given time. FSMs are used to model behavior in systems and are widely used in software engineering, especially for designing embedded systems, user interfaces, and protocols. They have the following characteristics:
+1. **Finite Set of States**: An FSM consists of a finite number of states. At any given time, the machine is in one of these states.
+2. **Initial State**: There is always one state designated as the initial state, where the machine starts operation.
+3. **Input**: FSMs receive inputs that can trigger transitions from one state to another. The inputs are based on the application for which the FSM is designed.
+4. **State Transitions**: The core functionality of an FSM is defined by its state transitions. Each transition specifies the movement from one state to another, based on the input and possibly the current state. These transitions are defined in a transition table that acts as a roadmap for the FSM.
+5. **Outputs (Optional)**: FSMs can be classified into two types based on output behavior:
+   - **Moore Machine**: The output is determined solely by the current state, not dependent on the input.
+   - **Mealy Machine**: The output depends on both the current state and the input. This generally allows for more reactive outputs and can reduce the number of states needed.
+6. **Deterministic Rules**: In deterministic FSMs, the exact next state is uniquely determined by the current state and input. There is no ambiguity in transition.
+7. **Termination State (Optional)**: Some FSMs have designated final or accepting states, which indicate a stop in the process or a successful completion of the operation. 
+
+Finally, we learned how to **minimise** an FSM while keeping its functionality equivalent to save resources. 
+
+Some problems however, cannot be computed using FSMs, so the notion of FSMs alone is not enough to be an *ultimate* computing device that we need. 
 
 {:.note}
 Remember that the goal of this course is to teach you how to build a **general-purpose computer** from the ground up. A *general-purpose computer* is supposed to an *ultimate computing device,* able to solve *various computational problems and tasks* such as your math homework, running video games, rending graphics, playing music or video, browsing the web, and many more. 
@@ -395,7 +408,6 @@ By definition, an FSM needs a **finite** amount of states. It is able to impleme
 > 
 > We know that we can definitely write a program that performs parenthesis checking easily, so we know that our computers aren't just a *simple* FSM. In the next chapter, we will learned another class of machine called the **Turing Machine** that can tackle this issue. 
 
-Finally, we learned how to **minimise** an FSM while keeping its functionality equivalent to save resources. 
 
 # Appendix
 

@@ -898,6 +898,28 @@ You may want to watch the post lecture videos here:
 * [Part 1: Stack and Procedures ](https://youtu.be/sj7A-lpTgaI)
 * [Part 2: Common Mistakes in Stack and Procedures](https://youtu.be/QGR9n9TqYc0)
 
+The concepts of stacks and procedures are fundamental in understanding how modern computers execute programs, particularly how they handle function calls and manage memory:
+
+1. **Stack Operations**:
+   - The stack is a LIFO (Last In, First Out) data structure used extensively in programming for managing function calls, local variables, and return addresses.
+   - Common stack operations include `PUSH`, which adds an item to the top of the stack, and `POP`, which removes the top item from the stack.
+
+2. **Procedure Calls**:
+   - When a procedure (or function) is called, the return address (the address in the program where control should return after the procedure is finished) and sometimes the parameters are pushed onto the stack.
+   - The stack helps in keeping track of point of execution especially when procedures are nested or called recursively.
+
+3. **Stack Frame**:
+   - Each function call creates a new stack frame or activation record at the top of the stack. This frame typically contains the function's return address, its parameters, and its local variables.
+   - The stack pointer (SP) and base pointer (BP) are used to manage and access elements within the current stack frame effectively.
+
+4. **Handling of Arguments and Return Values**:
+   - Arguments to functions are typically passed using the stack, where they are pushed before the function call and popped off by the called function.
+   - Return values are generally placed in a designated register or location on the stack.
+
+5. **Procedure Linkage**:
+   - This involves the conventions that control the entry and exit sequences of functions, ensuring that the return address is properly managed and that the stack remains balanced (i.e., it has the same depth at function entry and exit).
+
+
 The calling and callee sequence is designed such that we have a fixed convention for **linking procedures**. The data structure needed for procedure linkage is a **stack**, and it can simply be implemented using macroinstructions: `PUSH` and `POP` on some unused memory block, which address is stored in register `R29: SP`. 
 
 It is extremely important to change the content of `SP` (reserved stack pointer register) to reflect a memory address where there isn’t any important instruction or data in it. Remember that `PUSH` and `POP` each require **two clock cycles to complete**, because each of them is consisted of two atomic $$\beta$$ instructions.  
@@ -906,6 +928,7 @@ We also **reserve** two other registers: `R27: BP` and `R28: LP` for this purpos
 
 The callee has to leave *stack data* **unchanged**  upon returning to the caller, that is to clear whatever data that was put in the stack during its execution. As a result, we might find **dangling pointers:** pointer that points to an address that is no longer used when we try to access a function's local variable long after the function has returned. 
 
+These elements are critical for managing data in a structured way during program execution, supporting the nested and recursive function calls that are common in modern programming. Understanding how stacks and procedures operate is crucial for debugging and optimizing software, as well as understanding low-level execution flow within a program. 
 # Appendix
 
 ## About the PC

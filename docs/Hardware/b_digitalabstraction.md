@@ -243,7 +243,17 @@ If both characteristics above aren't satisfied in the VTC curve, then it is <spa
 ## [Summary](https://www.youtube.com/watch?v=xkVIr8jrtX0&t=1290s)
 [You may want to watch the post lecture videos here.](https://youtu.be/3OoeuqWDhns)
 
-In this chapter, we have learned about the digital abstraction, that is how can we set some **contracts** (via setting the four voltage specifications) such that we can establish digital values out of real-valued voltages. It also emphasizes the importance of **static discipline**. The static discipline in digital circuits serve as guidelines that specify the **voltage levels** that represent the binary states, ensuring reliable and clear signal interpretation. These guidelines help maintain the distinction between '0' and '1' states even in the presence of noise and other electrical variances, which is crucial for the proper functioning of digital systems. 
+In this chapter, we have learned about the digital abstraction serves as the backbone for creating reliable digital systems, starting from the most basic components like MOSFETs. That is, how can we set some **contracts** (via setting the four voltage specifications) such that we can establish digital values out of real-valued voltages. It also emphasizes the importance of **static discipline**. The static discipline in digital circuits serve as guidelines that specify the **voltage levels** that represent the binary states, ensuring reliable and clear signal interpretation. These guidelines help maintain the distinction between '0' and '1' states even in the presence of noise and other electrical variances, which is crucial for the proper functioning of digital systems. 
+
+Here are the key concepts:
+
+1. **Static Discipline**: Guidelines that define voltage levels for binary states, crucial for ensuring clear and reliable digital signal processing.
+2. **MOSFETs and Logic Gates**: Introduction to MOSFETs used to build logic gates, forming the basic building blocks of digital devices.
+3. **Levels of Abstraction**: Describes how complex systems like CPUs and microcontrollers are built from simpler components, facilitating easier programming and system management.
+
+
+These components are used to construct logic gates, which then form more complex units and ultimately entire computer systems. This layered approach not only simplifies the design and development of digital devices but also ensures that even small components adhere to <span class="orange-bold">necessary</span> <span class="orange-bold">standards</span> to function correctly within the larger system.
+
 
 In the next chapter, we will learn about the **MOSFET** (transistor), that is one of the smallest component (building block) that makes up a digital device, and how we can use them to form a proper combinational logic elements we call **gates**. These **gates** can be  used to form an even larger **combinational circuits** such as the **adder**, **shifter**, etc, and an even larger one such as the **Arithmetic Logic Unit** (you will build them in Lab 2 and 3). 
 
