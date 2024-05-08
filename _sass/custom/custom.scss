@@ -118,7 +118,7 @@ height: 75vh;
     color: black;
     background-color: rgba($btn-scroll-top-bg, 0.6);
     border: 1px solid rgba($link-color, 0.3);
-    border-radius: #{calc($sp-9 / 2)};
+    border-radius: #{$sp-9 / 2};
     position: fixed;
     right: $sp-4;
     bottom: $sp-4 + 0.5rem + $sp-9; 
