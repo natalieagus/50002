@@ -74,19 +74,19 @@
 
       width: $nav-list-item-height-sm;
       height: $nav-list-item-height-sm;
-      padding-top: #{$nav-list-item-height-sm / 4};
-      padding-right: #{$nav-list-item-height-sm / 4};
-      padding-bottom: #{$nav-list-item-height-sm / 4};
-      padding-left: #{$nav-list-item-height-sm / 4};
+      padding-top: calc($nav-list-item-height-sm / 4);
+      padding-right: calc($nav-list-item-height-sm / 4);
+      padding-bottom: calc($nav-list-item-height-sm / 4);
+      padding-left: calc($nav-list-item-height-sm / 4);
       color: $link-color;
 
       @include mq(md) {
         width: $nav-list-item-height;
         height: $nav-list-item-height;
-        padding-top: #{$nav-list-item-height / 4};
-        padding-right: #{$nav-list-item-height / 4};
-        padding-bottom: #{$nav-list-item-height / 4};
-        padding-left: #{$nav-list-item-height / 4};
+        padding-top: calc($nav-list-item-height / 4);
+        padding-right: calc($nav-list-item-height / 4);
+        padding-bottom: calc($nav-list-item-height / 4);
+        padding-left: calc($nav-list-item-height / 4);
       }
 
       // &:hover {
@@ -106,9 +106,9 @@
 
     > .nav-list {
       display: none;
-      padding-left: #{$nav-list-item-height-sm/2};
+      padding-left: #{calc($nav-list-item-height-sm / 2)};
       @include mq(md) {
-        padding-left: #{$nav-list-item-height/2};
+        padding-left: #{calc($nav-list-item-height / 2)};
       }
       list-style: none;
       background-color: $sidebar-color;
