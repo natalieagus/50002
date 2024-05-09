@@ -20,6 +20,13 @@ permalink: /
 * Understanding of the operation of a moderately complex digital system; a simple RISC-based computer we called the $$\beta$$ using the building blocks above, and ability to specify, implement and **debug** its components.
 * Exploration of both **hardware** and **software** mechanisms through a series of design examples (labs and 1D/2DC projects)
 
+According to the IEEE/ACM Computer Curricula 2001, prepared by the Joint Task Force on Computing Curricula of the IEEE (Institute of Electrical and Electronics Engineers) Computer Society and ACM (Association for Computing Machinery):
+
+> *The computer lies at the heart of computing. Without it most of the computing disciplines today would be a branch of theoretical mathematics. To be a professional in any field of computing today, one should not regard the computer as just a black box that executes programs by magic. All students of computing should acquire some understanding and appreciation of a computer system’s functional components, their characteristics, their performance, and their interactions.There are practical implications as well. Students need to understand computer architecture in order to structure a program so that it runs more efficiently on a real machine. In selecting a system to use, they should be able to understand the tradeoff among various components, such as CPU clock speed vs. memory size.*
+> 
+> Computer Architecture is indeed an underrated topic of study for web developers and programmers. Understanding the low level concepts of the system on which you are implementing binary trees and hash tables and making web applications, and *how they actually run on your PC is just as important as actually implementing them.*
+
+
 By the end of this course, you're expected to:
 * Be familiar with flaws and limitations in simple systems using the **static discipline**, **clocked** registers and async inputs.
 * Implement a simple RISC-based CPU architecture
