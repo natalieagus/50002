@@ -23,8 +23,6 @@ permalink: /
 According to the IEEE/ACM Computer Curricula 2001, prepared by the Joint Task Force on Computing Curricula of the IEEE (Institute of Electrical and Electronics Engineers) Computer Society and ACM (Association for Computing Machinery):
 
 > *The computer lies at the heart of computing. Without it most of the computing disciplines today would be a branch of theoretical mathematics. To be a professional in any field of computing today, one should not regard the computer as just a black box that executes programs by magic. All students of computing should acquire some understanding and appreciation of a computer system’s functional components, their characteristics, their performance, and their interactions.There are practical implications as well. Students need to understand computer architecture in order to structure a program so that it runs more efficiently on a real machine. In selecting a system to use, they should be able to understand the tradeoff among various components, such as CPU clock speed vs. memory size.*
-> 
-> Computer Architecture is indeed an underrated topic of study for web developers and programmers. Understanding the low level concepts of the system on which you are implementing binary trees and hash tables and making web applications, and *how they actually run on your PC is just as important as actually implementing them.*
 
 
 By the end of this course, you're expected to:
@@ -38,7 +36,10 @@ All lesson materials: **lecture notes**, **problem sets**, and **FPGA tutorials*
 We have also recorded [lecture videos](https://www.youtube.com/playlist?list=PLklpDKpv-EBj1agIq4vB1iB6ahMT8_2A_) and [post-lecture videos](https://www.youtube.com/playlist?list=PLklpDKpv-EBhCVUAZDDRWEGZzR_It-FSo) for each topic. The links to the individual videos can be found in the respective lecture notes. 
 
 ## The Blind Men and an Elephant
-It is often really difficult to visualise why we learn certain topics in 50.002. Each weekly topic is a **building block** to understand how **digital systems** work (a.k.a your computers). By itself, it is **not obvious** why it is an integral part to learn in your journey as a computer scientist. It's like the parable of a [**blind men and an elephant**](https://en.m.wikipedia.org/wiki/Blind_men_and_an_elephant).
+
+Computer Architecture is indeed an underrated topic of study for web developers and programmers. Understanding the low level concepts of the system on which you are implementing binary trees and hash tables and making web applications, and *how they actually run on your PC is just as important as actually implementing them.*
+
+That being said, is often really difficult to visualise why we learn certain topics in 50.002. Each weekly topic is a **building block** to understand how **digital systems** work (a.k.a your computers). By itself, it is **not obvious** why it is an integral part to learn in your journey as a computer scientist. It's like the parable of a [**blind men and an elephant**](https://en.m.wikipedia.org/wiki/Blind_men_and_an_elephant).
 
 > *The parable of the blind men and an elephant is a story of a group of blind men who have **never** come across an elephant before and who learn and imagine what the elephant is like by touching it. Each blind man feels a **different** part of the elephant's body, but only one part, such as the side or the tusk. They then describe the elephant based on their limited experience and their descriptions of the elephant are different from each other. In some versions, they come to suspect that the other person is dishonest and they come to blows. The moral of the parable is that humans have a tendency to claim **absolute** truth based on their **limited**, subjective experience as they ignore other people's limited, subjective experiences which may be equally true.*
 
