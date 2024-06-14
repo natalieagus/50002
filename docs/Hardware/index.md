@@ -69,7 +69,7 @@ These topics are taught before the recess week. They are **tested** during our M
 3. Recognize the connection between Turing Machines and functions, and how functions can be computable 
 4. Justify the significance of the computer science revolution
 
-## [Beta Instruction Set Architecture](https://natalieagus.github.io/50002/notes/instructionset)
+## [Instruction Set Architecture](https://natalieagus.github.io/50002/notes/instructionset)
 1. Describe Von Neumann model of computer architecture
 2. Recognise the difference between an Instruction Set Architecture (ISA) and its implementation
 3. Explain how basic representation of Beta machine model (ISA) and instruction encoding works
