@@ -105,18 +105,18 @@ color_scheme: nil
 callouts_level: quiet # or loud
 callouts:
   highlight:
-    color: calloutsyellow
+    color: calloutshighlight 
   important:
-    title: Important
+    title: ⚠️ Important
     color: calloutspink
   new:
-    title: New
+    title: 🔎 New
     color: calloutsgreen
   note:
-    title: Note
+    title: 📝 Note
     color: calloutsblue
   warning:
-    title: Warning
+    title: ☢️ Warning
     color: calloutsred
 
 plugins:

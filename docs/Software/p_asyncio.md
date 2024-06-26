@@ -20,38 +20,32 @@ Singapore University of Technology and Design
 {: .no_toc}
 There's no pre-recorded video for this chapter as the file that was uploaded on YouTube was corrupted (no sound). Please attend the class instead as this chapter is very short and simple anyway. It is a precursor to what you'll learn in Term 5.  
 
-## Detailed Learning Objectives
-
-
-- **Comprehend the Role of the Operating System Kernel in Multitasking**
-  - Understand how the OS Kernel enables multitasking through rapid context switching.
-  - Explain the concept of processes running in isolated virtual machines.
-
-- **Identify the Functionality of I/O Devices in Relation to the CPU**
-  - Describe how I/O devices operate asynchronously and independently of the CPU.
-  - Recognize the slower operation speeds of I/O devices compared to the CPU.
-
-- **Understand I/O Request Handling by the Operating System**
-  - Learn how I/O requests are handled asynchronously by the OS Kernel.
-  - Explore the process of handling I/O requests through supervisor calls and interrupts.
-
-- **Explore the Mechanism of Supervisor Calls (SVC)**
-  - Explain the SVC instruction and its role in facilitating process requests for Kernel services.
-  - Analyze the execution flow from SVC invocation to service routine execution.
-
-- **Examine Asynchronous Input Handling**
-  - Discuss how the OS Kernel manages asynchronous inputs from various I/O devices.
-  - Understand the implementation and operation of an interrupt-driven system for I/O handling.
-
-- **Study Real-Time I/O Handling and Its Challenges**
-  - Explore the concept of latency and deadlines in real-time I/O request handling.
-  - Discuss the strategies to manage multiple interrupt requests effectively.
-
-- **Determine the Impact of Interrupt Load on System Performance**
-  - Calculate the effective interrupt load and its impact on CPU performance.
-  - Analyze scenarios where high interrupt loads might affect system responsiveness and process execution.
-
-These objectives are designed to provide a detailed understanding of how an operating system manages I/O devices and processes, emphasizing the kernel's role in multitasking and real-time system responsiveness.
+{:.highlight-title}
+> Detailed Learning Objectives
+>
+> - **Comprehend the Role of the Operating System Kernel in Multitasking**
+>   - Understand how the OS Kernel enables multitasking through rapid context switching.
+>   - Explain the concept of processes running in isolated virtual machines.
+> - **Identify the Functionality of I/O Devices in Relation to the CPU**
+>   - Describe how I/O devices operate asynchronously and independently of the CPU.
+>   - Recognize the slower operation speeds of I/O devices compared to the CPU.
+> - **Understand I/O Request Handling by the Operating System**
+>   - Learn how I/O requests are handled asynchronously by the OS Kernel.
+>   - Explore the process of handling I/O requests through supervisor calls and interrupts.
+> - **Explore the Mechanism of Supervisor Calls (SVC)**
+>   - Explain the SVC instruction and its role in facilitating process requests for Kernel services.
+>   - Analyze the execution flow from SVC invocation to service routine execution.
+> - **Examine Asynchronous Input Handling**
+>   - Discuss how the OS Kernel manages asynchronous inputs from various I/O devices.
+>   - Understand the implementation and operation of an interrupt-driven system for I/O handling.
+> - **Study Real-Time I/O Handling and Its Challenges**
+>   - Explore the concept of latency and deadlines in real-time I/O request handling.
+>   - Discuss the strategies to manage multiple interrupt requests effectively.
+> - **Determine the Impact of Interrupt Load on System Performance**
+>   - Calculate the effective interrupt load and its impact on CPU performance.
+>   - Analyze scenarios where high interrupt loads might affect system responsiveness and process execution.
+>
+> These objectives are designed to provide a detailed understanding of how an operating system manages I/O devices and processes, emphasizing the kernel's role in multitasking and real-time system responsiveness.
  
 ## Overview
 

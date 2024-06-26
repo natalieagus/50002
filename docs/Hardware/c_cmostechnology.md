@@ -21,38 +21,32 @@ Singapore University of Technology and Design
 {: .no_toc}
 [You can find the lecture video here. ](https://youtu.be/JqgZcV_1IU4)You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
-## Detailed Learning Objectives
-
-
-1. **Understand the Properties of Combinational Logic Devices:**
-  - Learn the ideal characteristics of a combinational logic device including noise tolerance, power dissipation, and functional reliability.
-  - Comprehend the significance of noise margins and their relationship to the gain of the Voltage Transfer Characteristic (VTC).
-
-2. **Explore the Basics of MOSFETs:**
-  - Understand the structure and operation of Metal-Oxide Semiconductor Field-Effect Transistors (MOSFETs).
-  - Identify the roles of the gate, drain, source, and body in MOSFET operation.
-
-3. **Differentiate Between NFET and PFET:**
-  - Compare the characteristics and functions of N-type and P-type FETs.
-  - Learn how NFETs and PFETs are used to implement different logic functions based on their configuration and voltage levels.
-
-4. **Learn CMOS Technology for Logic Devices:**
-  - Understand how Complementary MOS (CMOS) technology utilizes both NFETs and PFETs to create efficient logic circuits.
-  - Explore the concept of pull-up and pull-down networks within CMOS circuits.
-
-5. **Analyze the CMOS Complementary Recipe:**
-  - Study the complementary nature of pull-up and pull-down circuits in CMOS technology to prevent short circuits and ensure stable logic states.
-  - Apply the complementary MOS circuitry to understand basic logic gates like NAND and NOR.
-
-6. **Master Logic Gate Fundamentals:**
-  - Identify different types of logic gates and their operations.
-  - Understand how logic gates are implemented using CMOS technology to fulfill specific logic functions.
-
-7. **Discuss Timing Specifications in Combinational Logic Devices:**
-  - Learn about propagation delay and contamination delay as critical timing specifications in digital circuits.
-  - Understand how these delays impact the performance and reliability of logic circuits.
-
-These objectives aim to provide students with a comprehensive understanding of the basic building blocks of digital electronics, focusing on MOSFETs and their application in combinational logic devices through CMOS technology.
+{:.highlight-title}
+> Detailed Learning Objectives
+>
+> 1. **Understand the Properties of Combinational Logic Devices:**
+>   - Learn the ideal characteristics of a combinational logic device including noise tolerance, power dissipation, and functional reliability.
+>   - Comprehend the significance of noise margins and their relationship to the gain of the Voltage Transfer Characteristic (VTC).
+> 2. **Explore the Basics of MOSFETs:**
+>   - Understand the structure and operation of Metal-Oxide Semiconductor Field-Effect Transistors (MOSFETs).
+>   - Identify the roles of the gate, drain, source, and body in MOSFET operation.
+> 3. **Differentiate Between NFET and PFET:**
+>   - Compare the characteristics and functions of N-type and P-type FETs.
+>   - Learn how NFETs and PFETs are used to implement different logic functions based on their configuration and voltage levels.
+> 4. **Learn CMOS Technology for Logic Devices:**
+>   - Understand how Complementary MOS (CMOS) technology utilizes both NFETs and PFETs to create efficient logic circuits.
+>   - Explore the concept of pull-up and pull-down networks within CMOS circuits.
+> 5. **Analyze the CMOS Complementary Recipe:**
+>   - Study the complementary nature of pull-up and pull-down circuits in CMOS technology to prevent short circuits and ensure stable logic states.
+>   - Apply the complementary MOS circuitry to understand basic logic gates like NAND and NOR.
+> 6. **Master Logic Gate Fundamentals:**
+>   - Identify different types of logic gates and their operations.
+>   - Understand how logic gates are implemented using CMOS technology to fulfill specific logic functions.
+> 7. **Discuss Timing Specifications in Combinational Logic Devices:**
+>   - Learn about propagation delay and contamination delay as critical timing specifications in digital circuits.
+>   - Understand how these delays impact the performance and reliability of logic circuits.
+>
+> These objectives aim to provide students with a comprehensive understanding of the basic building blocks of digital electronics, focusing on MOSFETs and their application in combinational logic devices through CMOS technology.
 
 ## [Overview](https://www.youtube.com/watch?v=JqgZcV_1IU4&t=0s)
 

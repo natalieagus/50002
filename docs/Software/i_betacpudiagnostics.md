@@ -20,26 +20,23 @@ Singapore University of Technology and Design
 # Beta CPU Diagnostics
 {: .no_toc}
 
-## Detailed Learning Objectives
-
-
-1. **Understand Interrupt Handling in Beta CPU**
-   - Learn about the role and types of interrupts in the Beta CPU, including synchronous (software-driven) and asynchronous (hardware-driven) interrupts.
-   - Examine how interrupts are sampled and processed within the CPU's control system to ensure timely and correct response to external and internal events.
-
-2. **Diagnose Faults in the CPU Datapath**
-   - Develop skills in identifying and diagnosing faults within the Beta CPU's datapath using diagnostic software tools.
-   - Understand how to use simple test programs to isolate and identify specific faulty components within the CPU.
-
-3. **Implement Fixes for Faulty Datapaths**
-   - Explore strategies for making code adjustments and changes to bypass or correct faulty components within the Beta CPU's architecture.
-   - Gain practical experience in altering CPU behavior through modifications in the control logic to handle specific types of errors or malfunctions.
-
-4. **Enhance Knowledge of Beta CPU's Operational Details**
-   - Deepen understanding of how the Beta CPU processes and executes instructions by studying its control signals and datapath activity during normal operation and under fault conditions.
-   - Learn how different parts of the CPU interact during the execution of various types of instructions, focusing on the implications of these interactions for fault diagnosis and correction.
-
-These objectives aim to equip students with the ability to not only understand the inner workings of the Beta CPU but also to effectively address and resolve issues that may arise during its operation, especially those related to the CPU's datapath and control mechanisms.
+{:.highlight-title}
+> Detailed Learning Objectives
+>
+> 1. **Understand Interrupt Handling in Beta CPU**
+>    - Learn about the role and types of interrupts in the Beta CPU, including synchronous (software-driven) and asynchronous (hardware-driven) interrupts.
+>    - Examine how interrupts are sampled and processed within the CPU's control system to ensure timely and correct response to external and internal events.
+> 2. **Diagnose Faults in the CPU Datapath**
+>    - Develop skills in identifying and diagnosing faults within the Beta CPU's datapath using diagnostic software tools.
+>    - Understand how to use simple test programs to isolate and identify specific faulty components within the CPU.
+> 3. **Implement Fixes for Faulty Datapaths**
+>    - Explore strategies for making code adjustments and changes to bypass or correct faulty components within the Beta CPU's architecture.
+>    - Gain practical experience in altering CPU behavior through modifications in the control logic to handle specific types of errors or malfunctions.
+> 4. **Enhance Knowledge of Beta CPU's Operational Details**
+>    - Deepen understanding of how the Beta CPU processes and executes instructions by studying its control signals and datapath activity during normal operation and under fault conditions.
+>    - Learn how different parts of the CPU interact during the execution of various types of instructions, focusing on the implications of these interactions for fault diagnosis and correction.
+>
+> These objectives aim to equip students with the ability to not only understand the inner workings of the Beta CPU but also to effectively address and resolve issues that may arise during its operation, especially those related to the CPU's datapath and control mechanisms.
 
 In this chapter, we'll focus on understanding and fixing problems in the Beta CPU, specifically looking at its datapath. We'll learn how to find out which datapath might be faulty using simple testing software to spot these issues, and figure out what code changes can help when parts of the system aren't working correctly. Our goal is about getting to know the Beta CPU datapath better and being able to fix it whenever possible. We will also learn how to handle **interrupts** in Beta datapath.
 

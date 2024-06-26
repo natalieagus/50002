@@ -21,33 +21,27 @@ Singapore University of Technology and Design
 {: .no_toc}
 [You can find the lecture video here.](https://youtu.be/4T9MR8BSzt0) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
-## Detailed Learning Objectives
-
-1. **Understand Control Logic and CPU Instruction Handling**
-   - Learn how the Control Logic unit decodes the OPCODE of instructions and outputs appropriate control signals to manipulate the datapath for executing various instructions.
-
-2. **Examine the Instruction Fetch and Decode Process**
-   - Explore how the CPU fetches and decodes instructions during each clock cycle, focusing on the computation of instruction addresses and the decoding of OPCODEs.
-
-3. **Analyze the Detailed Anatomy of the $$\beta$$ CPU**
-   - Study the components of the $$\beta$$ CPU, including the Program Counter (PC), Register Files (REGFILE), Arithmetic Logic Unit (ALU), and Control Unit (CU), and their interconnections.
-
-4. **Understand Memory Interaction in the CPU**
-   - Investigate how instructions interact with memory, specifically how data is loaded and stored between the CPU's registers and the physical memory unit.
-
-5. **Explore the Control Transfer in CPU Operations**
-   - Delve into instructions that involve control transfer such as conditional branches and jumps, and understand how they modify the flow of execution within the CPU.
-
-6. **Familiarize with the $$\beta$$ Instruction Set**
-   - Gain knowledge of the specific instructions under the $$\beta$$ ISA, their formats, and how they are executed within the CPU's datapath.
-
-7. **Recognize the Role of the Control Unit in Instruction Execution**
-   - Identify how the Control Unit's signals direct the CPU's datapath to execute instructions correctly based on the decoded instruction type.
-
-8. **Assess CPU Performance with Benchmarks**
-   - Learn how to evaluate CPU performance using metrics such as MIPS (Million Instructions Per Second) and understand the implications of CPI (Clocks Per Instruction) on performance assessment.
-
-These objectives help students grasp the intricate details of how a CPU interprets and executes instructions based on a predefined instruction set architecture, using the $$\beta$$ CPU as a model system.
+{:.highlight-title}
+> Detailed Learning Objectives
+>
+> 1. **Understand Control Logic and CPU Instruction Handling**
+>    - Learn how the Control Logic unit decodes the OPCODE of instructions and outputs appropriate control signals to manipulate the datapath for executing various instructions.
+> 2. **Examine the Instruction Fetch and Decode Process**
+>    - Explore how the CPU fetches and decodes instructions during each clock cycle, focusing on the computation of instruction addresses and the decoding of OPCODEs.
+> 3. **Analyze the Detailed Anatomy of the $$\beta$$ CPU**
+>    - Study the components of the $$\beta$$ CPU, including the Program Counter (PC), Register Files (REGFILE), Arithmetic Logic Unit (ALU), and Control Unit (CU), and their interconnections.
+> 4. **Understand Memory Interaction in the CPU**
+>    - Investigate how instructions interact with memory, specifically how data is loaded and stored between the CPU's registers and the physical memory unit.
+> 5. **Explore the Control Transfer in CPU Operations**
+>    - Delve into instructions that involve control transfer such as conditional branches and jumps, and understand how they modify the flow of execution within the CPU.
+> 6. **Familiarize with the $$\beta$$ Instruction Set**
+>    - Gain knowledge of the specific instructions under the $$\beta$$ ISA, their formats, and how they are executed within the CPU's datapath.
+> 7. **Recognize the Role of the Control Unit in Instruction Execution**
+>    - Identify how the Control Unit's signals direct the CPU's datapath to execute instructions correctly based on the decoded instruction type.
+> 8. **Assess CPU Performance with Benchmarks**
+>    - Learn how to evaluate CPU performance using metrics such as MIPS (Million Instructions Per Second) and understand the implications of CPI (Clocks Per Instruction) on performance assessment.
+> 
+> These objectives help students grasp the intricate details of how a CPU interprets and executes instructions based on a predefined instruction set architecture, using the $$\beta$$ CPU as a model system.
 
 ## [Overview](https://www.youtube.com/watch?v=4T9MR8BSzt0&t=0s)
 

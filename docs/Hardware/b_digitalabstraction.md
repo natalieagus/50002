@@ -23,41 +23,35 @@ Singapore University of Technology and Design
 
 [You can find the lecture video here. ](https://youtu.be/xkVIr8jrtX0) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
-## Detailed Learning Objectives
-
-1. **Understand Digital Abstraction:**
-  - Learn how digital circuits encode information using voltage levels to represent binary values.
-  - Understand the concept of digital abstraction for transforming continuous analog signals into discrete digital values.
-
-2. **Recognize the Role of Semiconductor Devices:**
-  - Comprehend the role of MOSFETs in generating voltage levels for digital bits.
-  - Discuss the advantages of using semiconductors for digital encoding and the challenges posed by external disturbances.
-
-3. **Apply the Static Discipline in Digital Systems:**
-  - Understand the static discipline as a contract ensuring predictable behavior in digital systems.
-  - Learn how the static discipline guarantees that valid inputs lead to valid outputs, ensuring system reliability.
-
-4. **Explore Combinational Digital Systems:**
-  - Define combinational devices and systems, detailing their properties and operational criteria.
-  - Differentiate between combinational and sequential logic devices, emphasizing the memory-less nature of combinational systems.
-
-5. **Voltage Encoding and Noise Margin:**
-  - Master the concept of using voltage levels to encode binary data, including defining thresholds for '0' and '1'.
-  - Understand the importance of noise margins in maintaining signal integrity across digital devices.
-
-6. **Examine Voltage Specifications and Their Impact:**
-  - Learn about the specifications for valid voltage levels and how they are used to prevent errors due to noise.
-  - Discuss how noise margins are established to enhance the robustness of digital systems against external disturbances.
-
-7. **Utilize Voltage Transfer Characteristic (VTC) Functions:**
-  - Analyze the Voltage Transfer Characteristic function to determine the behavior of digital systems under various input conditions.
-  - Evaluate the VTC to ensure that digital devices comply with the static discipline and effectively handle noise.
-
-8. **Prepare for Practical Applications:**
-  - Integrate the theoretical knowledge of voltage levels, static discipline, and combinational logic into designing and evaluating digital circuits.
-  - Prepare for advanced topics in digital systems design, including the use of MOSFETs to build logic gates and more complex combinational circuits.
-
-These objectives aim to equip students with a solid foundation in digital systems, emphasizing the translation of theoretical concepts into practical applications in digital electronics and circuit design.
+{:.highlight-title}
+> Detailed Learning Objectives
+>
+> 1. **Understand Digital Abstraction:**
+>   - Learn how digital circuits encode information using voltage levels to represent binary values.
+>   - Understand the concept of digital abstraction for transforming continuous analog signals into discrete digital values.
+> 2. **Recognize the Role of Semiconductor Devices:**
+>   - Comprehend the role of MOSFETs in generating voltage levels for digital bits.
+>   - Discuss the advantages of using semiconductors for digital encoding and the challenges posed by external disturbances.
+> 3. **Apply the Static Discipline in Digital Systems:**
+>   - Understand the static discipline as a contract ensuring predictable behavior in digital systems.
+>   - Learn how the static discipline guarantees that valid inputs lead to valid outputs, ensuring system reliability.
+> 4. **Explore Combinational Digital Systems:**
+>   - Define combinational devices and systems, detailing their properties and operational criteria.
+>   - Differentiate between combinational and sequential logic devices, emphasizing the memory-less nature of combinational systems.
+> 5. **Voltage Encoding and Noise Margin:**
+>   - Master the concept of using voltage levels to encode binary data, including defining thresholds for '0' and '1'.
+>   - Understand the importance of noise margins in maintaining signal integrity across digital devices.
+> 6. **Examine Voltage Specifications and Their Impact:**
+>   - Learn about the specifications for valid voltage levels and how they are used to prevent errors due to noise.
+>   - Discuss how noise margins are established to enhance the robustness of digital systems against external disturbances.
+> 7. **Utilize Voltage Transfer Characteristic (VTC) Functions:**
+>   - Analyze the Voltage Transfer Characteristic function to determine the behavior of digital systems under various input conditions.
+>   - Evaluate the VTC to ensure that digital devices comply with the static discipline and effectively handle noise.
+> 8. **Prepare for Practical Applications:**
+>   - Integrate the theoretical knowledge of voltage levels, static discipline, and combinational logic into designing and evaluating digital circuits.
+>   - Prepare for advanced topics in digital systems design, including the use of MOSFETs to build logic gates and more complex combinational circuits.
+>
+> These objectives aim to equip students with a solid foundation in digital systems, emphasizing the translation of theoretical concepts into practical applications in digital electronics and circuit design.
 
 ## [Overview](https://www.youtube.com/watch?v=xkVIr8jrtX0&t=0s)
 
@@ -88,6 +82,10 @@ A combinational device is a specific type of digital device that has the followi
 3.  A **functional specification** that details the value of each output for each possible **combination** of inputs (can be illustrated in terms of truth table / boolean expression) 
 4. A **timing specification** consisting of an upper bound required propagation time for the device to compute the specified output values given a set of valid and stable input value(s)
 
+{:.note}
+You have seen this in our previous chapter: the $$A>B$$ 2-bit comparator device is a **combinational device**, consisted of pure logic gates and behave like a <span class="orange-bold">pure function</span>. 
+
+
 Later on you will learn another type of digital logic devices called the **sequential** logic device, whose output depends not only on the present input but also on the history of the inputs, hence having a *memory*. 
 
 A **set** of interconnected circuit elements is  **combinational** and can be labeled as a **combinational digital system** if and only if:
@@ -107,11 +105,13 @@ Anything that is between the low and high threshold value is called the invalid 
 The values of operating voltage in practice is commonly set to be 0.3V for low voltage and 3.3V for high voltage. 
   
 ## [The Static Discipline](https://www.youtube.com/watch?v=xkVIr8jrtX0&t=634s)
-The static discipline is one of the **contracts** bound for all logical elements making up a digital system. The static discipline is stated as follows:
+The static discipline is one of the **contracts** bound for all logical elements making up a digital system.
 
   
-{: .important}
-**A digital system must be able to produce a valid output (for the next device connected at its output terminal) according to its specification if it is given a valid input.**
+{: .important-title}
+> The Static Discipline
+> 
+> A digital system **must** be able to produce a valid output (for the next device connected at its output terminal) according to its specification if it is given a valid input.
 
 This contract **guarantees** the behavior for each processing block in a system, so that a set of such interconnected devices may work properly (are able to pass and compute valid information at the end of the chain of connections). This is necessary so that the system has a **predictable behavior.**
 
@@ -120,12 +120,10 @@ Therefore, one can say that **a combinational logic device always obeys the stat
 
 <span style="color:red; font-weight: bold;">However this doesn't mean that the opposite is true.</span>
 
-{:.important}
-A device receiving invalid input doesn't necessarily produce invalid output. The output from a combinational logic device given invalid input remains unpredictable. Remember, for your Mini Hardware Project, include a pulldown resistor at each input to ensure a valid 0 when the switch is open. Without a pulldown resistor, an input left unconnected (open wire) leads to invalid input, which results in uncertain or random output. Essentially, the behavior of a combinational device with invalid input is indeterminate and cannot be precisely defined or assured—it might or might not yield a valid output.
+A device receiving invalid input does <span style="color:red; font-weight: bold;">not</span> necessarily produce invalid output. The output from a combinational logic device given invalid input remains *unpredictable*. 
 
-
-
-  
+{:.note}
+An unconnected terminal or a dangling wire in a digital circuit is <span class="orange-bold">not</span> considered a valid low digital signal. In digital electronics, each signal line or terminal must have a definite state: high (1), low (0), or sometimes a high-impedance state.
 
 ## [Voltage Specifications and Noise Margin](https://www.youtube.com/watch?v=xkVIr8jrtX0&t=488s)
 
