@@ -174,7 +174,8 @@ Encoding is the process of assigning *representations* to information. Strings o
 
 More precisely, it is called the **fixed length encoding**, that is used in practice when all choices $$x_i, i=1,...N$$ are ***equally* probable**.  
 
-> There also exist **variable length encoding** but we will not learn that in this course. 
+{:.note}
+There also exist **variable length encoding** but we will not learn that in this course. 
  
 Example of encoding is character encoding so that the string of bits can be displayed to us properly: 
 * **Number Encoding** : 4-bits to represent each number 1 to 10 

@@ -1,10 +1,10 @@
 ---
 layout: default
 permalink: /lab/mhp
-title: 1D Part 1 - MHP
+title: (old) 1D Part 1 - MHP
 description: MHP Handout as part of 1D project
 parent: Labs
-nav_order:  1
+nav_order:  100
 ---
 
 * TOC

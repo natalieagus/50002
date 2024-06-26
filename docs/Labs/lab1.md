@@ -26,7 +26,7 @@ There's no code submission for this lab. Simply answer the questionnaire in eDim
 ## Related Class Materials
 The lecture notes on [Digital Abstraction](https://natalieagus.github.io/50002/notes/digitalabstraction) and [CMOS Technology](https://natalieagus.github.io/50002/notes/cmostechnology) are closely related to this lab.
 
-**Task 1 and Task 2:** Studying the effect of MOSFET “ON” and MOSFET “OFF”. 
+**Task 1 and Task 2:** studying the effect of MOSFET “ON” and MOSFET “OFF”. 
 <br>Related Notes: **CMOS Technology**
   * [Types of MOSFETs](https://natalieagus.github.io/50002/notes/cmostechnology#types-of-mosfets)
   * [Switching PFET and NFET ON and OFF](https://natalieagus.github.io/50002/notes/cmostechnology#switching-nfets-and-pfets-onoff)
