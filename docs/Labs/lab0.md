@@ -62,7 +62,6 @@ The lecture notes on [Basics of Information](https://natalieagus.github.io/50002
 
 
 
-
 # Appendix
 
 ## Introduction to JSim
@@ -80,6 +79,24 @@ Each icon has the following meaning:
 
 
 ### JSim netlist format
+
+This sample code is a setup to characterise an NFET with the following setup:
+
+<img src="{{ site.baseurl }}/assets/contentimage/lab1/4.png"  class="center_fifty"/>
+
+```cpp
+* plot Ids vs. Vds for 5 different Vgs values //1
+.include "nominal.jsim" //2
+Vmeter vds drain 0v     //3
+Vds vds 0 0v            //4
+Vgs gate 0 0v           //5
+
+* N-channel MOSFET used for our test  //6
+M1 drain gate 0 0 NENH W=1.2u L=600n  //7
+.dc Vds 0 5 .1 Vgs 0 5 1              //8
+.plot I(Vmeter)                       //9
+```
+
 The JSim netlist format is quite similar to that used by [SPICE](https://en.wikipedia.org/wiki/SPICE), a well-known circuit simulator. Each line of the netlist is one of the following:
 
 * **Comment line**
