@@ -242,6 +242,7 @@ A | B|  Z
 1 | 1 | 1
 
 **Digital Hardware Symbol**:
+
 <img src="{{ site.baseurl }}/docs/Hardware/images/cs-2025.drawio.png"  class="center_twenty"/>
 
 **Practical application in programming**:  in a while loop, an `AND` gate can be used to ensure that the loop continues to iterate only as long as all specified conditions remain true,
@@ -266,6 +267,7 @@ A | B|  Z
 1 | 1 | 1
 
 **Digital Hardware Symbol**:
+
 <img src="{{ site.baseurl }}/docs/Hardware/images/cs-2025-OR.drawio.png"  class="center_twenty"/>
 
 **Practical application in programming**:   used to ensure that a certain block of code executes if any of the specified conditions are true,
@@ -290,6 +292,7 @@ A | B|  Z
 1 | 1 | 0
 
 **Digital Hardware Symbol**:
+
 <img src="{{ site.baseurl }}/docs/Hardware/images/cs-2025-XOR.drawio.png"  class="center_twenty"/>
 
 **Practical application in programming**:  useful when you need to check for conditions that must be mutually exclusive, like scenarios such as setting toggles where one option disables the other,
@@ -312,6 +315,7 @@ A |  Z
 1 | 0 
 
 **Digital Hardware Symbol**:
+
 <img src="{{ site.baseurl }}/docs/Hardware/images/cs-2025-NOT.drawio.png"  class="center_twenty"/>
 
 **Practical application in programming**:  an if statement where you want to execute code only if a condition is not met,
@@ -334,6 +338,7 @@ A |  Z
 1 | 1 
 
 **Digital Hardware Symbol**:
+
 <img src="{{ site.baseurl }}/docs/Hardware/images/cs-2025-BUFFER.drawio.png"  class="center_twenty"/>
 
 **Practical application**: Not obvious in programming, but A buffer gate in digital hardware level serves as a signal **strengthener**, essentially passing the input it receives directly to its output without alteration, but often with increased drive capability. This means it helps in <span class="orange-bold">maintaining the integrity</span> of the signal through physically long circuits or across components that might degrade the signal due to resistance or other factors.
