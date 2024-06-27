@@ -277,6 +277,7 @@ Xinverter nand_out z inv
 .ends
 ```
 
+Since Voh and Vol is given (based on max and min operating voltage of the device), we need to **find** Vil and Vih from the graph. **What do you think these values should be?** (look back at your [lecture notes](https://natalieagus.github.io/50002/notes/digitalabstraction#voltage-transfer-characteristic-function-vtc)). 
 
 The **noise immunity** of a gate is the **smaller** of the low noise margin (Vil - Vol) and the high noise margin (Voh - Vih).  
 - If we specify Vol = 0.3V and Voh = 3.0V, what is the **largest** possible noise immunity we could specify? 
