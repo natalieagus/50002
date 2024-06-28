@@ -1,10 +1,10 @@
 ---
 layout: default
-permalink: /lab/lab2
+permalink: /lab/lab2-old
 title: Lab 2 - Adder
 description: Lab 2 handout covering topics from CMOS Technology and Logic Synthesis
 parent: Labs
-nav_order:  3
+nav_order:  103
 ---
 
 * TOC
