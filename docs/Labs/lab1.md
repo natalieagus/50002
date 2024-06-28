@@ -87,6 +87,97 @@ A | B|  Z
 1 | 0 | 1
 1 | 1 | 0
 
+When we set one of the inputs of the NAND gate as `vdd`, we essentially turn our NAND gate into an **inverter**
+
+{: .warning-title}
+> tcd and tpd
+> 
+> The contamination delay, **tcd**, for the `nand2` gate will be a **lower** bound for all the tc measurements we make. Similarly, the propagation delay, **tpd**, for the `nand2` gate will be an **upper** bound for all the tP measurements. 
+>
+> *Why is this so?*
+
+Following standard practice, we have choosen the voltage thresholds for you as follows:
+* Vol = 10% of power supply voltage = .3V
+* Vil  = 20% of power supply voltage = .6V
+* Vih  = 80% of power supply voltage = 2.6V
+* Voh = 90% of power supply voltage = 3V
+
+Click the **device-level simulation** to obtain the output waveform: 
+<img src="{{ site.baseurl }}//docs/Labs/images/lab1/2024-06-28-09-34-22.png"  class="center_seventy no-invert"/>
+
+
+### Task 1: Measure Contamination Delay (tcd)
+
+{:.note-title}
+> Definition
+> 
+> Recall from our lecture that **contamination delay is the minimum time from an invalid input to an invalid output,** i.e., from the moment the input begins to change to when the output starts to change, indicating the earliest point at which the output may become invalid due to an input change.
+
+{:.warning}
+Revise the lecture on [Digital Abstraction](https://natalieagus.github.io/50002/notes/digitalabstraction) if you're still confused about this concept of **valid** or **invalid** digital values
+
+To measure the gate's **contamination** delay, we need to find two values from the waveform: **tc rise** and **tc fall** and taking the **minimum** of the two. 
+* These two values are the **contamination** delay in the case where output is transitioning from low to high (tc rise), and from high to low (tc fall). 
+* The name *rise* or *fall* depends on whether the **output** is about to fall or rise.
+* If you're interested to find out why tc rise $$/neq$$ tc fall in practice, see this [appendix](#what-causes-tc-rise-and-tc-fall-to-differ) section. 
+
+**Find tc rise**: scroll to the part of the waveform where the output is **rising** (around 9.9ns). **Zoom** in at least 4-5 times to get a clearer picture of the signals. 
+- Then click and drag your mouse to cover the region where **invalid** **input** begins to where **invalid** **output** (as consequence of this invalid input) is observed 
+- You can then note this time period as **tc rise** of the NAND gate
+
+<img src="{{ site.baseurl }}/docs/Labs/images/lab1/tc-rise.gif"  class="center_seventy no-invert"/>
+
+
+**Find tc fall**: scroll to the part of the waveform where the output is **falling** (around 5ns). 
+- Similarly, click and drag your mouse covering the region of **contamination delay**.
+- This time period is the gate's **tc fall**
+
+<img src="{{ site.baseurl }}/docs/Labs/images/lab1/tc-fall.gif"  class="center_seventy no-invert"/>
+
+{:.highlight}
+Head to edimension to answer questions pertaining to this task. 
+
+### Task 2: Measure Propagation Delay (tpd)
+
+{:.note-title}
+> Definition
+> 
+> Recall from our lecture that **propagation delay is the time taken from a valid input to a valid output,** i.e., from the moment the input changes to when the output reaches a stable and valid state. 
+
+Similarly, we need to find two values from the waveform: **tp rise** and **tp fall** and taking the **maximum** of the two as the **propagation delay** measurement of the gate. 
+
+**Find tp rise**: scroll to the part of the waveform where the output is rising (around 9.9ns). Don't forget to **zoom in**.
+- Click and drag your mouse to cover the region where **valid** input begins to where **valid output** (as a result of that valid input) is observed
+- This time period is the gate's tp rise 
+
+**Find tp fall**: scroll to the part of the waveform where the output is falling (around 5ns). 
+- Click and drag your mouse to cover the region where **valid** input begins to where **valid output** (as a result of that valid input) is observed
+- This time period is the gate's tp fall 
+
+*No gifs provided here. You are to figure out the starting and ending measurement points yourself to compute tp rise and tp fall.*
+
+{:.highlight}
+Head to edimension to answer questions pertaining to this task. 
+
+### Conclusion
+
+{: .important-title}
+> Reporting overall device tpd and tcd
+> 
+> As said above, to compute overall device tpd, we take the **maximum** between tp rise and tp fall. To compute its tcd, we take the **minimum** between tc rise and tc fall. 
+
+The *why* should be pretty intuitive by now. tcd can be seen as the *memory* ability of the device; indicating how long it is able to produce the **previous** valid output even when the input has currently turned invalid. If your device *remembers* rising case better than falling case, the overall *memory ability* that should be reported for the device should be the smaller of the two. 
+
+Likewise, tpd is some sort of *loading time* of the device. If your device loads longer in the falling case than the rising case, we have to report the longer loading time so our users know how to mitigate that. In short, we need to take into account that the device will be used to produce both rising and falling cases. 
+
+{:.note-title}
+> How would tcd and tpd change with temperature? 
+>
+> For many consumer products, designs are tested in the **range** of 0°C to 100°C. In general, both tcd and tpd will increase when measured at higher temperature.
+> 
+> If a 2019 Intel Core i9 processor is rated to run correctly at 2.3 GHz at 100°C, it is certainly capable to run at a much **faster** **clock** rate at room temperature (assuming tpd is the parameter that determines “correct” computer behavior).  
+> 
+> This is why you can usually get away with overclocking your CPU—it’s been rated for operation under much more severe environmental conditions than you’re probably running it at! 
 
 # Appendix
 ## Adding Load at Output Terminal
@@ -109,5 +200,23 @@ Here are the key reasons for adding a load during these measurements:
 
 In summary, adding a load to the output of a logic gate during delay measurements ensures that the results are representative of real-world conditions, taking into account the effects of load on the gate’s switching characteristics. This approach helps in designing more **reliable** and **efficient** digital circuits by providing accurate data for optimizing gate configurations and circuit layouts.
 
+## What causes tc rise and tc fall to differ? 
+The difference in contamination delay (\( t_{cc} \)) rise and fall times for the same logic gate can be attributed to several factors, including the inherent asymmetries in the design and behavior of the transistors within the gate. Here are some of the primary reasons:
+
+1. **Transistor Sizing**: In a typical CMOS logic gate, the NMOS and PMOS transistors are sized differently to balance the drive strengths and to achieve equal rise and fall times for the output signal. However, due to the differences in electron and hole mobilities (electrons move faster than holes), the NMOS transistors are usually smaller than the PMOS transistors. This can lead to different switching characteristics and, consequently, different contamination delays for rising and falling edges.
+
+2. **Mobility Difference**: The mobility of electrons in NMOS transistors is typically higher than that of holes in PMOS transistors. This means NMOS transistors can pull the output low faster than PMOS transistors can pull the output high. This difference in mobility results in different contamination delays for rising and falling transitions.
+
+3. **Threshold Voltage (\( V_t \)) Difference**: The threshold voltages of NMOS and PMOS transistors are usually different. This difference affects the switching speed and the point at which the transistors turn on and off, contributing to different rise and fall contamination delays.
+
+4. **Load Capacitance**: The load capacitance seen by the NMOS and PMOS transistors can differ due to the layout and wiring of the circuit. Variations in load capacitance affect the time required to charge and discharge the load, leading to different contamination delays for rising and falling transitions.
+
+5. **Body Effect**: The body effect can cause variations in the threshold voltage of the transistors, which in turn affects the switching characteristics. This effect might be more pronounced in one type of transistor (NMOS or PMOS), leading to asymmetric contamination delays.
+
+6. **Process Variations**: Manufacturing process variations can cause differences in the physical characteristics of the transistors, such as channel length, width, and oxide thickness. These variations can lead to differences in the electrical characteristics and switching speeds of NMOS and PMOS transistors, affecting the contamination delay for rising and falling edges.
+
+7. **Intrinsic Gate Delay**: The intrinsic delay of a gate is influenced by the internal resistance and capacitance of the transistors. Since the NMOS and PMOS transistors have different resistive and capacitive properties, this intrinsic delay can differ for rising and falling transitions.
+
+Understanding these factors helps in designing logic gates with balanced rise and fall times, though achieving perfect symmetry is challenging due to the inherent differences in the transistor characteristics and the practical constraints of the manufacturing process.
 
 
