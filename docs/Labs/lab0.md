@@ -242,7 +242,7 @@ By ensuring that the VTC is centered, you achieve a <span class="orange-bold">ba
 
 The internal hardware implementation of the and2 gate is inside the file `custom_gates.jsim`. We will learn how to make these gates next week. But for now, all you need to know is that each gate is made up of another electronic components called **transistors**. We arrange these transistors in a specific way so that we can produce a **logic gate** with certain logic behavior, e.g: the `nand` gate. 
 
-We can **vary** the **size** of each transistors making up each gate (the `sw` and `sl` dimension, which refers to *width* and *length* of the transistors). This will directly affect the VTC plot of the `and2` gate.
+We can **vary** the **size** of each transistors making up each gate (the `sw` and `sl` dimension, which refers to *width* and *length* of the transistors). This will directly affect the VTC plot of the `and2` gate. *You will learn more about the anatomy of the transistors (called MOSFET) next week, but head to [appendix](#how-mosfet-width-and-length-affects-vtc) if you're interested to find out more right now*. 
 
 For instance, set the value of `sw` of MPU1 and MPU2 to be **10**. Then, O=observe the **change** in the VTC output (click Device level simulation button again while focusing on `lab0_task4_and_5.jsim` pane). We now have a more **centered** VTC:
 
@@ -251,6 +251,10 @@ For instance, set the value of `sw` of MPU1 and MPU2 to be **10**. Then, O=obser
 {:.highlight}
 Head to edimension to answer some questions about this task.
 
+{:.warning-title}
+> VTC Characteristics vs. Switching Speed
+> 
+> The <span class="orange-bold">steepness</span> of the VTC curve primarily indicates the **static** behavior of the gate and how **sensitively** the output voltage (Vout) responds to changes in the input voltage (Vin), <span class="orange-bold">and not</span> directly imply dynamic characteristics of the gate such as the switching <span class="orange-bold">speed</span> (e.g: how fast will we obtain a Vout given a Vin)
 
 ### Task 5: Finding Noise Immunity 
 
@@ -531,3 +535,39 @@ Voh voh 0 3v
 ```
 
 Click the device-level simulation button to view the output waveform window. 
+
+## How MOSFET width and length affects VTC
+
+The length (L) and width (W) of a MOSFET (Metal-Oxide-Semiconductor Field-Effect Transistor) have significant effects on the Voltage Transfer Characteristics (VTC) of logic gates made from these transistors. Here's a detailed look at how these dimensions affect the MOSFET's performance and, consequently, the VTC of the gates:
+
+### 1. Effect on Drive Current
+
+- **Width (W)**: Increasing the width of the MOSFET increases the channel area, allowing **more** electrons (or holes in a pMOS) to flow from the source to the drain. This increases the drive current (called $$I_{DS}$$, or I Drain-Source) of the MOSFET. A higher drive current can result in faster switching speeds and lower resistance in the on-state, which influences the VTC by making the transitions sharper.
+
+- **Length (L)**: Decreasing the length of the MOSFET **reduces** the distance electrons have to travel, which also increases the drive current. A shorter channel length leads to higher electron mobility and a higher current for a given gate voltage (called $$V_{GS}$$ or V Gate-Source).
+
+### 2. Threshold Voltage (Vth) and Subthreshold Characteristics
+
+- **Short Channel Effects**: Reducing the length can lead to **short-channel effects** (please do further search if you've never heard of this term), such as threshold voltage roll-off and *drain-induced barrier lowering*, which can impact the VTC. These effects can cause the MOSFET to turn on at lower gate voltages, affecting the VTC's **shape** and the **voltage levels** at which the transitions occur.
+
+- **Width Effects**: While width primarily affects the current capability, very **narrow** devices can suffer from increased variability and edge effects that might slightly alter VTC characteristics.
+
+### 3. Capacitance and Switching Speed
+
+- **Width and Capacitance**: A wider MOSFET has a larger gate capacitance ($$C_G$$). 
+  - Higher capacitance requires **more** charge to change the voltage, which can slow down the switching speed if the driving current is not increased proportionally. 
+  - While the VTC plot itself does not directly indicate switching speed, the increased capacitance can indirectly affect the dynamic response of the gate.
+
+### 4. Impact on VTC
+
+- **Drive Strength**: Both **increased** **width** and **decreased** **length** result in higher drive strength, which <span class="orange-bold">sharpens the transition region</span> of the VTC. A sharper transition region implies that the output voltage (Vout) changes more sensitively and distinctly for a given change in input voltage (Vin).
+
+- **Sensitivity**: The VTC shows the sensitivity of Vout to changes in Vin. Higher drive strength due to optimal width and length dimensions can make the inverter more sensitive, meaning it has a steeper slope in the transition region. 
+
+### 5. Practical Considerations
+
+- **Trade-offs**: Increasing the width or decreasing the length improves current drive but also increases power consumption and chip area. There is always a trade-off between speed, power, and area in MOSFET design.
+
+### Conclusion
+
+The physical dimensions of a MOSFET, particularly its length and width, significantly influence its electrical characteristics, including the current drive capability and threshold voltage. These changes affect the Voltage Transfer Characteristics (VTC) of logic gates made from these MOSFETs by altering the steepness and position of the transition region. While the VTC plot itself does not show how fast the signal changes (which is more related to dynamic performance and capacitance), it shows how sensitively the output voltage responds to the input voltage, which is indirectly influenced by the MOSFET's physical dimensions.
