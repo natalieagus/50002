@@ -268,13 +268,27 @@ So far we haven't discussed about this term called *propagation delay*, which is
 > 
 > Assume the output of a device is initially invalid. The propagation delay, denoted as $$t_{pd}$$ is defined as the time taken for the device to produce a **valid** output, measured the moment it was given a **valid** input. 
 
-The effective $$t_{pd}$$ of an entire circuit is the **maximum** *cumulative* propagation delay *over all paths from inputs to outputs* in the combinational logic circuit. 
+To find the propagation delay of a circuit schematic, follow these steps:
 
-The intuition behind why  t$$_{pd}$$ is calculated as the *maximum cumulative propagation delay* over all paths:
+1. **Identify All Paths**: List all possible paths from any input to any output.
+2. **Calculate Delay for Each Path**: For each path, sum the propagation delays of all the gates along that path.
+3. **Determine the Longest Path**: Identify the path with the <span class="orange-bold">highest</span> total delay, known as the critical path.
+4. **Total Propagation Delay**: The propagation delay of the circuit is the delay of the critical path.
 
-- Each component (gates, made up of FETS in CMOS arrangements) in the combinational logic circuit must wait for one another to produce a valid overall output.
-- All components have to produce valid results before final **output** (the last logic gate in the circuit) can be produced.
+{:.note-title}
+> Critical Path
+>
+> The critical path in a digital circuit is the **longest** path from <span class="orange-bold">any</span> input to <span class="orange-bold">any</span> output, which determines the maximum propagation delay of the circuit. 
+> 
+> It is the path that takes the **most** time for a signal to travel through the circuit, and it defines the overall speed at which the circuit can operate, as the circuit cannot produce a valid output (all bits) until all signals have propagated through this path.
 
+
+The propagation delay is determined by the longest path because it dictates the maximum time the circuit takes to **stabilize** its output after an input change.
+- **Sequential dependency**: Each component (gates, made up of FETS in CMOS arrangements) in the combinational logic circuit must wait for one another to produce a valid overall output.
+- **Overall output validity**: All components must produce valid results before final **output** (the last logic gate in the circuit) can be produced.
+
+{:.important}
+For a device with more than one output bit, all output bits must be valid simultaneously for the device to function correctly. This means that the propagation delay of the device is determined by the longest delay among all the output paths, ensuring all outputs are stable and valid at the same time.
   
 
 ### [Contamination delay $$t_{cd}$$](https://www.youtube.com/watch?v=JqgZcV_1IU4&t=1950s)
@@ -285,14 +299,29 @@ Another timing specification that is typically measured an indicated on a combin
 {: .important-title}
 > Contamination Delay
 >
-> Assume the output of a device is initially valid. The contamination delay  denoted as $$t_{cd}$$ is defined as time taken for the device to produce an **invalid** output, measured  from the moment it was given an **invalid** input. 
+> Assume the output of a device is initially valid. The contamination delay  denoted as $$t_{cd}$$ is defined as time taken for the device to produce an **invalid** output when it was initially valid, measured  from the moment it was given an **invalid** input. 
 
-The effective $$t_{cd}$$ of an entire circuit is the **minimum** *cumulative* contamination delay over *all paths from inputs to outputs* in the combinational logic circuit. 
+To find the contamination delay of a circuit schematic, follow these steps:
+
+1. **Identify All Paths**: List all possible paths from any input to any output.
+2. **Calculate Delay for Each Path**: For each path, sum the contamination delays (minimum delays) of all the gates along that path.
+3. **Determine the Shortest Path**: Identify the path with the <span class="orange-bold">lowest</span> total contamination delay.
+4. **Total Contamination Delay**: The contamination delay of the circuit is the delay of the shortest path.
+
+{:.note-title}
+> Shortest Path
+>
+> The shortest path in the context of contamination delay is the path through the circuit that has the **minimum** total delay from an input to an output. 
+> 
+> This path defines the contamination delay because it represents the **fastest** possible route for a signal to propagate through the circuit, indicating the **earliest** time at which any output may change (such as become invalid from previously being valid) in response to a change at the input.
 
 The intuition behind why t$$_{cd}$$ is calculated as the minimum cumulative contamination delay over all paths:
-- It takes the fastest route to propagate *invalid* signal and
-- Finally *contaminates ANY output* (to be invalid, when it was initially valid).
+- **Fastest propagation of errors**: errors take the fastest route to propagate *invalid* signal and finally,
+- **Earliest contamination**: errors *contaminate ANY output* (to be invalid, when it was initially valid) via this shortest path
 
+
+{:.important}
+For contamination delay, it is enough for just one output bit to become invalid for the entire device to be considered invalid. The contamination delay indicates how **long** the circuit can hold  its **previous valid output** (all bits) before any invalid input starts to affect the output, representing the minimum time the circuit can maintain its state before any bit becomes invalid.
 
 
 ## [Exercise](https://www.youtube.com/watch?v=JqgZcV_1IU4&t=2087s)

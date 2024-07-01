@@ -36,8 +36,13 @@ The lecture notes on [Digital Abstraction](https://natalieagus.github.io/50002/n
 **Task 1 & 2:** measuring tpd and tcd of a **nand** gate
 <br>Related Notes: **CMOS Technology**
   * [Timing Specifications of Combinational Logic Devices](https://natalieagus.github.io/50002/notes/cmostechnology#timing-specifications-of-combinational-logic-devices)
-  * To analyse the relationship between setup time, hold time, contamination delay, and propagation delays
+  * To derive contamination delay and propagation delays of a gate from waveforms
 
+**Task 3 & 4:** measuring tpd and tcd of a half-adder unit 
+<br>Related Notes: **CMOS Technology**
+  * [Combinational Logic Devices](https://natalieagus.github.io/50002/notes/digitalabstraction#a-digital-processing-element-combinational-device-and-combinational-digital-system)
+  * [Timing Specifications of Combinational Logic Devices](https://natalieagus.github.io/50002/notes/cmostechnology#timing-specifications-of-combinational-logic-devices)
+  * To derive contamination delay and propagation delays of a combinational logic unit from waveforms
 
 **Appendix Task:** studying the effect of MOSFET “ON” and MOSFET “OFF”. 
 <br>Related Notes: **CMOS Technology**
@@ -48,7 +53,7 @@ The lecture notes on [Digital Abstraction](https://natalieagus.github.io/50002/n
   * An “OFF” MOSFET isn’t always 100% off, there exist leaky current
 
 
-## Measuring Timing Specifications
+## Measuring Timing Specifications of a Gate
 In the last lab, we tried to vary the MOSFET's width and length to try to **center** the resulting logic gate (made of those MOSFETs) VTC and optimise the noise margin. Remember that VTC's steepness and graph characteristics (how centered it is, gradient, etc), does <span class="orange-bold">not directly</span> imply the **speed** of getting a particular output Vout.
 
 {:.important}
@@ -183,6 +188,143 @@ Likewise, tpd is some sort of *loading time* of the device. If your device loads
 > If a 2019 Intel Core i9 processor is rated to run correctly at 2.3 GHz at 100°C, it is certainly capable to run at a much **faster** **clock** rate at room temperature (assuming tpd is the parameter that determines “correct” computer behavior).  
 > 
 > This is why you can usually get away with overclocking your CPU—it’s been rated for operation under much more severe environmental conditions than you’re probably running it at! 
+
+## Measuring Timing Specifications of a combinational logic unit 
+
+{:.note-title}
+> Combinational Logic Devices
+>
+> Combinational logic devices are digital circuits that produce outputs **based solely on their current inputs**, without memory, using components like adders, multiplexers, encoders, and decoders. Examples include half adders, full adders, and multiplexers.
+
+Below is the schematic of a <span class="orange-bold">half-adder unit</span>: **combinational** logic circuit that adds two **single-bit** binary numbers A and B, producing a Sum and a Carry bit output. They can be made solely with NAND gates. 
+
+<img src="{{ site.baseurl }}/docs/Labs/images/lab1/cs-2025-half-adder.drawio.png"  class="center_fifty"/>
+
+Here's its truth table:
+
+| A | B | Sum | Carry |
+|---|---|-----|-------|
+| 0 | 0 |  0  |   0   |
+| 0 | 1 |  1  |   0   |
+| 1 | 0 |  1  |   0   |
+| 1 | 1 |  0  |   1   |
+
+### Task 3: Find tpd of a half-adder
+From the lectures, you're taught that the **propagation** delay is determined by the longest path because it dictates the **maximum** time the circuit takes to stabilize its output after an input change. Since a half-adder device has **two** output bits: Sum and Carry, we need to compute the tpd of each bit and then report the **maximum** value as the tpd of the half-adder. 
+
+Open `lab1_task3_and_4.jsim`. This netlist describes the schematic of a half adder. 
+
+```cpp 
+.include "nominal.jsim"
+.include "custom_gates_lab1.jsim"
+
+.subckt half_adder a b sum carry
+Xnand1_unit a b nand1_out nand2
+Xnand2_unit nand1_out a nand2_out nand2
+Xnand3_unit nand1_out b nand3_out nand2 
+Xoutput_sum nand2_out nand3_out sum nand2
+Xoutput_carry nand1_out nand1_out carry nand2
+.ends
+
+
+* test jig for measuring tcd and tpd
+Xdriver vin B inv
+Xtest vdd B sum carry half_adder
+* simulate load at the output terminals of the half adder unit
+Cload_carry carry 0 .02pf
+Cload_sum sum 0 .02pf
+Vin vin 0 pulse(3.3,0,5ns,.1ns,.1ns,4.8ns)
+
+* helper plots to make measurements earlier 	
+Vol vol 0 0.3v   
+Vil vil 0 0.6v
+Vih vih 0 2.6v
+Voh voh 0 3.0v
+
+.tran 15ns
+.plot B sum vol vil vih voh
+.plot B carry vol vil vih voh
+```
+
+Here we fix the `A` input terminal as `1` (vdd), and **vary** the voltage value at the `B` input terminal instead. The value of Sum and Carry bit should follow this truth table:
+
+| A | B | Sum | Carry |
+|---|---|-----|-------|
+| 1 | 0 |  1  |   0   |
+| 1 | 1 |  0  |   1   |
+
+Click the **Device Level Simulation** button: 
+
+<img src="{{ site.baseurl }}//docs/Labs/images/lab1/2024-07-01-15-05-55.png"  class="center_seventy no-invert"/>
+
+1. Compute the tp rise and tp fall of the sum bit
+2. Compute the tp rise and tp fall of the carry bit
+  
+Take the **maximum** value from (1) and (2) above and report it as the tpd of the half-adder. Then look at the half-adder schematic and identify the **critical path** of the device. 
+- How many nand2 gates are there in the critical path of the device?
+- Do you find that the tpd of the half-adder is **exactly** sum of the **tpd** of these nand2 gates (in the critical path) computed in Task 1 above? If not, is it *more* or *less* than that? 
+
+{:.note-title}
+> Critical Path
+>
+> The critical path in a digital circuit is the **longest** path from <span class="orange-bold">any</span> input to <span class="orange-bold">any</span> output, which determines the maximum propagation delay of the circuit. 
+> 
+> It is the path that takes the **most** time for a signal to travel through the circuit, and it defines the overall speed at which the circuit can operate, as the circuit cannot produce a valid output (all bits) until all signals have propagated through this path.
+
+{:.highlight}
+Head to edimension to answer questions pertaining to this task. 
+
+#### Conclusion
+
+The propagation delay of the sum bit in a 1-bit half adder is <span class="orange-bold">approximately</span> the sum of the delays through each individual nand gate in the critical path like we learned during Lecture, but in practice it is <span class="orange-bold">not</span> exactly 3 times the intrinsic delay of a single nand gate due to additional factors such as:
+
+1. **Gate Loading**: Each gate's output drives the inputs of subsequent gates, increasing the capacitive load and thus slightly increasing the delay.
+
+2. **Parasitic Capacitance**: Interconnecting wires and components have inherent capacitance that adds extra delay as signals travel through the circuit.
+
+3. **Interconnect Delays**: The physical layout of the circuit introduces resistance and capacitance in the interconnecting wires, contributing to additional delays.
+
+4. **Non-ideal Behavior**: Real gates do not switch instantaneously and have finite rise and fall times, which add to the overall delay. 
+
+These factors cumulatively cause the actual propagation delay to be slightly higher than the simple sum of the delays of individual gates.
+
+### Task 4: Find tcd of a half-adder 
+
+From the same graph in Task 3: 
+1. Compute the tc rise and tc fall of the sum bit
+2. Compute the tc rise and tc fall of the carry bit
+
+Take the **minimum** value from (1) and (2) above and report it as the tcd of the half-adder. Then look at the half-adder schematic and identify the **shortest path** of the device. 
+- How many nand2 gates are there in the shortest path of the device?
+- Do you find that the tpd of the half-adder is **exactly** sum of the **tpd** of these nand2 gates (in the shortest path) computed in Task 1 above? If not, is it *more* or *less* than that? 
+
+{:.note-title}
+> Shortest Path
+>
+> The shortest path in the context of contamination delay is the path through the circuit that has the **minimum** total delay from an input to an output. 
+> 
+> This path defines the contamination delay because it represents the **fastest** possible route for a signal to propagate through the circuit, indicating the **earliest** time at which any output may change (such as become invalid from previously being valid) in response to a change at the input.
+
+
+{:.highlight}
+Head to edimension to answer questions pertaining to this task. 
+
+#### Conclusion
+The contamination delay (tcd) of a logic gate is not exactly the sum of the contamination delays of the individual gates making the shortest path due to:
+
+1. **Gate Loading**: Similar to propagation delay, the loading effects can vary, affecting the minimum delay.
+2. **Parasitic Capacitance**: These can also affect the minimum transition time, adding to the delay.
+3. **Interconnect Delays**: Even for the shortest path, these delays can add up and affect the total tcd.
+
+Typically, the actual contamination delay is **more** than the simple sum of the individual gates' minimum delays due to these additional factors, which add to the overall minimum delay.
+
+## Summary 
+
+
+In this lab, we measured the tpd and tcd of both a 2-input nand gate and a half-adder unit made up using these gates. 
+
+By analyzing the waveforms, we identified the **critical** path to determine the maximum tpd and the **shortest** path for the minimum tcd. Understanding how these delays are computed is crucial for accurate timing analysis and reliable digital circuit design.
+
 
 # Appendix
 ## Adding Load at Output Terminal
