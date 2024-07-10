@@ -1,7 +1,7 @@
 ---
 layout: default
 permalink: /lab/lab4-jsim
-title: Lab 4 - Beta Processor with JSIM
+title: (old) Lab 4 - Beta Processor with JSIM
 description: Lab 4 handout covering topics from Beta Datapath
 parent: Labs
 nav_order: 109 

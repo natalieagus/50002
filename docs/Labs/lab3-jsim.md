@@ -1,7 +1,7 @@
 ---
 layout: default
 permalink: /lab/lab3-jsim
-title: Lab 3 - Arithmetic Logic Unit with JSIM
+title: (old) Lab 3 - Arithmetic Logic Unit with JSIM
 description: Lab 3 handout covering topics from Logic Synthesis, and Designing an Instruction Set
 parent: Labs
 nav_order: 106 
