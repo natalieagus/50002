@@ -24,17 +24,17 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> 1. **Understand Combinational Logic Devices:**
+> 1. **Basics of Logic Synthesis:**
 >   - Learn how combinational logic devices synthesize logic to produce specific outputs based on given inputs, adhering to functional specifications or truth tables.
 >   - Explore how functional specifications are expressed through truth tables for different logic gates like NAND and AND.
 > 2. **Explore Multi-input Logic Gates:**
->   - Understand the concept of multi-input gates and recognize the computational possibilities and limitations of different gate types.
+>   - Explain the concept of multi-input gates and recognize the computational possibilities and limitations of different gate types.
 >   - Comprehend that the number of possible logic gates increases exponentially with the number of inputs.
 > 3. **Apply Sum of Products Method:**
 >   - Learn to convert truth tables into Boolean expressions using the sum of products method.
->   - Understand the process of creating combinational logic expressions that align with specified truth tables.
+>   - Explain the process of creating combinational logic expressions that align with specified truth tables using SoP.
 > 4. **Synthesize Logic Using Basic Gates:**
->   - Master the use of basic logic gates (INV, AND, OR) to synthesize any given Boolean expression.
+>   - Master the use of basic logic gates (INV, AND, OR, XOR) to synthesize any given Boolean expression.
 >   - Explore straightforward logic synthesis to build complex combinational devices from basic components.
 > 5. **Utilize Boolean Algebra for Logic Minimization:**
 >   - Apply Boolean algebra properties to manipulate and simplify Boolean expressions.
@@ -42,12 +42,12 @@ Singapore University of Technology and Design
 > 6. **Implement Universal Gates:**
 >   - Recognize NAND and NOR gates as universal gates capable of implementing any Boolean function.
 >   - Learn to construct basic logic functions using only NAND or NOR gates.
-> 7. **Understand Special Combinational Logic Devices:**
+> 7. **Special Combinational Logic Devices:**
 >   - Examine the functionality and application of multiplexers and demultiplexers in digital circuits.
 >   - Learn how multiplexers can implement any Boolean function by selecting among multiple inputs.
 > 8. **Investigate the Use of ROMs for Hardcoding Logic:**
 >   - Explore the use of Read-Only Memories (ROMs) to permanently encode specific logic functions.
->   - Understand the physical layout and logic implications of using ROMs in digital circuit design.
+>   - Explain the physical layout and logic implications of using ROMs in digital circuit design.
 >
 > These objectives are designed to provide students with a thorough understanding of how combinational logic devices are conceptualized, designed, and implemented in digital electronics, fostering a foundation for more complex system designs.
 

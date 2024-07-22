@@ -17,7 +17,7 @@ Information Systems Technology and Design
 <br>
 Singapore University of Technology and Design
 
-# Designing an Instruction Set
+# Designing an Instruction Set Architecture
 {: .no_toc}
 [You can find the lecture video here.](https://youtu.be/h1KGzAbJH4Q) You can also **click** on each header to bring you to the section of the video covering the subtopic. 
 
@@ -25,25 +25,25 @@ Singapore University of Technology and Design
 > Detailed Learning Objectives
 >
 > 1. **Define a Basic Programmable Machine**
->    - Understand the requirements for a machine to be programmable, including expandable memory, a rich repertoire of operations, and the ability to execute newly generated programs.
+>    - Appreciate the requirements for a machine to be programmable, including expandable memory, a rich repertoire of operations, and the ability to execute newly generated programs.
 > 2. **Explore the Concept of a Datapath**
 >    - Learn about datapaths, which consist of combinational devices, registers, and buses, and their role in processing inputs to produce outputs within a machine.
 > 3. **Identify the Role of Control Signals in Machine Operations**
 >    - Recognize how control signals influence the behavior of circuits in a programmable machine, allowing for varied operations across different time steps.
 > 4. **Examine the Functionality of Control FSM Units**
->    - Analyze how different Control FSM (Finite State Machine) units can alter a machine's operations, making it programmable through variable control signal sequences.
+>    - Analyze how different Control FSM (Finite State Machine) units can alter a machine's operations, making it programmable through variable control signal sequences without the need to modify the hardware.
 > 5. **Discuss the Constraints of Simple Programmable Machines**
 >    - Consider the limitations of basic programmable machines in terms of storage capacity, operation diversity, and self-programming capabilities.
 > 6. **Describe the Von Neumann Architecture**
->    - Understand the structure and components of the Von Neumann architecture, including the CPU, memory unit, and input/output mechanisms, and how they integrate via data/address buses.
+>    - Explain the general structure and components of the Von Neumann architecture, including the CPU, memory unit, and input/output mechanisms, and how they integrate via data/address buses.
 > 7. **Detail the CPU’s Components and Functions**
 >    - Explore the internal structure of a CPU, including its data path, control unit, ALU, and internal storage, and how these components interact to execute instructions.
 > 8. **Examine the Memory Unit’s Role and Functions**
 >    - Learn about the functionality of memory units in storing data and instructions, how data is organized and accessed, and the concept of byte-addressable memory.
-> 9. **Understand Instruction Set Architectures**
+> 9. **Recognize Instruction Set Architectures**
 >    - Grasp the importance of an ISA in defining the operations a CPU can perform, and how it facilitates the programming of a computer to perform a wide range of tasks.
 > 10. **Translate Between High-Level Languages and Machine Language**
->     - Explore the process of translating high-level programming languages into assembly and then into machine language, emphasizing the role of compilers and interpreters.
+>    - Explore the process of translating high-level programming languages into assembly and then into machine language, emphasizing the role of compilers and interpreters.
 > 
 > These objectives guide students through understanding the foundational concepts of programmable machines, their architectural designs, and the transformation of high-level programming constructs into executable machine code.
 

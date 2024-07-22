@@ -23,14 +23,14 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 > 
-> 1. **Understand the Foundation of Digital Devices:**
+> 1. **Foundation of Digital Devices:**
 >   - Learn the basic concept of encoding information using electrical signals.
->   - Understand how bits represent data in electronic devices and their role in computation.
+>   - Explain how bits represent data in electronic devices and their role in computation.
 > 2. **Explore Number Systems and Encoding:**
 >   - Gain proficiency in converting between binary, decimal, octal, and hexadecimal number systems.
 >   - Comprehend the use of prefixes and suffixes in different number systems to indicate bases.
 > 3. **Master 2's Complement for Signed Numbers:**
->   - Understand how 2's complement is used to represent signed integers in binary form.
+>   - Explain how 2's complement is used to represent signed integers in binary form.
 >   - Learn the process of converting positive numbers to their negative counterparts using 2's complement.
 > 4. **Grasp Various Encoding Techniques:**
 >   - Recognize fixed length length encoding methods.
@@ -47,10 +47,10 @@ Singapore University of Technology and Design
 >   - Appreciate the importance of logic gates in translating theoretical binary operations into practical applications within computing hardware. 
 > 8. **Apply Knowledge to Practical Digital System Design:**
 >   - Explore the historical context and evolution of digital devices from mechanical systems to modern electronic computers.
->   - Understand the practical constraints in early computing, such as cost and size, and how they influenced design decisions.
+>   - Appreciate the practical constraints in early computing, such as cost and size, and how they influenced design decisions.
 > 9. **Lay the Groundwork for Building General-Purpose Computers:**
 >   - Begin the process of learning how to design and build a general-purpose programmable machine.
->   - Understand the transition from specific-purpose devices to general-purpose computing platforms.
+>   - Appreciate the transition from specific-purpose devices to general-purpose computing platforms.
 > 
 > These objectives aim to equip students with a comprehensive understanding of digital systems from the ground up, preparing them to engage in more advanced studies and applications in computer science and engineering.
 

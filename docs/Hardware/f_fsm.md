@@ -24,7 +24,7 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> - **Understand the Concept of Finite State Machines (FSMs):**
+> - **Comprehend the Basic Concept of Finite State Machines (FSMs):**
 >   - Define a finite state machine (FSM) and its components: states, inputs, outputs, transitions, and outputs rules.
 >   - Recognize the practical applications of FSMs in everyday devices like traffic lights and electronic locks.
 > - **Differentiate Between Moore and Mealy Machines:**

@@ -25,22 +25,22 @@ Singapore University of Technology and Design
 > Detailed Learning Objectives
 >
 > 1. **Distinguish Sequential and Combinational Logic Devices**
->    - Understand the functional differences between sequential and combinational logic devices.
+>    - Explain the functional differences between sequential and combinational logic devices.
 >    - Explore the role of memory elements in sequential devices which allow them to store and reference past inputs.
 > 2. **Explore Memory Devices: D Flip-Flops and D-Latches**
 >    - Learn about the structure and operational modes (write and memory modes) of D Flip-Flops and D-Latches.
 >    - Examine how these memory devices integrate with combinational logic to form sequential logic circuits.
 > 3. **Identify the Role of the Clock Signal**
 >    - Recognize the critical role of the clock (CLK) signal in managing the behavior of sequential logic devices.
->    - Understand how the CLK signal ensures synchronization of inputs for reliable operation.
-> 4. **Understand Edge-Triggered D Flip-Flops**
+>    - Explain how the CLK signal ensures synchronization of inputs for reliable operation.
+> 4. **Master Edge-Triggered D Flip-Flops**
 >    - Explore the design and functionalities of Edge-Triggered D Flip-Flops, focusing on master and slave latch configurations.
 >    - Learn the importance of clock signal inversion and its impact on the operational dynamics of D Flip-Flops.
 > 5. **Comprehend Dynamic Discipline Requirements**
->    - Understand the necessity of setup time (\(T_{setup}\)) and hold time (\(T_{hold}\)) to prevent the storage of invalid information.
+>    - Explain the necessity of setup time and hold time to prevent the storage of invalid information.
 >    - Recognize how adhering to dynamic discipline ensures the reliability of sequential circuits.
 > 6. **Analyze Timing Constraints in Sequential Circuits**
->    - Grasp the importance of critical timing constraints (\(t_1\) and \(t_2\)) between sequential logic devices.
+>    - Grasp the importance of critical timing constraints `t1` and `t2` between sequential logic devices.
 >    - Study how these constraints ensure stable and valid outputs throughout clock cycles.
 > 7. **Discuss Synchronization Challenges of External Inputs**
 >    - Address the difficulties in synchronizing external inputs with the clock in sequential circuits.

@@ -26,26 +26,26 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> 1. **Understand Digital Abstraction:**
+> 1. **Digital Abstraction:**
 >   - Learn how digital circuits encode information using voltage levels to represent binary values.
->   - Understand the concept of digital abstraction for transforming continuous analog signals into discrete digital values.
+>   - Explain the concept of digital abstraction for transforming continuous analog signals into discrete digital values.
 > 2. **Recognize the Role of Semiconductor Devices:**
 >   - Comprehend the role of MOSFETs in generating voltage levels for digital bits.
 >   - Discuss the advantages of using semiconductors for digital encoding and the challenges posed by external disturbances.
 > 3. **Apply the Static Discipline in Digital Systems:**
->   - Understand the static discipline as a contract ensuring predictable behavior in digital systems.
+>   - Recognize the static discipline as a contract ensuring predictable behavior in digital systems.
 >   - Learn how the static discipline guarantees that valid inputs lead to valid outputs, ensuring system reliability.
 > 4. **Explore Combinational Digital Systems:**
 >   - Define combinational devices and systems, detailing their properties and operational criteria.
 >   - Differentiate between combinational and sequential logic devices, emphasizing the memory-less nature of combinational systems.
 > 5. **Voltage Encoding and Noise Margin:**
 >   - Master the concept of using voltage levels to encode binary data, including defining thresholds for '0' and '1'.
->   - Understand the importance of noise margins in maintaining signal integrity across digital devices.
+>   - Acknowledge the importance of noise margins in maintaining signal integrity across digital devices.
 > 6. **Examine Voltage Specifications and Their Impact:**
 >   - Learn about the specifications for valid voltage levels and how they are used to prevent errors due to noise.
 >   - Discuss how noise margins are established to enhance the robustness of digital systems against external disturbances.
 > 7. **Utilize Voltage Transfer Characteristic (VTC) Functions:**
->   - Analyze the Voltage Transfer Characteristic function to determine the behavior of digital systems under various input conditions.
+>   - Analyze the VTC function to determine the behavior of digital systems under various input conditions.
 >   - Evaluate the VTC to ensure that digital devices comply with the static discipline and effectively handle noise.
 > 8. **Prepare for Practical Applications:**
 >   - Integrate the theoretical knowledge of voltage levels, static discipline, and combinational logic into designing and evaluating digital circuits.

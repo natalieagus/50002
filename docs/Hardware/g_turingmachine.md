@@ -26,16 +26,17 @@ Singapore University of Technology and Design
 > Detailed Learning Objectives
 >
 > 1. **Recognize the Limitations of Finite State Machines (FSMs)**
->    - Understand that FSMs are limited by their lack of memory beyond the current state, making them unable to solve problems requiring knowledge of state visitation history, such as detecting palindromes or checking balanced parentheses.
+>    - Comprehend that FSMs are limited by their lack of memory beyond the current state
+>    - Comprehend that FSMs are unable to solve problems requiring knowledge of state visitation history, such as detecting palindromes or checking balanced parentheses.
 > 2. **Describe the Concept and Functionality of Turing Machines**
 >    - Learn about the Turing Machine as a mathematical model capable of performing computations that FSMs cannot, including handling infinitely long inputs via its tape mechanism.
 > 3. **Explain the Basic Operation of a Turing Machine**
->    - Understand how a Turing Machine reads, writes, and manipulates data on an infinitely long tape using a set of defined states and transitions.
+>    - Explain how a Turing Machine reads, writes, and manipulates data on an infinitely long tape using a set of defined states and transitions.
 > 4. **Illustrate the Process of Operating a Turing Machine**
->    - Describe the step-by-step process of how a Turing Machine moves through its tape, processes data, and utilizes its halt and start states effectively.
+>    - Illustrate the step-by-step process of how a Turing Machine moves through its tape, processes data, and utilizes its halt and start states effectively.
 > 5. **Analyze Specific Examples of Turing Machine Applications**
 >    - Examine detailed examples such as an Increment Machine and a Coin Counter Machine to see how Turing Machines handle complex computations and scenarios beyond the capability of FSMs.
-> 6. **Understand the Concept of a Universal Turing Machine**
+> 6. **Get Familiar with the Concept of a Universal Turing Machine**
 >    - Learn how a Universal Turing Machine simulates any other Turing Machine, representing the theoretical foundation for modern general-purpose computers.
 > 7. **Explore Church’s Thesis and Computable Functions**
 >    - Discuss the implications of Church's Thesis regarding the capabilities of Turing Machines and the definition of computable functions.
@@ -44,7 +45,7 @@ Singapore University of Technology and Design
 > 9. **Appreciate the Impact of Turing Machines on Computer Science**
 >    - Reflect on how the development of Turing Machines and their universal capabilities have revolutionized approaches to computational tasks and machine design.
 > 10. **Summarize the Principle of Programmability in Computing**
->     - Conclude with the significance of the programmable nature of computers, facilitated by the conceptual framework provided by Turing Machines and their ability to emulate an infinite set of instructions.
+>    - Conclude with the significance of the programmable nature of computers, facilitated by the conceptual framework provided by Turing Machines and their ability to emulate an infinite set of instructions.
 >
 > These learning objectives equip students with a deep understanding of computational models, particularly focusing on the capabilities and limitations of Finite State Machines and Turing Machines, thereby providing a solid foundation in theoretical computer science that underpins modern computing technologies and concepts.
 

@@ -24,13 +24,14 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> 1. **Understand Control Logic and CPU Instruction Handling**
+> 1. **Explain the Relationship Between Control Logic and CPU Instruction Handling**
 >    - Learn how the Control Logic unit decodes the OPCODE of instructions and outputs appropriate control signals to manipulate the datapath for executing various instructions.
+> 	 - Implement the datapath for $$\beta$$ ISA 
 > 2. **Examine the Instruction Fetch and Decode Process**
 >    - Explore how the CPU fetches and decodes instructions during each clock cycle, focusing on the computation of instruction addresses and the decoding of OPCODEs.
 > 3. **Analyze the Detailed Anatomy of the $$\beta$$ CPU**
 >    - Study the components of the $$\beta$$ CPU, including the Program Counter (PC), Register Files (REGFILE), Arithmetic Logic Unit (ALU), and Control Unit (CU), and their interconnections.
-> 4. **Understand Memory Interaction in the CPU**
+> 4. **Explain Memory Interaction in the CPU**
 >    - Investigate how instructions interact with memory, specifically how data is loaded and stored between the CPU's registers and the physical memory unit.
 > 5. **Explore the Control Transfer in CPU Operations**
 >    - Delve into instructions that involve control transfer such as conditional branches and jumps, and understand how they modify the flow of execution within the CPU.
