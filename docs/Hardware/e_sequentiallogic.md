@@ -26,31 +26,31 @@ Singapore University of Technology and Design
 >
 > 1. **Distinguish Sequential and Combinational Logic Devices**
 >    - Explain the functional differences between sequential and combinational logic devices.
->    - Explore the role of memory elements in sequential devices which allow them to store and reference past inputs.
-> 2. **Explore Memory Devices: D Flip-Flops and D-Latches**
->    - Learn about the structure and operational modes (write and memory modes) of D Flip-Flops and D-Latches.
+>    - Explain the role of memory elements in sequential devices which allow them to store and reference past inputs.
+> 2. **Explain Memory Devices: D Flip-Flops and D-Latches**
+>    - Discover the structure and operational modes (write and memory modes) of D Flip-Flops and D-Latches.
 >    - Examine how these memory devices integrate with combinational logic to form sequential logic circuits.
 > 3. **Identify the Role of the Clock Signal**
->    - Recognize the critical role of the clock (CLK) signal in managing the behavior of sequential logic devices.
+>    - Justify the critical role of the clock (CLK) signal in managing the behavior of sequential logic devices.
 >    - Explain how the CLK signal ensures synchronization of inputs for reliable operation.
-> 4. **Master Edge-Triggered D Flip-Flops**
->    - Explore the design and functionalities of Edge-Triggered D Flip-Flops, focusing on master and slave latch configurations.
->    - Learn the importance of clock signal inversion and its impact on the operational dynamics of D Flip-Flops.
-> 5. **Comprehend Dynamic Discipline Requirements**
+> 4. **Discuss Edge-Triggered D Flip-Flops**
+>    - Discuss the design and functionalities of Edge-Triggered D Flip-Flops, focusing on master and slave latch configurations.
+>    - Assess the importance of clock signal inversion and its impact on the operational dynamics of D Flip-Flops.
+> 5. **Justify Dynamic Discipline Requirements**
 >    - Explain the necessity of setup time and hold time to prevent the storage of invalid information.
->    - Recognize how adhering to dynamic discipline ensures the reliability of sequential circuits.
+>    - Explain how adhering to dynamic discipline ensures the reliability of sequential circuits.
 > 6. **Analyze Timing Constraints in Sequential Circuits**
->    - Grasp the importance of critical timing constraints `t1` and `t2` between sequential logic devices.
->    - Study how these constraints ensure stable and valid outputs throughout clock cycles.
+>    - Explain the importance of critical timing constraints `t1` and `t2` between sequential logic devices.
+>    - Prove how `t1` and `t2` constraints ensure stable and valid outputs throughout clock cycles.
 > 7. **Discuss Synchronization Challenges of External Inputs**
->    - Address the difficulties in synchronizing external inputs with the clock in sequential circuits.
+>    - Explain the difficulties in synchronizing external inputs with the clock in sequential circuits.
 >    - Examine potential issues arising from violations of the dynamic discipline.
-> 8. **Recognize the Metastable State in Sequential Logic Devices**
+> 8. **Explain the Metastable State in Sequential Logic Devices**
 >    - Identify what a metastable state is and the conditions that lead to its occurrence in sequential logic devices.
 >    - Evaluate the consequences and impacts on circuit functionality when a device enters a metastable state.
 > 9. **Evaluate Methods to Minimize Metastability**
 >    - Analyze strategies to reduce the likelihood of a device entering a metastable state.
->    - Consider the trade-offs involved in these strategies, such as cost, responsiveness, and device size.
+>    - Measure the trade-offs involved in these strategies, such as cost, responsiveness, and device size.
 >
 > The aim of these learning objectives is to thoroughly understand sequential and combinational logic devices, focusing on their differences, integration of memory elements, operational synchronization, and challenges in maintaining reliable and efficient functionality.
 

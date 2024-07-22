@@ -24,24 +24,24 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> 1. **Explore the Basics of MOSFETs:**
+> 1. **Explain the Basics of MOSFETs:**
 >   - Identify the structure and operation of Metal-Oxide Semiconductor Field-Effect Transistors (MOSFETs).
 >   - Identify the roles of the gate, drain, source, and body in MOSFET operation.
 > 2. **Differentiate Between NFET and PFET:**
 >   - Compare the characteristics and functions of N-type and P-type FETs.
 >   - Learn how NFETs and PFETs are used to implement different logic functions based on their configuration and voltage levels.
-> 3. **Learn CMOS Technology for Logic Devices:**
+> 3. **Design Logic Devices using CMOS Technology:**
 >   - Explain how Complementary MOS (CMOS) technology utilizes both NFETs and PFETs to create efficient logic circuits.
->   - Explore the concept of pull-up and pull-down networks within CMOS circuits.
+>   - Explain the concept of pull-up and pull-down networks within CMOS circuits.
 > 4. **Analyze the CMOS Complementary Recipe:**
->   - Study the complementary nature of pull-up and pull-down circuits in CMOS technology to prevent short circuits and ensure stable logic states.
+>   - Justify the complementary nature of pull-up and pull-down circuits in CMOS technology to prevent short circuits and ensure stable logic states.
 >   - Apply the complementary MOS circuitry to understand basic logic gates like NAND and NOR.
-> 5. **Master Logic Gate Fundamentals:**
->   - Identify different types of logic gates and their operations.
->   - Appreciate how logic gates are implemented using CMOS technology to fulfill specific logic functions.
-> 6. **Discuss Timing Specifications in Combinational Logic Devices:**
->   - Learn about propagation delay and contamination delay as critical timing specifications in digital circuits.
->   - Learn how these delays impact the performance and reliability of logic circuits.
+> 5. **Explain Logic Gate Fundamentals:**
+>   - Identify different types of basic logic gates and their operations.
+>   - Outline how each logic gate is implemented using CMOS technology to fulfill specific logic functions.
+> 6. **Analyze Timing Specifications in Combinational Logic Devices:**
+>   - Evaluate propagation delay and contamination delay as critical timing specifications in digital circuits.
+>   - Evaluate how these delays impact the performance and reliability of logic circuits.
 >
 > These objectives aim to provide students with a comprehensive understanding of the basic building blocks of digital electronics, focusing on MOSFETs and their application in combinational logic devices through CMOS technology.
 

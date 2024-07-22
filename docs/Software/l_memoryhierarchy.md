@@ -23,31 +23,31 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> 1. **Overview of Memory in Computing Systems**
->    - Explains the role of the REGFILE and external Memory Units in the $$\beta$$ CPU architecture.
->    - Discusses the limitations of a 32-bit address space, which can address up to 4GB of memory.
-> 2. **Memory Technologies: SRAM and DRAM**
->    - Introduces Static Random-Access Memory (SRAM) and Dynamic Random-Access Memory (DRAM) as two primary technologies for creating memory cells.
->    - Describes the construction and operation of SRAM and DRAM, including the processes of reading from and writing to these memory types.
->    - Highlights the volatility of these memory types and the need for power to retain data.
-> 3. **Explore SRAM vs DRAM Characteristics**
->    - Outlines the differences in cost, speed, and capacity between SRAM and DRAM.
->    - Provides a detailed explanation of how data is accessed and managed in both SRAM and DRAM cells.
+> 1. **Describe the Overview of Memory in Computing Systems**
+>    - Explain the role of the REGFILE and external Memory Units in the $$\beta$$ CPU architecture.
+>    - Discuss the limitations of a 32-bit address space, which can address up to 4GB of memory.
+> 2. **Explain the design of two Memory Technologies: SRAM and DRAM**
+>    - Explain Static Random-Access Memory (SRAM) and Dynamic Random-Access Memory (DRAM) as two primary technologies for creating memory cells.
+>    - Describe the construction and operation of SRAM and DRAM, including the processes of reading from and writing to these memory types.
+>    - Explain the volatility of these memory types and the need for power to retain data.
+> 3. **Explain SRAM vs DRAM Characteristics**
+>    - Outline the differences in cost, speed, and capacity between SRAM and DRAM.
+>    - Question how data is accessed and managed in both SRAM and DRAM cells.
 > 4. **Discuss Application of Memory Technologies**
->    - Discusses the practical use of SRAM and DRAM in modern computing, particularly in the context of consumer-grade PCs and CPU caches.
->    - Explains the role of the cache in enhancing processing speed by storing frequently accessed data closer to the CPU.
-> 5. **Comprehend The Memory Hierarchy Concept**
->    - Introduces the idea of a memory hierarchy to achieve an optimal balance between speed, cost, and capacity.
->    - Describes the roles of various storage types within this hierarchy, including registers, cache, main memory (RAM), and disk storage.
-> 6. **Recognise Locality of Reference**
->    - Discusses the principle of locality of reference, which predicts that certain memory locations are more likely to be accessed repeatedly over short periods.
->    - Explains how this principle supports the effective use of cache memory.
+>    - Discuss the practical use of SRAM and DRAM in modern computing, particularly in the context of consumer-grade PCs and CPU caches.
+>    - Explain the role of the cache in enhancing processing speed by storing frequently accessed data closer to the CPU.
+> 5. **Justify The Memory Hierarchy Concept**
+>    - Defend the idea of a memory hierarchy to achieve an optimal balance between speed, cost, and capacity.
+>    - Describe the roles of various storage types within this hierarchy, including registers, cache, main memory (RAM), and disk storage.
+> 6. **Explain Locality of Reference**
+>    - Discusse the principle of locality of reference, which predicts that certain memory locations are more likely to be accessed repeatedly over short periods.
+>    - Explain how this principle supports the effective use of cache memory.
 > 7. **Explain Cache Operation and Management**
->    - Details the operation of cache memory, including the concepts of cache hits and misses.
->    - Describes the processes involved when the cache does not contain requested data, including fetching data from main memory or disk.
-> 8. **Get Familiar with Basic Cache Design Types: Fully Associative and Direct Mapped**
->    - Compares fully associative and direct mapped cache designs.
->    - Discusses the advantages and challenges associated with each design, including speed, cost, flexibility, and contention issues.
+>    - List out various operations that can be done on a cache, including the concepts of cache hits and misses.
+>    - Describe the processes involved when the cache does not contain requested data, including fetching data from main memory or disk.
+> 8. **Draw and Explain Basic Cache Design Types: Fully Associative and Direct Mapped**
+>    - Explain the design of fully associative and direct mapped cache designs.
+>    - Discusse the advantages and challenges associated with each design, including speed, cost, flexibility, and contention issues.
 > 
 > These notes are designed to give students a thorough understanding of the critical components and concepts related to memory technologies in computing systems, emphasizing the practical applications and the importance of memory hierarchy in achieving efficient computing operations.
 

@@ -23,19 +23,19 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> 1. **Understand the Concept of Physical Memory in Computing Systems**
+> 1. **Explain the Concept of Physical Memory in Computing Systems**
 >    - Explain the differences between a program and a process in terms of memory usage.
 >    - Describe how executable instructions and stack allocations influence process memory structure.
 > 2. **Examine the Role and Functionality of Virtual Memory**
 >    - Define virtual memory and discuss its significance in modern computing.
->    - Explore how virtual memory enables the illusion of a large memory space on systems with limited physical memory.
-> 3. **Learn About Memory Paging and Page Management**
+>    - Justify how virtual memory enables the illusion of a large memory space on systems with limited physical memory.
+> 3. **Explain Memory Paging and Page Management**
 >    - Explain the concept of paging as a method to manage memory efficiently.
 >    - Describe the structure of a page and how it facilitates efficient data transfer between memory and storage.
 > 4. **Investigate the Process of Address Translation Using the MMU**
 >    - Explain the role of the Memory Management Unit (MMU) in translating virtual addresses to physical addresses.
 >    - Identify the components of the MMU and their functions in the context of address translation.
-> 5. **Explore the Mechanisms of Demand Paging**
+> 5. **Outline the Mechanisms of Demand Paging**
 >    - Define demand paging and discuss its role in memory management.
 >    - Analyze the process of handling page faults and the criteria for replacing pages in memory.
 > 6. **Explain Context Switching in Operating Systems**

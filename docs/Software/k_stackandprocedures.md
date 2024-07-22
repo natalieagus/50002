@@ -23,31 +23,31 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> 1. **Comprehend Function Calls and Reusability**
->    - Learn why functions are essential for code reusability and organization.
+> 1. **Defend Function Calls and Reusability**
+>    - Justify why functions are essential for code reusability and organization.
 >    - Explain the basic structure and operation of functions, including passing parameters, returning values, and the call and return mechanism.
-> 2. **Explore the Procedure Linkage and Stack Mechanism**
->    - Study the procedure linkage concept to manage function calls and returns efficiently.
+> 2. **Explain the Procedure Linkage and Stack Mechanism**
+>    - Explain the procedure linkage concept to manage function calls and returns efficiently.
 >    - Explain the role of the stack in function calls, particularly in managing local variables, parameters, and return addresses.
-> 3. **Learn About Stack Operations**
->    - Learn how to use stack operations like PUSH and POP to manage function call contexts.
->    - Learn the importance of the stack pointer (SP), base pointer (BP), and linkage pointer (LP) in function execution.
-> 4. **Procedure Linkage Convention**
->    - Explore the detailed procedure linkage convention, which dictates how functions should manage calling and returning from functions.
->    - Learn the sequence of operations a function caller and callee must perform to ensure the correct execution flow and state preservation.
-> 5. **Stack Frame Management**
+> 3. **Discover Stack Operations**
+>    - Practice how to use stack operations like `PUSH` and `POP` to manage function call contexts.
+>    - Explain the importance of the stack pointer (SP), base pointer (BP), and linkage pointer (LP) in function execution.
+> 4. **Discover Procedure Linkage Convention**
+>    - Explain the detailed procedure linkage convention, which dictates how functions should manage calling and returning from functions.
+>    - List out the sequence of operations a function caller and callee must perform to ensure the correct execution flow and state preservation.
+> 5. **Discover Stack Frame Management**
 >    - Explain how to allocate and deallocate stack frames to manage local variables and function arguments.
->    - Study the impact of stack frame management on function calls, including nested calls and recursion.
+>    - Assess the impact of stack frame management on function calls, including nested calls and recursion.
 >    - Analyze and draw the stack frame details of a recursive procedure call.
 > 6. **Implement Functions with Multiple Arguments**
->    - Learn how to handle functions with multiple arguments using the stack.
->    - Explain the sequence of stacking arguments in reverse order and cleaning up the stack after function execution.
+>    - Explain how to handle functions with multiple arguments using the stack.
+>    - Justify the sequence of stacking arguments in reverse order and the need for cleaning up the stack after function execution.
 > 7. **Debug and Manage Function Calls**
 >    - Use debugging tools and techniques to inspect the call stack and understand function execution states.
->    - Learn about common pitfalls in function implementation, such as dangling references and stack mismanagement.
-> 8. **Advanced Topics in Procedure Linkage**
->    - Explore advanced concepts like nested functions and non-local variables, and how they affect procedure linkage.
->    - Discuss the limitations of C and C++ in handling complex function structures compared to languages like Python.
+>    - Summarize common pitfalls in function implementation, such as dangling references and stack mismanagement.
+> 8. **Outline Advanced Topics in Procedure Linkage**
+>    - Describe advanced concepts like nested functions and non-local variables, and how they affect procedure linkage.
+>    - Describe the limitations of C and C++ in handling complex function structures compared to languages like Python.
 >
 > These objectives aim to equip students with a comprehensive understanding of how functions are implemented at a low level, using the stack for memory management during function calls and returns. Students will also learn about the conventions and best practices in designing and debugging functions to write robust and maintainable code.
 

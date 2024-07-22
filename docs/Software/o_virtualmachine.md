@@ -23,12 +23,12 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> - **Understand the Concept of a Virtual Processor**
+> - **Explain the Concept of a Virtual Processor**
 >   - Explain the operational model where each process perceives itself as operating on a dedicated machine.
 >   - Discuss how this abstraction benefits multitasking and resource management.
 > - **Describe the Role of the Operating System Kernel**
->   - Detail the OS kernel's role in process management and resource allocation.
->   - Highlight the kernel's responsibilities in maintaining system security and process isolation.
+>   - Argue the OS kernel's role in process management and resource allocation.
+>   - List out the kernel's responsibilities in maintaining system security and process isolation.
 > - **Explain Process Context and Isolation**
 >   - Define the components that make up a process context and their importance in the OS.
 >   - Explain how the OS uses process context to maintain each process in isolation from others.
@@ -36,12 +36,12 @@ Singapore University of Technology and Design
 >   - Describe the functions and importance of Kernel and User modes in operating systems.
 >   - Discuss how these modes prevent unauthorized access and ensure system stability.
 > - **Detail OS Multiplexing and Context Switching Techniques**
->   - Explore how operating systems share hardware resources among processes.
+>   - Explain how operating systems share hardware resources among processes.
 >   - Describe the role of context switching and how asynchronous interrupts facilitate this process.
-> - **Explore Hardware Requirements for OS Multiplexing**
+> - **Identify Hardware Requirements for OS Multiplexing**
 >   - Analyze the essential hardware features that support OS multiplexing.
 >   - Discuss the mechanisms like interrupts and dual mode operation that ensure efficient process management.
-> - **Revisit Synchronous and Asynchronous Interrupts**
+> - **Conclude Synchronous and Asynchronous Interrupts**
 >   - Differentiate between synchronous and asynchronous interrupts and their roles in system operations.
 >   - Describe how these interrupts interact with the OS to handle program execution and error management.
 >

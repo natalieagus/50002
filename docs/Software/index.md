@@ -14,7 +14,7 @@ These topics are taught after the recess week. They are **tested** during our Fi
 1. Handle synchronous and asynchronous interrupts. 
 2. Analyze the Beta Datapath structure and function.
 3. Identify anomalies within the Beta CPU Architecture.
-4. Explore testing and troubleshooting techniques for the Beta CPU.
+4. Practice with testing and troubleshooting techniques for the Beta CPU.
 5. Implement alternative correcting measures in faulty Beta Datapath.
 
 ## [Software Abstraction & Assembly Language](https://natalieagus.github.io/50002/notes/assemblersandcompilers)

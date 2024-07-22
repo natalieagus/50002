@@ -24,7 +24,7 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> - **Comprehend the Basic Concept of Finite State Machines (FSMs):**
+> - **Explain the Basic Concept of Finite State Machines (FSMs):**
 >   - Define a finite state machine (FSM) and its components: states, inputs, outputs, transitions, and outputs rules.
 >   - Recognize the practical applications of FSMs in everyday devices like traffic lights and electronic locks.
 > - **Differentiate Between Moore and Mealy Machines:**
@@ -32,18 +32,17 @@ Singapore University of Technology and Design
 >   - Analyze how outputs are determined in both Moore and Mealy machines based on state and input.
 > - **Develop State Machine Diagrams and Truth Tables:**
 >   - Create state machine diagrams and corresponding truth tables for digital lock mechanisms.
->   - Learn how to encode states for a given number of required bits.
-> - **Build and Analyze FSMs:**
->   - Transform state machine descriptions into Boolean equations.
->   - Construct FSMs using different digital components like flip-flops and combinational logic units.
+>   - Explain how to encode states for a given number of required bits.
+> - **Design and Analyze FSMs:**
+>   - Practice transforming state machine descriptions into Boolean equations.
+>   - Practice construction of FSMs using different digital components like flip-flops and combinational logic units.
 > - **Compare and Contrast Moore and Mealy Machines:**
 >   - Discuss the advantages and disadvantages of Moore and Mealy machines in terms of state requirements and response times.
 > - **Enumerate and Reduce FSMs:**
->   - Understand the concept of state equivalence and reduction to minimize the number of states in an FSM.
+>   - Explain the concept of state equivalence and reduction to minimize the number of states in an FSM.
 >   - Calculate the number of possible FSMs based on given bits for states, inputs, and outputs.
 > - **Discuss FSM Limitations:**
->   - Recognize the limitations of FSMs in computing tasks that require arbitrarily many states.
->   - Prepare for the introduction to Turing machines as a more capable model of computation.
+>   - Evaluate the limitations of FSMs in computing tasks that require arbitrarily many states.
 >
 > The aim of these learning objectives is to master the fundamentals of finite state machines (FSMs), distinguishing between Moore and Mealy types, and to apply this knowledge in building, analyzing, and optimizing FSMs for various digital applications, while also preparing for advanced computational models like Turing machines.
 

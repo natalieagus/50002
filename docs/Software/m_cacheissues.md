@@ -23,32 +23,32 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> 1. **Understand Cache Memory and Its Role**
+> 1. **Explain Cache Memory and Its Role:**
 >   - Describe the function of cache in reducing CPU access time to memory.
 >   - Identify the types of cache (L1, L2, L3) and understand their general function without detailed architectural differences.
-> 2. **Learn Cache Design Parameters**
+> 2. **List out Cache Design Parameters:**
 >   - Explain the significance of cache size, block size, associativity, and read/write/replacement policies in cache design.
 >   - Analyze how each parameter affects cache performance and cost.
-> 3. **Differentiate Cache Types: DM and FA**
+> 3. **Differentiate Cache Types: DM and FA:**
 >   - Compare and contrast Direct Mapped (DM) and Fully Associative (FA) caches.
 >   - Discuss the pros and cons of each type concerning performance, cost, and risk of contention.
-> 4. **Explore Associativity in Caches**
+> 4. **Explain Associativity in Caches:**
 >   - Define what associativity is in the context of caches and its importance in reducing contention.
->   - Recognise N-Way Set Associative Cache as a hybrid approach between DM and FA caches.
-> 5. **Dive into Cache Replacement Policies**
+>   - Explain N-Way Set Associative Cache as a hybrid approach between DM and FA caches.
+> 5. **Assess Various Cache Replacement Policies:**
 >   - Examine common replacement strategies like Least Recently Used (LRU), Least Recently Replaced (LRR), and Random replacement.
 >   - Discuss the hardware overhead and application scenarios for each replacement policy.
-> 6. **Investigate Cache Write Policies**
->   - Understand different write policies including Write-Through, Write-Back, and Write-Behind.
+> 6. **Assess Various Cache Write Policies:**
+>   - Describe different write policies including Write-Through, Write-Back, and Write-Behind.
 >   - Evaluate the trade-offs and complexities associated with each write policy.
-> 7. **Study Cache Block Size Considerations**
+> 7. **Assess Cache Block Size Considerations**
 >   - Analyze the impact of block size on cache efficiency and performance.
 >   - Explain the trade-offs between fetching large blocks (pros) and the risk of fetching unused words (cons).
-> 8. **Learn About Cache Helper Bits**
->   - Explain and appreciate the function of helper bits like Valid, Dirty, and LRU bits in cache operations.
+> 8. **Explain Cache Helper Bits**
+>   - Explain and justify the function of helper bits like Valid, Dirty, and LRU bits in cache operations.
 >   - Discuss the storage requirements and implications of each type of helper bit on cache design.
 > 9. **Perform Cache Performance Metrics and Benchmarking**
->   - Learn how to measure cache performance using HIT and MISS rates.
+>   - Compute cache performance at steady state using HIT and MISS rates.
 >   - Use benchmarks to determine the effectiveness of different cache configurations and replacement policies.
 >
 > These learning objectives are designed to guide students through understanding cache memory, its design considerations, and operational strategies in a computer system architecture course.

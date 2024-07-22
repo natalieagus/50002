@@ -23,34 +23,34 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 > 
-> 1. **Foundation of Digital Devices:**
->   - Learn the basic concept of encoding information using electrical signals.
+> 1. **Identify Foundations of Digital Devices:**
+>   - Explain the basic concept of encoding information using electrical signals.
 >   - Explain how bits represent data in electronic devices and their role in computation.
-> 2. **Explore Number Systems and Encoding:**
+> 2. **Outline Number Systems and Encoding:**
 >   - Gain proficiency in converting between binary, decimal, octal, and hexadecimal number systems.
->   - Comprehend the use of prefixes and suffixes in different number systems to indicate bases.
-> 3. **Master 2's Complement for Signed Numbers:**
+>   - Defend the use of prefixes and suffixes in different number systems to indicate bases.
+> 3. **Explain 2's Complement for Signed Numbers:**
 >   - Explain how 2's complement is used to represent signed integers in binary form.
->   - Learn the process of converting positive numbers to their negative counterparts using 2's complement.
-> 4. **Grasp Various Encoding Techniques:**
->   - Recognize fixed length length encoding methods.
->   - Understand character encoding standards like ASCII and Unicode and their significance in data representation.
-> 5. **Comprehend the Significance of Bytes in Digital Storage:**
->   - Learn why bytes are used as the standard unit of digital information and storage.
->   - Understand how data storage capacities are measured and reported in terms of bytes.
+>   - Experiment with the process of converting positive numbers to their negative counterparts using 2's complement.
+> 4. **Identify Various Encoding Techniques:**
+>   - Identify fixed length length encoding methods.
+>   - List out character encoding standards like ASCII and Unicode and their significance in data representation.
+> 5. **Explain the Significance of Bytes in Digital Storage:**
+>   - Explain why bytes are used as the standard unit of digital information and storage.
+>   - Explain how data storage capacities are measured and reported in terms of bytes.
 > 6. **Calculate Information Quantity Based on Probability:**
->   - Understand the relationship between the probability of an event and the amount of information it provides.
->   - Learn how to compute the information content of events using logarithmic measures.
-> 7. **Understand Basic Logic Gates and Their Role in Digital Circuits**:
->   - Learn the functions and operations of basic logic gates: AND, OR, XOR, BUFFER and NOT.
->   - Recognize how these gates can be combined to perform simple digital operations.
->   - Appreciate the importance of logic gates in translating theoretical binary operations into practical applications within computing hardware. 
+>   - Construct the relationship between the probability of an event and the amount of information it provides.
+>   - Practice how to compute the information content of events using logarithmic measures.
+> 7. **Explain Basic Logic Gates and Their Role in Digital Circuits**:
+>   - Explain the functions and operations of basic logic gates: AND, OR, XOR, BUFFER and NOT.
+>   - Explain how these gates can be combined to perform simple digital operations.
+>   - Defend the importance of logic gates in translating theoretical binary operations into practical applications within computing hardware. 
 > 8. **Apply Knowledge to Practical Digital System Design:**
->   - Explore the historical context and evolution of digital devices from mechanical systems to modern electronic computers.
->   - Appreciate the practical constraints in early computing, such as cost and size, and how they influenced design decisions.
-> 9. **Lay the Groundwork for Building General-Purpose Computers:**
->   - Begin the process of learning how to design and build a general-purpose programmable machine.
->   - Appreciate the transition from specific-purpose devices to general-purpose computing platforms.
+>   - Outline the historical context and evolution of digital devices from mechanical systems to modern electronic computers.
+>   - Outline the practical constraints in early computing, such as cost and size, and how they influenced design decisions.
+> 9. **Identify the Groundwork for Building General-Purpose Computers:**
+>   - Explain the basic groundwork to design and build a general-purpose programmable machine.
+>   - Explain the transition from specific-purpose devices to general-purpose computing platforms.
 > 
 > These objectives aim to equip students with a comprehensive understanding of digital systems from the ground up, preparing them to engage in more advanced studies and applications in computer science and engineering.
 
