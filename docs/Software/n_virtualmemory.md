@@ -23,14 +23,14 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> 1. **Understand the Concept of Memory in Computing Systems**
+> 1. **Understand the Concept of Physical Memory in Computing Systems**
 >    - Explain the differences between a program and a process in terms of memory usage.
 >    - Describe how executable instructions and stack allocations influence process memory structure.
 > 2. **Examine the Role and Functionality of Virtual Memory**
 >    - Define virtual memory and discuss its significance in modern computing.
 >    - Explore how virtual memory enables the illusion of a large memory space on systems with limited physical memory.
 > 3. **Learn About Memory Paging and Page Management**
->    - Understand the concept of paging as a method to manage memory efficiently.
+>    - Explain the concept of paging as a method to manage memory efficiently.
 >    - Describe the structure of a page and how it facilitates efficient data transfer between memory and storage.
 > 4. **Investigate the Process of Address Translation Using the MMU**
 >    - Explain the role of the Memory Management Unit (MMU) in translating virtual addresses to physical addresses.
@@ -38,9 +38,10 @@ Singapore University of Technology and Design
 > 5. **Explore the Mechanisms of Demand Paging**
 >    - Define demand paging and discuss its role in memory management.
 >    - Analyze the process of handling page faults and the criteria for replacing pages in memory.
-> 6. **Context Switching in Operating Systems**
+> 6. **Explain Context Switching in Operating Systems**
 >    - Discuss the concept of context switching and its importance in multitasking environments.
 >    - Explain how the operating system manages multiple processes through context switching.
+>    - Analyse the benefits and drawbacks of context switching
 >
 > These learning objectives aim to equip students with a comprehensive understanding of how virtual memory and related concepts function within computer systems, emphasizing their role in managing limited physical resources effectively.
  
@@ -466,6 +467,7 @@ The state of the physical memory after **both** instructions are executed in seq
 
 
 ## [Context Switching](https://www.youtube.com/watch?v=19wS4GC6mbQ&t=3411s)
+
 {: .new-title}
 > Context Switching
 > 

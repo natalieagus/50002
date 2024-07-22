@@ -23,24 +23,25 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> 1. **Understand Function Calls and Reusability**
+> 1. **Comprehend Function Calls and Reusability**
 >    - Learn why functions are essential for code reusability and organization.
->    - Understand the basic structure and operation of functions, including passing parameters, returning values, and the call and return mechanism.
+>    - Explain the basic structure and operation of functions, including passing parameters, returning values, and the call and return mechanism.
 > 2. **Explore the Procedure Linkage and Stack Mechanism**
 >    - Study the procedure linkage concept to manage function calls and returns efficiently.
->    - Understand the role of the stack in function calls, particularly in managing local variables, parameters, and return addresses.
+>    - Explain the role of the stack in function calls, particularly in managing local variables, parameters, and return addresses.
 > 3. **Learn About Stack Operations**
->    - Understand how to use stack operations like PUSH and POP to manage function call contexts.
+>    - Learn how to use stack operations like PUSH and POP to manage function call contexts.
 >    - Learn the importance of the stack pointer (SP), base pointer (BP), and linkage pointer (LP) in function execution.
 > 4. **Procedure Linkage Convention**
 >    - Explore the detailed procedure linkage convention, which dictates how functions should manage calling and returning from functions.
 >    - Learn the sequence of operations a function caller and callee must perform to ensure the correct execution flow and state preservation.
 > 5. **Stack Frame Management**
->    - Understand how to allocate and deallocate stack frames to manage local variables and function arguments.
+>    - Explain how to allocate and deallocate stack frames to manage local variables and function arguments.
 >    - Study the impact of stack frame management on function calls, including nested calls and recursion.
+>    - Analyze and draw the stack frame details of a recursive procedure call.
 > 6. **Implement Functions with Multiple Arguments**
 >    - Learn how to handle functions with multiple arguments using the stack.
->    - Understand the sequence of stacking arguments in reverse order and cleaning up the stack after function execution.
+>    - Explain the sequence of stacking arguments in reverse order and cleaning up the stack after function execution.
 > 7. **Debug and Manage Function Calls**
 >    - Use debugging tools and techniques to inspect the call stack and understand function execution states.
 >    - Learn about common pitfalls in function implementation, such as dangling references and stack mismanagement.

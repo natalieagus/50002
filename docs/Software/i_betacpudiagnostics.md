@@ -23,12 +23,12 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> 1. **Understand Interrupt Handling in Beta CPU**
+> 1. **Implement Interrupt Handling in Beta CPU**
 >    - Learn about the role and types of interrupts in the Beta CPU, including synchronous (software-driven) and asynchronous (hardware-driven) interrupts.
 >    - Examine how interrupts are sampled and processed within the CPU's control system to ensure timely and correct response to external and internal events.
 > 2. **Diagnose Faults in the CPU Datapath**
 >    - Develop skills in identifying and diagnosing faults within the Beta CPU's datapath using diagnostic software tools.
->    - Understand how to use simple test programs to isolate and identify specific faulty components within the CPU.
+>    - Explain how to use simple test programs to isolate and identify specific faulty components within the CPU.
 > 3. **Implement Fixes for Faulty Datapaths**
 >    - Explore strategies for making code adjustments and changes to bypass or correct faulty components within the Beta CPU's architecture.
 >    - Gain practical experience in altering CPU behavior through modifications in the control logic to handle specific types of errors or malfunctions.

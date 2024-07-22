@@ -41,7 +41,7 @@ Singapore University of Technology and Design
 > - **Explore Hardware Requirements for OS Multiplexing**
 >   - Analyze the essential hardware features that support OS multiplexing.
 >   - Discuss the mechanisms like interrupts and dual mode operation that ensure efficient process management.
-> - **Understand Synchronous and Asynchronous Interrupts**
+> - **Revisit Synchronous and Asynchronous Interrupts**
 >   - Differentiate between synchronous and asynchronous interrupts and their roles in system operations.
 >   - Describe how these interrupts interact with the OS to handle program execution and error management.
 >
@@ -215,6 +215,7 @@ The asynchronous interrupt handler is part of the Kernel's code which <span styl
 The first few instructions of the interrupt handler typically saves current process states (`R0` to `R30` contents, PC state, stack, and others) in the **process table**. 
 
 #### Process Table
+
 {: .new-title}
 > Process Table
 > 

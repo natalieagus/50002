@@ -24,21 +24,21 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> 1. **Understand the Concept of Abstraction in Software Engineering**
+> 1. **Appreciate the Concept of Abstraction in Software Engineering**
 >    - Learn the definition and importance of abstraction in software engineering and computer science.
->    - Understand how abstraction helps in managing complexity by hiding unnecessary details and allowing focus on higher-level problems.
+>    - Explain how abstraction helps in managing complexity by hiding unnecessary details and allowing focus on higher-level problems.
 > 2. **Explore Software Tools for Abstraction**
 >    - Examine different tools and software that provide layers of abstraction in computing, including assemblers, compilers, and interpreters.
->    - Understand the role of operating systems and applications in abstracting resource management, security details, and other underlying complexities.
+>    - Explain the role of operating systems and applications in abstracting resource management, security details, and other underlying complexities.
 > 3. **Learn About Language Abstraction Levels**
 >    - Study the progression from machine language to high-level programming languages through assembly language, and how each level abstracts the complexity of the underlying hardware.
 >    - Discover how language constructs like subroutines, modules, and polymorphism further abstract programming tasks.
-> 4. **Understand Assemblers and Their Role in Programming**
+> 4. **Get Familiar with Assemblers and Their Role in Programming**
 >    - Define what an assembler is and how it functions as a primitive compiler to translate assembly language into machine language.
 >    - Learn about UASM and its role in providing a symbolic representation for the Beta assembly language.
 > 5. **Differentiate Between Interpreters and Compilers**
 >    - Compare and contrast interpreters and compilers in terms of how they execute high-level languages.
->    - Understand the trade-offs between these tools in terms of execution speed, error detection, and ease of debugging.
+>    - Explain the trade-offs between these tools in terms of execution speed, error detection, and ease of debugging.
 > 6. **Translate High-Level Constructs to Machine Language**
 >    - Practice translating high-level language constructs, such as variable declarations, arrays, conditionals, and loops, into Beta machine language.
 >    - Explore the strategies for optimizing the translation process to reduce instruction count and memory operations.

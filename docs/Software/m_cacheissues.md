@@ -34,7 +34,7 @@ Singapore University of Technology and Design
 >   - Discuss the pros and cons of each type concerning performance, cost, and risk of contention.
 > 4. **Explore Associativity in Caches**
 >   - Define what associativity is in the context of caches and its importance in reducing contention.
->   - Understand N-Way Set Associative Cache as a hybrid approach between DM and FA caches.
+>   - Recognise N-Way Set Associative Cache as a hybrid approach between DM and FA caches.
 > 5. **Dive into Cache Replacement Policies**
 >   - Examine common replacement strategies like Least Recently Used (LRU), Least Recently Replaced (LRR), and Random replacement.
 >   - Discuss the hardware overhead and application scenarios for each replacement policy.
@@ -45,9 +45,9 @@ Singapore University of Technology and Design
 >   - Analyze the impact of block size on cache efficiency and performance.
 >   - Explain the trade-offs between fetching large blocks (pros) and the risk of fetching unused words (cons).
 > 8. **Learn About Cache Helper Bits**
->   - Understand the function of helper bits like Valid, Dirty, and LRU bits in cache operations.
+>   - Explain and appreciate the function of helper bits like Valid, Dirty, and LRU bits in cache operations.
 >   - Discuss the storage requirements and implications of each type of helper bit on cache design.
-> 9. **Cache Performance Metrics and Benchmarking**
+> 9. **Perform Cache Performance Metrics and Benchmarking**
 >   - Learn how to measure cache performance using HIT and MISS rates.
 >   - Use benchmarks to determine the effectiveness of different cache configurations and replacement policies.
 >

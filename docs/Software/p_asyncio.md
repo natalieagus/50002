@@ -24,12 +24,12 @@ There's no pre-recorded video for this chapter as the file that was uploaded on 
 > Detailed Learning Objectives
 >
 > - **Comprehend the Role of the Operating System Kernel in Multitasking**
->   - Understand how the OS Kernel enables multitasking through rapid context switching.
+>   - Recognise how the OS Kernel enables multitasking through rapid context switching.
 >   - Explain the concept of processes running in isolated virtual machines.
 > - **Identify the Functionality of I/O Devices in Relation to the CPU**
 >   - Describe how I/O devices operate asynchronously and independently of the CPU.
 >   - Recognize the slower operation speeds of I/O devices compared to the CPU.
-> - **Understand I/O Request Handling by the Operating System**
+> - **Outline I/O Request Handling by the Operating System**
 >   - Learn how I/O requests are handled asynchronously by the OS Kernel.
 >   - Explore the process of handling I/O requests through supervisor calls and interrupts.
 > - **Explore the Mechanism of Supervisor Calls (SVC)**
@@ -37,7 +37,7 @@ There's no pre-recorded video for this chapter as the file that was uploaded on 
 >   - Analyze the execution flow from SVC invocation to service routine execution.
 > - **Examine Asynchronous Input Handling**
 >   - Discuss how the OS Kernel manages asynchronous inputs from various I/O devices.
->   - Understand the implementation and operation of an interrupt-driven system for I/O handling.
+>   - Explain the implementation and operation of an interrupt-driven system for I/O handling.
 > - **Study Real-Time I/O Handling and Its Challenges**
 >   - Explore the concept of latency and deadlines in real-time I/O request handling.
 >   - Discuss the strategies to manage multiple interrupt requests effectively.
