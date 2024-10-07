@@ -62,13 +62,25 @@ Ensure that your desktop looks like this. If it doesn't it means that what you h
 
 
 ### Launching Alchitry Labs v1.2.7
-You can start alchitry labs by opening terminal from the bottom menu of the desktop (press windows / command image if the dock isn't visible) and type `alchitry` command. Then, use alchitry labs as usual:
+You can start alchitry labs by opening terminal from the bottom menu of the desktop (press windows / command image if the dock isn't visible) and type `alchitry` command. Key in `debian` as password when prompted.
 
+```
+debian@debian:~$ alchitry
+[sudo] password for debian: [debian]
+```
+
+Then, use alchitry labs as usual:
+cd 
 <img src="{{ site.baseurl }}/docs/FPGA/images/fpga_applesilicon/2024-03-25-17-38-22.png"  class="center_full no-invert"/>
 
 
 ### Launching Alchitry Labs 2
 If you choose to use Alchitry Labs 2 and Lucid V2, you can launch the IDE using the `a2` command. 
+
+```
+debian@debian:~$ a2
+[sudo] password for debian: [debian]
+```
 
 <img src="{{ site.baseurl }}//docs/FPGA/images/fpga_applesilicon/2024-10-07-11-21-32.png"  class="center_full no-invert"/>
 
