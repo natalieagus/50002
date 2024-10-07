@@ -3,7 +3,8 @@ layout: default
 permalink: /fpga/programmable_machine
 title: Designing a Programmable Datapath 
 description: This document shows an example on how you can create a programmable data path for a simple game idea that might be useful for your 1D project. 
-parent: FPGA
+parent: Lucid V1 
+grand_parent: FPGA
 nav_order:  5
 ---
 * TOC
@@ -19,7 +20,7 @@ Singapore University of Technology and Design
 
 # Designing a Programmable Datapath 
 {: .no_toc}
-For your 1D project, you are required to build an electronic game prototype that utilizes a **16-bit ALU**. You can do this by first designing a programmable datapath and the control logic (FSM) for your game, and finally implement on your FPGA. 
+For your 1D project (pre 2025), you are required to build an electronic game prototype that utilizes a **16-bit ALU**. You can do this by first designing a programmable datapath and the control logic (FSM) for your game, and finally implement on your FPGA. 
 
 This document shows an example on how you can create a programmable data path for a simple game idea called the **Counter Game**. [The complete code can be found in this repository if you'd like to dive straight to it](https://github.com/natalieagus/counter-game). Otherwise, read along.
 
@@ -88,7 +89,7 @@ As stated above, if you were to use a large 7-segment display then purchase some
 
 It is recommended that you follow a generic simplified  **custom** $$\beta$$-like structure (without the PC and RAM unless you want to design a generic instruction set):
 1. You have a **REGFILE** system, where it stores a bunch of registers inside that's addressable. It's up to you to define how many combinational read ports and how many sequential write ports. 
-2. **Combinational Logic Unit:** **You must utilize a 16-bit ALU, so you have no choice on this.** Therefore this makes your datapath to be a 16-bit architecture by default. <>
+2. **Combinational Logic Unit:** **You must utilize a 16-bit ALU (pre 2025), so you have no choice on this.** Therefore this makes your datapath to be a 16-bit architecture by default. <>
 3. You have a **Control Unit**, which is simply an FSM that gives out different control signals at various time step. 
 
 It is imperative that ALL sequential parts that requires CLK is fed with the **SAME default Alchitry CLK at 100MHz.** You can create other submodules to be plugged into your datapath to act as frequency divider (slowing down the clock cycle) but  <span style="color:red; font-weight: bold;">DO NOT MESS with the CLK</span> for the REGFILE and FSM **unless you are a very experienced FPGA developer.**  <>

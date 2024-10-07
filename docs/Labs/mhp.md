@@ -5,6 +5,7 @@ title: (old) 1D Part 1 - MHP
 description: MHP Handout as part of 1D project
 parent: Labs
 nav_order:  100
+nav_exclude: true
 ---
 
 * TOC

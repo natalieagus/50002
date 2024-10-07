@@ -53,7 +53,7 @@ You are <span style="color:red; font-weight: bold;">NOT</span> allowed to use **
 
 ## Part 1 Introduction 
 
-In this lab, we will build a 32-bit **arithmetic and logic unit (ALU)** for the Beta processor. You <span style="color:#ff791a; font-weight: bold;">will</span> need this for your 1D Project Checkoff 1, just that you will need to **modify** it to be a **16-bit ALU**. It should be a minor change for you to adapt the ALU for your 1D project (simply change in size). We will stick with 32-bit ALU in this Lab because we will need it for the next lab when we make the 32-bit Beta CPU taught in the lectures. 
+In this lab, we will build a 32-bit **arithmetic and logic unit (ALU)** for the Beta processor. You <span style="color:#ff791a; font-weight: bold;">will</span> need this for your 1D Project Checkoff 1 **and** Lab 4 (Building the Beta). 
 
 {: .new-title}
 > Arithmetic Logic Unit (ALU)

@@ -5,6 +5,7 @@ title: (old) Lab 3 - Arithmetic Logic Unit with JSIM
 description: Lab 3 handout covering topics from Logic Synthesis, and Designing an Instruction Set
 parent: Labs
 nav_order: 106 
+nav_exclude: true
 ---
 
 * TOC

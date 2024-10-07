@@ -5,6 +5,7 @@ title: (old) Lab 2 - Adder
 description: Lab 2 handout covering topics from CMOS Technology and Logic Synthesis
 parent: Labs
 nav_order:  103
+nav_exclude: true
 ---
 
 * TOC

@@ -1,9 +1,10 @@
 ---
 layout: default
-permalink: /fpga/debugging
+permalink: /fpga/lucid-v1/debugging
 title: Debugging for the Frantic
 description: Getting familiar with Alchitry Lab's debug feature
-parent: FPGA
+parent: Lucid V1 
+grand_parent: FPGA
 nav_order:  6
 ---
 

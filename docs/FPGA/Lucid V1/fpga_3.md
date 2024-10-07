@@ -3,7 +3,8 @@ layout: default
 permalink: /fpga/fpga_3
 title: FPGA Tutorial for Children
 description: Getting Started with FPGA Part 3 - Reset and I/O
-parent: FPGA
+parent: Lucid V1 
+grand_parent: FPGA
 nav_order:  3
 ---
 
