@@ -19,9 +19,9 @@ Singapore University of Technology and Design
 <br>
 **Ian Goh (Spring 2022)**
 
-# Debugging the FPGA
+# Debugging the FPGA (Alchitry Lab 1.2.7)
 {: .no_toc}
-This document is written to guide you with debugging the FPGA using **Alchitry Lab's builtin debug feature**. That being said, there's nothing wrong using outputs such as the LEDS or 7-segment display to debug. Use whichever method you prefer.
+This document is written to guide you with debugging the FPGA using **Alchitry Lab 1.2.7 builtin debug feature**. That being said, there's nothing wrong using outputs such as the LEDS or 7-segment display to debug. Use whichever method you prefer.
 
 
 ### Debug Project
