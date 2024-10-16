@@ -1,6 +1,6 @@
 ---
 layout: default
-title: FPGA
+title: 1D&2D Project (FPGA)
 permalink: /fpga/intro
 has_children: true
 nav_order: 22

@@ -4,7 +4,7 @@ permalink: /fpga/fpga_2
 title: FPGA Tutorial for Toddlers
 description: Getting Started with FPGA Part 2 - Sequential Logic and FSM
 parent: Lucid V1 
-grand_parent: FPGA
+grand_parent: 1D&2D Project (FPGA)
 nav_order:  2
 ---
 

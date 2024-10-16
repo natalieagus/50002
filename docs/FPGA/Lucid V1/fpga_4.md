@@ -4,7 +4,7 @@ permalink: /fpga/fpga_4
 title: Building the Beta with FPGA
 description: Getting Good with FPGA - Building Beta CPU
 parent: Lucid V1 
-grand_parent: FPGA
+grand_parent: 1D&2D Project (FPGA)
 nav_exclude: true
 nav_order:  4
 ---

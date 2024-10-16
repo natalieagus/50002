@@ -4,7 +4,7 @@ permalink: /fpga/fpga_applesilicon
 title: Running Vivado on Apple Silicon mac 
 description: This document gives a brief overview of how you can run Vivado on Apple Silicon mac with UTM 
 parent: Lucid V2 
-grand_parent: FPGA
+grand_parent: 1D&2D Project (FPGA)
 nav_order:  10
 ---
 * TOC
@@ -34,7 +34,7 @@ brew install --cask utm
 ### Download Image and Unzip
 After that, download the image from here (TBC)
 * You need to be <span className="orange-bold">signed in to your SUTD account</span> 
-* This image comes with Debian 12, Rosetta, Vivado 2023.2, Alchitry Labs 1.2.7 and Alchitry Labs 2 pre-installed
+* This image comes with Debian 12, Rosetta, Vivado 2023.2, Alchitry Labs 1.2.7 (legacy) and Alchitry Labs 2 pre-installed (current)
 
 Then **unzip** the downloaded file, either using Finder or CLI: 
 ```
@@ -52,6 +52,13 @@ Once done, open UTM and import the image.
 > Check that there are **TWO** drives: sized approx 64 GB and 80 GB respectively in your `.utm` file. Right click on your `.utm` file and click **Show package contents**. You should see the following under `Data/`: 
 > <img src="{{ site.baseurl }}/docs/FPGA/images/fpga_applesilicon/2024-03-18-17-47-02.png"  class="center_full no-invert"/>
 
+### Share Directories with Host Machine 
+
+You can **share directories** with your mac (host machine) by setting the desired shared directory in your host machine here. In this example we use `Documents/alchitry-utm` in our host machine as shared directory: 
+<img src="{{ site.baseurl }}/docs/FPGA/images/fpga_applesilicon/shared-dir.png"  class="center_full no-invert"/>
+
+Then in Debian (your VM), you can access this directory via the path `/media/share/DIRECTORY_NAME`, in this case it will be `/media/share/alchitry-utm`.
+
 ### Login as `debian`
 
 {:.important}
@@ -61,46 +68,45 @@ Ensure that your desktop looks like this. If it doesn't it means that what you h
 
 <img src="{{ site.baseurl }}/docs/FPGA/images/fpga_applesilicon/2024-03-25-17-35-03.png"  class="center_full no-invert"/>
 
-
-### Launching Alchitry Labs v1.2.7
-You can start alchitry labs by opening terminal from the bottom menu of the desktop (press windows / command image if the dock isn't visible) and type `alchitry` command. Key in `debian` as password when prompted.
-
-```
-debian@debian:~$ alchitry
-[sudo] password for debian: [debian]
-```
-
-Then, use alchitry labs as usual:
-cd 
-<img src="{{ site.baseurl }}/docs/FPGA/images/fpga_applesilicon/2024-03-25-17-38-22.png"  class="center_full no-invert"/>
-
-
 ### Launching Alchitry Labs 2
-If you choose to use Alchitry Labs 2 and Lucid V2, you can launch the IDE using the `a2` command. 
+You can start alchitry labs by opening terminal from the bottom menu of the desktop (press windows / command image if the dock isn't visible) and type `a2` command. Key in `debian` as password when prompted.
 
 ```
 debian@debian:~$ a2
 [sudo] password for debian: [debian]
 ```
 
-<img src="{{ site.baseurl }}//docs/FPGA/images/fpga_applesilicon/2024-10-07-11-21-32.png"  class="center_full no-invert"/>
+<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/fpga_applesilicon/2024-10-16-11-23-16.png"  class="center_seventy no-invert"/>
 
-### Loading .bin 
+It will prompt you to create/open new project (first time) or open your last opened project (subsequently).
 
-After **building** your code, you will need to load the binary to your FPGA. There's no USB passthrough with the VM (it's not the usual QEMU), so you will need to migrate `PROJECT_PATH/work/alchitry.bin` (for Alchitry Lab 1.2.7) or `PROJECT_PATH/build/alchitry_au.bin` (for Alchitry Lab V2) to your host machine and flash it to your FPGA using [Alchitry Loader part of the Alchitry Labs IDE for Apple Silicon](https://alchitry.com/Alchitry-Labs-V2/download.html).
+## Loading .bin from your mac to Alchitry Au FPGA
 
-Switch to Alchitry Loader first: 
+After **building** your code, you will need to load the binary to your FPGA. There's no USB passthrough with the VM (it's not the usual QEMU), so you will need to <span class="orange-bold">migrate</span> `PROJECT_PATH/build/alchitry_au.bin` to your host machine and flash it to your FPGA using [Alchitry Loader part of the Alchitry Labs IDE for Apple Silicon](https://alchitry.com/Alchitry-Labs-V2/download.html).
+
+If you have set up the [shared directory](#share-directories-with-host-machine) above, simply navigate to this location.
+
+### Install Alchitry Labs V2 in your mac
+
+From this link, [install](https://alchitry.com/alchitry-labs/) the Alchitry Labs V2 IDE. Follow the installation guide properly and open the app. Here's the important steps:
+This application does not prove its origin with a developer signature. To open it:
+
+1. Click the download button.
+2. Note: Do not use the Launchpad to perform the following steps as it will not allow you to access the shortcut menu.
+3. Open the Finder and locate the application in your Downloads folder.
+4. Control-click the app icon, then choose Open from the shortcut menu.
+5. You will see a security warning stating the identity of the app author is unknown. Click Open.
+
+### Alchitry Loader
+Then switch to Alchitry Loader first: 
+
 <img src="{{ site.baseurl }}/docs/FPGA/images/fpga_applesilicon/2024-03-18-14-34-46.png"  class="center_full no-invert"/>
 
-Then find the binary and load it to your Alchitry Au FPGA: 
+Find the synthesized binary and load it to your Alchitry Au FPGA: 
+
 <img src="{{ site.baseurl }}//docs/FPGA/images/fpga_applesilicon/2024-10-07-11-22-40.png"  class="center_full no-invert"/>
 
-### Share Directories with Host Machine 
 
-You can **share directories** with your mac (host machine) by setting the desired shared directory in your host machine here. In this example we use `Documents/alchitry-utm` in our host machine as shared directory: 
-<img src="{{ site.baseurl }}/docs/FPGA/images/fpga_applesilicon/shared-dir.png"  class="center_full no-invert"/>
-
-Then in Debian (your VM), you can access this directory via the path `/media/share/DIRECTORY_NAME`, in this case it will be `/media/share/alchitry-utm`.
 
 
 

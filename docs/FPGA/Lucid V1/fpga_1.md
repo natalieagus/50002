@@ -4,7 +4,7 @@ permalink: /fpga/fpga_1
 title: FPGA Tutorial for Babies
 description: Getting Started with FPGA Part 1 - Combinational Logic
 parent: Lucid V1 
-grand_parent: FPGA
+grand_parent: 1D&2D Project (FPGA)
 nav_order:  1
 ---
 
