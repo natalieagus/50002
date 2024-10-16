@@ -3,7 +3,7 @@ layout: default
 permalink: /fpga/lucid-v1/debugging
 title: Debugging for the Frantic
 description: Getting familiar with Alchitry Lab's debug feature
-parent: Lucid V1 
+parent: Lucid V1 (Legacy) 
 grand_parent: 1D&2D Project (FPGA)
 nav_order:  6
 ---

@@ -45,7 +45,7 @@ Vivado is used to **synthesize** high-level hardware description code (in Verilo
 {:.note-title}
 > 🍎 Apple Silicon Mac 
 > 
-> You cannot natively install Vivado on Apple Silicon macs. Xilinx Vivado doesn’t officially support ARM as of late 2024. Current workaround utilises UTM + Debian 12 + Rosetta, read this guide here [TBC]. 
+> You cannot natively install Vivado on Apple Silicon macs. Xilinx Vivado doesn’t officially support ARM as of late 2024. Current workaround utilises UTM + Debian 12 + Rosetta, [read this guide here](http://natalieagus.github.io/50002/fpga/fpga_applesilicon). 
 
 
 We recommend you to instal Vivado ML Edition - 2023.2. You are free to try older version (see [archive](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/archive.html)) Vivado Design Suite - HLx Editions - 2020.2 or the latest version: Vivado ML Edition - 2024.1. 

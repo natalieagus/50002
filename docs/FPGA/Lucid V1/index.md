@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Lucid V1 
+title: Lucid V1 (Legacy) 
 permalink: /fpga/lucid-v1/intro
 has_children: true
 parent: 1D&2D Project (FPGA)

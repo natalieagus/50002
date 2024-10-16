@@ -69,7 +69,9 @@ Ensure that your desktop looks like this. If it doesn't it means that what you h
 <img src="{{ site.baseurl }}/docs/FPGA/images/fpga_applesilicon/2024-03-25-17-35-03.png"  class="center_full no-invert"/>
 
 ### Launching Alchitry Labs 2
-You can start alchitry labs by opening terminal from the bottom menu of the desktop (press windows / command image if the dock isn't visible) and type `a2` command. Key in `debian` as password when prompted.
+You can start alchitry labs by opening terminal from the bottom menu of the desktop (press windows / command image if the dock isn't visible) and type `a2` command (an alias that launches the Alchitry Labs V2 binary). 
+
+Key in `debian` as password when prompted.
 
 ```
 debian@debian:~$ a2
@@ -79,6 +81,10 @@ debian@debian:~$ a2
 <img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/fpga_applesilicon/2024-10-16-11-23-16.png"  class="center_seventy no-invert"/>
 
 It will prompt you to create/open new project (first time) or open your last opened project (subsequently).
+
+{:.note}
+The VM also comes with **legacy** Alchitry Labs 1.2.7 (using Lucid V1). You can use command `alchitry` to spawn it. See `~/.bashrc` for details.
+
 
 ## Loading .bin from your mac to Alchitry Au FPGA
 
