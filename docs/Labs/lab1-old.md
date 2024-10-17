@@ -3,7 +3,7 @@ layout: default
 permalink: /lab/lab1-old
 title: (old) Lab 1 - CMOS
 description: Lab 1 handout covering topics from Digital Abstraction, CMOS Technology, and Logic Synthesis
-parent: Labs
+# parent: Labs
 nav_order:  101
 nav_exclude: true
 ---
