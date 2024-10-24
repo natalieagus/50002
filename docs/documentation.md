@@ -15,5 +15,5 @@ Here are the links for downloading documentation on each of the following topics
 4. [jsim: MIT software to Simulate Circuit Design ](https://www.dropbox.com/scl/fi/e77s40fpygxgjjfkht2vp/jsim.pdf?rlkey=8z6jsfohpo6hoe1a467u5yfwg&dl=0) 
 5. [jsim Standard Cell Library](https://www.dropbox.com/scl/fi/sesatylsqihuju4p7jiwr/standard_cell_library.pdf?rlkey=s7sd8fb7rsz1k66nuuyk9rwo0&dl=0) 
 6. [Unpipelined Beta Diagram](https://www.dropbox.com/scl/fi/4nrs5b5d6u1shqdl5i88r/Unpipelined_Beta.pdf?rlkey=acc5cekcutl5gqti85uz4myc5&dl=0) 
-7. [Lucid Reference Guide ](https://www.dropbox.com/scl/fi/q3u4vr024ins5kls2u69n/Lucid_Reference.pdf?rlkey=r59dh3ft8fhsddq1fez4npo4n&dl=0)
-
+8. [Lucid V2 Reference Guide](https://alchitry.com/tutorials/lucid-reference/)
+9. [Custom Br Board Reference](https://www.dropbox.com/scl/fi/6dhf0kirl7oki78hmlq7e/BrElementReferenceNEW.pdf?rlkey=57jzc7kdj9t57hm0p8vx01vq5&dl=0)

@@ -22,7 +22,7 @@ Modified by: Natalie Agus (2024)
 {: .no_toc}
 
 ## Starter Code
-TBC 
+There's no starter code for this lab. You simply need to have [Alchitry Labs V2](https://alchitry.com/alchitry-labs/) installed. You don't need Vivado for this lab, we are only going to run simulations. 
 
 ## Related Class Materials
 The lecture notes on **[sequential logic](https://natalieagus.github.io/50002/notes/sequentiallogic)** and **[logic synthesis](https://natalieagus.github.io/50002/notes/logicsynthesis)** are closely related to this lab.

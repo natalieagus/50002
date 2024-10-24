@@ -37,9 +37,11 @@ This page is dedicated to list certain useful and fun resources to aid your lear
 
 [How a CPU works? Apple M1 vs Intel i9](https://www.youtube.com/watch?v=vqs_0W-MSB0)
 
-### Lucid Projects 
+### Lucid Projects (V1, deprecated)
 
-Instructor drivers (written in Lucid) for:
+You can still run these using [Alchitry Labs 1.2.7](https://alchitry.com/alchitry-labs/#version-1-2-7). 
+
+Instructor drivers (written in Lucid V1) for:
 1. [WS2812B](https://github.com/natalieagus/ws2812b)
 2. [HUB75 RGB LED Matrix](https://github.com/natalieagus/rgbledmatrix)
 3. [75HC595 Shift Register](https://github.com/natalieagus/74hc595)
@@ -47,7 +49,10 @@ Instructor drivers (written in Lucid) for:
 
 The sample 1D Project Repo: [Counter Game](https://github.com/natalieagus/counter-game).
 
-Other [sample Alchitry Projects](https://github.com/natalieagus/SampleAlchitryProjects) (Lucid) written by instructor for tutorials in this website.
+Other [sample Alchitry Projects](https://github.com/natalieagus/SampleAlchitryProjects) written by instructors for reference.
+
+{:.note}
+We will incrementally upgrade the above projects to V2. You can also do it yourself, the syntax is 90% similar with the exception of for-loops and FSM as the major changes.
 
 ### Custom Br Board Reference
 
