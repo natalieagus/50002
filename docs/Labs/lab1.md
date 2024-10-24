@@ -60,7 +60,7 @@ In the last lab, we tried to vary the MOSFET's width and length to try to **cent
 The **shape**, **steepness**, and **centeredness** of the VTC <span class="orange-bold">do not directly indicate the switching speed</span>, including propagation delay (tpd) and contamination delay (tcd), of the gate. These characteristics reflect the **static** response of the gate, while the speed of obtaining a valid output from a valid input is determined by **dynamic** factors such as capacitance, drive strength, load, and supply voltage.
 
 
-Open `lab1_task1_and_2.jsim`. We have written a netlist for you to **measure** the propagation delay (tpd) and the contamination delay (tcd) of a given nand (not and) gate:
+Open `lab1_task1_and_2.jsim`. We have written a netlist for you to **measure** the propagation delay (tpd) and the contamination delay (tcd) of a `nand` (`not-and`) gate:
 
 ```cpp
 .include "nominal.jsim"
@@ -253,15 +253,15 @@ Here we fix the `A` input terminal as `1` (vdd), and **vary** the voltage value 
 | 1 | 0 |  1  |   0   |
 | 1 | 1 |  0  |   1   |
 
-Click the **Device Level Simulation** button: 
+Click the **Device Level Simulation** button, then:
 
-<img src="{{ site.baseurl }}//docs/Labs/images/lab1/2024-07-01-15-05-55.png"  class="center_seventy no-invert"/>
+<img src="{{ site.baseurl }}//docs/Labs/images/lab1/2024-07-01-15-05-55.png"  class="center_full no-invert"/>
 
 1. Compute the tp rise and tp fall of the sum bit
 2. Compute the tp rise and tp fall of the carry bit
   
 Take the **maximum** value from (1) and (2) above and report it as the tpd of the half-adder. Then look at the half-adder schematic and identify the **critical path** of the device. 
-- How many nand2 gates are there in the critical path of the device?
+- How many `nand2` gates are there in the critical path of the device?
 - Do you find that the tpd of the half-adder is **exactly** sum of the **tpd** of these nand2 gates (in the critical path) computed in Task 1 above? If not, is it *more* or *less* than that? 
 
 {:.note-title}
@@ -348,22 +348,22 @@ Here are the key reasons for adding a load during these measurements:
 In summary, adding a load to the output of a logic gate during delay measurements ensures that the results are representative of real-world conditions, taking into account the effects of load on the gate’s switching characteristics. This approach helps in designing more **reliable** and **efficient** digital circuits by providing accurate data for optimizing gate configurations and circuit layouts.
 
 ## What causes tc rise and tc fall to differ? 
-The difference in contamination delay (\( t_{cc} \)) rise and fall times for the same logic gate can be attributed to several factors, including the inherent asymmetries in the design and behavior of the transistors within the gate. Here are some of the primary reasons:
+The difference in contamination delay (tcd) rise and fall times for the same logic gate can be attributed to several factors, including the inherent asymmetries in the design and behavior of the transistors within the gate. Here are some of the primary reasons:
 
-1. **Transistor Sizing**: In a typical CMOS logic gate, the NMOS and PMOS transistors are sized differently to balance the drive strengths and to achieve equal rise and fall times for the output signal. However, due to the differences in electron and hole mobilities (electrons move faster than holes), the NMOS transistors are usually smaller than the PMOS transistors. This can lead to different switching characteristics and, consequently, different contamination delays for rising and falling edges.
+1. **Transistor Sizing**: In a typical CMOS logic gate, the NFETs and PFETs are sized differently to balance the drive strengths and to achieve equal rise and fall times for the output signal. However, due to the differences in electron and hole mobilities (electrons move faster than holes), the NFETs are usually smaller than the PFETs. This can lead to different switching characteristics and, consequently, different contamination delays for rising and falling edges.
 
-2. **Mobility Difference**: The mobility of electrons in NMOS transistors is typically higher than that of holes in PMOS transistors. This means NMOS transistors can pull the output low faster than PMOS transistors can pull the output high. This difference in mobility results in different contamination delays for rising and falling transitions.
+2. **Mobility Difference**: The mobility of electrons in NFETs is typically higher than that of holes in PFETs. This means NFETs can pull the output low faster than PFETs can pull the output high. This difference in mobility results in different contamination delays for rising and falling transitions.
 
-3. **Threshold Voltage (\( V_t \)) Difference**: The threshold voltages of NMOS and PMOS transistors are usually different. This difference affects the switching speed and the point at which the transistors turn on and off, contributing to different rise and fall contamination delays.
+3. **Threshold Voltage (Vt) Difference**: The threshold voltages of NFETs and PFETs are usually different. This difference affects the switching speed and the point at which the transistors turn on and off, contributing to different rise and fall contamination delays.
 
-4. **Load Capacitance**: The load capacitance seen by the NMOS and PMOS transistors can differ due to the layout and wiring of the circuit. Variations in load capacitance affect the time required to charge and discharge the load, leading to different contamination delays for rising and falling transitions.
+4. **Load Capacitance**: The load capacitance seen by the NFETs and PFETs can differ due to the layout and wiring of the circuit. Variations in load capacitance affect the time required to charge and discharge the load, leading to different contamination delays for rising and falling transitions.
 
-5. **Body Effect**: The body effect can cause variations in the threshold voltage of the transistors, which in turn affects the switching characteristics. This effect might be more pronounced in one type of transistor (NMOS or PMOS), leading to asymmetric contamination delays.
+5. **Body Effect**: The body effect can cause variations in the threshold voltage of the transistors, which in turn affects the **switching** characteristics. This effect might be more pronounced in one type of transistor, leading to asymmetric contamination delays.
 
-6. **Process Variations**: Manufacturing process variations can cause differences in the physical characteristics of the transistors, such as channel length, width, and oxide thickness. These variations can lead to differences in the electrical characteristics and switching speeds of NMOS and PMOS transistors, affecting the contamination delay for rising and falling edges.
+6. **Process Variations**: Manufacturing process variations can cause differences in the physical characteristics of the transistors, such as channel length, width, and oxide thickness. These variations can lead to differences in the electrical characteristics and switching speeds of NFETs and PFETs, affecting the contamination delay for rising and falling edges.
 
-7. **Intrinsic Gate Delay**: The intrinsic delay of a gate is influenced by the internal resistance and capacitance of the transistors. Since the NMOS and PMOS transistors have different resistive and capacitive properties, this intrinsic delay can differ for rising and falling transitions.
+7. **Intrinsic Gate Delay**: The intrinsic delay of a gate is influenced by the internal resistance and capacitance of the transistors. Since PFETs and NFETs have different resistive and capacitive properties, this intrinsic delay can differ for rising and falling transitions.
 
-Understanding these factors helps in designing logic gates with balanced rise and fall times, though achieving perfect symmetry is challenging due to the inherent differences in the transistor characteristics and the practical constraints of the manufacturing process.
+Understanding these factors helps in designing logic gates with balanced rise and fall times, though achieving **perfect symmetry** is <span class="orange-bold">challenging</span> due to the inherent differences in the transistor characteristics and the practical constraints of the manufacturing process.
 
 
