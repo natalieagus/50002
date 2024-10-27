@@ -3,8 +3,9 @@ layout: default
 permalink: /lab/lab3-part2
 title: Lab 3 - Arithmetic Logic Unit with FPGA (Part 2)
 description: Lab 3 handout covering topics from Logic Synthesis, and Designing an Instruction Set
-parent: Labs
+# parent: Labs
 nav_order:  5
+nav_exclude: true
 ---
 
 * TOC

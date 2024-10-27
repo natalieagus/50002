@@ -58,7 +58,7 @@ We will incrementally upgrade the above projects to V2. You can also do it yours
 
 You can [download the full pdf from here](https://www.dropbox.com/scl/fi/6dhf0kirl7oki78hmlq7e/BrElementReferenceNEW.pdf?rlkey=57jzc7kdj9t57hm0p8vx01vq5&dl=0), or refer to the image below. Remember this is the pins you should use with the Custom Br board wings given to you (don't use the one from alchitry website).
 
-<img src="{{ site.baseurl }}/docs/FPGA/images/fpga_applesilicon/br.png"  class="center_full"/>
+<img src="{{ site.baseurl }}/docs/FPGA/images/fpga_applesilicon/br.png"  class="center_full no-invert"/>
 
 ### Beta Assembler and Emulator 
 
