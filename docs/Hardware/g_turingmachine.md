@@ -396,6 +396,8 @@ The diagram above shows a rough schematic on how we can realise the abstract con
 {: .warning}
 This section is <span style="color:red; font-weight: bold;">difficult</span>, and is solely written for a <span style="color:red; font-weight: bold;">deeper understanding</span> about uncomputable function. You are **not required** to derive this proof during exams.
 
+### The simpler explanation 
+
 {: .note-title}
 > The Halting Function
 >  
@@ -406,7 +408,26 @@ This section is <span style="color:red; font-weight: bold;">difficult</span>, an
 
 {% raw  %}
 
-One of most famous example of uncomputable function is the **Halting function**. Let's simbolise it as $$f_H(K,j)$$, and give it a definition:
+The **Halting function** is <span class="orange-bold">uncomputable</span>. Here's why it is uncomputable: 
+1. **Suppose `HALT` exists**: We assume we have a program called `HALT` that can analyze any other program, `P`, with some input, `X`, and tell us if `P` will stop (halt) or run forever (loop) when given that input.
+
+2. **Create a Paradox Program (`PARADOX`)**: Now, let’s write a new program, `PARADOX`, that does something unusual:
+   - It uses `HALT` to check if *itself* (`PARADOX`) will halt when given its own code as input.
+   - `PARADOX` is set up to do the opposite of what `HALT` predicts:
+     - If `HALT` says `PARADOX` will halt, then `PARADOX` goes into an infinite loop.
+     - If `HALT` says `PARADOX` will loop, then `PARADOX` halts immediately.
+
+3. **The Contradiction**: 
+   - If `HALT` says that `PARADOX` halts, then `PARADOX` should loop (by its own instructions), which contradicts `HALT`'s prediction.
+   - If `HALT` says that `PARADOX` loops, then `PARADOX` should halt immediately, again contradicting `HALT`'s prediction.
+
+This contradictory setup shows that **`HALT` cannot make a correct prediction about every possible program, including `PARADOX`**. In other words, this paradox proves that a universal `HALT` program cannot exist, because it would lead to logical contradictions when applied to programs that reference themselves.
+
+This self-referential concept is similar to a paradox in natural language, like "This statement is false." If the statement is true, then it must be false, but if it’s false, it must be true. The Halting Problem uses a similar type of self-reference to show that a universal halting-decider is impossible.
+
+### The in-depth explanation
+
+Let's symbolise the halting function (suppose it exists) as $$f_H(K,j)$$, and give it a definition:
 
 $$
 \begin{aligned}
