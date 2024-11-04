@@ -1,7 +1,7 @@
 ---
 layout: default
-permalink: /lab/lab4-part2
-title: Lab 4 - Beta Processor with FPGA (Part 2)
+permalink: /lab/lab4-advanced
+title: Lab 4 - Beta Processor with FPGA (Advanced)
 description: Lab 4 handout covering topics from Beta Datapath
 parent: Labs
 nav_order:  8

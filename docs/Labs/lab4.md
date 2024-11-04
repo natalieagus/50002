@@ -1,7 +1,7 @@
 ---
 layout: default
-permalink: /lab/lab4-part1
-title: Lab 4 - Beta Processor with FPGA (Part 1)
+permalink: /lab/lab4
+title: Lab 4 - Beta Processor with FPGA 
 description: Lab 4 handout covering topics from Beta Datapath
 parent: Labs
 nav_order:  7
@@ -16,9 +16,8 @@ Information Systems Technology and Design
 <br>
 Singapore University of Technology and Design
 <br>
-Written by: Natalie Agus (2023)
 
-# Lab 4: Beta Processor with FPGA (Part 1)
+# Lab 4: Beta Processor with FPGA
 {: .no_toc}
 
 
@@ -26,7 +25,7 @@ Written by: Natalie Agus (2023)
 
 Please clone the starter code from this repository, then **open** it with Alchitry Lab. 
 ```
-git clone https://github.com/natalieagus/beta-starter.git
+TBC
 ```
 
 Then, you shall **paste** the implementation of your 32-bit ALU unit created in Lab 3: ALU. Be sure to include **all** files required by your `alu.luc`.
@@ -86,7 +85,7 @@ The schematic of the memory unit is as follows:
 
 
 ### Instruction Memory
-The instruction memory is implemented using the `simple_ram.v` component. See this file under the `Components` folder in your alchitry project to read more about how to use it. In short:
+The instruction memory is implemented using the `simple_ram.v` component.
 - `read_data` port of the `simple_ram` will output the value of the entry pointed by `raddr` in the <span style="color:red; font-weight: bold;">previous</span> clock cycle. If you want to read address `EA`, you shall set `raddr = EA` and then wait for one FPGA clock cycle for `Mem[EA]` to show up. 
 - If you read and write to the **same** address, you will get the value of the old output at `read_data` in the second clock cycle, and on the third clock cycle, the newly updated value will be produced at `read_data`.  
 
@@ -125,7 +124,7 @@ The interface for the data memory is given to you inside `memory_unit.luc`:
 #### Memory Read
 The Data Memory Unit receives **one** input from the Beta:
 * data memory address (`ma[31:0]`). This is the address of data memory location where we want to read (load) from or write (store) to. 
-* We often know this as `EA` in our lecture notes as well.
+* We called this `EA` in our lecture notes.
 
 When the Beta wants to **load** (read) data from the memory, it needs to supply the above `ma[31:0]` to the memory unit. Then, the data memory will output `mrd[31:0]` (otherwise known as `Mem[EA]`) for the Beta CPU.
 
@@ -138,7 +137,7 @@ If the Beta wants to **store** (write) data to the memory, it needs to supply **
 The signal `wr`  should **ALWAYS** have a **valid** logic value (either 1 or 0) at the **RISING** edge of `CLK` otherwise the contents of the memory will be affected. If signal `wr` is 1, the data  `mwd[31:0]` will be written into memory at the **end** of the current cycle. Otherwise, if `wr = 0`, then the data at` mwd[31:0]` will be **ignored**. 
 
 ### Addressing Convention
-We expect **byte addressing** to be supplied at `raddr`, `waddr`, and `ia`. However, since we would naturally declare our `simple_ram` with `#SIZE(32)`, it expects word addressing. Hence, we need to ignore the lower two bits of `ia`, `raddr`, and `waddr` when using them. 
+We expect **byte addressing** to be supplied at `raddr`, `waddr`, and `ia`. However, since we would naturally declare our `simple_ram` with `#SIZE(32)`, it expects *word* addressing. Hence, we need to <span class="orange-bold">ignore</span> the lower two bits of `ia`, `raddr`, and `waddr` when using them. 
 
 ```verilog
   instruction_memory.address = ia[$clog2(WORDS)+2-1:2]; 
@@ -196,7 +195,7 @@ Mem[0x80000008] = BR(interrupt_handler)
 
 
 #### Lower Two Bits of `PC`
-You also have to **force** the lower two bits of inputs going into the PC+4, PC+4+4*SXTC, and JT port of the mux to be `b00` because the memory is byte addressable but the Beta obtains one word of data/instructions at each clock cycle. You can do this with appropriate wiring.
+You also have to **force** the lower two bits of inputs going into the PC+4, PC+4+4*SXTC, and JT port of the mux to be `b00` because the memory is byte addressable but the Beta obtains one word of data/instructions at each clock cycle. You can do this with appropriate wiring using concatenation:
 
 Example: 
 
@@ -219,7 +218,7 @@ We will use the RESET signal to force the PC to zero during the **first** clock 
 
    case(motherboard.q){
         // instruction loading
-        motherboard.INSTRUCTIONLOAD:
+        MotherboardStates.INSTRUCTIONLOAD:
             beta.rst = 1;
             writer_counter.d = writer_counter.q + 1;
             instruction_unit.addr = writer_counter.q;
@@ -227,18 +226,18 @@ We will use the RESET signal to force the PC to zero during the **first** clock 
             memory_unit.instruction_write_enable = b1;
             memory_unit.ia = writer_counter.q<<2; // pad with two zeroes to make it byte addressable because memory_unit expects byte addresing ia
             if ((writer_counter.q + 1) == MEMORY_SIZE){
-                motherboard.d = motherboard.RUN; // wait one more clock cycle to allow the last instruction to be loaded before start execution
+                motherboard.d = MotherboardStates.RUN; // wait one more clock cycle to allow the last instruction to be loaded before start execution
         }
 
-         motherboard.RUN:
+         MotherboardStates.RUN:
             // only load output and update input at the the beginning of each "next" instruction cycle 
             // LOAD_OUTPUT will hijack EA for 2 cycles. At this point, the CPU is not receiving a legitimate Mem[EA] if it is doing a LD/LDR 
             // However since "next" is more than 2 cycles, it will be fixed by the third cycle (actual EA coming out from beta is plugged into memory unit
             if (slowclk){
-                motherboard.d = motherboard.LOAD_OUTPUT;
+                motherboard.d = MotherboardStates.LOAD_OUTPUT;
             }
             else{
-                motherboard.d = motherboard.RUN;
+                motherboard.d = MotherboardStates.RUN;
             }       
       ...
 ```
@@ -250,13 +249,8 @@ The PC is a separate **32-bit register** that can be built using the `dff` compo
   dff pc[32](#INIT(0),.clk(clk)); // PC Register
 ```
 
-### Increment-by-4
-Conceptually, the increment-by-4 circuit is just a 32-bit adder with one input wired to the constant 4. It is possible to build a much **smaller** circuit if you design an adder **optimized** knowing that one of its inputs is `0x00000004` constant. In Lucid, this can be done very easily by just stating:
-
-```verilog
-    // increment pc by 4
-    pc_4_sig = c{pc.q[31], pc.q[30:0] + 4};     
-```
+### Task 4: Increment-by-4
+Conceptually, the increment-by-4 circuit is just a 32-bit adder with one input wired to the constant 4. It is possible to build a much **smaller** circuit if you design an adder **optimized** knowing that one of its inputs is `0x00000004` constant. In Lucid, you can directly concatenate the MSB of `pc.q` and add the remaining bits by 4 using the `+` operator.
 
 
 ### Task 4: Shift-and-add
@@ -296,9 +290,7 @@ old PC31 (ia31) | JT31 (ra31) | new PC31
 1 | 1 | 1
 
 
-{: .new-title}
-> Think! 
->
+{: .higlight}
 > You have implemented quite a fair bit of answers to complete `pc_unit.luc`. Which part(s) protects the supervisor bit?
 
 
@@ -354,7 +346,7 @@ Implement the workings of the REFGILE unit inside the `always` block in `regfile
 The `RD1` port output producing `reg_data_1[31:0]` is also wired directly as the third (for `JMP`) input of the `PCSEL` multiplexer. Remember we <span style="color:red; font-weight: bold;">already</span>  **force** the low-order two bits to zero and to add supervisor bit logic to bit 31 in the `PCSEL` Unit, so we do not have to do it here anymore.
 
 ### Task 8: Z Logic
-Z logic can be added to the output of the RA1/RD1 port of the register file memory above. The value of Z must be `1` if and only if `reg_data_1[31:0]` is `0x00000000`. Z must be `0` otherwise. This is exactly a `NOR` logic. You can create a reduction `NOR` logic gate very easily in Lucid (well, [actually Verilog](https://class.ece.uw.edu/cadta/verilog/reduction.html)), but of course you're welcome to follow the schematic above. 
+Z logic can be added to the output of the RA1/RD1 port of the register file memory above. The value of Z must be `1` if and only if `reg_data_1[31:0]` is `0x00000000`. Z must be `0` otherwise. This is exactly a `NOR` logic. You can create a reduction `NOR` logic gate very easily in Lucid and [Verilog](https://class.ece.uw.edu/cadta/verilog/reduction.html)), but you're welcome to follow the schematic above. 
 
 {: .highlight}
 Implement the `commpute Z` section inside `regfile_unit.luc`. You can use reduction NOR for this. 
@@ -409,7 +401,7 @@ If you need to implement `MUL` or `DIV` in your Beta CPU for your 1D, please mod
 For this lab, further processing for control signals: `PCSEL, wasel, wdsel, werf, wr` are needed, let's do this. 
 
 ### WR and WERF
-We do need to be careful with the write enable signal for main memory (WR) which needs to be **valid** even before the first instruction is fetched from memory. WR is an **input** to the main memory, and recall that ALL inputs need to be VALID (0 is also a valid value!) in order for the main memory to give a valid output data. You should include some additional logic that forces `wr` to `b0` when `reset is 1`. This takes highest priority, hence it is written at the bottom of the `always` block in `control_unit.luc`. 
+We do need to be careful with the write enable signal for main memory (WR) which needs to be **valid** even before the first instruction is fetched from memory. WR is an **input** to the main memory, and recall that ALL inputs need to be VALID (0 is also a valid value!) in order for the main memory to give a valid output data. You should include some additional logic that forces `wr` to `b0` when `reset is 1`. This takes <span class="orange-bold">highest</span> priority, hence it is written at the <span class="orange-bold">bottom</span> of the `always` block in `control_unit.luc`. 
 
 
 ### Task 10: PCSEL 
@@ -434,7 +426,9 @@ Complete the `PCSEL for BNE/BEQ` section inside `control_unit.luc`.
 ```
 
 ### Task 11: IRQ Handling
-When `IRQ` signal is 1 and the Beta is in “user mode” (PC31 is zero), an **interrupt** should occur.  Asserting `IRQ` should have NO effect when in “supervisor mode” (`PC31` is one).  You should add logic that causes the Beta to abort the current instruction and **save** the current **PC+4** in register `XP` (`11110`) and to set the PC to `0x80000008`.  In other words, an interrupt forces the following:
+When `IRQ` signal is 1 and the Beta is in “user mode” (PC31 is zero), an **interrupt** should occur.  Asserting `IRQ` should have NO effect when in “supervisor mode” (`PC31` is one).  You should add logic that causes the Beta to abort the current instruction and **save** the current **PC+4** in register `XP` (`11110`) and to set the PC to `0x80000008`.  
+
+In other words, an interrupt event forces the following control signals regardless of the current instruction:
 
 1.	PCSEL to `b100` (select `0x80000008` as the next `PC` value)
 2.	WASEL to `b1` (select `XP` as the register file write address)
@@ -457,30 +451,12 @@ Implement `IRQ handling` section inside `control_unit.luc`.
 Note that the snippet above is located near the end of the `always` block because it shall **overwrite** the current instructions' control signals defined earlier above. 
 
 
-## ALU + WDSEL Unit
-This unit is fairly straightforward to implement.  **In fact, it is so easy and we just implement it for you** inside `beta_cpu.luc`.
-
-### ALU+WDSEL Unit Schematic
-Here is the suggested **ALU + WDSEL** Unit schematic that we implemented: 
-
-<img src="/50002/assets/contentimage/lab4/aluwdselunit.png"  class="center_seventy"/>
-
-
-### ASEL and BSEL Mux
-
-The low-order 16 bits of the instruction need to be **sign**-extended to 32 bits as an input to the BSEL mux.  Sign-extension is easy in hardware, no extra components needed as you have known already when creating the shift + add component in PC Unit. 
-
-Also, **Bit 31** of the branch-offset input to the ASEL mux should be set to `0`. This means that the supervisor bit is **ignored** when doing address arithmetic for the `LDR` instruction.
-
-
-### WDSEL Mux
-**Bit 31** of the PC+4 input to the **WDSEL** mux should connect to the highest bit of the PC Reg output, `ia31`, saving the current value of the supervisor whenever the value of the PC is saved by a branch instruction or trap.  This is already handled in the PC unit. You don't need to do anything else here.
 
 
 ## Part D: Assemble Completed Beta
 ### Task 12
 
-The complete schematic of the Beta is (you might want to open this image in another tab):
+The complete schematic of the Beta is as follows (you might want to open this image in another tab and zoom in):
 
 <img src="/50002/assets/contentimage/beta/beta.png"  class="center_seventy"/>
 
@@ -510,16 +486,38 @@ Complete `Task 12` section that defines connections to the control unit, PC unit
 
 ```
 
+### ALU + WDSEL Unit
+This unit is fairly straightforward to implement.  
+
+### ALU+WDSEL Unit Schematic
+Here is the suggested **ALU + WDSEL** Unit schematic that we implemented: 
+
+<img src="/50002/assets/contentimage/lab4/aluwdselunit.png"  class="center_seventy"/>
+
+
+### ASEL and BSEL Mux
+
+The low-order 16 bits of the instruction need to be **sign**-extended to 32 bits as an input to the BSEL mux.  You have done sign extension before in Lab 2. Consult Lab 2 handout if you have forgotten how to do so. 
+
+Also, **Bit 31** of the branch-offset input to the ASEL mux should be set to `0`. This means that the supervisor bit is **ignored** when doing address arithmetic for the `LDR` instruction.
+
+
+### WDSEL Mux
+**Bit 31** of the PC+4 input to the **WDSEL** mux should connect to the highest bit of the PC Reg output, `ia31`, saving the current value of the supervisor whenever the value of the PC is saved by a branch instruction or trap.  This is already handled in the PC unit. You don't need to do anything else here.
+
+### Output Signals
+
 {: .highlight}
 Finally, we need our beta to produce appropriate output signals. Complete the`output connections` section in `beta_cpu.luc`. 
 
 ```verilog
+    // remaining beta datapath connections
     // connect alu_system with asel_out and bsel_out
     // connect regfile_system with wdsel_out 
-    // connect signals mem_data_address with the output of the ----------
+    // connect mem_data_address with the output of the alu
     // connect mem_data_output with regfile_system 
-    // finally, connect wr sig with control_system 
-
+    // connect wr sig with control_system 
+    // connect ia with pc system
 ```
 
 ### Connect Debug Signals 
@@ -561,8 +559,6 @@ You have made a working Beta CPU. Please take your time to understand how each c
 14. `0xD`: MSB 16 bits of instruction address. Useful to see PC31 (kernel/user mode) (ia[31:16])
 15. `0xE`: LSB 16 bits of beta input buffer. This is a dff that's hardwired to reflect Mem[0x10]
 16. `0xF`: LSB 16 bits of beta output buffer. This is a dff that's hardwired to reflect Mem[0xC]
-
-We have also provided all this information in the repository's [readme](https://github.com/natalieagus/beta-starter). 
 
 ## Observed Output
 
@@ -666,16 +662,16 @@ Finally, when you reach the fifth instruction at address `0x10` (`BNE`), confirm
 
 <img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-48-59.png"  class="center_fifty no-invert"/>
 
-### Checkoff
+## Checkoff
 
-As stated in the beginning of this document, you need to complete all the above tasks and demonstrate a working Beta CPU using the "better test instructions" above by the end of next week's lab. You can checkoff as a group. <span className="orange-bold">Only group members who are present gain the marks (unless valid LOA).</span>
+As stated in the beginning of this document, you need to complete all the above tasks and demonstrate a working Beta CPU using **your own test instruction**. You can checkoff as a group. <span className="orange-bold">Only group members who are present gain the marks (unless valid LOA).</span> 
 
 {: .new-title}
 > Checkoff 
 >
-> You need to demonstrate that your FPGA works as the above with the test instruction to your TA/instructor by the end of next week's lab (during lab hour).
+> You need to demonstrate that your Beta runs properly on the FPGA to our TA/instructor by the end of next week's lab (during lab hour). To do this, you are to **design** a short test code in Beta Assembly (8-10 lines). Your code must contain at least a `BNE/BEQ`, `JMP`, `OP`, `OPC`, `LD/LDR` and `ST` instruction each. 
+
+Neatly document your test instruction in `instruction_rom.luc` to facilitate a smoother checkoff process.
 
 
-## What's Next?
-In the next lab, we will study more on how `motherboard.luc` works and drive the Beta CPU, and how to handle special events like `irq`, `illop`, and `reset` properly. We will connect I/O to interact with our Beta, kinda like connecting a keyboard and a screen to our computer (but a way simplied version of it). 
 

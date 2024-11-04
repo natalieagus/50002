@@ -1,6 +1,6 @@
 ---
 layout: default
-permalink: /lab/lab3-part1
+permalink: /lab/lab3
 title: Lab 3 - Arithmetic Logic Unit with FPGA 
 description: Lab 3 handout covering topics from Logic Synthesis, and Designing an Instruction Set
 parent: Labs
@@ -16,7 +16,6 @@ Information Systems Technology and Design
 <br>
 Singapore University of Technology and Design
 <br>
-Modified by: Natalie Agus (2024) 
 
 # Lab 3: Arithmetic Logic Unit
 {: .no_toc}

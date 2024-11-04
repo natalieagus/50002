@@ -16,7 +16,6 @@ Information Systems Technology and Design
 <br>
 Singapore University of Technology and Design
 <br>
-Written by: Natalie Agus (2024)
 
 # Lab 0: Digital Abstraction
 {: .no_toc}

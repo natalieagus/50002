@@ -16,7 +16,6 @@ Information Systems Technology and Design
 <br>
 Singapore University of Technology and Design
 <br>
-Modified by: Natalie Agus (2024) 
 
 # Lab 2: Combinational and Sequential Logic with FPGA 
 {: .no_toc}
