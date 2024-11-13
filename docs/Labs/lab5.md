@@ -16,7 +16,6 @@ Information Systems Technology and Design
 <br>
 Singapore University of Technology and Design
 <br>
-Modified by: Kenny Choo, Natalie Agus, Oka Kurniawan (2021)
 
 # Lab 5: Assembly Language
 {: .no_toc}

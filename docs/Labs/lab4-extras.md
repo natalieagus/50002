@@ -1,7 +1,7 @@
 ---
 layout: default
 permalink: /lab/lab4-advanced
-title: Lab 4 - Beta Processor with FPGA (Advanced)
+title: Lab 4 - Beta Processor with FPGA (Extras)
 description: Lab 4 handout covering topics from Beta Datapath
 parent: Labs
 nav_order:  8
@@ -16,24 +16,19 @@ Information Systems Technology and Design
 <br>
 Singapore University of Technology and Design
 <br>
-Written by: Natalie Agus (2023)
 
-# Lab 4: Beta Processor with FPGA (Part 2)
+# Lab 4: Beta Processor with FPGA (Extras)
 {: .no_toc}
 
-In this second part of the lab, we will learn about further implementations to **operate** our Beta CPU:
-1. To run a tester code that demonstrate basic instructions: `OP/OPC`, control transfer (`BNE/BEQ/JMP`), and memory access (`LD/ST`) with a slowclock, faster clock, and manually
-2. To view the system's states (e.g: `ma`, `ia`, `id`, etc) at the 7-seg as part of debug protocol
-3. To view the system's output buffer at the 7-segment
-4. To interact with the system (triggers hardware interrupt `irq`, handle I/O)
-5. To trigger `ILLOP` (software interrupt) and demonstrate how it is handled 
+This is a supplementary lab notes. It is ungraded and there's no questionnaire for this lab. You can read this handout at your own time. 
 
-
-You are <span style="color:#ff791a; font-weight: bold;">not required</span> to submit your code for this lab. Simply head to eDimension and do the lab **questionnaire** by the stipulated due date. Please also complete the **Checkoff** to this lab, which is to demonstrate that the simple tester source code from the previous week works as intended following the screenshots provided in the previous lab. You shall do your checkoff as a group. <span className="orange-bold">Only group members who are present gain the marks (unless valid LOA).</span>
+Here we learn how to connect I/O units to the CPU using **shared-memory** I/O:
+1. Reading from input buffer
+2. Display certain memory content to output buffer and refresh it at a constant rate 
 
 
 ## Beta Tester Source Code
-We have written a simple 28-line tester code for your Beta inside `instruction_rom.luc`. Unfortunately, we don't have a nice auto-tester and auto-graded checkoff file like we have in `jsim`. We just need to either manually ensure that the outputs are correct by observing each **state** of the Beta (PC content, Regfile content, control signals, etc) at each instruction execution or write an automatic tester like you did for your ALU in Checkoff 1.
+We have written a simple 28-line tester code for the Beta that can be copied to `instruction_rom.luc` to learn how shared-memory I/O works. You need to manually ensure that the outputs are correct by observing each **state** of the Beta (PC content, Regfile content, control signals, etc) at each instruction execution. It is recommended that you write an automatic tester like you did for your ALU in Checkoff 1, but manual checks will do for a small scale project like your 1D project.
 
 The instruction is as follows. Notice that the first instruction (address `0`) is placed at the bottom of the arrow to follow Verilog/Lucid array convention.
 
@@ -217,6 +212,23 @@ When `io_button[0]`, `io_button[1]`, or `io_button[2]` is pressed, we write some
 
 These buffers are then synchronized to a specific region in `memory_unit` so that your Beta CPU can access its values. 
 
+### Shared_memory I/O
+
+This is a Shared Memory with Direct Memory Access design. This is different from [Memory-Mapped I/O](https://www.baeldung.com/cs/memory-mapped-vs-isolated-io) design or Isolated-Mapped (also known as port-mapped) IO. 
+> In MMIO, the CPU accesses the hardware registers of the network card directly, using standard memory instructions (LD/ST). A memory controller / arbiter directs the CPU to the hardware buffer or the RAM depending on the address requested. The **mapped** address points to the device, not to RAM. In Isolated IO, the CPU communicates with the network card using special I/O instructions (e.g., IN and OUT on x86). These instructions **explicitly** access the device's registers through a separate I/O address space (not memory).
+
+In this shared memory design, our I/O device controllers have direct access to the memory unit (hence the name Direct Memory Access or DMA) I/O buffers (`system_input_buffer` and `system_output_buffer`). Since the memory unit is also used by the CPU, we need to implement some kind of arbitration mechanism. In practice, a **memory controller** (part of the CPU or chipset) is responsible for managing access to **shared** memory. The memory controller ensures that the memory unit (RAM) reflects these updates immediately, so the CPU sees the latest input data when it accesses specific regions of the RAM.
+
+{: .note}
+We choose `memory_unit` address `0x10` as the region to hold the last-received input value, and we choose `memory_unit` address `0xC` as the region to hold the current output value. 
+
+The memory controller must facilitate data transfer into address `Mem[0x10]` to reflect the contents of `system_input_buffer`, and update `system_output_buffer` to reflect the content of address `Mem[0xC]`. 
+
+If we were to `STORE` any value to `Mem[0xC]`, it will be reflected at the "output" of the motherboard (simplified), e.g the 7 segment. We have simple hardware controller that continuously read from `system_output_buffer` and updates the LED display. Similarly, if any input button `io_button[2:0]` is pressed, it will trigger an <span style="color:red; font-weight: bold;">INTERRUPT</span>, and the CPU can find the **encoding** of the currently pressed button ready at `Mem[0x10]`. When interrupt occurs, `Mem[0x10` would've been synced to reflect the content of `system_input_buffer` by the controller. 
+ 
+The memory controller is implemented as part of the motherboard in this simple project.
+
+
 ## The Motherboard
 In practice, a motherboard is the main printed circuit board in general-purpose computers. It holds and allows communication between many of the crucial components of a system: the CPU, the memory unit, and provides **connectors** for peripheral (I/O) devices.
 
@@ -226,7 +238,7 @@ The module `motherboard.luc` is where we instantiate our major hardware componen
 3. System input and output buffer (`32` bits each). This serves as a buffer that holds current input or current output value. The motherboard is connected to actual buttons (input) and LEDs (output) in `au_top.luc`.
 4. The instruction ROM (for initial loading of instruction)
 
-We define their connections and added a simple `fsm motherboard` that <span style="color:red; font-weight: bold;">runs the Beta</span> and handle I/O. 
+We define their connections and added a simple FSM called `motherboard` that <span style="color:red; font-weight: bold;">runs the Beta</span> and arbitrates memory access (shared between CPU and I/O buffers). 
 
 ### `LOAD`
 Upon start up, `LOAD` instructions from instruction rom to the instruction memory part of the memory unit. We do not use the ROM directly to simulate a more realistic approach whereby upon boot up, we will load our data from **disk**  (signified by this ROM) to our physical memory. 
@@ -273,16 +285,7 @@ The purpose of this line is to avoid instructions that read from and write to th
 Finally, when `slowclk` turns `1` (rising edge), `PC` is set to advance <span style="color:red; font-weight: bold;">in the next FPGA clock cycle</span>. In this current cycle (the `clk` cycle when `slowclk` just had its rising edge), we are still executing the <span style="color:red; font-weight: bold;">current</span> instruction. This is when we <span style="color:red; font-weight: bold;">capture</span> the computed arithmetic output from the current instruction into the REGFILE.  
 
 
-### Memory-Mapped I/O
 
-We use [Memory-Mapped I/O](https://www.baeldung.com/cs/memory-mapped-vs-isolated-io) design to access input/output values as opposed to Isolated-Mapped (also known as port-mapped) IO. 
-
-As a result, we need to systematically **update** some region of the `memory_unit` to reflect the contents of `system_input_buffer`, and update `system_output_buffer` to reflect the content of a certain memory region in the `memory_unit`. 
-
-{: .note}
-We choose `memory_unit` address `0x10` as the region to hold the last-received input value, and we choose `memory_unit` address `0xC` as the region to hold the current output value. 
-
-That is if we were to `STORE` any value to `Mem[0xC]`, it will reflected at the "output" of the motherboard. In practice, this will be the buffer containing values to be displayed at your screen. Similarly, if any input button `io_button[2:0]` is pressed, it will trigger an <span style="color:red; font-weight: bold;">INTERRUPT</span>, and you can find the **encoding** of the currently pressed button in `Mem[0x10]`. This will be the buffer containing the currently received input (e.g: keyboard keypress). 
 
 ## Sample Run
 
@@ -345,7 +348,7 @@ The `illop_handler` resides at address `0x80000038` to address `0x8000064`, but 
 The ILLOP handler does a very simple thing, which is simply storing the value `5, 4, 3, 2, 1` to a particular memory address `message`.
 
 {: .note}
-`message` is set to be `0xC` in our FPGA, which is a memory-mapped region to showcase our "output" to the `system_output_buffer`. 
+`message` is set to be `0xC` in our FPGA, which is a shared-memory region to showcase our "output" to the `system_output_buffer`. 
 
 ```nasm
 || ILLOP HANDLER, KERNEL PROGRAM ||
@@ -395,7 +398,7 @@ Surely enough, we are back at **user mode**. You can confirm this by inspecting 
 
 You can press any button: `io_button[2:0]`. These are **hardwired** as user input, kinda how keyboards are connected to your PC by default. 
 
-Firstly, let's confirm that your button presses are registered in `system_input_buffer`. This is just a `dff` situated at your `motherboard` to store current button presses, and it is **hardwired** (memory-mapped) to `Mem[0x10]`. 
+Firstly, let's confirm that your button presses are registered in `system_input_buffer`. This is just a `dff` situated at your `motherboard` to store current button presses, and it is **hardwired** to always be synced to `Mem[0x10]`. 
 
 Assume that you are currently in **user mode**,  (that is your `ia31` or equivalently `pc31` is 0). Set your beta to **manual** mode (all `io_dip[2]` is down). For example, let's assume that we are currently pointing to address `0x14`:
 
