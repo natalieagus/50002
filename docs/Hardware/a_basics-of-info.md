@@ -132,7 +132,9 @@ The examples below should provide a straightforward hints on [how to convert bet
 Firstly, most computers chooses to use the **most significant bit (MSB)** as the indicator of whether a particular integer is positive or negative. 
 
 {: .important}
-You can't tell whether a device supports signed or unsigned bits by staring at its output bits. This information need to be given to you **beforehand**, i.e: given when you bought the machine and read the **specifications**, or given to you in problem sets or quiz. 
+> Signed or unsigned?
+> 
+> You can't tell whether a device supports signed or unsigned bits by looking at its output bits alone.  To determine whether a machine is signed or unsigned, you need to check specific documentation or system properties related to the machine or software.
 
 For example: 
 * `00101` is a positive number: $$2^2 + 2^0 = 5$$
@@ -466,21 +468,7 @@ I_{8\rightarrow 3}(X) = \log_2 \left( \frac{8}{3} \right) = 1.42 \text{ bits}
 {:.important}
 It is important to consider how the certainty or predictability of an event (or data set) **influences** how we can encode, transmit, and store it. The concepts of entropy and the logarithmic measure of information provide the theoretical underpinnings for many practical applications in computer science. Head to [appendix](#practical-relevance-of-information-theory) for relevant practical examples if you're interested. 
 
-
-## [Summary](https://www.youtube.com/watch?v=IicB30kA3pY&list=PLklpDKpv-EBj1agIq4vB1iB6ahMT8_2A_&index=1&t=2094s)
-[You may want to watch the post lecture videos here.](https://youtu.be/UPIoYYLG718) 
-
-This chapter quickly summarises how we can represent integers using different number systems, especially the binary number system that is especially useful for our computers since they can only store information in terms electrical voltages (representing simply strings of `1`s and `0`s). It touches on how digital devices use various number systems to process and store information efficiently. The use of 2's complement for handling signed numbers is critical in arithmetic operations. Understanding different encoding techniques is essential for interpreting data correctly across different systems. Additionally, the concepts from information theory are applied to measure and manage data in computing, highlighting the importance of efficient data handling and storage in digital systems.
-
-Here are the key points:
-
-1. **Number Systems**: It discusses binary, decimal, octal, and hexadecimal number systems, emphasizing their use in encoding data in computers.
-2. **2's Complement**: Explains how signed integers are represented using 2's complement, enabling the representation of negative numbers in binary form.
-3. **Encoding Methods**: Describes various encoding methods, including fixed and variable length encodings, and character encodings like ASCII and Unicode.
-4. **Information Theory**: Details how information can be quantified based on the probability of events, using logarithmic measures.
-
-
-Given $$X$$ bits,
+In summary, given $$X$$ bits,
 
 1.  We can **encode** $$2^X$$ *choices, or random variables*
 	> Equivalently, given $$Y$$ choices, we need to use at least $$\log_2(Y)$$ bits to encode them, rounded up to the nearest integer (since we cannot technically subdivide "bits" in real life. 
@@ -490,7 +478,19 @@ Given $$X$$ bits,
 3.  If it is **signed**, we can represent the number ranged from
     $$-2^{X-1}$$ to $$2^{X-1}-1$$
 
-The prior knowledge of whether a device support signed or unsigned bits must be **given** to you. 
+## [Summary](https://www.youtube.com/watch?v=IicB30kA3pY&list=PLklpDKpv-EBj1agIq4vB1iB6ahMT8_2A_&index=1&t=2094s)
+[You may want to watch the post lecture videos here.](https://youtu.be/UPIoYYLG718) 
+
+
+Here are the key points from this notes:
+
+1. **Number Systems**: Digital systems uses binary number system, but we touched on decimal, octal, and hexadecimal number systems for convenient representation, emphasizing their use in encoding data in computers.
+2. **2's Complement**: Explains how signed integers are represented using 2's complement, enabling the representation of negative numbers in binary form. 
+3. **Encoding Methods**: Describes various encoding methods, including fixed and variable length encodings, and character encodings like ASCII and Unicode. This is useful so that we can consistently represent data across different systems. 
+4. **Information Theory**: Details how information can be quantified based on the probability of events, using logarithmic measures.
+
+
+## Next Steps
 
 {: .highlight }
 Finally, you might be wondering why are we *counting the number of bits* required to encode some amount of information, and why do we bother with encoding information in terms of bits at all. 
