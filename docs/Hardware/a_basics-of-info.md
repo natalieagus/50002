@@ -425,7 +425,7 @@ The amount of information held by an **event** is **inversely proportional to** 
 $$\begin{aligned}
 \text{Information } \propto \text{ Uncertainty} \propto \text{ }\frac{1}{p}.\end{aligned}$$
 
-Equivalently, it is **proportional to** the *uncertainty* of that event happening. More precisely, to the logarithm of the *uncertainty* of the event happening. However since $$\log$$ is an increasing function,  the  sense of *proportionality* remains the same. 
+Equivalently, the amount of information given is **proportional to** the *uncertainty* of that event happening. More precisely, to the logarithm of the *uncertainty* of the event happening. However since $$\log$$ is an increasing function,  the  sense of *proportionality* remains the same. 
 
 
 {: .new-title}
@@ -484,10 +484,11 @@ In summary, given $$X$$ bits,
 
 Here are the key points from this notes:
 
-1. **Number Systems**: Digital systems uses binary number system, but we touched on decimal, octal, and hexadecimal number systems for convenient representation, emphasizing their use in encoding data in computers.
-2. **2's Complement**: Explains how signed integers are represented using 2's complement, enabling the representation of negative numbers in binary form. 
-3. **Encoding Methods**: Describes various encoding methods, including fixed and variable length encodings, and character encodings like ASCII and Unicode. This is useful so that we can consistently represent data across different systems. 
-4. **Information Theory**: Details how information can be quantified based on the probability of events, using logarithmic measures.
+1. **Number Systems**: Digital systems uses **binary** number system, but we touched on decimal, octal, and hexadecimal number systems for convenient representation, emphasizing their use in encoding data in computers.
+2. **2's Complement**: Signed integers are represented using 2's complement (flip the bits and add bye 1), thus enabling the representation of negative numbers in binary form. 
+3. **Basic Logic Gates**: Get familiar with **basic** logic operations like XOR, AND, OR, and INV. These basic logic gates are the basic building blocks for a more complex combinational circuit. 
+4. **Encoding Methods**: There exist **fixed** encoding and variable encoding methods, but we only touched on the former. Fixed encoding refers to a method of representing information, such as text, data, or signals, where a predefined, unchanging scheme is used to encode and decode the information (like ASCII and Unicode). This is useful so that we can consistently represent data across different systems. 
+5. **Information Theory**: Details how information can be quantified based on the probability of events, using logarithmic measures. The amount of information held by an **event** is **inversely proportional to** the probability $$p$$ of that event happening,
 
 
 ## Next Steps
