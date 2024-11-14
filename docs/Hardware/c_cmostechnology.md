@@ -336,7 +336,7 @@ Given the $$t_{pd}$$ and $$t_{cd}$$ for the NAND gate: $$t_{pd} = 4 ns$$, $$t_{c
 ## Summary
 [You may want to watch the post lecture videos here.](https://youtu.be/cJxBlO5NMGs)
 
-This chapter CMOS technology delves into the fundamentals of using MOSFETs (Metal-Oxide Semiconductor Field-Effect Transistors) in designing combinational logic circuits. Here are the key points:
+Here are the key points from this notes
 
 1. **MOSFETs Basics**: Explains the structure and operation of NFETs and PFETs, highlighting their roles in creating logic circuits.
 2. **Complementary CMOS**: Discusses the use of complementary pairs of NFETs and PFETs to form stable, efficient logic gates.

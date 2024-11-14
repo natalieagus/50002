@@ -29,9 +29,6 @@ Singapore University of Technology and Design
 > 1. **Explain the Purpose of Digital Abstraction:**
 >   - Explain how digital circuits encode information using voltage levels to represent binary values.
 >   - Explain the concept of digital abstraction for transforming continuous analog signals into discrete digital values.
-> 2. **Identify the Role of Semiconductor Devices:**
->   - Identify the role of MOSFETs in generating voltage levels for digital bits.
->   - Discuss the advantages of using semiconductors for digital encoding and the challenges posed by external disturbances.
 > 3. **Apply the Static Discipline in Digital Systems:**
 >   - Explain how static discipline is used as a contract ensuring predictable behavior in digital systems.
 >   - Discuss how the static discipline guarantees that valid inputs lead to valid outputs, ensuring system reliability.
@@ -240,17 +237,14 @@ If both characteristics above aren't satisfied in the VTC curve, then it is <spa
 ## [Summary](https://www.youtube.com/watch?v=xkVIr8jrtX0&t=1290s)
 [You may want to watch the post lecture videos here.](https://youtu.be/3OoeuqWDhns)
 
-In this chapter, we have learned about the digital abstraction serves as the backbone for creating reliable digital systems, starting from the most basic components like MOSFETs. That is, how can we set some **contracts** (via setting the four voltage specifications) such that we can establish digital values out of real-valued voltages. It also emphasizes the importance of **static discipline**. The static discipline in digital circuits serve as guidelines that specify the **voltage levels** that represent the binary states, ensuring reliable and clear signal interpretation. These guidelines help maintain the distinction between '0' and '1' states even in the presence of noise and other electrical variances, which is crucial for the proper functioning of digital systems. 
+Here are the key points from this notes:
+1. **Static Discipline**:  An important **contract** (via setting the four voltage specifications), to ensure that the output of a digital component behaves correctly given specific valid input levels. This contract governs **all** digital devices in a system (not just a single gate!)
+2.  **Noise Margin** and **Noise Immunity**: Taking into account the presence of *noise* when we establish the voltage specification contract, so that we can still obey the static discipline 
+3.  **VTC Graph**: A plot describing the behaviour (Vout vs Vin) of a digital device. This is very useful to determine reasonable voltage specifications that obey the static discipline. 
 
-Here are the key concepts:
+Smaller logic gates can be assembled to form more complex units and ultimately entire computer systems. We can be confident that the computer system will work predictably by ensuring that each sub-component obey the static discipline. This layered approach not only simplifies the design and development of digital devices but also ensures that even small components adhere to <span class="orange-bold">necessary</span> <span class="orange-bold">standards</span> to function correctly within the larger system.
 
-1. **Static Discipline**: Guidelines that define voltage levels for binary states, crucial for ensuring clear and reliable digital signal processing.
-2. **MOSFETs and Logic Gates**: Introduction to MOSFETs used to build logic gates, forming the basic building blocks of digital devices.
-3. **Levels of Abstraction**: Describes how complex systems like CPUs and microcontrollers are built from simpler components, facilitating easier programming and system management.
-
-
-These components are used to construct logic gates, which then form more complex units and ultimately entire computer systems. This layered approach not only simplifies the design and development of digital devices but also ensures that even small components adhere to <span class="orange-bold">necessary</span> <span class="orange-bold">standards</span> to function correctly within the larger system.
-
+## Next Steps 
 
 In the next chapter, we will learn about the **MOSFET** (transistor), that is one of the smallest component (building block) that makes up a digital device, and how we can use them to form a proper combinational logic elements we call **gates**. These **gates** can be  used to form an even larger **combinational circuits** such as the **adder**, **shifter**, etc, and an even larger one such as the **Arithmetic Logic Unit** (you will build them in Lab 2 and 3). 
 
