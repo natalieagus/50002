@@ -468,7 +468,21 @@ I_{8\rightarrow 3}(X) = \log_2 \left( \frac{8}{3} \right) = 1.42 \text{ bits}
 {:.important}
 It is important to consider how the certainty or predictability of an event (or data set) **influences** how we can encode, transmit, and store it. The concepts of entropy and the logarithmic measure of information provide the theoretical underpinnings for many practical applications in computer science. Head to [appendix](#practical-relevance-of-information-theory) for relevant practical examples if you're interested. 
 
-In summary, given $$X$$ bits,
+
+
+## [Summary](https://www.youtube.com/watch?v=IicB30kA3pY&list=PLklpDKpv-EBj1agIq4vB1iB6ahMT8_2A_&index=1&t=2094s)
+[You may want to watch the post lecture videos here.](https://youtu.be/UPIoYYLG718) 
+
+
+Here are the key points from this notes:
+
+1. **Number Systems**: Digital systems uses **binary** number system, but we touched on decimal, octal, and hexadecimal number systems for convenient representation.
+2. **2's Complement**: Signed integers are represented using 2's complement (flip the bits then increment by 1), thus enabling the representation of negative numbers in binary form. 
+3. **Basic Logic Gates**: Get familiar with **basic** logic operations like XOR, AND, OR, and INV. These basic logic gates are the basic building blocks for a more complex combinational circuit. 
+4. **Encoding Methods**: There exist **fixed** encoding and variable encoding methods, but we only touched on the former. Fixed encoding refers to a method of representing information, such as text, data, or signals, where a predefined, unchanging scheme is used to encode and decode the information (like ASCII and Unicode). This is useful so that we can consistently represent data across different systems. 
+5. **Information Theory**: Information can be quantified based on the probability of events. The amount of information held by an **event** is **inversely proportional to** the probability $$p$$ of that event happening. Information can be represented in terms of **bits** by taking $\log_2$ of its inverse probability. 
+
+Given $$X$$ bits of data:
 
 1.  We can **encode** $$2^X$$ *choices, or random variables*
 	> Equivalently, given $$Y$$ choices, we need to use at least $$\log_2(Y)$$ bits to encode them, rounded up to the nearest integer (since we cannot technically subdivide "bits" in real life. 
@@ -477,19 +491,6 @@ In summary, given $$X$$ bits,
 
 3.  If it is **signed**, we can represent the number ranged from
     $$-2^{X-1}$$ to $$2^{X-1}-1$$
-
-## [Summary](https://www.youtube.com/watch?v=IicB30kA3pY&list=PLklpDKpv-EBj1agIq4vB1iB6ahMT8_2A_&index=1&t=2094s)
-[You may want to watch the post lecture videos here.](https://youtu.be/UPIoYYLG718) 
-
-
-Here are the key points from this notes:
-
-1. **Number Systems**: Digital systems uses **binary** number system, but we touched on decimal, octal, and hexadecimal number systems for convenient representation, emphasizing their use in encoding data in computers.
-2. **2's Complement**: Signed integers are represented using 2's complement (flip the bits and add bye 1), thus enabling the representation of negative numbers in binary form. 
-3. **Basic Logic Gates**: Get familiar with **basic** logic operations like XOR, AND, OR, and INV. These basic logic gates are the basic building blocks for a more complex combinational circuit. 
-4. **Encoding Methods**: There exist **fixed** encoding and variable encoding methods, but we only touched on the former. Fixed encoding refers to a method of representing information, such as text, data, or signals, where a predefined, unchanging scheme is used to encode and decode the information (like ASCII and Unicode). This is useful so that we can consistently represent data across different systems. 
-5. **Information Theory**: Details how information can be quantified based on the probability of events, using logarithmic measures. The amount of information held by an **event** is **inversely proportional to** the probability $$p$$ of that event happening,
-
 
 ## Next Steps
 

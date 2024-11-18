@@ -110,7 +110,7 @@ Some terms we need to set straight before we proceed:
 
 The circuit symbol for NFET and PFET are shown as below. Note that the bulk of NFET is connected to `GND`, and the bulk of PFET is connected to `VDD`.
 
-<img src="https://dropbox.com/s/qd1zhsulqjmknv2/pfetnfet.png?raw=1"  class="center_seventy"    >
+<img src="https://dropbox.com/s/qd1zhsulqjmknv2/pfetnfet.png?raw=1"  class="center_fifty"    >
 
 ## Switching NFETs and PFETs ON/OFF
 
@@ -121,7 +121,7 @@ See the figure below and its corresponding explanation to understand better how 
 
 ###  [How NFET operates](https://www.youtube.com/watch?v=JqgZcV_1IU4&t=819s)
 
-<img src="https://dropbox.com/s/7oevad7tcpr2ob4/nfet_t.png?raw=1" class="center_seventy"  >	  
+<img src="https://dropbox.com/s/7oevad7tcpr2ob4/nfet_t.png?raw=1" class="center_fifty"  >	  
 
 1.  **Connections**:
 	- Bulk is connected to `GND` to keep the PN junction reverse biased, meaning that no current should flow or leak between source and bulk and between drain and bulk.
@@ -141,7 +141,7 @@ See the figure below and its corresponding explanation to understand better how 
 
 ###  [How PFET operates](https://www.youtube.com/watch?v=JqgZcV_1IU4&t=960s)
 
-<img src="https://dropbox.com/s/u7nuy6cayaik0q7/pfet_t.png?raw=1"  class="center_seventy" >	  
+<img src="https://dropbox.com/s/u7nuy6cayaik0q7/pfet_t.png?raw=1"  class="center_fifty" >	  
 
 1.  The PFET symbol is similar to NFET except that it has the by the  bubble $$\circ$$. Conversely for its **connections**: 
 	- Bulk is connected to `VDD` to keep the PN junction reverse biased, meaning that no current should flow or leak between source and bulk and between drain and bulk.
@@ -248,22 +248,34 @@ Notice how the circuitry in the previous section is called **NAND**. The name co
 {: .highlight}
 A combinational device with multiple inputs but **only one output** is called a **logic gate** .
 
-The NAND gate is just one of many possible gates that we will encounter in this course. We can make various logic gates: **NAND**, **NOR**, **INV**, **XOR**, etc using PFETs and NFETs and connecting them in a complementary way in order for them to work and produce the boolean logic as intended. We will <span style="color:red; font-weight: bold;">not</span> test you on designing transistor-level circuitry, so all the sections above are written as a **precursor** to understand better on how **logic gates** are made. 
+The NAND gate is just one of many possible gates that we will encounter in this course. We can make various logic gates: **NAND**, **NOR**, **INV**, **XOR**, etc using PFETs and NFETs and connecting them in a complementary way in order for them to work and produce the boolean logic as intended. The schematic of a XOR gate and an XNOR gate is as follows:
+
+<img src="/50002/assets/contentimage/lab2/2.png"  class=" center_fourty"/>
+
+<img src="/50002/assets/contentimage/lab2/3.png"  class=" center_fourty"/>
+
+
+We will <span style="color:red; font-weight: bold;">not</span> test you on designing transistor-level circuitry, but you should be able to a given CMOS circuit and derive the truth table from it. 
+
+As an exercise, write down the truth table of the following CMOS circuitry:
+<img src="{{ site.baseurl }}/assets/images/lab2/mhp-cmos.png"  class="center_fifty"/>
 
   
 
 ## Timing Specifications of Combinational Logic Devices
 
-Recall that combinational devices have timing specifications that tells us the upper bound required **propagation** time to compute the specified output given a set of valid and stable input values. 
+{:.note}
+Propagation Delay and Contamination Delay are critical timing **metrics** in digital circuits. These delays exist due to the physical and electrical properties of the circuit components and are crucial for ensuring reliable operation.
+
+
+Combinational devices must be documented with proper timing specifications that specify the upper bound (**propagation** delay) required to compute the specified output given a set of valid and stable input values, and the lower bound (**contamination** delay) before the output may begin to change after a change in the inputs.
 
 ### [Propagation Delay $$t_{pd}$$](https://www.youtube.com/watch?v=JqgZcV_1IU4&t=1900s)
-
-So far we haven't discussed about this term called *propagation delay*, which is *specification* that a combinational logic device must have.
 
 {: .important-title}
 > Propagation Delay
 > 
-> Assume the output of a device is initially invalid. The propagation delay, denoted as $$t_{pd}$$ is defined as the time taken for the device to produce a **valid** output, measured the moment it was given a **valid** input. 
+> Assume the output of a device is initially invalid. The propagation delay, denoted as $$t_{pd}$$ is defined as the time taken for the device to produce a **valid** output, measured the moment it was given a **valid** input. **It determines the maximum speed at which a circuit can operate**.
 
 To find the propagation delay of a circuit schematic, follow these steps:
 
@@ -296,7 +308,7 @@ Another timing specification that is typically measured an indicated on a combin
 {: .important-title}
 > Contamination Delay
 >
-> Assume the output of a device is initially valid. The contamination delay  denoted as $$t_{cd}$$ is defined as time taken for the device to produce an **invalid** output when it was initially valid, measured  from the moment it was given an **invalid** input. 
+> Assume the output of a device is initially valid. The contamination delay  denoted as $$t_{cd}$$ is defined as time taken for the device to produce an **invalid** output when it was initially valid, measured  from the moment it was given an **invalid** input. This ensures that signals **stabilize** before propagating to the next stage in a circuit.
 
 To find the contamination delay of a circuit schematic, follow these steps:
 
@@ -338,21 +350,17 @@ Given the $$t_{pd}$$ and $$t_{cd}$$ for the NAND gate: $$t_{pd} = 4 ns$$, $$t_{c
 
 Here are the key points from this notes
 
-1. **MOSFETs Basics**: Explains the structure and operation of NFETs and PFETs, highlighting their roles in creating logic circuits.
-2. **Complementary CMOS**: Discusses the use of complementary pairs of NFETs and PFETs to form stable, efficient logic gates.
-3. **Logic Gates**: Describes how basic logic gates like NAND and NOR are formed using CMOS technology.
-4. **Timing Specifications**: Covers critical timing aspects like propagation and contamination delays that affect circuit performance.
+1. **MOSFETs Basics**: NFETs and PFETs are both MOSFETs, they behave like switches. NFETs are activated by applying **high** voltage at the gate, and will produce **low** voltage at its drain. PFETs are activated by applying **low** voltage at the gate, thus producing **high** voltage at its drain. 
+2. **Complementary MOS**: The use of complementary pairs of NFETs and PFETs are crucial to form stable and efficient logic gates. A parallel NFET circuit must have a complementary series PFET counterpart, and vice versa. 
+3. **Logic Gates**: We were introduced with CMOS schematic of basic logic gates like NAND, NOR, XOR, and XNOR. We also must be able **trace** the functionality of a given CMOS circuit. 
+4. **Timing Specifications**: Propagation delay (tpd)  and contamination delay (tcd) exist due to the physical and electrical properties of combinational logic devices. To compute tpd, find the **critical path** through the circuit. To compute tcd, find the **fastest path** through the circuit. 
 
-We elaborate on how CMOS technology underpins the design of efficient and reliable digital circuits. Through detailed discussions on MOSFETs and their applications, we illustrate how different types of MOSFETs (NFETs and PFETs) are used in tandem to ensure that digital logic circuits are both power-efficient and functionally reliable. Key concepts like the design of logic gates and the impact of timing delays on circuit performance are also explained, emphasizing the practical importance of these designs in modern electronics.
-
-We begin the chapter by understanding how a MOSFET can be used as the most basic building block (element) in digital circuits. There are two types of FETs, namely NFET and PFET, that can be "activated" (switched on) or "deactivated" (switched off) using proper voltages supplied at its gate. It takes *time* for these FETs to produce a valid voltage value, e.g: reacting to the input voltage at its gate and establish a (low or high) voltage value at its drain. Therefore it is important to specify the *timing specifications* of a combinational logic device so that users may know how long the device takes to *react* (to a new valid input, or to an invalid input). 
 
 {: .note}
 Knowing how long the combinational device takes to react (at most) tells us how *often* (e.g: at what rate) can we supply  new inputs to the device, and how fast the device can process/compute a *batch* of input values. 
 
-We can assemble a few FETs to implement any truth table or Boolean functions (we will learn this more in next chapter), hence creating combinational logic devices. A specific type of combinational logic devices that has one output bit is called as **gate**. There are many types of gates, depending on the Boolean function that's realised. Then, an even larger combinational logic circuits (that realises more complicated Boolean functions) can be created by assembling many of these gates together. 
+We can assemble a few FETs to implement any truth table or Boolean functions (we will learn this more in next chapter), hence creating combinational logic devices. A specific type of combinational logic devices that has one output bit is called as **gate**. There are many types of gates, depending on the Boolean function that's realised. Then, an even larger combinational logic circuits (that realises more complicated Boolean functions) can be created by assembling many of these gates together. We will learn how to build more complex circuits in the next few chapters.
 
-> You will try this in Lab Adder, where you are tasked to build an combinational logic circuit called the **adder**. 
 
 # Appendix
 

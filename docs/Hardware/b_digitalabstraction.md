@@ -239,8 +239,8 @@ If both characteristics above aren't satisfied in the VTC curve, then it is <spa
 
 Here are the key points from this notes:
 1. **Static Discipline**:  An important **contract** (via setting the four voltage specifications), to ensure that the output of a digital component behaves correctly given specific valid input levels. This contract governs **all** digital devices in a system (not just a single gate!)
-2.  **Noise Margin** and **Noise Immunity**: Taking into account the presence of *noise* when we establish the voltage specification contract, so that we can still obey the static discipline 
-3.  **VTC Graph**: A plot describing the behaviour (Vout vs Vin) of a digital device. This is very useful to determine reasonable voltage specifications that obey the static discipline. 
+2.  **Noise Margin** and **Noise Immunity**: We need to take into account the presence of *noise* when we establish the voltage specification contract, so that we can still obey the static discipline despite the presence of noise.
+3.  **VTC Graph**: A plot describing the behaviour (Vout vs Vin) of a digital device. This is very useful to determine reasonable voltage specifications that obey the static discipline. We need to **ensure** that the graph does <span class="orange-bold">not</span> cross the forbidden zone.
 
 Smaller logic gates can be assembled to form more complex units and ultimately entire computer systems. We can be confident that the computer system will work predictably by ensuring that each sub-component obey the static discipline. This layered approach not only simplifies the design and development of digital devices but also ensures that even small components adhere to <span class="orange-bold">necessary</span> <span class="orange-bold">standards</span> to function correctly within the larger system.
 
