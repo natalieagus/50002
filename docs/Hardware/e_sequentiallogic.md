@@ -3,7 +3,7 @@ layout: default
 permalink: /notes/sequentiallogic
 title: Sequential Logic
 description: Sequential Logic Devices can do what Combinational Logic Devices can't; to produce output that depends on both past and current input. 
-nav_order: 5
+nav_order: 6
 parent: Hardware Related Topics
 ---
 

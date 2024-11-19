@@ -331,7 +331,7 @@ It's function components: the inputs, the selector signal(s), and the output. It
 {: .highlight}
 For example in the case of 2-input mux below, when S=0, it will reflect whatever value the signal  $$A$$ carries (`1` or `0`) as its output:
 
-> Take some time to make sense of the truth table. That is if S=0, OUT = A. Else, if S=1, OUT = B. produce the signal  $$D_0$$ as its output:
+Take some time to make sense of the truth table. That is if S=0, OUT = A. Else, if S=1, OUT = B. produce the signal  $$D_0$$ as its output:
 
 <img src="https://dropbox.com/s/nbatvm3m7xvq279/muxtt.png?raw=1"    class="center_fifty" >
 
@@ -366,7 +366,7 @@ We can do the same thing for $$S$$, and both of them combined will function as a
 
 The Decoder (also known as "demux" or "demultiplexer") is a special combinational logic device that is also very commonly used in practice. It can have $$k$$ select inputs, and $$2^k$$ possible output combinations. The schematic of a 1-select input decoder is:
 
-<img src="https://dropbox.com/s/btt8jleh2quwnjq/decoder2hzdkw3c4rzxsd6p/demuxin.png?raw=1"  class="center_thirty"  >
+<img src="{{ site.baseurl }}/docs/Hardware/images/demuxin.png"  class="center_fourty"/>
 
 {: .note-title}
 > Practice
@@ -385,9 +385,9 @@ Some properties about decoders:
 1. A Decoder is basically the *opposite* of a multiplexer. It has $$k$$ select inputs, and $$2^k$$  **possible data outputs**, and only 1 bit of input (typically VDD). The symbol is shown below:
 <img src="https://www.dropbox.com/s/ig6s46lb2s992c2/demux.png?raw=1"  class="center_thirty"   > 
 
-2. This figure omits the 1 bit input to the decoder because **it is always set to 1** in practice.
-3. Therefore, for a 4 bit decoder as shown in the figure above, the input signals are only the two **SELECTOR** signals, denoted as $$IA_0$$ and $$IA_1$$ in the figure.
-4. **At any given time** only 1 bit of the $$2^k$$ output bits can be  `1` (high). This is apparent when we try to draw the truth table for a $$k$$ input decoder.
+1. This figure omits the 1 bit input to the decoder because **it is always set to 1** in practice.
+2. Therefore, for a 4 bit decoder as shown in the figure above, the input signals are only the two **SELECTOR** signals, denoted as $$IA_0$$ and $$IA_1$$ in the figure.
+3. **At any given time** only 1 bit of the $$2^k$$ output bits can be  `1` (high). This is apparent when we try to draw the truth table for a $$k$$ input decoder.
 
 For example, the truth table for a 1-selector bit decoder is:
 
@@ -453,13 +453,22 @@ The **properties** of ROM are as follows:
 {: .highlight} 
 For example, the Full Adder has 3 inputs (A, B, $$C_{in}$$), and 2 outputs ($$S$$ and $$C_{out}$$). Hence the size of the ROM is $$2^3 * 2 = 16$$.
 
+ROM is a **universal** tool for implementing combinational logic functions but may not always be practical for functions with a large number of inputs due to memory size constraints.
 
 ## [Summary](https://www.youtube.com/watch?v=yXBAy432vT8&t=4421s)
 [You may want to watch the post lecture videos here.](https://youtu.be/oo58e54SHjs)
 
-Synthesizing combinational logic is not a simple task. There are many ways to realise a functionality, i.e: the **logic** (that the device should implement) represented by the truth table or boolean expression. We can use universal gates (only NANDS, or only NORS), a combination of gates (INV, AND, and OR). We can start synthesizing using the truth table, constructing the sum of products, and then minimising the boolean expression. Karnaugh map or properties of boolean algebra can be used to simplify boolean expressions, resulting in less number of logic gates required in the end to synthesize the same logic unit. 
+Here are the key points from this notes:
+1. **Multi-input logic gates**: There are 16 2-input logic gates (AND, XOR, XNOR, etc), and there are $2^{2^x}$ possible $x$ input gates. 
+2. **Synthesize logic**: Given a truth table,  perform straightforward logic synthesis using **sum-of-products**. 
+3. **Boolean Algebra Minimisation**: Minimise boolean functions (e.g: basic sum-of-products) using DeMorgan's theorem, reduction rule, absorption rule, etc or Karnaugh Map to make the boolean equation more compact. This results in simplified hardware (cheaper, smaller) while retaining functionality.
+4. **Universal Gates**: NAND and NOR gates are universal. We can construct **any** combinational logic device by just using NAND gates or NOR gates alone. 
+5. **Complex Combinational Logic Device**: Special devices like decoder, multiplexer, and ROM are essential components. Multiplexers are used to implement **conditional logic** (if-else), decoders are used to perform address decoding among many others. Decoders can be used to implement a ROM. It maps the input address lines to specific memory locations within the ROM.
 
-We then touch on special combinational logic devices that are commonly used: ROM, Multiplexer, and Decoder. We can utilise those to synthesize logic too, however they tend to be more expensive and takes up more space (physically larger). For instance **hardcoding** a truth table using ROM and multiplexers are convenient, because we do not need to think about simplifying the boolean expression of our truth table which can get really difficult and complicated when the truth table is large, i.e: complicated functionality.
+ROM can be used to implement **any** combinational logic function. This is because ROM essentially acts as a look-up table (LUT) where each input combination maps directly to a pre-defined output value. However, this results in **size explosion**. For $n$ inputs, the ROM requires $2^n$ rows,  leading to rapid growth in memory size for large input sizes.
+
+{:.note}
+Designing and implementing the logic directly using gates like AND, OR, NOT, NAND, NOR, etc., rather than relying on a ROM to store the outputs leads to a more efficient design (smaller unit, cheaper unit, less power drawn), but it is challenging to do so and to test because it is prone to errors. 
 
 # Appendix
 
