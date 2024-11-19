@@ -378,26 +378,26 @@ You may want to watch the post lecture videos here:
 * [Part 4: Synchronisation](https://youtu.be/eK4JCv1oADo)
 
 
-We begin by highlighting the crucial role of sequential logic in modern computing, where outputs depend not just on current but also previous inputs. It elaborates on the use of flip-flops and latches as fundamental elements that store data, making them indispensable in creating more complex memory structures. Additionally, it explains the necessary timing constraints and synchronization mechanisms that ensure the reliable operation of sequential circuits, crucial for maintaining data integrity and system stability.
+We learned about sequential logic devices in this notes and its challenges. Sequential logic device is a type of digital circuit where the output not only depends on the current inputs but also on the **history** of inputs, storing information about past events. 
+> Hence the name **sequential logic** comes from the fact that it is a type of **logic** circuit whose output depends **not only on the present** value of its input signals but on the *sequence of past inputs, (the input history) as well.*
 
-A sequential logic device is a type of digital circuit where the output not only depends on the current inputs but also on the **history** of inputs, storing information about past events. This behavior is achieved through the use of storage elements like flip-flops or latches. These devices are fundamental in creating memory and more complex processing units within digital systems, enabling the implementation of functions such as counters, shift registers, and state machines.
-
-The topics covered include:
-
-1. **Dynamic Discipline and Timing**: Explains the timing constraints necessary for stable sequential logic operations.
-2. **Flip-Flops and Latches**: Describes various types of storage elements used in sequential circuits, essential for memory functions.
-3. **Synchronization and Clocking**: Discusses the importance of synchronization in sequential logic to ensure that operations are executed in the correct sequence and timing.
-
+This feature is achieved through the use of storage elements like flip-flops or latches. These devices are fundamental in creating memory and more complex processing units within digital systems, enabling the implementation of functions such as counters, shift registers, and state machines.
 
 A **sequential** logic device has a *general* structure as shown below:
 
-<img src="https://dropbox.com/s/7crg33w0e7yg2hn/Q1.png?raw=1"    class="center_seventy"   >
 
-During each clock period, it should be able to compute the next value (next state), and output value. The output at any point in time, is always affected by the current state, which is the state computed in the previous clock period / time step. Hence the name **sequential logic** comes from the fact that it is a type of **logic** circuit whose output depends **not only on the present** value of its input signals but on the *sequence of past inputs, (the input history) as well.*
 
 In order for sequential logic devices to work, we need to obey the dynamic discipline and the t1 and t2 constraints. Failure to obey that might put the device into the metastable state. 
 
+Here are the key points from this notes:
+1. General structure of **sequential logic devices**: 
+  <img src="https://dropbox.com/s/7crg33w0e7yg2hn/Q1.png?raw=1"    class="center_seventy"   >
+2. **Dynamic discipline**: The setup time (t1) and hold time (t2) constraints ensures the proper operation of sequential circuits by guaranteeing that data is reliably transferred between flip-flops in a sequential circuit. They prevent timing violations that could lead to incorrect operation of the circuit (incorrect propagation of signals). These constraints enforce specific time windows during which the data must remain **stable** around the clock edge (t1 **before** the clock edge for **upstream** dff, and t2 **after** the clock edge for **downstream** dff)
+3. **tcd and tpd computation of sequential logic devices**: tcd and tpd are computed based only on the downstream combinational logic relative to the clock input, <span class="orange-bold">not</span> user inputs.
+4. **Metastable state**: Occurs in flip-flops when the input changes too close to the clock edge, **violating** setup or hold time. In this state, the output is **neither** a stable 0 nor 1 and may oscillate or settle unpredictably. It arises because flip-flops internal feedback cannot resolve conflicting signal states quickly. We can mitigate metastability (but cannot completely avoid it) by using synchronizers and ensuring that dynamic discipline is obeyed. 
+
 # Appendix
+
 
 ## Tsetup and Thold
 If you're interested to know *why* the dynamic discipline has those specific constraints (Tsetup and Thold), read this section. If this is too much for you, you can skip it. You won't exactly lose in exam if you skip it, just that your knowledge wont be whole. 
