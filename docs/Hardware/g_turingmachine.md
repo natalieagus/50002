@@ -305,6 +305,52 @@ In order to be efficient, we need to **replace** each of these hardwares with a 
 
 {: .highlight}
 To tie things up, here we have learned how Turing machine works, and  its advantage over  FSM. Our final goal is to realise a **Universal Turing machine**, that is a machine that is **programmable** so that it can be used for a **general purpose**.
+## Introduction to Programmability
+
+A programmable machine is a **versatile** device designed to execute various tasks according to a set of instructions or software. Its flexibility lies in its ability to switch functions by simply altering the program it runs, without modifying the underlying hardware. This concept forms the **cornerstone** of modern computing and automation, embodying the principles of a Turing Machine in physical form. 
+
+> You are encouraged to create a programmable machine for your 1D project (although FSM-based solutions are also acceptable).
+
+Examples of programmable machines include desktop computers, laptops, smartphones, tablets, mainframes, servers, microcontrollers, washing machines, microwave ovens, robotics systems, drones, 3D printers, CNC machines, smart TVs, gaming consoles, ATMs, smart home devices, cars with programmable ECUs, and industrial automation systems.
+
+{:.highlight}
+Programmability enables a machine to perform diverse tasks by executing a sequence of instructions without changing its hardware. 
+
+This is achieved through three basic things: 
+- **Stored-Program Architecture**: Instructions and data are stored in memory and processed dynamically.
+- **Instruction Set Architecture (ISA)**: Defines the fundamental operations a machine can perform.
+- **Control Logic**: Executes programs by fetching, decoding, and performing instructions.
+
+The theoretical foundation of programmable machines is based on the Universal Turing Machine: 
+- Capable of simulating any other machine.
+- Demonstrates the universality of computation.
+
+For instance, a **3D printer** is a **programmable** machine that takes G-code instructions as input to produce physical objects layer by layer, offering flexibility to print different designs by simply changing the program.
+
+### Details 
+The key characteristics of a programmable machine begin with the **separation of hardware and software**. 
+- Hardware refers to the physical components, while software consists of the instructions or programs that dictate the machine's tasks and behavior. 
+- This separation allows the same hardware to perform a variety of functions by running different software programs. 
+
+For instance, a smartphone can act as a camera, calculator, or gaming device depending on the software it uses, illustrating the flexibility enabled by this design principle.
+
+Another important feature is **memory for storage**. 
+- This allows programmable machines to **store** program instructions, data, and intermediate results. 
+- Memory is typically classified as volatile, like RAM for active program execution, or non-volatile, such as hard drives or flash memory for long-term storage. 
+
+A Programmable Machine also need some kind of **processing unit** (CPU). It plays a vital role by <span class="orange-bold">executing</span> instructions. The CPU performs arithmetic, logic, control, and input/output operations, enabling the machine to carry out complex tasks step by step.
+
+Finally, we need **input/output mechanisms** and a **control system** that coordinates between these components (CPU, Memory, etc):
+- Input devices, such as keyboards, sensors, or network connections, provide the machine with data
+- Outputs may include visual displays, actuators, or communication interfaces with other systems. 
+- The control system **coordinates** the execution of programs by **fetching** instructions from memory, **decoding** them, and **executing** them in a predetermined sequence. These combined features make programmable machines **versatile**, capable of executing a wide variety of tasks based on the instructions they are provided **without the need to modify the hardware**.
+
+Modern programmable machines, like computers, microcontrollers, and industrial robots, are physical realizations of the Turing Machine's principles.
+
+{:.important}
+A toy programmable machine we will learn very soon (next week) is the Beta CPU. If you're comfortable with its operation, you can implement it for your 1D project.
+
+
 
 ## [Summary](https://www.youtube.com/watch?v=cmfDBAiogA0&t=3197s)
 [You may want to watch the post lecture videos here. ](https://youtu.be/p0plIDiBEj0)
@@ -312,7 +358,7 @@ To tie things up, here we have learned how Turing machine works, and  its advant
 The Turing machine remains a central object of study in the theory of computation and is fundamental in understanding what it means for a function to be computable. The concept of a universal Turing Machine is an *ideal abstraction*, since we can never create a machine with infinitely long tape. However, physically creating something that is "infinite" is not possible. We can only create a very long "tape" such that it appears "infinite" to some extent. 
 
 {:.note}
-The programmable machine is a manifestation of the Turing Machine concept, adapted for practical use in the physical world. It embodies the principles of computation formalized by Turing while overcoming theoretical constraints to enable real-world applications. Programmable machines form the basis of modern computing and are fundamental to various fields. Examples of programmable machines include desktop computers, laptops, smartphones, tablets, mainframes, servers, microcontrollers, washing machines, microwave ovens, robotics systems, drones, 3D printers, CNC machines, smart TVs, gaming consoles, ATMs, smart home devices, cars with programmable ECUs, and industrial automation systems.
+The programmable machine is a manifestation of the Turing Machine concept, adapted for practical use in the physical world. It embodies the principles of computation formalized by Turing while overcoming theoretical constraints to enable real-world applications. Programmable machines form the basis of modern computing and are fundamental to various fields. 
 
 
 Here are the key points from this notes:
