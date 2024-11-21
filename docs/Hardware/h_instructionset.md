@@ -59,7 +59,12 @@ We will begin by understanding what does it mean to simply create a (basic) *pro
  
 
 ## [An Example of a Basic Programmable Control System](https://www.youtube.com/watch?v=h1KGzAbJH4Q&t=134s)
-Suppose we have a simple sequential logic circuit called Machine $$M$$ as shown below. It receives **one** $$N$$ bit *input*, and produces **two** output: $$N$$ bit `output1` and  1 bit `output2`.   Formally, we call this "circuit" a datapath. A **datapath** is a collection of functional units made up of combinational devices, registers, and buses. 
+Suppose we have a simple sequential logic circuit called Machine $$M$$ as shown below. It receives **one** $$N$$ bit *input*, and produces **two** output: $$N$$ bit `output1` and  1 bit `output2`.   Formally, we call this "circuit" a datapath. 
+
+{:.new-title}
+> Datapath
+> 
+> A **datapath** is a collection of hardware elements needed to manipulate, store, and transfer data between different parts of the system. The datapath works in conjunction with a control unit, which orchestrates the operations of the datapath based on the instructions being executed. 
 
 <img src="https://dropbox.com/s/yt5vj66b71tfkmn/A.png?raw=1" class="center_seventy"   >
 
@@ -491,21 +496,24 @@ You may want to watch the post lecture videos here:
 * [Part 1: Instruction Set](https://youtu.be/NLdUPdHBsxo)
 * [Part 2: Beta Primer](https://youtu.be/KTxbjm-Qm0c)
 
-In the beginning of this chapter we were given the programmable Machine $$M$$, that is capable of computing the simple factorial function. We then proceeded by arguing that Machine $$M$$ is not enough to be used for a *general* purpose machine, that is to be used as an implementation of a Universal Turing Machine.
+In the beginning of this chapter we were given the programmable Machine $$M$$, that is capable of computing the simple **factorial** function. We then proceeded by arguing that Machine $$M$$ is not enough to be used for a *general* purpose machine, that is to be used as an implementation of a Universal Turing Machine.
 
-To create a general purpose computers, we need to:
-* **Design a general purpose data path** (architecture), which can be used to efficiently solve most problems, and
-* **Design a proper instruction set** to allow for easier ways to control it. 
+{:.important}
+Programmability in computing hinges on the design of an instruction set architecture (ISA), which acts as a <span class="orange-bold">critical interface</span> between hardware and software. A well-designed ISA ensures **flexibility**, enabling the hardware to efficiently execute **diverse** programs while providing developers with a clear and manageable set of operations for programming.
 
-
-The notes explore the design of the Beta Instruction Set Architecture (ISA), which serves as a foundational model to understand the functionalities of a programmable machine. Key aspects include:
-- **General-purpose Programmability**: The ISA defines a set of operations that allows the Beta machine to emulate other programs, thus highlighting the essence of programmability in modern computing.
-- **Instruction Characteristics**: Each instruction in the Beta ISA is encoded into 32-bits and executed atomically, meaning one instruction per clock cycle, which emphasizes efficiency and simplicity in processing.
-- **Register and Memory Model**: The architecture includes 33 registers, each 32 bits wide, and a memory unit that interacts through specific instructions like load and store. This model underpins the handling of data and instructions in a systematic and accessible manner.
-- **Instruction Encoding**: Two main types of encoding are detailed—Type 1 (without literals) for direct register operations, and Type 2 (with literals) for operations involving constants. This distinction helps in optimizing the instruction set for various computational needs.
-- **Practical Application**: The notes stress the importance of understanding the Beta documentation thoroughly to effectively utilize these concepts in designing and implementing low-level machine language programs.
+To create a general-purpose computer, we need to:
+1. **Design a general-purpose data path (architecture)** that can process a wide variety of instructions and handle diverse computational tasks efficiently. This includes defining components like the arithmetic logic unit (ALU), registers, memory hierarchy, and buses.
+2. **Design an appropriate instruction set architecture (ISA)** to serve as the interface between software and hardware. The ISA should provide a versatile and efficient set of instructions to control the data path and perform computations effectively. A well-designed ISA enables programmability and optimizes performance, power consumption, and hardware simplicity.
 
 The $$\beta$$ ISA and its implementation, the $$\beta$$ CPU fulfils both requirement. If used to execute proper instruction, it should be able to emulate what Machine $$M$$ is able to do. 
+
+Here are the key points from this notes:
+- **General-purpose Programmability**: The Beta ISA (designed as a [RISC](https://www.arm.com/glossary/risc#:~:text=A%20Reduced%20Instruction%20Set%20Computer,typically%20found%20in%20other%20architectures.)-like architecture) serves as a blueprint that defines a set of operations enabling the Beta machine to **execute** or **simulate** a wide variety of programs, embodying the core principle of programmability in modern computing.
+- **Instruction Characteristics**: Each instruction in the Beta ISA is encoded into 32-bits and executed atomically: one instruction per clock cycle, which emphasizes **efficiency** and **simplicity** in processing.
+- **Register and Memory Model**: The architecture includes 33 registers (32 regs in regfile and the PC reg), each 32 bits wide, and a memory unit that interacts through specific instructions like **load** and **store**. This model underpins the handling of data and instructions in a **systematic** and **accessible** manner.
+- **Instruction Encoding**: Two main types of encoding are detailed—Type 1 (without literals) for direct register operations, and Type 2 (with literals) for operations involving constants. This distinction helps in optimizing the instruction set for various computational needs.
+- **Practical Application**: Finally, we stress the importance of understanding the Beta documentation thoroughly to effectively utilize these concepts in designing and implementing low-level machine language programs.
+
 
 # Appendix
 
