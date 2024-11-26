@@ -305,19 +305,16 @@ However, since `PC` starts from `0`, the **first** instruction that the CPU will
 
 ## Summary 
 
-This chapter on Beta CPU diagnostics are designed to provide us with comprehensive knowledge and skills in troubleshooting and resolving issues within the Beta CPU's architecture, specifically focusing on the CPU's datapath. Here are the main topics covered:
+This chapter on Beta CPU diagnostics are designed to provide us with comprehensive knowledge and skills in **troubleshooting** and **resolving issues** within the Beta CPU's architecture, specifically focusing on the CPU's datapath. It aims to equip us with the skills to not only understand the inner workings of the Beta CPU but also to **effectively address and resolve operational issues**, particularly those related to the CPU’s datapath and control mechanisms. 
 
-- **Fault Detection and Diagnostics**: The course delves into methods for identifying and diagnosing faults within the CPU's datapath. It emphasizes creating test programs that can indicate whether specific components of the CPU are functioning correctly.
+Here are the key points from this notes:
 
-- **Interrupt Handling**: Students learn about different types of interrupts—synchronous and asynchronous—and how they are handled by the Beta CPU. This includes understanding how interrupts affect the flow of operations within the CPU and the necessary modifications to manage these interruptions effectively.
+- **Fault Detection and Diagnostics**: To write test code that triggers certain datapaths suspected to be faulty. For instance, if the control unit is suspected to give a faulty PCSEL, instructions involving transfer of control (JMP, BEQ, BNE) are ideal to be used as test instructions.  
+- **Complex Fault Diagnostics**: If multiple faults are suspected to be present, the test code must be **comprehensive** such that it triggers all datapaths suspected to be faulty. Test code that is not comprehensive might give a false negative result. 
+- **Interrupt Handling**: Beta CPU handles both synchronous (ILLOP) and asynchronous (IRQ) interrupt. Both types of interrupts affect the flow of operations within the CPU. Special register XP is used to store the last interrupted address so that we can resume operation once the interrupt handler returns. 
 
-- **Practical Fixes**: The notes guide students on making code adjustments and changes to bypass or correct faulty components, including modifying the control logic to handle specific types of errors or malfunctions.
 
-- **Operational Details**: There's a focus on deepening the understanding of how the Beta CPU processes and executes instructions, especially under fault conditions. This includes studying control signals and datapath activity to better grasp how various parts of the CPU interact during the execution of instructions.
-
-They aim to equip us with the skills to not only understand the inner workings of the Beta CPU but also to effectively address and resolve operational issues, particularly those related to the CPU’s datapath and control mechanisms.
-
-Diagnosing faults in Beta CPU datapath is not an easy task. It requires time and practice, not to mention that you **must** familiarise yourselves with Beta ISA in the first place. [Head to our problem set for more exercise](https://natalieagus.github.io/50002/problemset/betadiagnostics). In the problem set, we will take the **diagnostics** step further by thinking of **alternative** instructions that can be used to replace existing instructions affected by a particular faulty datapath. 
+Diagnosing faults in Beta CPU datapath is <span class="orange-bold">not</span> an easy task. It requires time and practice, not to mention that you **must** familiarise yourselves with Beta ISA in the first place. [Head to our problem set for more exercise](https://natalieagus.github.io/50002/problemset/betadiagnostics). In the problem set, we will take the **diagnostics** step further by thinking of **alternative** instructions that can be used to replace existing instructions affected by a particular faulty datapath. 
 
 Note that not all faults might have a replacement. For instance, if both `ASEL` and `BSEL` muxes are faulty in the sense that both always output `0` regardless of the input or selector signals, then there's no way to utilise the ALU anymore (which means: we can no longer compute arithmetic instructions anymore, rendering the CPU purposeless).
 

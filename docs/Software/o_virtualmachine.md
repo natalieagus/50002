@@ -56,7 +56,12 @@ Suppose we have 10 processes running in our computer right now: Web Browser, Spo
 
 There has to be some kind of **manager** program that oversees the execution of these processes because we only have limited amount of resources: CPU cores, RAM size, cache size, etc. This **manager** program is called the Operating System. Specifically, the part of the OS that is responsible for process management is the **operating system kernel**.
 
-The role of the OS Kernel is to provide an environment such that each **process** is under the **illusion** that it has the whole machine (I/O devices, resources like CPU and RAM) to itself, while the truth is that we are actually sharing these hardware resources amongst many processes.
+The role of the OS Kernel is to provide an <span class="orange-bold">environment</span> such that each **process** is under the **illusion** that it has the whole machine (I/O devices, resources like CPU and RAM) to itself, while the truth is that we are actually sharing these hardware resources amongst many processes.
+
+{: .note-title}
+> Virtual Machine (Virtual Processor)
+>
+> A virtual processor is an **abstraction** provided by the operating system or hypervisor that allows a single physical processor core to emulate multiple independent execution contexts, enabling efficient multitasking or virtualization.
 
 ### [The Operating System Kernel](https://www.youtube.com/watch?v=4pizOgCT11k&t=95s)
 The Operating System (OS) Kernel is a *special* program that is written to **manage** and **oversees** the execution of all other processes in system. It has the **highest privilege** in computer system, i.e: it can terminate any program, has access to all kinds of hardware resources (Physical Memory, I/O devices). 
@@ -340,26 +345,26 @@ The details about exceptions are out of this syllabus, and you will learn more a
 ## [Summary](https://www.youtube.com/watch?v=4pizOgCT11k&t=2495s)
 [You may want to watch the post lecture videos here. ](https://youtu.be/uG1HEKdJpxY)
 
-Virtual machines are crucial in modern computing, allowing multiple processes to run simultaneously on a single physical machine. This is achieved through a combination of hardware and software optimizations, including the use of a virtual processor for each process. The operating system kernel plays a pivotal role in this setup, managing resources, ensuring security, and maintaining process isolation. Advanced hardware support, such as dual mode operation and specialized interrupt handling, further enables the efficient multiplexing of resources and smooth context switching. This not only enhances system stability and performance but also ensures that applications run seamlessly without interfering with each other.
+Virtual machine is a crucial concept in modern computing, allowing multiple processes to run simultaneously on a single CPU. This is achieved through a **combination** of hardware and software optimizations, including the use of a virtual processor for each process. The **operating system kernel** plays a pivotal role in this setup, managing resources, ensuring security, and maintaining process isolation. Advanced hardware support, such as dual mode operation and specialized interrupt handling, further enables the efficient multiplexing of resources and smooth context switching. This not only enhances system stability and performance but also ensures that applications run seamlessly without interfering with each other.
 
-This chapter covers various aspects of how operating systems manage multiple processes using virtualization technology, in particular: how the presence of OS Kernel and hardware support provide an abstraction for each running process, thus allowing them to run in an isolated manner; on their own virtual machine. Here are the key points:
+This chapter covers various aspects of how operating systems manage multiple processes using virtualization technology, in particular: how the presence of OS Kernel and hardware support provide an abstraction for each running process, thus allowing them to run in an isolated manner; on their own virtual machine. Here are the key points from this notes:
+1. **Concept of a Virtual Processor**: The kernel supports process isolation. Each process operates as if it has its own dedicated hardware without having to interfere with one another by default.
+2. **Operating System Kernel**: The kernel plays a critical role in managing resources, ensuring security, and isolating processes.
+3. **Process Context and Isolation**: A process context is a data structure that allows processes to operate independently and securely. It refers to the complete **state** of a process at a given time, including its program counter, registers, memory mappings, and system resources, which the operating system saves and restores during context switching.
+4. **Dual Mode Operation**: Dual-mode operation is a system design where a processor operates in two distinct modes, typically **user mode** for executing user applications with limited privileges and **kernel mode** for executing critical operating system tasks with full access to hardware, ensuring security and stability. This is to ensure **distinct access control**.
+5. **OS Multiplexing**: The operating system's ability to share resources (such as the CPU, memory, or I/O devices) among multiple processes or users by dividing time or space effectively, enabling concurrent execution and efficient utilization of system resources.
+6. **Context Switching**: A process by which the operating system saves the state of a currently running process and loads the state of another process, allowing multiple processes to share the CPU and ensuring multitasking in a time-shared environment.
+7. **Transferring Control to Kernel**: The Kernel **manages**  the execution of all processes, as well as all I/O devices, and provides **services** to all these processes. When the CPU is running in user mode, there are two ways to transfer CPU control to Kernel program (kernel mode): 
+   * Via **asynchronous interrupt**: `IRQ` is set to `1` 
+   * Via **synchronous interrupt**: when the process generates an **exception** hence **trapping** itself to the handler and enters Kernel mode. 
 
+During either case of interrupt, `PC+4` is stored at `Reg[XP]` so that the CPU knows how to resume the interrupted process later on once the interrupt handler returns.  
 
-1. **Concept of a Virtual Processor**: Discusses how each process operates as if it has its own dedicated hardware, facilitated by the operating system.
-2. **Operating System Kernel**: Explains the kernel's role in managing resources, ensuring security, and isolating processes.
-3. **Process Context and Isolation**: Details the structure that allows processes to operate independently and securely.
-4. **Dual Mode Operation**: Outlines the mechanisms that distinguish between kernel and user modes, ensuring proper access control.
-5. **OS Multiplexing and Context Switching**: Describes how the OS handles multiple processes, sharing hardware resources efficiently through context switching.
-6. **Hardware Support**: Analyzes the hardware requirements that enable efficient multitasking and resource allocation among processes.
+## Next Steps
+We have the source code of a simple $$\beta$$ CPU Kernel called the [TinyOS](https://github.com/natalieagus/lab-tinyOS). You will encounter this in 50005. Since it is a simple kernel, this kernel is **non-reentrant** (the CPU cannot be interrupted while in Kernel Mode). In practice, most modern [UNIX Kernels are reentrant](https://www.oreilly.com/library/view/understanding-the-linux/0596002130/ch01s06.html). Careful writing and construction of a reentrant Kernel program is required. 
 
-
-The Kernel **manages**  the execution of all processes, as well as all I/O devices, and provides **services** to all these processes. There are two ways to transfer CPU control between user programs to kernel programs:
-* Firstly, is through **asynchronous interrupt**: `IRQ` is set to `1` 
-* Secondly, is through **synchronous interrupt**: when the process generates an **exception** hence **trapping** itself to the handler and enters Kernel mode. 
-
-During either case of interrupt, `PC+4` is stored at `Reg[XP]` so that the system knows how to resume the process later on. 
-
-The $$\beta$$ Kernel called the [TinyOS](https://github.com/natalieagus/lab-tinyOS) that you will encounter in 50005 is **non-reentrant** (the CPU cannot be interrupted while in Kernel Mode). It is a simple Kernel. In practice, most modern [UNIX Kernels are reentrant](https://www.oreilly.com/library/view/understanding-the-linux/0596002130/ch01s06.html). Careful writing and construction of the Kernel program is required. 
+{:.note}
+A reentrant kernel ensures that multiple processes or threads can safely enter and execute kernel code simultaneously without conflicts. It achieves this by *avoiding* global state modification, using per-process data structures, employing synchronization mechanisms like locks or semaphores, and ensuring that shared resources are accessed atomically or in a thread-safe manner.
 
 # Appendix
 

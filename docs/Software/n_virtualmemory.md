@@ -47,6 +47,7 @@ Singapore University of Technology and Design
  
 ## [Overview](https://www.youtube.com/watch?v=19wS4GC6mbQ&t=0s)
 
+
 In our computers, numerous applications operate simultaneously—such as Chrome, WhatsApp, and text editors. Frequently, the number of active processes surpasses the available CPU cores. Each application is designed without knowledge of the other processes it will share resources with. For example, Chrome is programmed to perform its functions without considering the need to share RAM or CPU resources with other programs during its operation. 
 
 {: .new-title}
@@ -149,6 +150,9 @@ In virtual memory, **we use a part of the disk as an extension to the physical m
 Programs are **loaded** to physical memory **only when we open (run) them**, so that the CPU has *direct access to its instructions* for execution later on. The majority of your installed programs that are not opened and not run stays on disk.
 
 A computer can run many processes at a time, and therefore **all of them have to share** the same physical memory. For *ease of execution* and *security*, the burden of process management is passed to a very special program: the OS <span style="color:red; font-weight: bold;">Kernel</span> (details in the next chapter).
+
+{:.note}
+The implementation of Virtual Memory is a **collaborative** effort between both the operating system (OS) and the hardware. The OS is primarily responsible for **managing** virtual memory (defines the policies for memory management), while the hardware, particularly the CPU and the Memory Management Unit (MMU), is responsible for efficiently **executing** virtual memory operations
 
 ### Process Isolation
 Each process does not know the existence of another process and everything else that lives in the physical memory. They don't have to keep track of which addresses in the physical is occupied or free to use, and one process wont be able to corrupt another. 
@@ -565,24 +569,23 @@ Page must be fetched from the swap space and copied over to the Physical Memory.
 Virtual Memory is a **memory management technique** that provides an **abstraction** of the storage resources so that programs can be written as if they have **full access** to the physical memory without having to consider where other processes reside. It allows computers to handle large and multiple applications beyond the physical memory limits by using disk space as an extension of RAM. It employs a memory management scheme called paging, where the Memory Management Unit (MMU) plays a critical role in translating virtual addresses to physical locations using page tables. Techniques such as demand paging and the use of Translation Lookaside Buffers (TLB) optimize this process, making efficient use of system resources and improving application performance.
 
 {:.note}
-The Virtual Memory is crucial for handling multiple processes in modern computing environment
+The Virtual Memory is crucial for handling multiple processes in modern computing environment.
 
 Here are the key learning points: 
-1. **Virtual Memory Basics**: Explains virtual memory as a technique that simulates more memory space than is physically available, using disk space for excess data.
-2. **Memory Paging**: Introduces paging as a method for efficient memory use, detailing how pages are moved between disk and RAM.
-3. **Address Translation**: Covers the role of the Memory Management Unit (MMU) in converting virtual addresses to physical addresses.
-4. **Page Table Management**: Describes the structure and use of page tables in maintaining the mapping of virtual to physical addresses.
-5. **Demand Paging and TLB**: Discusses demand paging for handling page faults and the use of Translation Lookaside Buffers (TLB) to improve address translation efficiency.
+1. **Virtual Memory**: An extension of physical memory that allows for larger program execution than the available physical memory and supports safe memory sharing among multiple processes. It is a technique that simulates more memory space than is physically available, using **disk** space for excess data.
+2. **Basic implementation**: The OS implements the **logic** and **policy** for virtual memory, while the hardware provides the **mechanism** for efficient translation and enforcement. 
+2. **Memory Paging**: Paging is a method for efficient memory use. **Pages** of a predetermined size (by the OS) are moved between disk and RAM. 
+3. **Address Translation**: The CPU (user mode) operates in virtual address space. The Memory Management Unit (MMU) converts virtual addresses to physical addresses.
+4. **Page Table Management**: The page table (residing in RAM) is used for maintaining the mapping of virtual to physical addresses.
+5. **Demand Paging and TLB**: Demand paging is a memory management technique where pages are loaded into physical memory only when they are accessed, reducing the need to load an entire program into RAM upfront. The TLB is a hardware cache in the CPU that stores recent virtual-to-physical address translations, **speeding** up memory access by reducing the need to consult the page table repeatedly.
 
+## Next Steps
 In the next chapter, we will learn how Virtual Memory is used to create Virtual Processor (Virtual Machine). Specifically, to learn how the OS Kernel is specially privileged **program** (not a process, but you may not be able to understand this statement fully now and that's okay) is responsible of managing hardware resources in a system and scheduling processes to share these limited resources, thus allowing each process  to run independently on its own ***virtual machine.*** The OS Kernel is responsible for <span class="orange-bold">process scheduling</span>. Each process is running in an **isolated** manner from one another (in its own *virtual space*, unaware of the presence of other processes), the OS **Kernel** can switch execution between programs -- giving the users an *illusion* as if these processes are running **simultaneously** with just a single CPU. The procedure that allows for this to happen seamlessly is called **rapid context switching.**
 
 {: .highlight}
 Context switching allows for **timesharing** among several processes, that is to share the CPU amongst multiple process executions. 
 
-The OS Kernel simply loads the appropriate context number and page table pointer when switching among processes. This way, the CPU can have access to instructions or data required to execute each process and switch executions between processes. 
-
-
-
+The OS Kernel loads the appropriate context number and page table pointer when switching among processes. This way, the CPU can have access to instructions or data required to execute each process and switch executions between processes. 
 
 # Appendix
 

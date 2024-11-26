@@ -23,7 +23,7 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> 1. **Explain Cache Memory and Its Role:**
+> 1. **Explain Cache and Its Role:**
 >   - Describe the function of cache in reducing CPU access time to memory.
 >   - Identify the types of cache (L1, L2, L3) and understand their general function without detailed architectural differences.
 > 2. **List out Cache Design Parameters:**
@@ -667,20 +667,18 @@ On CPU WRITE/STORE (new_content) request to address A:
 
 ## [Summary](https://www.youtube.com/watch?v=2OARjqLK4io&t=3405s)
 [You may want to watch the post lecture videos here. ](https://youtu.be/33N7Y9Iydb0)
-This chapter provides a thorough analysis of key factors that influence cache performance. It explores the trade-offs between different cache associativities like Direct Mapped and Fully Associative, detailing how each affects computational efficiency. The **four** cache design issues discussed in this chapter are: associativity, replacement policies, write policies, and block size. There is no *golden cache design* that suits all kinds of situations. The performance of a cache depends on its use case and we need to choose our cache design wisely based on our use cases. For example, associativity is **less important** when `N` (size of cache) is large, because the risk for contention is inversely proportional to `N`. In 
 
 
-We also cover various replacement policies and their hardware implications, block size considerations that balance cache misses with data retrieval speed, and the operational roles of helper bits like Valid and Dirty. 
-1. **Associativity**: Discusses Direct Mapped caches, which map each block to a specific cache line, versus Fully Associative caches, where any block can go into any line, highlighting how these designs balance complexity and speed.
-2. **Replacement Policies**: Elaborates on how caches decide which block to replace when new data comes in, covering policies like Least Recently Used (LRU), which prefers keeping frequently accessed data.
-3. **Block Size**: Considers the pros and cons of increasing cache block size, noting that while it may reduce the number of cache misses, it also risks increasing the fetch time for larger blocks.
-4. **Write Policies**: Analyzes different methods of handling data writes in caches, including Write-Through, which immediately writes data to both cache and memory, and Write-Back, which waits until the data is evicted from cache.
-5. **Helper Bits**: Details additional bits used in cache management such as Valid, Dirty, and LRU bits, explaining their roles in maintaining data integrity and cache coherence.
-
-In practice, we can analyse cache performance by building intuition from simple computer simulations of cache behaviors on real programs, which we will encounter in our problem sets. Through various analysis with different use cases, we can fine tune and establish the basis for cache design decisions. 
-
-
-
+Here are the key points from this notes: 
+1. **The four cache design issues**: The **four** cache design issues discussed in this chapter are: associativity, replacement policies, write policies, and block size. We then explore the trade-offs between different cache associativities like DM cache and FA cache. There is no *golden cache design* that suits all kinds of situations. The performance of a cache depends on its use case and we need to choose our cache design wisely based on our use cases. For example, associativity is **less important** when `N` (size of cache) is large, because the risk for contention is inversely proportional to `N`. 
+2. **Cache Coherence and Management**: Ensures that an alteration of the values in one cache is immediately reflected in all other memory region where that data is stored (the TLB and the Memory). 
+3. **Various replacement policies and their hardware implications**:
+   - **Associativity**: NWSA caches map each block to a specific set, where we can have N cache lines in a specific set (adding some degree of associativity)
+   - **Replacement Policies**: Caches can be made to decide which block to replace when new data comes in. Policies covered are: LRU, LRR, and Random.
+   - **Block Size**: Considers the pros and cons of increasing cache block size, noting that while it may reduce the number of cache misses, it also risks increasing the fetch time for larger blocks.
+   - **Write Policies**: Write-Through, which immediately writes data to both cache and memory, Write-Back, which waits until the data is evicted from cache, and Write-Behind, which pipelines a cache write in the background (require additional hardware support)
+   - **Helper Bits**: Valid, Dirty, and LRU bits required to maintain data integrity and cache coherence.
+4. **Cache Benchmarking**: In practice, we can analyse cache performance by running diagnostics code and computing average access time. 
 
 
 # Appendix

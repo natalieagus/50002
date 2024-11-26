@@ -322,20 +322,17 @@ r : LONG(1)
 ## [Summary](https://www.youtube.com/watch?v=Hhq3RhZcngQ&t=2557s)
 [You may want to watch the post lecture videos here:](https://youtu.be/ppYTQsHXVZU)
 
-This chapter covers the fundamentals of how high-level code is translated into machine code that a computer can execute. The key points include:
+Here are the key points from this notes:
 
 1. **Symbolic Language and UASM**: UASM (Universal Assembler) is used for representing strings of bits in instructions. It allows for defining variables and instructions in a human-readable format that can be easily converted into binary.
-
 2. **Symbols and Labels**: These are used in UASM to define constants and memory addresses. Symbols simplify the code by allowing the use of names instead of numeric addresses or values.
+3. **Macroinstructions**: Macroinstructions simplify assembly language programming by allowing more complex operations to be performed with simpler commands. These macros help abstract the underlying complexity of machine instructions.
+4. **Compilers and Interpreters**: Compilers analyze and translate the entire source code into executable machine code, which tends to make debugging harder but execution faster. Interpreters, on the other hand, translate and execute code on the fly, which simplifies debugging.
+5. **Compiling Expressions**: We compile simple expressions into assembly language, focusing on variable memory locations, ALU operations, array creation, and control flow constructs like **conditionals** and **loops**.
 
-3. **Macroinstructions**: The notes explain how macroinstructions simplify assembly language programming by allowing more complex operations to be performed with simpler commands. These macros help abstract the underlying complexity of machine instructions.
+These concepts are crucial for understanding how software is developed and executed on hardware, providing a practical framework for us to understand the <span class="orange-bold">integration</span> of software and hardware through the compilation process.
 
-4. **Compilers and Interpreters**: The notes distinguish between compilers and interpreters, explaining that compilers analyze and translate the entire source code into executable machine code, which tends to make debugging harder but execution faster. Interpreters, on the other hand, translate and execute code on the fly, which simplifies debugging.
-
-5. **Compiling Expressions**: The process involves converting operations in high-level languages into their equivalent assembly language instructions, focusing on variable memory locations, ALU operations, and control flow constructs like conditionals and loops.
-
-These concepts are crucial for understanding how software is developed and executed on hardware, providing a practical framework for students to understand the integration of software and hardware through the compilation process.
-
+## Next Steps
 Note that there are a lot of ways to **translate** higher level language into a lower level language (various optimisations and code rearrangement done, etc). The examples given above are not necessarily the *most optimised* way but it's probably the most straightforward (easiest) way to hand-compile a higher-langauge expression. 
 
 We should ask ourselves:
