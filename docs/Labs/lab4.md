@@ -25,7 +25,7 @@ Singapore University of Technology and Design
 
 Please clone the starter code from this repository, then **open** it with Alchitry Lab. 
 ```
-TBC
+git clone https://github.com/natalieagus/50002-lab4-beta.git
 ```
 
 Then, you shall **paste** the implementation of your 32-bit ALU unit created in Lab 3: ALU. Be sure to include **all** files required by your `alu.luc`.
@@ -60,8 +60,8 @@ The goal of this lab is to build a **fully** functional 32-bit Beta Processor on
 * (Part A) **PC** Unit: containing the PC register and all necessary components to support the ISA
 * (Part B) **REGFILE** Unit: containing 32 32-bit registers, WASEL, and RA2SEL mux, plus circuitry to compute Z
 * (Part C) **CONTROL** Unit: containing the ROM and necessary components to produce all Beta control signals given an `OPCODE`
-* **ALU+WDSEL** Unit: containing the ALU and WDSEL, ASEL, BSEL muxes (**given to you**)
-* (Part D) Assemble the entire Beta CPU using all subcomponents above
+* (Part D)  **ALU+WDSEL** Unit: containing the ALU and WDSEL, ASEL, BSEL muxes 
+* Finally, assemble the entire Beta CPU using all subcomponents above
  
 <img src="/50002/assets/contentimage/lab4/beta_lab.png"  class="center_seventy"/><br>
 

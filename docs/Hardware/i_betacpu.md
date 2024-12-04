@@ -227,10 +227,12 @@ In our Lab however, the output signal of the control unit is 18 bits long. We do
 ## Beta Datapaths
 
 The $$\beta$$ datapath can be reprogrammed by setting the appropriate control signals depending on the current instruction's `OPCODE`. In general, we can separate the instructions into four categories, and explain the datapath for each:
-* The `OP` datapath (Type 1)
-* The `OPC` datapath (Type 2)
-* Memory access datapath (Type 2)
-* Control transfer datapath  (Type 2)
+* The `OP` datapath (Type 1): ADD, SUB, MUL, DIV, SHL, SHR, SRA, CMPEQ, CMPLT, CMPLTE, AND, OR, XOR  (13 operations)
+* The `OPC` datapath (Type 2): ADDC, SUBC, MULC, DIVC, SHLC, SHRC, SRAC, CMPEQC, CMPLTC, CMPLTEC, ANDC, ORC, XORC (13 operations)
+* Memory access datapath (Type 2): ST, LD, LDR (3 operations)
+* Control transfer datapath  (Type 2): JMP, BNE, BEQ (3 operations)
+
+**Total: 32 operations**.
 
 ## Basic Operation Datapath
 ### [OP datapath](https://www.youtube.com/watch?v=4T9MR8BSzt0&t=1662s)
