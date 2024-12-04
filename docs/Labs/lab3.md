@@ -693,7 +693,7 @@ Congratulations 🎉🎉! You have successfully built a 32-bit ALU in this lab a
 
 For your 1D project, you will need to downsize the ALU to support 16-bit instead of 32-bit. It shouldn't be too much work to modify. You might also want to consider creating **automatic tester** using the `fsm` module for your 1D Project Checkoff 1: ALU. Read the FPGA tutorials linked in our course handout for further information, and don't forget to polish your knowledge on Sequential Logic before proceeding. 
 
-> Please also **read Checkoff 1: ALU** schedule, requirements and rubrics given in the course handout **carefully**. <span class="orange-bold">Do not miss your checkoff slot</span>. 
+Carefully **consult Checkoff 1: ALU** schedule, requirements and rubrics given in the course handout. <span class="orange-bold">Do not miss your checkoff slot</span>. 
 
 ### 1D Checkoff 1: ALU 
 For your Checkoff 1: ALU, you're also required to create **additional** functionalities. You **are allowed** to use Lucid math and comparison operator for this **NEW** functionality. For example, if your new operation involves `DIVISION` between A and B, you're allowed to implement it as follows:
