@@ -30,10 +30,11 @@ git clone https://github.com/natalieagus/50002-lab4-beta.git
 
 Then, you shall **paste** the implementation of your 32-bit ALU unit created in Lab 3: ALU. Be sure to include **all** files required by your `alu.luc`.
 
+### Checkoff & Questionnaire
 {: .important}
-Since there's only 1 FPGA per group, you need to work through this lab as a 1D group during class and **obtain checkoff as a group** by the end of the Lab next week. However each person must still submit the lab questionnaire **individually**. For the checkoff next week, <span class="orange-bold">only group members who are present gain the marks (unless valid LOA)</span>.
+Since there's only 1 FPGA per group, you need to work through this lab as a 1D group during class and **obtain checkoff as a group** by the stipulated due date (consult course handout). However each person must still submit the lab questionnaire **individually**. For checkoff, <span class="orange-bold">only group members who are present gain the marks (unless valid LOA)</span>. **Contact** your cohort TAs and make appointment to meet them in-person (outside of class hour) You should checkoff as a group.</span> Only 1 rep per group will do for the checkoff, but there will be QnA. Hence, it is up to you if you want to send more people for the checkoff.  
 
-You are <span style="color:#ff791a; font-weight: bold;">not required</span> to submit your code for this lab, only to show your implementation to your TA and instructors by the end of the Lab next week. Simply head to eDimension and do the lab **questionnaire** by the stipulated due date. 
+You are <span style="color:#ff791a; font-weight: bold;">not required</span> to submit your code for this lab, only to show your implementation to your TA and instructors by the stipulated due date (consult course handout). Simply head to eDimension and complete the lab **questionnaire** before the due date.
 
 ## Related Class Materials
 The lecture notes on [Building the Beta CPU](https://natalieagus.github.io/50002/notes/betacpu), and [Designing an Instruction Set](https://natalieagus.github.io/50002/notes/instructionset) are closely related to this lab. 
@@ -603,7 +604,7 @@ Finally, observe that the last 16 bits of `pcsel_out` (the next PC value) still 
 Now we need to test it by giving it a simple starter code (well, should've tested each and every component up above, but we don't have enough time in class). 
 
 {: .highlight}
-Paste the following simple driver code inside `instruction_rom.luc`, under `const INSTRUCTIONS`, replacing the existing instruction. You will <span className="orange-bold">need this for your Checkoff</span> for this lab (due lab time, Week 10). 
+Paste the following simple driver code inside `instruction_rom.luc`, under `const INSTRUCTIONS`, replacing the existing instruction. You will <span className="orange-bold">need this for your Checkoff</span> for this lab.  
 
 ```verilog
     32h7BE3FFFB, // 0x010 BNE(R3, main, R31) 
@@ -662,14 +663,14 @@ Finally, when you reach the fifth instruction at address `0x10` (`BNE`), confirm
 
 <img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-48-59.png"  class="center_fifty no-invert"/>
 
-## Checkoff
+## In-Person Checkoff
 
-As stated in the beginning of this document, you need to complete all the above tasks and demonstrate a working Beta CPU using **your own test instruction**. You can checkoff as a group. <span className="orange-bold">Only group members who are present gain the marks (unless valid LOA).</span> 
+As stated in the beginning of this document, you need to complete all the above tasks and demonstrate a working Beta CPU using **your own test instruction**. **Contact** your cohort TAs and make appointment to meet them **in-person** (outside of class hour). Only 1 rep per group will do for the checkoff, but there will be QnA. Hence, it is up to you if you want to send more people for the checkoff.  
 
 {: .new-title}
 > Checkoff 
 >
-> You need to demonstrate that your Beta runs properly on the FPGA to our TA/instructor by the end of next week's lab (during lab hour). To do this, you are to **design** a short test code in Beta Assembly (8-10 lines). Your code must contain at least a `BNE/BEQ`, `JMP`, `OP`, `OPC`, `LD/LDR` and `ST` instruction each. 
+> You need to demonstrate that your Beta runs properly on the FPGA to our TA by the stipulated due date (consult course handout). To do this, you are to **design** a short test code in Beta Assembly (8-10 lines). Your code must contain at least a `BNE/BEQ`, `JMP`, `OP`, `OPC`, `LD/LDR` and `ST` instruction each. 
 
 Neatly document your test instruction in `instruction_rom.luc` to facilitate a smoother checkoff process.
 

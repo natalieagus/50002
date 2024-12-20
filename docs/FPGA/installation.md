@@ -38,20 +38,23 @@ This bitstream is then **loaded** onto the FPGA, which is connected to the compu
 <img src="{{ site.baseurl }}//docs/FPGA/images/installation/2024-10-16-11-06-23.png"  class="center_seventy no-invert"/>
 
 
-## Vivado Installation (Windows x86 or Linux x86)  
+## Vivado Installation 
+
+### Windows x86-64 or Linux x86-64
 
 Vivado is used to **synthesize** high-level hardware description code (in Verilog or Lucid translated to Verilog) into a netlist of logical gates. This netlist is then further **processed** through implementation steps, such as place-and-route, to produce a bitstream or **binary file** for programming the FPGA.
 
-{:.note-title}
-> 🍎 Apple Silicon Mac 
-> 
-> You cannot natively install Vivado on Apple Silicon macs. Xilinx Vivado doesn’t officially support ARM as of late 2024. Current workaround utilises UTM + Debian 12 + Rosetta, [read this guide here](http://natalieagus.github.io/50002/fpga/fpga_applesilicon). 
-
 
 We recommend you to instal Vivado ML Edition - 2023.2. You are free to try older version (see [archive](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/archive.html)) Vivado Design Suite - HLx Editions - 2020.2 or the latest version: Vivado ML Edition - 2024.1. 
-> *Please choose one and just install one version*. 
+
+{:.highlight}
+Please just choose one and just install one version.
 
 This guide assumes you select Vivado ML Edition - 2023.2. 
+
+### 🍎 Apple Silicon Mac 
+You <span class="orange-bold">cannot</span> natively install Vivado on Apple Silicon macs. Xilinx Vivado doesn’t officially support ARM as of early 2025. Current workaround utilises UTM + Debian 12 + Rosetta, [read this guide here](http://natalieagus.github.io/50002/fpga/fpga_applesilicon). 
+
 
 ### Vivado ML Edition - 2023.2 
 [Create an AMD account](https://www.amd.com/en/registration/create-account.html?custtarg=aHR0cHM6Ly9hY2NvdW50LmFtZC5jb20vZW4vcHJvZmlsZS5odG1s) first. 

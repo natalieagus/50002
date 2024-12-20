@@ -760,13 +760,15 @@ You would need to **sign extend** `current_delta`. That is to take the MSB of `c
 
 ## Checkoff 
 
-You can work as your 1D group and obtain checkoffs from your TA *by next lab session*. You may demonstrate the simulation over Teams call or in-person. You can also **build** the project and demonstrate it on your FPGA. 
+You can work as your 1D group and obtain checkoffs from your TA by the stipulated due date (next week). You may demonstrate the simulation over Teams call or in-person. You can also **build** the project and demonstrate it on your FPGA. 
 
 You should demonstrate the following behavior:
 1. The counter can be started and stopped at any time 
 2. `current_delta` can be increased or decreased, and not overflow 
 3. `current_value` will not suffer from positive overflow, and clamped at 0 (will not go negative)
 4. You can vary the speed of the counter 
+
+Only 1 rep per group will do for the checkoff, but there will be QnA. Hence, it is up to you if you want to send more people for the checkoff. 
 
 ## Bonus: utilizing the 7 Segment 
 
@@ -854,7 +856,7 @@ Here's what we have covered in this lab thus far:
 9.  Instantiating several modules at once with **connection blocks**
 10. Implementing **multiplexers** using **if**-statement or **case**-statement
 11. Creating FSM using `enum` and `dff` (sequential logic device) 
-12. Using **inbuilt** functions: `$clog2()`, `$isSim()`, `$width()`
+12. Using **inbuilt** functions: `$clog2()`, `$is_sim()`, `$width()`
 13. Cleaning up button press signals using `button_conditioner` and `edge_detector` components
 14. Using inbuilt 7-segment 
 
