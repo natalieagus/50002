@@ -349,7 +349,7 @@ A |  Z
 
 Understanding how these gates work individually is just the beginning. The next step is to see how they **combine** to perform **complex** operations and make decisions within digital circuits (and ultimately how to make a **general purpose computers** from billions of these gates). This knowledge is not only pivotal for building hardware but also enhances our ability to design efficient, **programmable** systems. 
 
-For example, let's build a two-bit **comparator** that determines if one binary number $$A$$ is **greater** than another $$B$$ (only checking for greater than, *not* less than). Each binary number consists of two bits: $$A_1A_0$$, and $$B_1B_0$$. The comparator will produce a one bit output indicating whether $$A\geB$$. If you were to write a **program** for this, you would write something like this: 
+For example, let's build a two-bit **comparator** that determines if one binary number $$A$$ is **greater** than another $$B$$ (only checking for greater than, *not* less than). Each binary number consists of two bits: $$A_1A_0$$, and $$B_1B_0$$. The comparator will produce a one bit output indicating whether A>B. If you were to write a **program** for this, you would write something like this: 
 
 ```py
 def is_a_greater_than_b(A1, A0, B1, B0):
