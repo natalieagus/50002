@@ -374,7 +374,7 @@ print("Is A > B?", result)
 
 The logic of the function implemented in Python above can be translated into a **hardware design** using <span class="orange-bold">logic gates</span>, which form the basis of a hardware comparator unit. In hardware, the function's operations—comparing bits and determining the result based on their values—would be implemented using a combination of basic logic gates such as AND, OR, NOT, and XOR gates. Here's a hardware design that implements `is_a_greater_than_b` function above: 
 
-<img src="{{ site.baseurl }}/docs/Hardware/images/cs-2025-A>B.drawio.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Hardware/images/cs-2025-AgeB.drawio.png"  class="center_seventy"/>
 
 
 **Breakdown**
