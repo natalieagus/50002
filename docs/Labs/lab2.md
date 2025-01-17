@@ -334,8 +334,8 @@ To access it, add the IO constraints from the component library. Open the compon
 <img src="{{ site.baseurl }}//docs/Labs/images/lab2/2024-10-23-13-20-53.png"  class="center_seventy no-invert"/>
 
 Then select the Io constraint: 
-<img src="{{ site.baseurl }}//docs/Labs/images/lab2/2024-10-23-14-42-06.png"  class="center_seventy no-invert"/>
 
+<img src="{{ site.baseurl }}//docs/Labs/images/lab2/2025-01-17-16-19-02.png"  class="center_seventy no-invert"/>
 Then add the access ports at `alchitry_top`:
 
 ```verilog
@@ -355,7 +355,7 @@ module alchitry_top (
 
 What the `.acf` file do is to give a logical name to the FPGA pins so that we can program its behavior. For instance, `B28` is used as an **input** pin with a **pulldown** internal resistor set. This means that if we don't supply a high voltage at pin `B28`, it will register as `0` (digital low). Activating this input requires a high voltage supply, and thus we also call this input as being **active high**. 
 
-<img src="{{ site.baseurl }}//docs/Labs/images/lab2/2024-10-23-14-45-54.png"  class="center_seventy no-invert"/>
+<img src="{{ site.baseurl }}//docs/Labs/images/lab2/2025-01-17-16-21-05.png"  class="center_seventy no-invert"/>
 
 The pins without `pulldown` are output pins. You can physically connect this to LED bulbs via the Br Board. <span class="orange-bold">Our Br board has custom schematic</span> that you can find [here](https://natalieagus.github.io/50002/resources#custom-br-board-reference). Here's a copy of it: 
 
