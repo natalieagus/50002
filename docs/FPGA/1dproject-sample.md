@@ -502,7 +502,7 @@ In particular, you need to know how to do smaller sub-components that are **cruc
 1. **Debounce** a button press, and only producing a value `1` ONCE per button press **using an edge detector.** 
    * Refer to [Lab 2 materials](https://natalieagus.github.io/50002/lab/lab2#task-4-process-button-presses) again if you have forgotten how to do so. 
 2. Create a simple sequential logic module to produce a value of `1`  ONCE every second (denoted as `GAME TIMER CLOCK`). You can use a basic `counter` module set with `DIV`: 
-	* `counter game_timer_clock(#SIZE(1),#DIV(SLOW_CLOCK_DIV), .rst(rst)) `
+	* `counter game_timer_clock(#SIZE(1), #DIV(SLOW_CLOCK_DIV), .rst(rst)) `
 	* And use  an **edge detector**
 	* `edge_detector edge_detector_game_timer(#RISE(1), #FALL(0), .in(game_timer_clock.value))`
 	* Refer to [Lab 2 materials](https://natalieagus.github.io/50002/lab/lab2#generate-the-slow-clock-signal) again if you have forgotten how to do so.
