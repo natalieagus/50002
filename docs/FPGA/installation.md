@@ -37,9 +37,40 @@ This bitstream is then **loaded** onto the FPGA, which is connected to the compu
 
 <img src="{{ site.baseurl }}//docs/FPGA/images/installation/2024-10-16-11-06-23.png"  class="center_seventy no-invert"/>
 
+{:.important}
+Alchitry IDE can be installed and run on Windows, macOS (Apple Silicon), Linux, but Vivado can only be run on Windows & Linux. 
+
+## Alchitry Lab Installation 
+
+### Windows / Linux 
+Download Alchitry Lab 2 from [here](https://alchitry.com/alchitry-labs/). For windows users, it might be more reliable if you download it from [Microsoft Store](https://apps.microsoft.com/detail/9mvzrn9dbj3c?hl=en-GB&gl=SG). This is your IDE.
+
+{:.important-title}
+> Version
+>
+> Updated 22 Jan 2025: Version 2.0.23 BETA is recommended. 
+
+Once installed, open the app and you can create a **new** project. Select the template for Alchitry Au board and choose one of the basic template project: 
+
+<img src="{{ site.baseurl }}//docs/FPGA/images/installation/2024-10-16-11-09-33.png"  class="center_seventy no-invert"/>
+
+### macOS 
+This application does not prove its origin with a developer signature. To open it:
+
+1. Click the download button.
+2. Note: Do not use the Launchpad to perform the following steps as it will not allow you to access the shortcut menu.
+3. Open the Finder and locate the application in your Downloads folder.
+4. Control-click the app icon, then choose Open from the shortcut menu.
+5. You will see a security warning stating the identity of the app author is unknown. Click Open.
+
+At this point, you can test your code with Alchitry lab with the simulator, but not building the binary to load to the FPGA. 
 
 ## Vivado Installation 
 
+### 🍎 Apple Silicon Mac 
+You <span class="orange-bold">cannot</span> natively install Vivado on Apple Silicon macs. Xilinx Vivado doesn’t officially support ARM as of early 2025. Current workaround utilises UTM + Debian 12 + Rosetta, [read this guide here](http://natalieagus.github.io/50002/fpga/fpga_applesilicon). 
+
+You can however install the IDE and use the simulator on macOS (Apple Silicon). Skip to [this](#alchitry-lab-installation) section. 
 ### Windows x86-64 or Linux x86-64
 
 Vivado is used to **synthesize** high-level hardware description code (in Verilog or Lucid translated to Verilog) into a netlist of logical gates. This netlist is then further **processed** through implementation steps, such as place-and-route, to produce a bitstream or **binary file** for programming the FPGA.
@@ -51,10 +82,6 @@ We recommend you to instal Vivado ML Edition - 2023.2. You are free to try olde
 Please just choose one and just install one version.
 
 This guide assumes you select Vivado ML Edition - 2023.2. 
-
-### 🍎 Apple Silicon Mac 
-You <span class="orange-bold">cannot</span> natively install Vivado on Apple Silicon macs. Xilinx Vivado doesn’t officially support ARM as of early 2025. Current workaround utilises UTM + Debian 12 + Rosetta, [read this guide here](http://natalieagus.github.io/50002/fpga/fpga_applesilicon). 
-
 
 ### Vivado ML Edition - 2023.2 
 [Create an AMD account](https://www.amd.com/en/registration/create-account.html?custtarg=aHR0cHM6Ly9hY2NvdW50LmFtZC5jb20vZW4vcHJvZmlsZS5odG1s) first. 
@@ -116,13 +143,6 @@ Finally, ensure that Vivado is installed properly (you can open the app afterwar
 
 <img src="{{ site.baseurl }}//docs/FPGA/images/installation/2024-10-16-10-12-21.png"  class="center_seventy no-invert"/>
 
-## Alchitry Lab Installation 
-
-Download Alchitry Lab 2 from [here](https://alchitry.com/alchitry-labs/). This is your IDE.
-
-Once installed, open the app and you can create a **new** project. Select the template for Alchitry Au board and choose one of the basic template project: 
-
-<img src="{{ site.baseurl }}//docs/FPGA/images/installation/2024-10-16-11-09-33.png"  class="center_seventy no-invert"/>
 
 ### Set Vivado Location
 
