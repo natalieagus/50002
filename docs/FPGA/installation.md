@@ -15,7 +15,7 @@ nav_order:  0
 
 Software to install: 
 1. **Vivado ML Edition - 2023.2** or any later version  
-2. [Alchitry Lab IDE](https://alchitry.com/alchitry-labs) (version TBC),
+2. [Alchitry Lab V2 IDE](https://alchitry.com/alchitry-labs),
 3. [**Latest** Java Development Kit](https://www.oracle.com/sg/java/technologies/downloads/)
 
 {:.important}

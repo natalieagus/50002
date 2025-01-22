@@ -32,7 +32,7 @@ brew install --cask utm
 ```
 
 ### Download Image and Unzip
-After that, download the image from here (TBC)
+After that, download the image from [here](https://sutdapac-my.sharepoint.com/:u:/g/personal/natalie_agus_sutd_edu_sg/EQGr9kA2XgxMqXoQ-x6j-Y4BHM8asQsMEsz6ckNTWMsRgw?e=UNmXJ7)
 * You need to be <span className="orange-bold">signed in to your SUTD account</span> 
 * This image comes with Debian 12, Rosetta, Vivado 2023.2, Alchitry Labs 1.2.7 (legacy) and Alchitry Labs 2 pre-installed (current)
 
