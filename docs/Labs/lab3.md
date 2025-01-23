@@ -605,7 +605,7 @@ When multiplying two numbers where the sign of one is significant (like in two's
 {: .note-title}
 > Design Note
 > 
-> Combinational multipliers implemented as described above are pretty slow!  There are many design tricks we can use to speed things up – see the appendix on “Computer Arithmetic” in any of the editions of **Computer Architecture: A Quantitative Approach** by John Hennessy and David Patterson (Morgan Kauffmann publishers).
+> Combinational multipliers implemented as described above are pretty slow!  There are many design tricks we can use to speed things up – see the *appendix* on “Computer Arithmetic” in any of the editions of **Computer Architecture: A Quantitative Approach** by John Hennessy and David Patterson (Morgan Kauffmann publishers).
 
 
 ### Test 
@@ -618,6 +618,14 @@ Connect the output of your multiplier to the output of your alu for now:
 // alu.luc body
   alu.out = multiplier.mul;
 ```
+
+### Failed Timing Warning 
+This 32-bit combinational multiplier, as part of the ALU, may fail to meet the timing specifications for a 100 MHz clock in a sequential device. However this should still produce a working binary and does not affect other parts of your ALU. To address this, you can modify the constraint file to use a slower clock, such as 50 MHz.
+
+<img src="{{ site.baseurl }}//docs/Labs/images/lab3/2025-01-23-13-55-19.png"  class="center_seventy"/>
+
+{:.note}
+As part of your 2D project: Optimisation part, you can consider using other multiplier designs that can pass the original 100MHz clk. 
 
 ## Task 6: Assembling the ALU
 
