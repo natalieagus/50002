@@ -26,6 +26,8 @@ According to the [IEEE/ACM Computer Curriculum 2008](https://www.acm.org/binarie
 >
 > *The term **architecture** is taken to include instruction set architecture (the programmer’s abstraction of a computer), organization or microarchitecture (the internal implementation of a computer at the register and functional unit level), and system architecture (the organization of the computer at the cache and bus level). Students should also understand the **complex trade-offs** between CPU clock speed, cache size, bus organization, number of core proces- sors, and so on. Computer architecture also underpins other areas of the computing curriculum such as operating systems (input/ output, memory technology) and high-level languages (pointers, parameter passing).*
 
+{:.note}
+The IEEE/ACM Computer Curriculum is a **comprehensive educational framework** developed by the Joint Task Force on Computing Curricula, a collaboration between the IEEE Computer Society and the Association for Computing Machinery (ACM). The curriculum is widely recognized as a foundational reference for universities worldwide, ensuring consistent and high-quality education in the rapidly evolving computing field. The newer version, Computer Science Curricula 2023 (CS2023) **underscores** that a <span class="orange-bold">comprehensive</span> grasp of computer architecture is essential for students to effectively design, implement, and optimize software and hardware systems.
 
 By the end of this course, you're expected to:
 * Be familiar with flaws and limitations in simple systems using the **static discipline**, **clocked** registers and async inputs.
