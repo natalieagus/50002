@@ -135,7 +135,7 @@ It is recommended that you follow a generic simplified  **custom** $$\beta$$-lik
 3. You have a **Control Unit**, which is simply an FSM that gives out different control signals at various time step. 
 
 {:.important}
-ALL sequential parts that requires CLK is fed with the **SAME default Alchitry CLK at 100MHz.** You can create other submodules to be plugged into your datapath to act as frequency divider (slowing down the clock cycle) but  <span style="color:red; font-weight: bold;">DO NOT MESS with the CLK</span> for the REGFILE and FSM **unless you are a very experienced FPGA developer.**  <>
+ALL sequential parts that requires CLK is fed with the **SAME default Alchitry CLK defined in the alchitry.acf file.** This value is 100Mhz (you can change it but only in the constraint file). You can create other submodules to be plugged into your datapath to act as frequency divider (slowing down the clock cycle) but  <span style="color:red; font-weight: bold;">DO NOT MESS with the .clk</span> input of the REGFILE and FSM **unless you are a very experienced FPGA developer.**  <>
 
 ### Designing the `REGFILE`
 The first step in designing a datapath is to think about **how much storage** you will need, and how many bits of data your machine can support at each cycle? 

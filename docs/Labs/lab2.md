@@ -106,7 +106,8 @@ It is designed to create a **blinking** signal that can drive an LED, **toggling
 #### Port List 
 - **Inputs**: 
   - `clk`: 1 bit clock signal, which drives the timing of the module.
-    - By default, the FPGA supplies 100MHz clock (defined in the constraint file)
+    - By default, the FPGA supplies 100MHz clock (defined in the constraint file `alchitry.acf`)
+    - You **can change** this value if your design fail to meet timings, e.g: 50MHz instead
   - `rst`: 1 bit reset signal, which sets the counter back to its initial state when triggered.
   
 - **Output**: 
@@ -179,7 +180,7 @@ This is the main file that interfaces with the I/O ports.
 
 ```verilog
 module alchitry_top (
-    input clk,              // 100MHz clock
+    input clk,              // 100MHz clock (by default)
     input rst_n,            // reset button (active low)
     output led[8],          // 8 user controllable LEDs
     input usb_rx,           // USB->Serial input
@@ -187,7 +188,7 @@ module alchitry_top (
 )
 ```
 
-The `blinker` module is instantiated here and then connected to `led`, which is the 8 LEDs connected to the side of the Alchitry Au Board. The reset button is also situated there. The input `clk` is powered by the FPGA, defaulted to `100MHz`. 
+The `blinker` module is instantiated here and then connected to `led`, which is the 8 LEDs connected to the side of the Alchitry Au Board. The reset button is also situated there. The input `clk` is powered by the FPGA, defaulted to `100MHz` unless you update the constraint file. 
 
 <img src="{{ site.baseurl }}//docs/Labs/images/lab2/2024-10-23-14-11-25.png"  class="center_seventy no-invert"/>
 
@@ -333,10 +334,10 @@ The I/O shield comes with 24 dip switches, 24 io led, 4 7-segment units, and 5 i
 To access it, add the IO constraints from the component library. Open the component library window: 
 <img src="{{ site.baseurl }}//docs/Labs/images/lab2/2024-10-23-13-20-53.png"  class="center_seventy no-invert"/>
 
-Then select the Io constraint: 
+Then select the IO constraint (V1 with pulldown): 
+<img src="{{ site.baseurl }}//docs/Labs/images/lab2/2025-01-23-13-47-45.png"  class="center_seventy no-invert"/>
 
-<img src="{{ site.baseurl }}//docs/Labs/images/lab2/2025-01-17-16-19-02.png"  class="center_seventy no-invert"/>
-Then add the access ports at `alchitry_top`:
+Afterwards, add the access ports at `alchitry_top`:
 
 ```verilog
 module alchitry_top (
@@ -440,7 +441,7 @@ You will formally learn about FSM next week during lecture. We shall tap on abst
 
 
 #### Generate the Slow Clock Signal 
-You should tackle the simplest feature first: to generate the slow clock signal. The FPGA clock is 100MHz, which is too fast for the human eye. We can create a `slow_clock` using two dffs: the slow clock dff and the speed control pointer dff. 
+You should tackle the simplest feature first: to generate the slow clock signal. The FPGA clock is 100MHz as defined in the constraint file. This is fast enough to perform computations and eliminate noticeable lag, but this is too fast to run displays human eyes to see. We can create a `slow_clock` using two dffs: the slow clock dff and the speed control pointer dff. 
 
 The FPGA clock runs at 100MHz and if we start our counter with this clock, it will increase **too fast** for the human eye to catch. We can create a **slow clock** using two dffs: 
 1. `counter` dff: an N bit dff which value is always increased by 1 each time the FPGA clock rises 
@@ -643,7 +644,7 @@ We <span class="orange-bold">cannot</span> simply do this in the IDLE state:
 {:.important-title}
 > Managing button presses 
 > 
-> We can't use button presses directly to trigger the FSM because of the significant speed difference between human reactions and the FPGA clock (100 MHz). When a button, such as `io_button[i]`, is pressed, it will remain in the `1` state for many clock cycles, as a typical button press lasts milliseconds, while each clock cycle occurs in nanoseconds. As a result, the FSM will rapidly toggle between states (e.g., between `RUN` and `STOP`) multiple times during a single press, instead of transitioning just once as intended.
+> We can't use button presses directly to trigger the FSM because of the significant speed difference between human reactions and the FPGA clock (100 MHz by default). When a button, such as `io_button[i]`, is pressed, it will remain in the `1` state for many clock cycles, as a typical button press lasts milliseconds, while each clock cycle occurs in nanoseconds. As a result, the FSM will rapidly toggle between states (e.g., between `RUN` and `STOP`) multiple times during a single press, instead of transitioning just once as intended.
 
 
 We need to use **edge detectors** to detect a down press (falling edge), as well as **button conditioner** to **clean the signal**. 
@@ -851,7 +852,7 @@ Here's what we have covered in this lab thus far:
    3. Statement **evaluation** in Lucid: **top-down **
    4. Array **concatenation** and **duplication**
 7. Creating and using `dff` 
-8. Slowing down the default 100 MHz FPGA clock by creating a **frequency divider**: a basic counter `dff` and a speed pointer `dff` 
+8. Slowing down the default 100 MHz FPGA clock defined in the constraint file by creating a **frequency divider**: a basic counter `dff` and a speed pointer `dff` 
    1. FPGA Clock (100MHz) and Simulation Clock (1000Hz) is different
 9.  Instantiating several modules at once with **connection blocks**
 10. Implementing **multiplexers** using **if**-statement or **case**-statement
@@ -861,4 +862,7 @@ Here's what we have covered in this lab thus far:
 14. Using inbuilt 7-segment 
 
 Ensure that you revisit this lab if any of the points above still sound unfamiliar to you. Afterwards, you <span class="orange-bold">need</span> to give [these tutorials (made by the original author)](https://alchitry.com/tutorials/) a read and try on your own time. Consult your instructor/TAs if you have any enquiries. It is imperative that you start early and not let your doubts snowball! 
+
+{:.note}
+Once you have finished the labs, give the [Lucid V2 guides](https://natalieagus.github.io/50002/fpga/lucid-v2/intro) a read. 
 

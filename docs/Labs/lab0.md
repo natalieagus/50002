@@ -255,17 +255,17 @@ Head to edimension to answer some questions about this task.
 > 
 > The <span class="orange-bold">steepness</span> of the VTC curve primarily indicates the **static** behavior of the gate and how **sensitively** the output voltage (Vout) responds to changes in the input voltage (Vin), <span class="orange-bold">and not</span> directly imply dynamic characteristics of the gate such as the switching <span class="orange-bold">speed</span> (e.g: how fast will we obtain a Vout given a Vin)
 
-### Task 5: Finding Noise Immunity 
+### Task 5: Finding Noise Immunity of Centered VTC
 
-**Reset** the content of `custom_gates.jsim` to its original value: 
+**Set** the content of `custom_gates.jsim` to the following values to center the VTC: 
 
 ```cpp
 * 2-input NAND: inputs are A and B, output is Z
 .subckt nand2 a b z
 MPD1 z a 1 0 NENH sw=8 sl=1
 MPD2 1 b 0 0 NENH sw=8 sl=1
-MPU1 z a vdd vdd PENH sw=1 sl=1
-MPU2 z b vdd vdd PENH sw=1 sl=1
+MPU1 z a vdd vdd PENH sw=10 sl=1
+MPU2 z b vdd vdd PENH sw=10 sl=1
 .ends
 
 * INVERTER: input is A, output is Z
