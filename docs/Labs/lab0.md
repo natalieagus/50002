@@ -243,7 +243,7 @@ The internal hardware implementation of the and2 gate is inside the file `custom
 
 We can **vary** the **size** of each transistors making up each gate (the `sw` and `sl` dimension, which refers to *width* and *length* of the transistors). This will directly affect the VTC plot of the `and2` gate. *You will learn more about the anatomy of the transistors (called MOSFET) next week, but head to [appendix](#how-mosfet-width-and-length-affects-vtc) if you're interested to find out more right now*. 
 
-For instance, set the value of `sw` of MPU1 and MPU2 to be **10**. Then, O=observe the **change** in the VTC output (click Device level simulation button again while focusing on `lab0_task4_and_5.jsim` pane). We now have a more **centered** VTC:
+For instance, set the value of `sw` of MPU1 and MPU2 to be **10**. Then, observe the **change** in the VTC output (click Device level simulation button again while focusing on `lab0_task4_and_5.jsim` pane). We now have a more **centered** VTC:
 
 <img src="{{ site.baseurl }}//docs/Labs/images/lab0/2024-06-27-13-42-27.png"  class="center-full no-invert"/>
 
