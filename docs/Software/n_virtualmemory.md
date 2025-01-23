@@ -43,7 +43,7 @@ Singapore University of Technology and Design
 >    - Explain how the operating system manages multiple processes through context switching.
 >    - Analyse the benefits and drawbacks of context switching
 >
-> These learning objectives aim to equip students with a comprehensive understanding of how virtual memory and related concepts function within computer systems, emphasizing their role in managing limited physical resources effectively.
+> These learning objectives aim to equip us with a comprehensive understanding of how virtual memory and related concepts function within computer systems, emphasizing their role in managing limited physical resources effectively.
  
 ## [Overview](https://www.youtube.com/watch?v=19wS4GC6mbQ&t=0s)
 

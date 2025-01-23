@@ -47,7 +47,7 @@ Singapore University of Technology and Design
 > 8. **Set up for Practical Applications:**
 >   - Integrate the theoretical knowledge of voltage levels, static discipline, and combinational logic into designing and evaluating digital circuits.
 >
-> These objectives aim to equip students with a solid foundation in digital systems, emphasizing the translation of theoretical concepts into practical applications in digital electronics and circuit design.
+> These objectives aim to equip us with a solid foundation in digital systems, emphasizing the translation of theoretical concepts into practical applications in digital electronics and circuit design.
 
 ## [Overview](https://www.youtube.com/watch?v=xkVIr8jrtX0&t=0s)
 

@@ -52,7 +52,7 @@ Singapore University of Technology and Design
 >   - Explain the basic groundwork to design and build a general-purpose programmable machine.
 >   - Explain the transition from specific-purpose devices to general-purpose computing platforms.
 > 
-> These objectives aim to equip students with a comprehensive understanding of digital systems from the ground up, preparing them to engage in more advanced studies and applications in computer science and engineering.
+> These objectives aim to equip us with a comprehensive understanding of digital systems from the ground up, preparing them to engage in more advanced studies and applications in computer science and engineering.
 
 ## [Overview](https://www.youtube.com/watch?v=IicB30kA3pY&list=PLklpDKpv-EBj1agIq4vB1iB6ahMT8_2A_&index=1&t=0s)
 
