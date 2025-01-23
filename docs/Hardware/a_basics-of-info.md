@@ -48,9 +48,6 @@ Singapore University of Technology and Design
 > 8. **Apply Knowledge to Practical Digital System Design:**
 >   - Outline the historical context and evolution of digital devices from mechanical systems to modern electronic computers.
 >   - Outline the practical constraints in early computing, such as cost and size, and how they influenced design decisions.
-> 9. **Identify the Groundwork for Building General-Purpose Computers:**
->   - Explain the basic groundwork to design and build a general-purpose programmable machine.
->   - Explain the transition from specific-purpose devices to general-purpose computing platforms.
 > 
 > These objectives aim to equip us with a comprehensive understanding of digital systems from the ground up.
 
