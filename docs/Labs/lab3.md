@@ -620,7 +620,11 @@ Connect the output of your multiplier to the output of your alu for now:
 ```
 
 ### Failed Timing Warning 
-This 32-bit combinational multiplier, as part of the ALU, may fail to meet the timing specifications for a 100 MHz clock in a sequential device. However this should still produce a working binary and does not affect other parts of your ALU. To address this, you can modify the constraint file to use a slower clock, such as 50 MHz.
+This 32-bit combinational multiplier, as part of the ALU, may fail to meet the timing specifications for a 100 MHz clock in a sequential device. However this should still produce a working binary and <span class="orange-bold">does not</span> affect other parts of your ALU. It might even give the right output for the multiplier (small bit multiplications).
+
+<img src="{{ site.baseurl }}//docs/Labs/images/lab3/2025-01-23-14-12-12.png"  class="center_seventy"/>
+
+To address this, you can modify the constraint file to use a slower clock, such as 50 MHz.
 
 <img src="{{ site.baseurl }}//docs/Labs/images/lab3/2025-01-23-13-55-19.png"  class="center_seventy"/>
 
