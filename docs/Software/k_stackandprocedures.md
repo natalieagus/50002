@@ -49,7 +49,7 @@ Singapore University of Technology and Design
 >    - Describe advanced concepts like nested functions and non-local variables, and how they affect procedure linkage.
 >    - Describe the limitations of C and C++ in handling complex function structures compared to languages like Python.
 >
-> These objectives aim to equip us with a comprehensive understanding of how functions are implemented at a low level, using the stack for memory management during function calls and returns. Students will also learn about the conventions and best practices in designing and debugging functions to write robust and maintainable code.
+> These objectives aim to equip us with a comprehensive understanding of how functions are implemented at a low level, using the stack for memory management during function calls and returns. We will also learn about the conventions and best practices in designing and debugging functions to write robust and maintainable code.
 
 ## [Overview](https://www.youtube.com/watch?v=u4TETujaNuk&t=0s)
  

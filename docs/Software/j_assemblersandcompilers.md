@@ -43,7 +43,7 @@ Singapore University of Technology and Design
 >    - Practice translating high-level language constructs, such as variable declarations, arrays, conditionals, and loops, into Beta machine language.
 >    - Assess the strategies for optimizing the translation process to reduce instruction count and memory operations.
 > 
-> These objectives aim to equip us with a deep understanding of how software abstraction layers work to simplify programming and enhance the usability of computing systems. Students will gain practical skills in using assemblers and understanding the transformation of high-level constructs into executable machine code.
+> These objectives aim to equip us with a deep understanding of how software abstraction layers work to simplify programming and enhance the usability of computing systems. We will gain practical skills in using assemblers and understanding the transformation of high-level constructs into executable machine code.
 
 ## [Overview](https://www.youtube.com/watch?v=Hhq3RhZcngQ&t=49s)
 The goal of this chapter is to help us understand how to improve the programmability of the $$\beta$$ (or any ISA in general). The $$\beta$$ machine language is encoded into 32-bit instructions each. 

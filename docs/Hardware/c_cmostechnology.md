@@ -43,7 +43,7 @@ Singapore University of Technology and Design
 >   - Evaluate propagation delay and contamination delay as critical timing specifications in digital circuits.
 >   - Evaluate how these delays impact the performance and reliability of logic circuits.
 >
-> These objectives aim to provide students with a comprehensive understanding of the basic building blocks of digital electronics, focusing on MOSFETs and their application in combinational logic devices through CMOS technology.
+> These objectives aim to provide us with a comprehensive understanding of the basic building blocks of digital electronics, focusing on MOSFETs and their application in combinational logic devices through CMOS technology.
 
 ## [Overview](https://www.youtube.com/watch?v=JqgZcV_1IU4&t=0s)
 
