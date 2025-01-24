@@ -419,7 +419,7 @@ The logic of the function implemented in Python above can be translated into a *
 <img src="{{ site.baseurl }}/docs/Hardware/images/cs-2025-AgeB.drawio.png"  class="center_seventy"/>
 
 
-**Breakdown**
+Explanation:
 
 1. **Comparing Most Significant Bits (MSBs)**:
    - **AND Gate**: Used to check if \( A1 \) is 1 and \( B1 \) is 0 directly, mapping to `A1 and not B1`.
