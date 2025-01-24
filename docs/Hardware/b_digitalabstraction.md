@@ -56,7 +56,11 @@ One of the cheapest ways to encode information in terms of 0s and 1s is using   
 
 <img src="/50002/assets/contentimage/notes_b/1.png"  class="center_seventy"/>
 
-This is how digital circuits work. This method of determining *discrete* values out of analog voltage (which value is originally made up of real number, and therefore *continuous* and *infinite*) is called the **digital abstraction**. We need to find a way to determine **digital** signal values out of analog voltage values. 
+{:.note-title}
+> Digital Abstraction
+> The method of determining *discrete* values out of analog voltage (which value is originally made up of real number, and therefore *continuous* and *infinite*) is called the **digital abstraction**.
+
+This is how digital circuits work.  We need to find a **reliable framework** to determine **digital** signal values out of analog voltage values. This framework is called the [Static Discipline](#the-static-discipline).  
 
 What are the benefits of the digital abstraction?
 1.  The digital abstraction is where one interprets voltage values as **binary** values, thus allowing us to encode information using voltages.
@@ -118,10 +122,12 @@ The static discipline is one of the **contracts** bound for all logical elements
   
 {: .important-title}
 > The Static Discipline
+>
+> The static discipline is a **framework** that establishes a **contract** between digital devices.
 > 
 > **The contract**: A digital system **must** be able to produce a valid output (for the next device connected at its output terminal) according to its specification **if** it is given a **valid** input.
 >
-> It ensures that circuits are designed to **tolerate** variations (like noise) and still maintain **correct** logical behavior.
+> **Purpose**: It ensures that circuits are designed to **tolerate** variations (like noise) and still maintain **correct** logical behavior.
 >
 > **Physical implementation**: 4 **voltage specifications** and **noise margins** to ensure **reliable** communication between digital devices. These standards define valid voltage ranges for "0" and "1", and not just single voltage points.
 
