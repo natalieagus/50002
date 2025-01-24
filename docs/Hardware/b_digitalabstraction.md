@@ -157,23 +157,29 @@ Noise can knock the voltage down as well (not just up, it's basically random dis
   
 Buffer 1 in the figure would **violates** the *contract* because given a **valid** input, it may be **unable** to produce a valid output (to **reach** the next buffer 2), because the `0.5V` produced at the output of buffer 1 may meet some disturbances that caused it to be slightly off, e.g: `0.55V`.
 
+### The 4 Voltage Specifications 
+
+  
+
+We <span class="orange-bold">need</span> to account for the presence of some light **noise**. Instead of naively setting some voltage $$V_{high}$$ and $$V_{low}$$ as we did above, we need to set a *range* of Voltages as valid bit `1` and `0` respectively. These ranges of valid voltages gives rise to **noise margin**, which purpose is to tolerate noise. 
+
+{:.note-title}
+> Definition
+>
+> There are 4 voltage specifications: Vol (V output low), Vil (V input low), Vil (V input low), and Vih (V input high) used as a framework to establish static discipline. 
+> 
+> These 4 voltage specifications define the valid voltage ranges for inputs and outputs in a digital system to ensure reliable operation. 
+> 
+> The noise margin is **formed** by setting *four* Voltage specifications:  $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, $$V_{ih}$$, where $$V_{ol}$$< $$V_{il}$$< $$V_{ih}$$ < $$V_{oh}$$ which **defines** what range of voltage values signifies a **valid** digital bit `1` and a **valid** digital bit `0` *for ALL combinational logic component in the system*.
+
 ### Noise Margin
 
-We <span class="orange-bold">need</span> to account for the presence of some light **noise**. Instead of naively setting some voltage $$V_{high}$$ and $$V_{low}$$ as we did above, we need to set a *range* of Voltages as valid bit `1` and `0` respectively and need to have something called the **noise margin** to tolerate noise. It is illustrated as the yellow region in the Figure below. 
-
+The noise margin illustrated as the yellow region in the Figure below. 
 
 <img src="https://dropbox.com/s/pt0n36pmy9ncyc6/Volt_2.png?raw=1"     >
 
-{: .new-title}
-> Why do we need to have a noise margin?
-> 
-> The *noise margin* adds as a **precaution** against external disturbances (noise). 
 
-{:.note-title}
-> Noise margin
-> 
-> The noise margin is formed by setting *four* Voltage specifications:  $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, $$V_{ih}$$, where $$V_{ol}$$< $$V_{il}$$< $$V_{ih}$$ < $$V_{oh}$$ which **defines** what range of voltage values signifies a **valid** digital bit `1` and a **valid** digital bit `0` *for ALL combinational logic component in the system*.
-  
+In other words, the *noise margin* adds as a **precaution** against external disturbances (noise). 
 
 Below are the explanations necessary to understand the figure above:
 1.  $$V_{ol}$$ (voltage output low) and $$V_{oh}$$ (voltage output high) is the voltage that **your system** outputs, depending on whether your system is outputting bit `0` or `1`. The output of this system is going to be received by another system after traversing through some wire.
