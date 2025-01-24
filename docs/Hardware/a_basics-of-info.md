@@ -177,7 +177,7 @@ Numbers are also encoded for storage and processing:
 
 2's complement is most common way computers **encode** signed integers because it simplifies arithmetic operations like addition, subtraction, and multiplication in binary.
 
-{: .important}
+{: .important-title}
 > Signed or unsigned?
 > 
 > You can't tell whether a device supports signed or unsigned bits by looking at its output bits alone.  To determine whether a machine is signed or unsigned, you need to check specific documentation or system properties related to the machine or software.
