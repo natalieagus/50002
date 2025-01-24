@@ -26,7 +26,7 @@ Singapore University of Technology and Design
 > 1. **Identify Foundations of Digital Devices:**
 >   - Explain the basic concept of encoding information using electrical signals.
 >   - Explain how bits represent data in electronic devices and their role in computation.
-> 2. **Outline Number Systems and Encoding:**
+> 2. **Outline Number Systems:**
 >   - Gain proficiency in converting between binary, decimal, octal, and hexadecimal number systems.
 >   - Defend the use of prefixes and suffixes in different number systems to indicate bases.
 > 3. **Explain 2's Complement for Signed Numbers:**
@@ -120,53 +120,6 @@ The examples below should provide a straightforward hints on [how to convert bet
 *  `111 110 101` is equivalent to `0001 1111 0101,` hence `0x1F5`
 
 
-
-
-## [2's Complement](https://www.youtube.com/watch?v=IicB30kA3pY&list=PLklpDKpv-EBj1agIq4vB1iB6ahMT8_2A_&index=1&t=1113s)
-
-2's Complement is the way most computers or electronic machines choose to represent *signed* integers. Given a string of bits, we can compute its negative representation using 2's Complement. 
-
-Firstly, most computers chooses to use the **most significant bit (MSB)** as the indicator of whether a particular integer is positive or negative. 
-
-{: .important}
-> Signed or unsigned?
-> 
-> You can't tell whether a device supports signed or unsigned bits by looking at its output bits alone.  To determine whether a machine is signed or unsigned, you need to check specific documentation or system properties related to the machine or software.
-
-For example: 
-* `00101` is a positive number: $$2^2 + 2^0 = 5$$
-* `11011` is a negative number: $$-2^4 + 2^3 +2^1+ 2^0 = -16 + 8 + 2 + 1 = -5$$
-
-To compute the 2's Complement representation of $$5$$ and represent a negative version of it in a computer, we need to apply the following mathematical operation to the original bits:
-
- - **Step 1**: inverse all 0s into 1s and vice versa on the *original* binary number
-- **Step 2:** add 1 **to the number in step 1**
-
-### Example
-
-`0 0 1 1 = 3` $$\rightarrow$$ we want to turn this into -3, so we do the steps below: 
-- **Step 1**: 1 1 0 0 (inversed)
-- **Step 2**: 1 1 0 0 + 0 0 0 1 = 1 1 0 1 (add 1)
-
-The value of the result of step 2 above is : $$-2^3 + 2^2 + 2^0 = -3$$.
-
-The 2's Complement is an operation that can be applied to either numbers: the positive or the negative, and it will yield its counterpart. 
-
-### [Decimal Encoding](https://www.youtube.com/watch?v=IicB30kA3pY&list=PLklpDKpv-EBj1agIq4vB1iB6ahMT8_2A_&index=1&t=1380s)
-
-{: .warning-title}
-> Out of Syllabus
-> 
-> This section is not tested, and is simply written for completeness of knowledge only. 
-
-How to encode decimal in binary? We extend our prior knowledge. Suppose we have **signed** binary number:
-
-```cpp
-1 0 0 1 . 0 0 1 1
-```
-
-The above means $$-1 \times 2^3 + 1 \times 2^0 + 1 \times 2^{-3} + 1 \times 2^{-4}$$.
-
 ## [Encoding](https://www.youtube.com/watch?v=IicB30kA3pY&list=PLklpDKpv-EBj1agIq4vB1iB6ahMT8_2A_&index=1&t=1398s)
  
 Encoding is the process of assigning *representations* to information. Strings of bits can mean some value of integers, but we can also assign a fixed repesentation to them. For example, given four choices `A`, `B`, `C`, and `D`, we can assign two bits each to encode each choice: `00`, `01`, `10`, `11` if they are *equally probable.* 
@@ -176,15 +129,103 @@ More precisely, it is called the **fixed length encoding**, that is used in prac
 {:.note}
 There also exist **variable length encoding** but we will not learn that in this course. 
  
-Example of encoding is character encoding so that the string of bits can be displayed to us properly: 
-* **Number Encoding** : 4-bits to represent each number 1 to 10 
-* **7-bit** ASCII encoding for english characters (no need to memorize, it's just here for fun information only). However it's usually represented as 1 byte (8 bits). Other common character encodings:
-  * An **ISO-8895-1** character in **ISO-8859-1** encoding is 8 bits (1 byte). 
-  * A **Unicode** character in **UTF-8** encoding is between 8 bits (1 byte) and 32 bits (4 bytes)
-<img src="https://dropbox.com/s/0xizcif6yux3uyi/ascii.jpg?raw=1"  class="center_seventy"  >
-* **16-bit** Unicode (UTF-16) encoding: for other language alphabets that are fixed, e.g: Russian, Korean
+**2's complement**, **floating-point encoding**, and **character encoding**  are all examples of binary encoding systems for different purposes. 
 
-We can create electronic devices that are able to *map* (decode) given encoded information, perform computations based on the received information, and encode back the output so that the results can be interpreted by us (users) or other devices. 
+### Character Encoding
+Character encoding defines how characters (letters, symbols, etc.) are represented as binary numbers so that they can be processed and stored by computers. For example:
+1. **ASCII (American Standard Code for Information Interchange):**
+   - Encodes **English characters** in **7 bits** (e.g., `A` → `1000001`).
+   - Often stored in **8 bits (1 byte)** for convenience (extra bit as padding).
+
+2. **ISO-8859-1 (Latin-1):**
+   - Encodes 256 characters in **8 bits (1 byte)**.
+   - Includes Western European characters (e.g., `é`, `ñ`, `ç`).
+
+3. **UTF-8:**
+   - Encodes **Unicode characters**, which support nearly all languages.
+   - Uses **variable-length encoding**:
+     - **1 byte (8 bits):** For ASCII-compatible characters (e.g., `A`, `B`).
+     - **Up to 4 bytes (32 bits):** For complex scripts (e.g., Chinese, emoji).
+
+4. **UTF-16:**
+   - Encodes **Unicode characters** in **16 bits (2 bytes)** for most characters.
+   - Supports other language alphabets like **Russian** and **Korean**.
+   - For characters outside the **Basic Multilingual Plane**, it uses **4 bytes** (2 surrogate pairs).
+
+We can create digital devices that are able to *map* (decode) given encoded information, perform computations based on the received information, and encode back the output so that the results can be interpreted by us (users) or other devices. 
+
+<img src="https://dropbox.com/s/0xizcif6yux3uyi/ascii.jpg?raw=1"  class="center_seventy"  >
+
+### **Number Encoding**
+Numbers are also encoded for storage and processing:
+1. **Floating-Point Encoding:**
+   - Encodes real numbers in a scientific-notation-like format (e.g., IEEE 754). 
+   - This is out of syllabus, but you can check the [appendix](#floating-point-encoding) if you're interested. 
+
+2. **Signed Number Encoding:**
+   - **2's complement** is used to represent signed integers. More explanation below. 
+
+## [2's Complement](https://www.youtube.com/watch?v=IicB30kA3pY&list=PLklpDKpv-EBj1agIq4vB1iB6ahMT8_2A_&index=1&t=1113s)
+
+{:.note-title}
+> Definition
+> 
+> 2's complement is a method of binary integer encoding used to represent both positive and negative integers. The **most significant bit** represents the sign (0 for positive, 1 for negative. )
+
+2's complement is most common way computers **encode** signed integers because it simplifies arithmetic operations like addition, subtraction, and multiplication in binary.
+
+{: .important}
+> Signed or unsigned?
+> 
+> You can't tell whether a device supports signed or unsigned bits by looking at its output bits alone.  To determine whether a machine is signed or unsigned, you need to check specific documentation or system properties related to the machine or software.
+
+For example, in 4-bit representation of a number: 
+* `0101` is a **positive** number: $$2^2 + 2^0 = 5$$
+* `1011` is a **negative** number: $$-2^3 +2^1+ 2^0 = -8 + 2 + 1 = -5$$
+
+### Interpretation
+In 2's complement representation, a binary number  N is evaluated using the following rule:
+
+$$
+N = (-1 \times 2{n-1} + \sum_{i=0}^{n-2} \text{bit}_i \times 2^i)
+$$
+
+where:
+* $$n$$  is the total number of bits 
+* The MSB $$2^{n-1}$$ contributes to the negative weight if it is `1`. 
+
+{:.important}
+The **size** of the number (i.e., the total number of bits $$n$$) is critical to correctly identify the most significant bit (MSB) and interpret the value in 2's complement. 
+
+Without knowing the bit-width ($$n$$), it's <span class="orange-bold">impossible</span> to determine whether the MSB indicates a negative value. For example, `1101` could be interpreted differently depending on its size:
+- As a 4-bit number: `1101` has the MSB as `1`, indicating it's negative (-3).
+- As a 5-bit number: `01101` has the MSB as `0`, indicating it's positive (13).
+
+The bit-width defines the **range of representable values** and ensures proper interpretation of the MSB's role in determining the sign.
+
+### Method to Negate: 2's Complementing
+
+We can apply this method below (also called 2's Complementing the number) to negate an integer: 
+- **Step 1**: Apply 1s complement, that is to invert all 0s into 1s and vice versa on the *original* binary number
+- **Step 2**: Add 1 **to the resulting number from Step 1**
+
+### Example
+
+Given the 4-bit representation of binary number `0011 = 3`, suppose we want to negate it to be -3. We do the steps below: 
+- **Step 1**: `1100` (1s complement)
+- **Step 2**: `1100 + 1 = 1101` (add 1)
+
+The value of the result of step 2 above is : $$-2^3 + 2^2 + 2^0 = -3$$.
+
+This method can be applied to either numbers: the positive or the negative, and it will yield its counterpart. For example, in 4-bit representation of number -5, we have `1011`. 
+- **Step 1**:  `0100` (1s complement)
+- **Step 2** `0100 + 1 = 0101` (add 1). This number is decimal 5. 
+
+
+
+
+
+
 ## The `Byte` Convention
 
 {: .warning-title}
@@ -195,6 +236,7 @@ We can create electronic devices that are able to *map* (decode) given encoded i
 Our system usually report storage amount (disk space, RAM, etc) in terms of **bytes** instead of bits. Historically, the byte (groups of 8 bits) is smallest **addressable** unit of memory in many computer architectures and therefore storage systems are typically reported in terms of **bytes**. A RAM of 1GB in size means that it can hold $$1 \times 8$$ billion bits of data.
 
 The prefix "Giga" means $$10^9$$ in International Unit of Systems (SI), however when you plug in a 1GB RAM, your system might report it as 0.93GB instead. This is because in computing, *Giga* means $$1024^3 = 2^{30}$$ bytes exactly instead of $$10^9$$ bytes because we operate in **base** 2 instead of base 10 in SI. To avoid this confusion, there exist another set of prefixes: Kib, Mib, and Gib to denote $$1024$$ bytes, $$1024^2$$ bytes, and $$1024^3$$ bytes in digital systems. 
+
 
 ## Introduction to Logic Gates
 
@@ -563,5 +605,126 @@ Cryptography relies heavily on information theory to secure data. Understanding 
 
 ### Conclusion
 By linking the theoretical aspects of information theory with practical applications through logic gates, we see a direct impact on numerous technologies. These applications not only demonstrate the practical utility of theoretical knowledge but also underscore the importance of digital logic design in modern computing and electronic communication. This expansion into the practical relevance of information theory and logic gates reveals their profound interconnectedness and the pivotal role they play in the technological advancements that define our digital age.
+
+
+## Floating Point Encoding
+
+{: .warning-title}
+> Out of Syllabus
+> 
+> This section is not tested, and is simply written for completeness of knowledge only. 
+
+{:.note-title}
+> Definition
+> 
+> Floating-point encoding is a method used to represent **real** numbers in binary format, including very large or very small values, by breaking them into three main components: the **sign**, the **exponent**, and the **mantissa** (or significand)
+
+Structure of Floating-Point Numbers
+
+In the [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754) standard, a floating-point number is encoded as:
+
+* Sign (1 bit): Determines whether the number is positive (0) or negative (1). This is the MSB.
+* Exponent (e bits): Encodes the scale or range of the number by specifying the power of 2 that the significand is *multiplied* by. You need to subtract it with **bias** of 127. 
+  * In single floating point precision (32 bits total), e is 8 
+* Mantissa/Significand (m bits): Represents the precision or the significant digits of the number.
+  * In single-precision floating point precision (32 bits total), m is 23 
+
+For example, suppose we have
+```
+0 10000001 01110000000000000000000
+```
+
+Here we have:
+1. Sign: `0`, it is a positive number 
+2. Exponent: `10000001` (8 bits)
+3. Mantissa: `01110000000000000000000`
+
+### Exponent 
+Convert the value `10000001` to decimal, which is `129`. Subtracted by bias of `127`, we have `129-127=2`. 
+
+{:.note-title}
+> What is a bias> 
+>
+> A bias is added to the exponent to allow it to represent both positive and negative powers of 2 while using unsigned integers. 
+>
+> For example: if an exponent is 129, it means "2", if an exponent is 126, it means "-1", and so on.
+
+### Mantissa
+
+{:.note-title}
+> Definition
+>
+> A mantissa represents the **fractional** part of the number, starting after the binary point.
+
+Given the mantissa above, we first add the implicit `1` at the beginning (explanation given [below](#normalised-number), this is always done):
+```
+1.01110000000000000000000
+```
+
+Then we convert it to decimal value (follows the same logic as converting integer binary to decimal, just that with fractional power):
+$$
+1 + 0 * 2^{-1} + 1 * 2^{-2} +1 * 2^{-3} + 1 * 2^{-4} = 1.4375
+$$
+
+### Final Value 
+
+The final value can be computed as such:
+
+$$
+Value = (-1)^{\text{sign}} \times 2^{\text{exponent}-\text{bias}} \times (1.\text{mantissa})
+$$
+
+The value for the example above will be $$2^2 * 1.4375 = 5.75$$.
+
+### Normalised Numnber 
+
+{:.note-title}
+> Definiton
+> 
+> A normalized number in the context of floating-point representation is a number where the most significant digit (the digit to the left of the decimal or binary point) is non-zero.
+
+In binary floating-point numbers, the number takes this form:
+
+$$
+1.\text{fraction} \times 2^{\text{exponent}}
+$$
+
+Examples:
+1. 0.5 in decimal is $$2^{-1}$$ in binary, which is written as $$0.1_2$$ 
+   * To normalize the number, shift the decimal point to the <span class="orange-bold">right</span> by 1 position (basically until there's only a single `1` to the left of a point) and multiply with exponent that has fractional power
+   * This results in $$0.1_2 = 1.0_2 \times 2^{-1}$$
+   * The normalized form is $$ 1.0_2 \times 2^{-1}$$ 
+   * The mantissa in single floating point precision is: `000 0000 0000 0000 0000 0000` (23 bits)
+2. 10.38 in decimal is $$1010.0110_2$$ in binary 
+   * We shift the decimal point to the <span class="orange-bold">left</span> until there's only a single `1` to the left of a point
+   * This results in $$1010.0110_2 = 1.0100110_2 \times 2^3$$ 
+   * The normalized form is $$1.0100110_2 \times 2^3$$ 
+   * The mantissa in single floating point precision is `010 0110 0000 0000 0000 00001` (23 bits)
+
+### Non-normalized Number 
+
+A non-normalized number does not require the leading digit to be `1`. These numbers are typically used for very small values close to zero, where normalization is **not** possible because the exponent would become too negative. This number is smallest than the smallest normalized number. 
+
+The smallest normalized number would be when the exponent is `1`: `0 0000 0001 0000 0000000000000000000`
+
+In decimal, this value is: $$1 \times 2^{-126} \times 1$$, which is around $$10^{-38}$$.  
+
+## Floating Point Precisions
+
+Floating-point precision refers to the accuracy and range with which real numbers can be represented in binary form. There are a few options:
+
+| Precision Type  | Bits | Significant Decimal Digits | Range Approximation              |
+|------------------|------|----------------------------|-----------------------------------|
+| Half Precision   | 16   | 3-4                        | \(6.1 \times 10^{-5}\) to \(6.5 \times 10^{4}\) |
+| Single Precision | 32   | 7                          | \(1.2 \times 10^{-38}\) to \(3.4 \times 10^{38}\) |
+| Double Precision | 64   | 15-16                      | \(2.2 \times 10^{-308}\) to \(1.8 \times 10^{308}\) |
+| Quadruple Precision | 128 | 34                       | \(3.4 \times 10^{-4932}\) to \(1.2 \times 10^{4932}\) |
+
+Choosing the righ precision:
+
+- **Half Precision:** Common in machine learning (e.g., GPUs) to save memory and increase speed for models tolerant of reduced precision.
+- **Single Precision:** Used in graphics processing, gaming, and systems where moderate precision suffices.
+- **Double Precision:** Standard for scientific, engineering, and financial computations requiring high accuracy.
+- **Quadruple Precision:** Rarely used, but important for very high precision scientific simulations.
 
 
