@@ -707,7 +707,7 @@ The smallest normalized number would be when the exponent is `1`: `0 0000 0001 0
 
 In decimal, this value is: $$1 \times 2^{-126} \times 1$$, which is around $$10^{-38}$$.  
 
-## Floating Point Precisions
+### Floating Point Precisions
 
 Floating-point precision refers to the accuracy and range with which real numbers can be represented in binary form. There are a few options:
 
