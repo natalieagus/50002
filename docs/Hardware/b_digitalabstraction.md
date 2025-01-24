@@ -204,7 +204,8 @@ Once **set and chosen,** these four voltage specifications: $$V_{ol}$$, $$V_{oh}
 
 ## [Voltage Transfer Characteristic Function (VTC)](https://www.youtube.com/watch?v=xkVIr8jrtX0&t=974s)
 
-The VTC is a **plot** between the input voltage ($$V_{in}$$) to a digital system/device vs the output voltage ($$V_{out}$$) of this digital system.
+The VTC is a **plot** between the input voltage ($$V_{in}$$) to a digital system/device vs the output voltage ($$V_{out}$$) of this digital system. It is used to come up with proper values for the 4 voltage specifications in practice, so that these values are well within the physical limitations of the digital device. 
+* For example, if a device is unable to produce voltage value lower than 0.2V, then we should not set its Vol to be 0.1V
 
 {: .warning}
 VTC **does not** tell us how fast the device is. It just captures the static behavior of the device and tells us what *kind* of device it is.
