@@ -168,7 +168,7 @@ We <span class="orange-bold">need</span> to account for the presence of some lig
 >
 > There are 4 voltage specifications: Vol (V output low), Vil (V input low), Vil (V input low), and Vih (V input high) used as a framework to establish static discipline. 
 > 
-> It is <span class="orange-bold">important</span> that $$V_{ol}$$< $$V_{il}$$< $$V_{ih}$$ < $$V_{oh}$$. 
+> It is <span class="orange-bold">important</span> that $$V_{ol}$$< $$V_{il}$$< $$V_{ih}$$ < $$V_{oh}$$. This way, output *amplifes*  the input via regeneration to ensure binary logic levels are maintained reliably across a digital circuit. See [appendix](#appendix) for further explanation. 
 > 
 > These 4 voltage specifications define the valid voltage ranges for inputs and outputs in a digital system to ensure reliable operation. They **define** what range of voltage values signifies a **valid** digital bit `1` and a **valid** digital bit `0` *for ALL combinational logic component in the system*.
 
@@ -243,7 +243,7 @@ Explanation of the VTC figure above:
 You can quickly tell if a digital device can be *potentially* be used as a combinational logic device **iff**: you can **find** a set of these four voltage specifications: $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, and $$V_{ih}$$ **whereby its VTC curve  does not cross the forbidden zone** and that $$V_{ol}$$< $$V_{il}$$ < $$V_{ih}$$ < $$V_{oh}$$.
 * We typically begin by *guessing* each value of $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, and $$V_{ih}$$ and check if the curve crosses the forbidden zone (check if static discipline obeyed) formed by these four values. 
 * If static discipline is violated, we either adjust our guess or find another device. 
-* Also, we want to choose  $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, and $$V_{ih}$$ that **maximises noise immunity**. -
+* Also, we want to choose  $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, and $$V_{ih}$$ that **maximises noise immunity**.
 
 If you can satisfy the condition highlighted above, then it means that the device is a combinational logic device. Its VTC curve has to possesses both **characteristics** below:
 
@@ -262,7 +262,7 @@ If you can satisfy the condition highlighted above, then it means that the devic
 
 
 	If  absolute `Gain` $$>1$$, then there is a **finite, positive** noise margin. If absolute `Gain`$$=1$$, then there's **zero** noise margin. It is *impossible* to have absolute `Gain` $$<1$$ and still have the four Voltage specifications $$V_{ol}$$ < $$V_{il}$$ < $$V_{ih}$$ < $$V_{oh}$$.
-	   Also, having absolute `Gain > 1` **maintains** the signal passed through the system as signal loss is inevitable through the system.
+	   Also, having absolute `Gain > 1` **maintains** integrity of the signal passed through the system as signal loss is inevitable in the real world.
 
 2. The device has a  **Non-linear `Gain`**, meaning that `Gain`  is a **function** of `Vin` and therefore the *gradient* along the *entire* curve varies. 
 	* The VTC curve for a combinational logic device should not be **entirely** made of a single, constant gradient like the shape of a plot from a basic line equation, but rather more towards an "S" (or mirrored S) shape.
@@ -291,3 +291,27 @@ Each larger device will provide greater level of *abstraction*:
 * Once we have a CPU, we can create an assembler to help us program an operating system in assembly. We can create more useful programs like compilers to help us create programs easily in higher level language. This is how abstraction works: we create smaller components and use them together so that we can do our job (as programmers) easily. 
 
 Therefore, it is imperative that each  combinational logic device / component, no matter how small, **must** conform to the static discipline and the established four voltage specifications (that must be chosen such that it fits with their VTC) so that the larger system can work as intended. 
+
+## Appendix
+
+In digital systems, the term **"output amplifies input"** refers to the **restoration** or **regeneration** of signal levels by digital gates or devices to maintain distinct and reliable binary states. 
+
+### Maintain signal integrity across stages
+
+As signals propagate through circuits, they experience degradation due to resistive losses (voltage drops in wires), capacitive effects (slower transitions), and noise accumulation (fluctuations from the environment). Without amplification, these effects accumulate, causing the signal to drift into the invalid zone or become indistinguishable. A gain greater than 1 ensures that outputs regenerate the input to valid logic levels (Vol or Voh), restoring signal integrity for subsequent stages.
+
+---
+
+### How Output Amplifies Input
+In digital logic gates, the transfer function ensures that small changes in input voltages near Vil or Vih result in **large** changes in output voltages, driving them to **valid** levels Vol for `0` or Voh for `1`. A <span class="orange-bold">steep</span> transfer function slope (gain > 1) allows the output to "snap" to valid states, effectively **amplifying** and **stabilizing** the input signal.
+
+
+
+### Without Amplification (Gain ≤ 1)
+If the gain is 1, the input-output relationship becomes linear, propagating noise directly without restoring valid levels. For gain < 1, signals **weaken** further, violating voltage specifications (Vol < Vil < Vih < Voh) and causing signals to **degrade** beyond recovery, making the system **unreliable**.
+
+
+In short, amplification restores signal levels to ensure valid logic outputs, counteracting signal loss caused by noise and degradation. It enforces static discipline, guaranteeing that valid inputs produce valid outputs, and prevents cascading errors by regenerating distinct binary levels across multiple circuit stages.
+
+{:.highlight}
+The amplification is not "amplification" in the analog sense (where signals are continuously increased), but rather the regeneration of signals to ensure binary logic levels are maintained reliably across a digital circuit. Without this, digital systems would quickly fail due to noise and signal loss.
