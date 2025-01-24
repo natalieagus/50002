@@ -519,9 +519,9 @@ It is important to consider how the certainty or predictability of an event (or 
 Here are the key points from this notes:
 
 1. **Number Systems**: Digital systems uses **binary** number system, but we touched on decimal, octal, and hexadecimal number systems for convenient representation.
-2. **2's Complement**: Signed integers are represented using 2's complement (flip the bits then increment by 1), thus enabling the representation of negative numbers in binary form. 
-3. **Basic Logic Gates**: Get familiar with **basic** logic operations like XOR, AND, OR, and INV. These basic logic gates are the basic building blocks for a more complex combinational circuit. 
-4. **Encoding Methods**: There exist **fixed** encoding and variable encoding methods, but we only touched on the former. Fixed encoding refers to a method of representing information, such as text, data, or signals, where a predefined, unchanging scheme is used to encode and decode the information (like ASCII and Unicode). This is useful so that we can consistently represent data across different systems. 
+2. **Encoding Methods**: There exist **fixed** encoding and variable encoding methods, but we only touched on the former. Fixed encoding refers to a method of representing information, such as text, data, or signals, where a predefined, unchanging scheme is used to encode and decode the information (like ASCII and Unicode). This is useful so that we can consistently represent data across different systems. 
+3. **2's Complement**: A way to encode signed integers. Signed integers are represented using 2's complement (flip the bits then increment by 1), thus enabling the representation of negative numbers in binary form. 
+4. **Basic Logic Gates**: Get familiar with **basic** logic operations like XOR, AND, OR, and INV. These basic logic gates are the basic building blocks for a more complex combinational circuit. 
 5. **Information Theory**: Information can be quantified based on the probability of events. The amount of information held by an **event** is **inversely proportional to** the probability $$p$$ of that event happening. Information can be represented in terms of **bits** by taking $\log_2$ of its inverse probability. 
 6. Encoding data with $$X$$ bits:
    1. We can **represent** $$2^X$$ *distinct values* with $$X$$ bits
