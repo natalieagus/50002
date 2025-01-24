@@ -119,11 +119,11 @@ The static discipline is one of the **contracts** bound for all logical elements
 {: .important-title}
 > The Static Discipline
 > 
-> **The contract**: A digital system **must** be able to produce a valid output (for the next device connected at its output terminal) according to its specification if it is given a valid input.
+> **The contract**: A digital system **must** be able to produce a valid output (for the next device connected at its output terminal) according to its specification **if** it is given a **valid** input.
 >
 > It ensures that circuits are designed to **tolerate** variations (like noise) and still maintain **correct** logical behavior.
 >
-> **How it is achieved**: static discipline dictates **voltage specifications** and **noise margins** to ensure **reliable** communication between digital devices.
+> **Physical implementation**: 4 **voltage specifications** and **noise margins** to ensure **reliable** communication between digital devices. These standards define valid voltage ranges for "0" and "1", and not just single voltage points.
 
 This contract **guarantees** the behavior for each processing block in a system, so that a set of such interconnected devices may work properly (are able to pass and compute valid information at the end of the chain of connections). This is necessary so that the system has a **predictable behavior.**
 
@@ -147,26 +147,33 @@ Consider two digital devices connected in series as shown in the figure below. T
 
 <img src="https://dropbox.com/s/9lejkhiqx50ga8y/p4.png?raw=1"  class="center_fourty" >
 
-This explanation can be made clear with the following example. Suppose we supply 0.5V and Device 1 is able to produce also 0.5V, which means digital bit . 
-* However, the problem is that a *wire*, that connects two or more combinational devices together is susceptible to **noise**. 
-* The voltage value that is received at Device 2 may be *slightly higher* than 0.5V, for example: 0.55V instead, and therefore according to our specification, it is *no longer a valid bit `0`*.
+Suppose we supply 0.5V and the first buffer is able to produce also 0.5V, which means digital bit`0` . 
+* <span class="orange-bold">Problem</span>: A *wire*, that connects two or more combinational devices together is susceptible to **noise**. 
+* The voltage value that is received at the second 2 may be *slightly higher* than 0.5V, for example: 0.55V instead, and therefore according to our specification, it is *no longer a valid bit `0`*.
 
 {: .note}
-Noise can knock the voltage down as well (not just up, it's basically random disturbance). The above is just an example that's detrimental to the function of the devices in this example.
+Noise can knock the voltage down as well (not just up, it's basically random disturbance). The above is just an example that's affecting to the logical integrity of the devices in this example.
 
   
-Device 1 in the figure above **violates** static discipline because given a **valid** input, it may be **unable** to produce a valid output (to **reach** the next device 2), because the `0.5V` produced at the output of Device 1 may meet some disturbances that caused it to be slightly off, e.g: `0.55V`.
+Buffer 1 in the figure would **violates** the *contract* because given a **valid** input, it may be **unable** to produce a valid output (to **reach** the next buffer 2), because the `0.5V` produced at the output of buffer 1 may meet some disturbances that caused it to be slightly off, e.g: `0.55V`.
 
-### The importance of noise margin
+### Noise Margin
 
-We <span class="orange-bold">need</span> to account for the presence of some light **noise**. Instead of naively setting some voltage $$V_{high}$$ and $$V_{low}$$ as we did above, we need to set a *range* of Voltages as valid bit `1` and `0` respectively and need to have something called the **noise margin** to tolerate noise. It is illustrated as the yellow region in the Figure below. The noise margin is formed by setting *four* Voltage specifications:  $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, $$V_{ih}$$, where  $$V_{ol}$$< $$V_{il}$$< $$V_{ih}$$ < $$V_{oh}$$ which **defines** what range of voltage values signifies a **valid** digital bit `1` and a **valid** digital bit `0` *for any combinational logic component in the system*: 
-  
+We <span class="orange-bold">need</span> to account for the presence of some light **noise**. Instead of naively setting some voltage $$V_{high}$$ and $$V_{low}$$ as we did above, we need to set a *range* of Voltages as valid bit `1` and `0` respectively and need to have something called the **noise margin** to tolerate noise. It is illustrated as the yellow region in the Figure below. 
+
+
 <img src="https://dropbox.com/s/pt0n36pmy9ncyc6/Volt_2.png?raw=1"     >
 
 {: .new-title}
 > Why do we need to have a noise margin?
 > 
 > The *noise margin* adds as a **precaution** against external disturbances (noise). 
+
+{:.note-title}
+> Noise margin
+> 
+> The noise margin is formed by setting *four* Voltage specifications:  $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, $$V_{ih}$$, where $$V_{ol}$$< $$V_{il}$$< $$V_{ih}$$ < $$V_{oh}$$ which **defines** what range of voltage values signifies a **valid** digital bit `1` and a **valid** digital bit `0` *for ALL combinational logic component in the system*.
+  
 
 Below are the explanations necessary to understand the figure above:
 1.  $$V_{ol}$$ (voltage output low) and $$V_{oh}$$ (voltage output high) is the voltage that **your system** outputs, depending on whether your system is outputting bit `0` or `1`. The output of this system is going to be received by another system after traversing through some wire.
