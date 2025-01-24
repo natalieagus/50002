@@ -422,20 +422,20 @@ The logic of the function implemented in Python above can be translated into a *
 Explanation:
 
 1. **Comparing Most Significant Bits (MSBs)**:
-   - **AND Gate**: Used to check if \( A1 \) is 1 and \( B1 \) is 0 directly, mapping to `A1 and not B1`.
-   - This result can directly influence the output if \( A \) is greater, bypassing the need to check the least significant bits (LSBs).
+   - **AND Gate**: Used to check if `A1` is 1 and `B1` is 0 directly, mapping to `A1 and not B1`.
+   - This result can directly influence the output if `A` is **greater**, bypassing the need to check the least significant bits (LSBs).
 
 2. **Equality Check**:
-   - **XNOR Gate**: Typically, you might use an XNOR gate to compare \( A1 \) and \( B1 \) to check for equality because XNOR outputs true when both inputs are equal. This can control whether to proceed to compare the LSBs.
+   - **XNOR Gate**: Typically, you might use an XNOR gate to compare `A1` and `B1` to check for equality because XNOR outputs true when both inputs are equal. This can control whether to proceed to compare the LSBs.
 
 3. **Comparing Least Significant Bits (LSBs)**:
    - **AND Gate**: Similar to the MSB comparison, another AND gate can be used for `A0 and not B0` to check the condition when the MSBs are equal.
 
 4. **Overall Logic**:
-   - **OR Gate**: If \( A1 > B1 \) or (if equal and \( A0 > B0 \)), then \( A > B \). This can be implemented by feeding the outputs of the respective AND gates to an OR gate, whose output would then represent \( A > B \).
+   - **OR Gate**: If `A1 > B1` or (if they are equal and `A0 > B0`, then `A > B`. This can be implemented by feeding the outputs of the respective AND gates to an OR gate, whose output would then represent `A > B`.
 
 5. **Final Output**:
-   - The outputs of these gates would typically be connected to form the logic needed for the comparator. For \( A = B \), the output from an XNOR gate (checking both bits pairs) could be used directly, and for \( A < B \), you could mirror the \( A > B \) logic by swapping inputs.
+   - The outputs of these gates would typically be connected to form the logic needed for the comparator. For `A == B`, the output from an XNOR gate (checking both bits pairs) could be used directly, and for `A < B`, you could mirror the `A > B` logic by swapping the inputs.
 
 ### Example of Practical Application
 In practical applications, such hardware comparators are used in sorting algorithms implemented in hardware, digital signal processing for real-time decision making, and anywhere within a digital system where two binary values need to be **compared** quickly and efficiently without the overhead of software computation.
@@ -447,12 +447,12 @@ For instance: **automatic focus adjustment in digital cameras**
 
 ## Abstraction: A General Purpose Computer 
 
-Logic gates form the <span class="orange-bold">bedrock</span> upon which general-purpose computers are built, translating fundamental digital principles into versatile computing capabilities. By implementing basic operations like AND, OR, and NOT at the hardware level, these gates enable computers to perform complex calculations and decision-making processes efficiently. 
+Logic gates form the <span class="orange-bold">bedrock</span> upon which general-purpose computers are built, translating fundamental digital principles into versatile computing capabilities. By implementing basic operations like AND, OR, and NOT at the hardware level, these gates enable computers to perform **complex** calculations and decision-making processes efficiently. 
 
 {:.important}
 This foundational hardware logic allows developers to abstract away from the physical electronics to focus on software development. 
 
-In practical terms, this means that *instead* of manually constructing circuits in a lab for specific tasks, programmers can write flexible and sophisticated Python code that the computer interprets and executes using its underlying logic gate-driven architecture. Thus, the intricate arrangement of logic gates in a computer's hardware directly empowers the high-level programming and software applications that drive modern technology, seamlessly bridging the gap between electronic design and software functionality.
+In practical terms, this means that *instead* of manually constructing circuits in a lab for specific tasks, programmers can write flexible and sophisticated Python code that the computer interprets and executes using its underlying logic gate-driven architecture. Thus, the intricate arrangement of logic gates in a computer's hardware directly enables the high-level programming and software applications that drive modern technology. It bridges the gap between electronic design and software functionality.
 
 
 ## [Information and uncertainty](https://www.youtube.com/watch?v=IicB30kA3pY&list=PLklpDKpv-EBj1agIq4vB1iB6ahMT8_2A_&index=1&t=1761s)
