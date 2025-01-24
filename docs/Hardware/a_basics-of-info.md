@@ -460,7 +460,7 @@ In practical terms, this means that *instead* of manually constructing circuits 
 After exploring the fundamental operations performed by logic gates, it's crucial to **understand** how these elements contribute to the <span class="orange-bold">broader</span> context of <span class="orange-bold">information processing</span> in computing systems. 
 
 {:.highlight}
-Information theory, which quantifies the amount of information in messages or events based on their probability, provides a mathematical foundation for many aspects of computer science, including data compression, error detection, and cryptography.
+**Information theory** quantifies the amount of information in messages or events based on their probability. It provides a **mathematical** foundation for many aspects of computer science: data compression, error detection, and cryptography.
 
 The amount of information held by an **event** is **inversely proportional to** the probability $$p$$ of that event happening,
 
@@ -523,16 +523,11 @@ Here are the key points from this notes:
 3. **Basic Logic Gates**: Get familiar with **basic** logic operations like XOR, AND, OR, and INV. These basic logic gates are the basic building blocks for a more complex combinational circuit. 
 4. **Encoding Methods**: There exist **fixed** encoding and variable encoding methods, but we only touched on the former. Fixed encoding refers to a method of representing information, such as text, data, or signals, where a predefined, unchanging scheme is used to encode and decode the information (like ASCII and Unicode). This is useful so that we can consistently represent data across different systems. 
 5. **Information Theory**: Information can be quantified based on the probability of events. The amount of information held by an **event** is **inversely proportional to** the probability $$p$$ of that event happening. Information can be represented in terms of **bits** by taking $\log_2$ of its inverse probability. 
-
-Given $$X$$ bits of data:
-
-1.  We can **encode** $$2^X$$ *choices, or random variables*
-	> Equivalently, given $$Y$$ choices, we need to use at least $$\log_2(Y)$$ bits to encode them, rounded up to the nearest integer (since we cannot technically subdivide "bits" in real life. 
-
-2.  If it is **unsigned**, we can represent the number ranged from 0 to $$2^X-1$$
-
-3.  If it is **signed**, we can represent the number ranged from
-    $$-2^{X-1}$$ to $$2^{X-1}-1$$
+6. Encoding data with $$X$$ bits:
+   1. We can **represent** $$2^X$$ *distinct values* with $$X$$ bits
+   2. If it represent **unsigned** integers, it ranges from 0 to $$2^X-1$$
+   3. If it represents **signed** integers, it ranges from $$-2^{X-1}$$ to $$2^{X-1}-1$$ (the range is divided between positive and negative values)
+7. Given $$Y$$ choices with equal probability of outcome, we need to use at least $$\lceil\log_2\rceil(Y)$$ bits to encode all possible outcomes. It is rounded up to the nearest integer (since we cannot technically subdivide "bits" in real life).
 
 ## Next Steps
 
