@@ -168,23 +168,31 @@ We <span class="orange-bold">need</span> to account for the presence of some lig
 >
 > There are 4 voltage specifications: Vol (V output low), Vil (V input low), Vil (V input low), and Vih (V input high) used as a framework to establish static discipline. 
 > 
-> These 4 voltage specifications define the valid voltage ranges for inputs and outputs in a digital system to ensure reliable operation. 
+> It is <span class="orange-bold">important</span> that $$V_{ol}$$< $$V_{il}$$< $$V_{ih}$$ < $$V_{oh}$$. 
 > 
-> The noise margin is **formed** by setting *four* Voltage specifications:  $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, $$V_{ih}$$, where $$V_{ol}$$< $$V_{il}$$< $$V_{ih}$$ < $$V_{oh}$$ which **defines** what range of voltage values signifies a **valid** digital bit `1` and a **valid** digital bit `0` *for ALL combinational logic component in the system*.
+> These 4 voltage specifications define the valid voltage ranges for inputs and outputs in a digital system to ensure reliable operation. They **define** what range of voltage values signifies a **valid** digital bit `1` and a **valid** digital bit `0` *for ALL combinational logic component in the system*.
+
+$$V_{ol}$$ (voltage output low) and $$V_{oh}$$ (voltage output high) is the voltage that a digital device outputs.
+*  A voltage value *less* than $$V_{ol}$$ is regarded as digital bit `0`
+*  A voltage value *higher* than $$V_{oh}$$ is regarded as digital bit `1` 
+*  The output of a digital system is going to be received by another system after traversing through some wire.
+
+$$V_{il}$$ (voltage input low) or $$V_{ih}$$ (voltage input high) is the voltage that a digital device receives as **input** from digital system.
+* A voltage value *less* than $$V_{il}$$ is regarded as digital bit `0`
+* A voltage value *higher* than $$V_{ih}$$ is regarded as digital bit `1` 
+
+To ensure static discipline, there must be a **gap** between the output and input specifications, forming the <span class="orange-bold">noise margins</span>. 
 
 ### Noise Margin
 
-The noise margin illustrated as the yellow region in the Figure below. 
+The noise margin illustrated as the yellow region in the Figure below. It *noise margin* adds as a **precaution** against external disturbances (noise). 
 
 <img src="https://dropbox.com/s/pt0n36pmy9ncyc6/Volt_2.png?raw=1"     >
 
 
-In other words, the *noise margin* adds as a **precaution** against external disturbances (noise). 
 
-Below are the explanations necessary to understand the figure above:
-1.  $$V_{ol}$$ (voltage output low) and $$V_{oh}$$ (voltage output high) is the voltage that **your system** outputs, depending on whether your system is outputting bit `0` or `1`. The output of this system is going to be received by another system after traversing through some wire.
-2.  $$V_{il}$$ (voltage input low) or $$V_{ih}$$ (voltage input high) is the voltage that **your system** receives as **input** from another system.
-3.  The **absolute difference** between $$V_{ol}$$ and $$V_{il}$$ is called the **low bit noise margin**, and the **absolute difference** between $$V_{oh}$$ and $$V_{ih}$$ is called the **high bit noise margin**.
+
+The **absolute difference** between $$V_{ol}$$ and $$V_{il}$$ is called the **low bit noise margin**, and the **absolute difference** between $$V_{oh}$$ and $$V_{ih}$$ is called the **high bit noise margin**.
 
 {: .note}
 Low-bit/high-bit noise margin is formally defined as the **maximum** voltage amplitude of *extraneous* (erroneous) signal that can be added to the noise-free input level *without* causing a drastic change in the output voltage and that it is still within the valid logic level. 
