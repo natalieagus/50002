@@ -108,7 +108,7 @@ Anything that is between the low and high threshold value is called the <span cl
 <img src="https://dropbox.com/s/6uo61vk9yze1aot/Volt.png?raw=1"  class="center_seventy"    >
 
 {: .note}
-The values of operating voltage in practice is commonly set to be 0.3V for low voltage and 3.3V for high voltage. 
+The values of operating voltage in practice: e.g LVCMOS33 standard is commonly set to be **0.3V** for **low** voltage (binary value `0`) and **3.3V** for **high** voltage (binary value `1`). 
 
 Combinational circuits like AND, OR, and NOT gates **rely** on these voltage representations to **interpret** inputs and produce outputs. This encoding **must** be robust enough to handle noise and imperfections in the physical world.
 
@@ -119,18 +119,21 @@ The static discipline is one of the **contracts** bound for all logical elements
 {: .important-title}
 > The Static Discipline
 > 
-> A digital system **must** be able to produce a valid output (for the next device connected at its output terminal) according to its specification if it is given a valid input.
+> **The contract**: A digital system **must** be able to produce a valid output (for the next device connected at its output terminal) according to its specification if it is given a valid input.
+>
+> It ensures that circuits are designed to **tolerate** variations (like noise) and still maintain **correct** logical behavior.
+>
+> **How it is achieved**: static discipline dictates **voltage specifications** and **noise margins** to ensure **reliable** communication between digital devices.
 
 This contract **guarantees** the behavior for each processing block in a system, so that a set of such interconnected devices may work properly (are able to pass and compute valid information at the end of the chain of connections). This is necessary so that the system has a **predictable behavior.**
 
 {: .highlight}
-Therefore, one can say that **a combinational logic device always obeys the static discipline**. 
+A combinational logic device **always** obeys the static discipline, as it **guarantees** that the outputs produced will meet the required voltage levels to be **correctly** interpreted by the next stage of the system, provided the inputs also meet their valid voltage ranges.
 
 <span style="color:red; font-weight: bold;">However this doesn't mean that the opposite is true.</span>
 
 A device receiving invalid input does <span style="color:red; font-weight: bold;">not</span> necessarily produce invalid output. The output from a combinational logic device given invalid input remains *unpredictable*. 
 
-{:.note}
 An unconnected terminal or a dangling wire in a digital circuit is <span class="orange-bold">not</span> considered a valid low digital signal. In digital electronics, each signal line or terminal must have a definite state: high (1), low (0), or sometimes a high-impedance state.
 
 ## [Voltage Specifications and Noise Margin](https://www.youtube.com/watch?v=xkVIr8jrtX0&t=488s)
