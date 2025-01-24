@@ -156,7 +156,7 @@ We can create digital devices that are able to *map* (decode) given encoded info
 
 <img src="https://dropbox.com/s/0xizcif6yux3uyi/ascii.jpg?raw=1"  class="center_seventy"  >
 
-### **Number Encoding**
+### Number Encoding
 Numbers are also encoded for storage and processing:
 1. **Floating-Point Encoding:**
    - Encodes real numbers in a scientific-notation-like format (e.g., IEEE 754). 
