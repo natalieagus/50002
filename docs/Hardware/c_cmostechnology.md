@@ -47,10 +47,20 @@ Singapore University of Technology and Design
 
 ## [Overview](https://www.youtube.com/watch?v=JqgZcV_1IU4&t=0s)
 
-In this chapter, we are learning a particular component called the **MOSFET** that can be used as a <span class="orange-bold">building block</span> for our combinational logic device. It has all the characteristics mentioned above.   
+In this chapter, we are learning a particular component called the **MOSFET** that can be used as a <span class="orange-bold">building block</span> to make combinational logic devices (logic gates and more complex digital systems). CMOS is ideal for combinational devices (that need to obey static discipline) because it provides output voltages that fully span from the supply voltage (Vdd) to ground (Vss), ensuring **clear** and **reliable** logic levels.
+
+{:.highlight-title}
+> Why MOSFET? 
+> 
+> If we connect MOSFETs in a specific way, we can **create** a combinational logic device that represents our desired *truth table* or *functional **logic** specification*. MOSFETs are used because they can produce reliable logic levels with low power consumption, are cost-effective, and generate minimal heat.
+
+Further supporting characteristics of MOSFET:
+* **High Noise Margins**: Ensures clear distinction between logical 0 and 1, reducing errors.
+* **Low Static Power Consumption**: Prevents excessive heating and power waste in stable states.
+* **Strong Drive Capability**: Can reliably drive subsequent stages without signal degradation.
 
 {:.new-title}
-> Recall 
+> RECALL: before we continue
 >
 > The ideal behaviors and characteristics of a **combinational logic device** are:
 > 1.  The device should be able to **tolerate** some amount of errors due to its *Noise Margins.* The Noise Margin exists if its VTC gain $$>1$$.
@@ -66,34 +76,35 @@ In this chapter, we are learning a particular component called the **MOSFET** th
 *Metal-oxide semiconductor field effect transistors* (MOSFET, or shortened as FETs) is the main material that is used to make our combinational device. The basic schematic of a transistor is shown in the figure below. 
 
 {: .highlight}
-MOSFETS are **four** terminal voltage-controlled **switches**.  
-
-Current flows between the diffusion terminals (source and drain) if the voltage on the gate terminal is large enough to create a conducting channel (in pink) and the mosfet is on. Otherwise, the conducting channel does not form and the mosfet is off: the diffusion terminals are not connected.
-
+MOSFETS are **four** terminal voltage-controlled **switches**. You can buy them at a relatively cheap price [online](https://www.mouser.sg/c/semiconductors/discrete-semiconductors/transistors/mosfets/?transistor%20polarity=P-Channel) for DIY projects. However in computer parts, they are the same components miniaturized to the nanometer scale for high-density integration.
 
 
 <img src="https://dropbox.com/s/b2pg0h1amacjc5j/mosfet.png?raw=1"      >
  
 Notable parts of  MOSFET and its function:
 
-  1.  MOSFETs are devices that are used to 'switch' 1s to 0s (high voltage to low voltage) and vice versa, so that we can build combinational logic devices and implement its functionalities (truth table/logic)
-  2.  It has 4 terminals: drain, gate, source, and bulk. Input is supplied at the **gate**, and output is obtained at the **drain**.
-  3.  The current flow between source and drain $$I_{DS}$$ is proportional to $$\frac{W}{L}$$ (the width and the length) of the MOSFET.
-  4.  Source and drain is physically **symmetrical**, we name them depending on the type of the MOSFET.
+  1.  MOSFETs are electronic components that control whether a circuit outputs a high (1) or low (0) voltage, forming the **basic building blocks** of digital devices.
+  2.  It has 4 terminals: drain, gate, source, and bulk. Input voltage is supplied at the **gate**, and output voltage is obtained at the **drain**.
+  3.  Current flow between source and drain $$I_{DS}$$ is proportional to $$\frac{W}{L}$$ (the width and the length) of the MOSFET.
+  4.  Source and drain is physically **symmetrical**, we name them depending on the type of the MOSFET and the direction of current flow. 
+  5.  Depending on the input voltage supplied at the **gate**, a MOSFET can be either ON, allowing current to flow from source to drain, or OFF, leaving the drain with a floating or undefined value.
 
 {:.note}
 > Remember from your Physics classes:
 > * Current flows from higher potential (+) to lower potential (-)
 > * Electron flows from lower potential (-) to higher potential (+)
 
-  
+Current flows between the diffusion terminals (source and drain) if the voltage on the **gate** terminal is large enough to create a conducting channel (in pink) and the mosfet is on. Otherwise, the conducting channel does not form and the mosfet is off: the diffusion terminals are not connected.
+* A MOSFET is said to function as a **switch** by using the **gate** voltage to control the formation of a conducting channel between the source and drain.
+* When the channel forms, current flows (ON state); otherwise, the source and drain are disconnected (OFF state).
+
+
+MOSFETs are arranged in **complementary** pairs (PFET and NFET) to form logic gates, where their ON/OFF states control the output voltage. For example, in an AND gate, the transistors are configured so the output is high only when all inputs are high, while in an OR gate, the output is high if any input is high.
+
+Before we learn more about the complementary arrangement of PFETs and NFETs for logic gates, it’s essential to first understand how each type operates individually.
 
 ## [Types of MOSFETs](https://www.youtube.com/watch?v=JqgZcV_1IU4&t=275s)
 
-{:.highlight-title}
-> Why MOSFET? 
-> 
-> If we connect these MOSFETs in a specific way, we can **create** a combinational logic device that represents our desired *truth table* or *functional **logic** specification* But before we learn how to create such devices, we need to learn two basic types of MOSFETs first. 
 
 <img src="https://dropbox.com/s/qd1zhsulqjmknv2/pfetnfet.png?raw=1"  class="center_fifty"    >
 
