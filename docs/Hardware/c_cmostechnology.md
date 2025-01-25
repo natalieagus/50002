@@ -76,31 +76,41 @@ Current flows between the diffusion terminals (source and drain) if the voltage 
  
 Notable parts of  MOSFET and its function:
 
-  1.  MOSFETs are devices that are used to 'switch' 1s to 0s (high voltage to low voltage) and vice versa, so that we can implement functionalities (truth table or logics)
-  2.  It has 4 terminals. Input is supplied at the **gate**, and output is obtained at the **drain**.
+  1.  MOSFETs are devices that are used to 'switch' 1s to 0s (high voltage to low voltage) and vice versa, so that we can build combinational logic devices and implement its functionalities (truth table/logic)
+  2.  It has 4 terminals: drain, gate, source, and bulk. Input is supplied at the **gate**, and output is obtained at the **drain**.
   3.  The current flow between source and drain $$I_{DS}$$ is proportional to $$\frac{W}{L}$$ (the width and the length) of the MOSFET.
-  4.  Source and drain is physically symmetrical, we name them depending on the type of the MOSFET.
+  4.  Source and drain is physically **symmetrical**, we name them depending on the type of the MOSFET.
 
-Some basic recap before we move on: 
-* Current flows from higher potential (+) to lower potential (-)
-* Electron flows from lower potential (-) to higher potential (+)
+{:.note}
+> Remember from your Physics classes:
+> * Current flows from higher potential (+) to lower potential (-)
+> * Electron flows from lower potential (-) to higher potential (+)
 
   
 
 ## [Types of MOSFETs](https://www.youtube.com/watch?v=JqgZcV_1IU4&t=275s)
 
-If we connect these MOSFETs connected in a specific way, we can **create** a combinational logic device that represents our desired *truth table* or *functional **logic** specification* But before we learn how to create such devices, we need to learn two basic types of MOSFETs first. 
+{:.highlight-title}
+> Why MOSFET? 
+> 
+> If we connect these MOSFETs in a specific way, we can **create** a combinational logic device that represents our desired *truth table* or *functional **logic** specification* But before we learn how to create such devices, we need to learn two basic types of MOSFETs first. 
 
-There are two types of FETs: the **NFET** and the **PFET**.
+<img src="https://dropbox.com/s/qd1zhsulqjmknv2/pfetnfet.png?raw=1"  class="center_fifty"    >
 
-1.  **The NFET** : the majority of the charge carrier for the **bulk** are *holes* (p-type semiconductor). The majority of the charge carrier for the **source and drain** are electrons (n-type semiconductor). Typically, the bulk is connected to GND to keep the PN junction *reverse biased*.
-2.  **The PFET** : the majority of the charge carrier for the **bulk** are electrons (n-type semiconductor). The majority of the charge carrier for the **source and drain** are holes (p-type semiconductor). Typically, the bulk is connected to `VDD` to keep the PN junction *reverse biased*
+
+There are two types of FETs: **NFET** and **PFET** as shown above.
+
+1.  **NFET** : the majority of the charge carrier for the **bulk** are *holes* (p-type semiconductor). The majority of the charge carrier for the **source and drain** are electrons (n-type semiconductor). Typically, the bulk is connected to GND to keep the PN junction *reverse biased*.
+2.  **PFET** : the majority of the charge carrier for the **bulk** are electrons (n-type semiconductor). The majority of the charge carrier for the **source and drain** are holes (p-type semiconductor). Typically, the bulk is connected to `VDD` to keep the PN junction *reverse biased*
+
+The circuit symbol for NFET and PFET are shown as above. Note that the **bulk** of NFET is connected to `GND`, and the **bulk** of PFET is connected to `VDD`, and it is often *implied* and omitted in circuit diagrams.
+
 
 {: .note}
-Please watch the [post-reading video](https://www.youtube.com/watch?v=cJxBlO5NMGs&list=PLklpDKpv-EBhCVUAZDDRWEGZzR_It-FSo&index=3) or refer to the [later](https://natalieagus.github.io/50002/notes/cmostechnology#appendix) section if you are unclear about what is a PN junction, p-type, or n-type semiconductors.
+Please watch the [supplementary video](https://www.youtube.com/watch?v=cJxBlO5NMGs&list=PLklpDKpv-EBhCVUAZDDRWEGZzR_It-FSo&index=3) or refer to the [later](https://natalieagus.github.io/50002/notes/cmostechnology#appendix) section if you are unclear about what is a PN junction, p-type, or n-type semiconductors.
 
 
-Some terms we need to set straight before we proceed:
+Some important terms we need to know:
 1.  `VDD` : voltage source
 2.  $$V_{TH}$$: threshold voltage.
 3.  `GND` : ground
@@ -108,9 +118,7 @@ Some terms we need to set straight before we proceed:
 5.  A FET that is  "ON" refers to a state whereby  there exists a connection between D and S, so that current can flow through them.
 6.  A FET that is "OFF" refers to a state whereby there is no connection between D and S. Current cannot flow through them.
 
-The circuit symbol for NFET and PFET are shown as below. Note that the bulk of NFET is connected to `GND`, and the bulk of PFET is connected to `VDD`.
 
-<img src="https://dropbox.com/s/qd1zhsulqjmknv2/pfetnfet.png?raw=1"  class="center_fifty"    >
 
 ## Switching NFETs and PFETs ON/OFF
 
