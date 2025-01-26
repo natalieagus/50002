@@ -212,7 +212,7 @@ The test jig will try 32 different test values and type out any error messages o
 
 <img src="/50002/assets/contentimage/lab5/3.png"  class=" center_seventy"/>
 
-Unlike in JSim, <span style="color:red; font-weight: bold;">DO NOT</span> press the green tick. The **success** checkoff message is sufficient to know that your program works fine for submission. If there exist an error, such message will be printed out:
+<span style="color:red; font-weight: bold;">DO NOT</span> press the green tick. The **success** checkoff message is sufficient to know that your program works fine for submission. If there exist an error, such message will be printed out:
 
 <img src="/50002/assets/contentimage/lab5/4.png"  class=" center_seventy"/>
 
