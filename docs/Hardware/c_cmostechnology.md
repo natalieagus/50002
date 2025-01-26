@@ -49,6 +49,9 @@ Singapore University of Technology and Design
 
 In this chapter, we are learning a particular component called the **MOSFET** that can be used as a <span class="orange-bold">building block</span> to make combinational logic devices (logic gates and more complex digital systems). CMOS is ideal for combinational devices (that need to obey static discipline) because it provides output voltages that fully span from the supply voltage (Vdd) to ground (Vss), ensuring **clear** and **reliable** logic levels.
 
+<img src="{{ site.baseurl }}/docs/Hardware/images/mosfet.jpg"  class="center_fifty"/>
+> Image obtained from [Lesics](https://www.lesics.com/how-does-a-mosfet-work.html)
+
 {:.highlight-title}
 > Why MOSFET? 
 > 
@@ -94,8 +97,10 @@ Notable parts of  MOSFET and its function:
 > * Current flows from higher potential (+) to lower potential (-)
 > * Electron flows from lower potential (-) to higher potential (+)
 
-Current flows between the diffusion terminals (source and drain) if the voltage on the **gate** terminal is large enough to create a conducting channel (in pink) and the mosfet is on. Otherwise, the conducting channel does not form and the mosfet is off: the diffusion terminals are not connected.
+Current flows between the *diffusion terminals* (**source** and **drain**) if the voltage on the **gate** terminal is large enough to create a conducting channel (in pink) and the mosfet is on. Otherwise, the conducting channel does not form and the mosfet is off: the diffusion terminals are not connected.
 * A MOSFET is said to function as a **switch** by using the **gate** voltage to control the formation of a conducting channel between the source and drain.
+  * **Simplified idea**: You can connect load (e.g: LED) + power source at the source, and ground at the drain 
+  * Then supply input at the gate to "connect" the source and the drain terminal to turn on the LED
 * When the channel forms, current flows (ON state); otherwise, the source and drain are disconnected (OFF state).
 
 
@@ -158,6 +163,7 @@ See the figure below and its corresponding explanation to understand better how 
 4.  It is \"OFF\" when $$V_{GS}$$ is **low**, as it encourages depletion region to form further.
 
 
+
 ###  [How PFET operates](https://www.youtube.com/watch?v=JqgZcV_1IU4&t=960s)
 
 <img src="https://dropbox.com/s/u7nuy6cayaik0q7/pfet_t.png?raw=1"  class="center_fifty" >	  
@@ -176,6 +182,11 @@ See the figure below and its corresponding explanation to understand better how 
 	- The output of an PFET is also at the D terminal.
 	- Hence, the output of an \"ON\" p-type is `1`
 4.  It is "OFF" when $$V_{GS}$$ is **high**, as it encourages depletion region to form further.
+
+
+The figure below summarizes how PFET works as a "switch" that connects the load with the power source and ground:
+
+<img src="{{ site.baseurl }}/docs/Hardware/images/cs-2025-PFET.drawio.png"  class="center_seventy"/>
 
 {: .note-title}
 > Summary
