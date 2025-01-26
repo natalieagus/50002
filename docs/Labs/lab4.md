@@ -32,9 +32,11 @@ Then, you shall **paste** the implementation of your 32-bit ALU unit created in 
 
 ### Checkoff & Questionnaire
 {: .important}
-Since there's only 1 FPGA per group, you need to work through this lab as a 1D group during class and **obtain checkoff as a group** by the stipulated due date (consult course handout). However each person must still submit the lab questionnaire **individually**. For checkoff, <span class="orange-bold">only group members who are present gain the marks (unless valid LOA)</span>. **Contact** your cohort TAs and make appointment to meet them in-person (outside of class hour) You should checkoff as a group.</span> Only 1 rep per group will do for the checkoff, but there will be QnA. Hence, it is up to you if you want to send more people for the checkoff.  
+Since there's only 1 FPGA per group, you need to work through this lab as a 1D group during class and **obtain checkoff** by the stipulated due date (consult course handout). Each person must still submit the lab questionnaire **individually** (see eDimension for due date).
 
-You are <span style="color:#ff791a; font-weight: bold;">not required</span> to submit your code for this lab, only to show your implementation to your TA and instructors by the stipulated due date (consult course handout). Simply head to eDimension and complete the lab **questionnaire** before the due date.
+**Contact** your cohort TAs and make appointment to meet them in-person (outside of class hour). You will obtain checkoff marks as a group, but only 1 rep per group will do for the checkoff. There will be QnA as part of your checkoff criteria. Hence, it is up to you if you want to send more people for the checkoff.  
+
+You are <span style="color:#ff791a; font-weight: bold;">not required</span> to submit your code for this lab, only to show your implementation to your TA during checkoff. 
 
 ## Related Class Materials
 The lecture notes on [Building the Beta CPU](https://natalieagus.github.io/50002/notes/betacpu), and [Designing an Instruction Set](https://natalieagus.github.io/50002/notes/instructionset) are closely related to this lab. 
