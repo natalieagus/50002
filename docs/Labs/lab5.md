@@ -21,10 +21,14 @@ Singapore University of Technology and Design
 {: .no_toc}
 
 ## Starter Code
-The following files inside your `/50002/` folder are what you're going to use for this lab:
-- `lab5_submit.uasm`
 
-Please submit all `*_submit.jsim` files by the due date to eDimension, and do the lab questionnaire in eDimension as usual. 
+TBC
+
+## Submission and Questionnaire
+
+Submission: TBC
+
+As usual, complete the questionnaire for this lab on eDimension before its due date. 
 
 ## Related Materials
 The lecture notes on [Stack and Procedures](https://natalieagus.github.io/50002/notes/stackandprocedures) is closely related for this lab. Related sections include:
@@ -308,3 +312,22 @@ Here's a brief summary of C operators:
 |	bit-wise logical or (use OR, ORC)
 +	addition (doh!, use ADD, ADDC)
 ```
+
+## Summary
+The purpose of this lab is to recap on hand-compiling C to Beta Assembly and applying knowledge from the lecture: Stack and Procedure. Your implemented function can be called many times by the test jig with different arguments because you have followed the procedure for function calls closely using the stack. 
+
+From this lab, you hand-compile the following type of instructions:
+- Branches: for-loops and if-else using BNE/BEQ, or its macro: BF or BT
+- Nested loops: double for-loops during cow computation
+- Loop break: exiting the innermost loop 
+- Local variable declaration
+- Basic arithmetic and masking 
+
+You also utilise the stack to preserver the caller's state (register values), and utilize the following special registers:
+- BP: base pointer, to access function arguments
+- SP: stack pointer, points to the next available location of the stack (top of the stack)
+- LP: linkage pointer, stores return address to the caller to resume execution once callee exists
+
+You do not need to use the stack to store local variables because there are more than enough Registers available to perform the necessary computations. However, note that the BP can also be used to keep track of local variables (besides function arguments). 
+
+Inspect how the test jig is implemented once you have completed the lab. It might help you understand further on why it is important to follow the procedures closely to make function calls reusable. 
