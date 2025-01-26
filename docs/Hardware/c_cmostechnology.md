@@ -74,7 +74,7 @@ Further supporting characteristics of MOSFET:
 > 6.  The device has to be **functional**, meaning that it conforms to the assigned **truth table** (**logic**) at all times. *We do not want unpredictable "buggy" behavior with our devices.*
 
 
-## [The MOSFET](https://www.youtube.com/watch?v=JqgZcV_1IU4&t=180s)
+## [The MOSFET Overview](https://www.youtube.com/watch?v=JqgZcV_1IU4&t=180s)
 
 *Metal-oxide semiconductor field effect transistors* (MOSFET, or shortened as FETs) is the main material that is used to make our combinational device. The basic schematic of a transistor is shown in the figure below. 
 
@@ -104,7 +104,7 @@ Current flows between the *diffusion terminals* (**source** and **drain**) if th
 * When the channel forms, current flows (ON state); otherwise, the source and drain are disconnected (OFF state).
 
 
-MOSFETs are arranged in **complementary** pairs (PFET and NFET) to form logic gates, where their ON/OFF states control the output voltage. For example, in an AND gate, the transistors are configured so the output is high only when all inputs are high, while in an OR gate, the output is high if any input is high.
+MOSFETs are arranged in **[complementary](#complementary-mos-circuitry)** pairs (PFET and NFET) <span class="orange-bold">to form logic gates</span>, where their ON/OFF states control the output voltage. For example, in an AND gate, the transistors are configured so the output is high only when all inputs are high, while in an OR gate, the output is high if any input is high.
 
 Before we learn more about the complementary arrangement of PFETs and NFETs for logic gates, it’s essential to first understand how each type operates individually.
 
@@ -138,7 +138,7 @@ Some important terms we need to know:
 
 ## Switching NFETs and PFETs ON/OFF
 
-See the figure below and its corresponding explanation to understand better how NFET and PFET operates. The two drawings on top are PFETS (left: OFF and right: ON). The two drawings below are NFETS (left: OFF and right: ON). You might want to refer to this Figure as well when reading the **Appendix** below. 
+See the figure below and its corresponding explanation to understand better how NFET and PFET operates. The two drawings on top are PFETS (left: OFF and right: ON). The two drawings below are NFETS (left: OFF and right: ON). You might want to refer to this Figure as well when reading the **[appendix](#p-type-and-n-type-semiconductors)** below. 
 
 <img src="https://dropbox.com/s/px5ev6j9ae22ceg/pnfet.png?raw=1"  >	  
 
@@ -162,6 +162,9 @@ See the figure below and its corresponding explanation to understand better how 
 	- Hence, the output of an \"ON\" N-type is `0`
 4.  It is \"OFF\" when $$V_{GS}$$ is **low**, as it encourages depletion region to form further.
 
+The figure below summarizes how NFET works as a "switch" that connects the load with the power source and ground:
+
+<img src="{{ site.baseurl }}/docs/Hardware/images/cs-2025-NFET.drawio.png"  class="center_seventy"/>
 
 
 ###  [How PFET operates](https://www.youtube.com/watch?v=JqgZcV_1IU4&t=960s)
