@@ -22,7 +22,13 @@ Singapore University of Technology and Design
 
 ## Starter Code
 
-TBC
+Clone the starter code from here:
+
+```
+git clone https://github.com/natalieagus/lab-beta-assembly-starter
+```
+
+Then open `bsim.jar`. This is a Beta CPU emulator. Open the file `lab5_submit.uasm` and work the answer for this lab there. 
 
 ## Submission and Questionnaire
 
