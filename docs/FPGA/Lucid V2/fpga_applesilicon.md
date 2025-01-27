@@ -72,6 +72,7 @@ Ensure that your desktop looks like this. If it doesn't it means that what you h
 You can start alchitry labs by opening terminal from the bottom menu of the desktop (press windows / command image if the dock isn't visible, or the top left **activity** button). Then select Terminal from the dock:
 
 <img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/fpga_applesilicon/2025-01-28-02-41-23.png"  class="center_thirty no-invert"/>
+
 <img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/fpga_applesilicon/2025-01-28-02-52-41.png"  class="center_seventy no-invert"/>
 
  and type `a2` command (an alias that launches the Alchitry Labs V2 binary). 
