@@ -665,6 +665,11 @@ Finally, when you reach the fifth instruction at address `0x10` (`BNE`), confirm
 
 <img src="{{ site.baseurl }}//assets/images/lab4-part1/2023-03-16-11-48-59.png"  class="center_fifty no-invert"/>
 
+### Failed Timing Warning 
+The designjsuggested above might fail the 100 MHz clock timing constraint. However this should still produce a working binary and might behave unpredictably under special edge cases (most of the time it works as expected). You can change the clk speed to `10MHz` to make your device works more reliably. This speed is still fast enough for human reaction and will not have noticeable lag. 
+
+<img src="{{ site.baseurl }}//docs/Labs/images/lab4/2025-01-27-16-56-15.png"  class="center_seventy no-invert"/>
+
 ## In-Person Checkoff
 
 As stated in the beginning of this document, you need to complete all the above tasks and demonstrate a working Beta CPU using **your own test instruction**. **Contact** your cohort TAs and make appointment to meet them **in-person** (outside of class hour). Only 1 rep per group will do for the checkoff, but there will be QnA. Hence, it is up to you if you want to send more people for the checkoff.  
