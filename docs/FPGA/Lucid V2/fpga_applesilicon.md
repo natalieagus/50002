@@ -113,6 +113,48 @@ Find the synthesized binary and load it to your Alchitry Au FPGA:
 <img src="{{ site.baseurl }}//docs/FPGA/images/fpga_applesilicon/2024-10-07-11-22-40.png"  class="center_full no-invert"/>
 
 
+## Updating Alchitry Labs
+
+The image you download above comes with Alchitry Labs V2 `2.0.23`. It is likely that the author will bump the version from time to time. For some reason, you cannot use the pre-compiled Linux binary from the [**release**](https://github.com/alchitry/Alchitry-Labs-V2/releases) page (linux-amd64) because the JRE that comes with it just couldn't execute Vivado at 
+
+### Pull the latest changes 
+Alchitry Labs is **installed** on this directory: `/home/debian/Alchitry-Labs-V2`. Navigate there and run `git pull` to clone the latest change: 
+
+```
+cd /home/debian/Alchitry-Labs-V2
+git pull
+```
+
+### Merge Conflicts
+You might be met with some conflict as follows:
+
+<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/fpga_applesilicon/2025-01-28-01-38-07.png"  class="center_seventy no-invert"/>
+
+Open the file causing the conflict using `nano`:
+
+`nano src/main/kotlin/com/alchitry/labs2/project/Locations.kt`
 
 
+Scroll down until you see some kind of conflict beginning with `>>>>>>` and ending with `<<<<<<`:
 
+<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/fpga_applesilicon/2025-01-28-01-40-59.png"  class="center_seventy no-invert"/>
+
+Edit them completely so the declarations above look like this:
+
+<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/fpga_applesilicon/2025-01-28-01-47-54.png"  class="center_seventy no-invert"/>
+
+Then, exit `nano` using `Ctrl + X`. 
+
+### Compile 
+Then run  `./gradlew clean createDistributable` to recompile the project. It should take 3-5 minutes. 
+
+You should see `BUILD SUCCESSFULL` message at the end:
+
+<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/fpga_applesilicon/2025-01-28-02-05-53.png"  class="center_seventy no-invert"/>
+
+### Run Alchitry Labs V2 
+
+Once compiled, you should be able to run Alchitry Labs V2 as per normal using the `a2` command. 
+
+{:.highlight}
+Contact Natalie if you found any issue(s) with the installation.
