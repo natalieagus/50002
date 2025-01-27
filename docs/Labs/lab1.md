@@ -258,8 +258,13 @@ Click the **Device Level Simulation** button, then:
 
 1. Compute the tp rise and tp fall of the sum bit
 2. Compute the tp rise and tp fall of the carry bit
-  
-Take the **maximum** value from (1) and (2) above and report it as the tpd of the half-adder. Then look at the half-adder schematic and identify the **critical path** of the device. 
+
+{:.important-title}
+> Identify longest (critical) path first from schematic
+> 
+> You can work smarter by looking at the half-adder schematic and identify the **longest (critical) path** of the device, so you'd know whether the tpd comes from the Sum bit or the Carry bit, and look at that graph directly instead of having to measure 4 tp values. 
+
+Take the **maximum** value from (1) and (2) above and report it as the tpd of the half-adder. 
 - How many `nand2` gates are there in the critical path of the device?
 - Do you find that the tpd of the half-adder is **exactly** sum of the **tpd** of these nand2 gates (in the critical path) computed in Task 1 above? If not, is it *more* or *less* than that? 
 
@@ -293,7 +298,12 @@ From the same graph in Task 3:
 1. Compute the tc rise and tc fall of the sum bit
 2. Compute the tc rise and tc fall of the carry bit
 
-Take the **minimum** value from (1) and (2) above and report it as the tcd of the half-adder. Then look at the half-adder schematic and identify the **shortest path** of the device. 
+{:.important-title}
+> Identify shortest path first from schematic
+> 
+> Similarly, you can work smarter by looking at the half-adder schematic and identify the **shortest path** of the device, so you'd know whether the tcd comes from the Sum bit or the Carry bit, and look at that graph directly instead of having to measure 4 tc values. 
+
+Take the **minimum** value from (1) and (2) above and report it as the tcd of the half-adder.
 - How many nand2 gates are there in the shortest path of the device?
 - Do you find that the tpd of the half-adder is **exactly** sum of the **tpd** of these nand2 gates (in the shortest path) computed in Task 1 above? If not, is it *more* or *less* than that? 
 
@@ -309,11 +319,7 @@ Take the **minimum** value from (1) and (2) above and report it as the tcd of th
 Head to edimension to answer questions pertaining to this task. 
 
 #### Conclusion
-The contamination delay (tcd) of a logic gate is not exactly the sum of the contamination delays of the individual gates making the shortest path due to:
-
-1. **Gate Loading**: Similar to propagation delay, the loading effects can vary, affecting the minimum delay.
-2. **Parasitic Capacitance**: These can also affect the minimum transition time, adding to the delay.
-3. **Interconnect Delays**: Even for the shortest path, these delays can add up and affect the total tcd.
+The contamination delay (tcd) of a logic gate is not exactly the sum of the contamination delays of the individual gates making the shortest path due to to the same reasons presented [above](#conclusion-1). 
 
 Typically, the actual contamination delay is **more** than the simple sum of the individual gates' minimum delays due to these additional factors, which add to the overall minimum delay.
 
