@@ -113,9 +113,63 @@ Find the synthesized binary and load it to your Alchitry Au FPGA:
 <img src="{{ site.baseurl }}//docs/FPGA/images/fpga_applesilicon/2024-10-07-11-22-40.png"  class="center_full no-invert"/>
 
 
-## Updating Alchitry Labs
+## Updating Alchitry Labs in the VM 
 
-The image you download above comes with Alchitry Labs V2 `2.0.23`. It is likely that the author will bump the version from time to time. For some reason, you cannot use the pre-compiled Linux binary from the [**release**](https://github.com/alchitry/Alchitry-Labs-V2/releases) page (linux-amd64) because the JRE that comes with it just couldn't execute Vivado at 
+### Delete the old version
+Open terminal, navigate to `Downloads`, and remove the old version of alchitry labs:
+
+```
+cd ~/Downloads
+rm -rf alchitry-labs-2*
+```
+
+### Download the new version
+The VM image you download above comes with Alchitry Labs V2 `2.0.24`. It is **likely** that the author will bump the version from time to time. To download the latest build, go to the [download](https://alchitry.com/Alchitry-Labs-V2/download.html) page.  
+
+You can launch Firefox by clicking on the top left **Activities** button on the Desktop and selecting the icon on the bar below:
+
+<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/fpga_applesilicon/2025-01-28-02-41-23.png"  class="center_thirty no-invert"/>
+
+Click the `Download.tar.gz` (not the .deb!):
+
+<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/fpga_applesilicon/2025-01-28-02-19-04.png"  class="center_seventy no-invert"/>
+
+Afterwards, open the terminal and cd to `Downloads`, and unzip the tarball, and remove the old tarball once done: 
+
+
+```
+cd ~/Downloads
+tar -xvzf *linux-amd64.tar.gz
+rm *linux-amd64.tar.gz 
+```
+
+You should see a new folder created corresponding to the version of the alchitry labs:
+<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/fpga_applesilicon/2025-01-28-02-45-35.png"  class="center_seventy no-invert"/>
+
+### Run Alchitry Labs with local JRE 
+
+You can run Alchitry Labs as per normal using the command `a2`. 
+
+Note that you can't just run the binary listed under `/bin` because it will use the pre-bundled JRE. We aliased the command `a2` to run the `.jar` file with the local JRE:
+
+```
+# ~/.bashrc
+alias a2='sudo java \
+-Dapp.dir=$(find /home/debian/Downloads/alchitry-labs* -maxdepth 0 -type d)/lib/runtime \
+-Djava.library.path=$(find /home/debian/Downloads/alchitry-labs* -maxdepth 0 -type d)/lib/runtime/lib \
+-cp "$(find /home/debian/Downloads/alchitry-labs* -maxdepth 0 -type d)/lib/app/*" \
+com.alchitry.labs2.GUIKt'
+```
+
+
+
+
+
+
+
+
+<!-- 
+For some reason, you cannot use the pre-compiled Linux binary from the [**release**](https://github.com/alchitry/Alchitry-Labs-V2/releases) page (linux-amd64) because the JRE that comes with it just couldn't execute Vivado at 
 
 ### Pull the latest changes 
 Alchitry Labs is **installed** on this directory: `/home/debian/Alchitry-Labs-V2`. Navigate there and run `git pull` to clone the latest change: 
@@ -157,4 +211,4 @@ You should see `BUILD SUCCESSFULL` message at the end:
 Once compiled, you should be able to run Alchitry Labs V2 as per normal using the `a2` command. 
 
 {:.highlight}
-Contact Natalie if you found any issue(s) with the installation.
+Contact Natalie if you found any issue(s) with the installation. -->
