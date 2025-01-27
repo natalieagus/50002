@@ -190,7 +190,7 @@ For example, in 4-bit representation of a number:
 In 2's complement representation, a binary number  N is evaluated using the following rule:
 
 $$
-N = (-1 \times 2{n-1} + \sum_{i=0}^{n-2} \text{bit}_i \times 2^i)
+N = (-1 \times 2^{n-1} + \sum_{i=0}^{n-2} \text{bit}_i \times 2^i)
 $$
 
 where:
