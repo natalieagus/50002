@@ -32,7 +32,7 @@ Then open `bsim.jar`. This is a Beta CPU emulator. Open the file `lab5_submit.ua
 
 ## Submission and Questionnaire
 
-Submission: TBC
+Once you ar
 
 As usual, complete the questionnaire for this lab on eDimension before its due date. 
 
