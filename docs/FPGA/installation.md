@@ -48,7 +48,7 @@ Download Alchitry Lab 2 from [here](https://alchitry.com/alchitry-labs/). For wi
 {:.important-title}
 > Version
 >
-> Updated 22 Jan 2025: Version 2.0.23 BETA is recommended. 
+> Updated 27 Jan 2025: Version 2.0.24 BETA is recommended. 
 
 Once installed, open the app and you can create a **new** project. Select the template for Alchitry Au board and choose one of the basic template project: 
 
