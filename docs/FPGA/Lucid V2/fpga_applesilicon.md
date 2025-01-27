@@ -69,7 +69,12 @@ Ensure that your desktop looks like this. If it doesn't it means that what you h
 <img src="{{ site.baseurl }}/docs/FPGA/images/fpga_applesilicon/2024-03-25-17-35-03.png"  class="center_full no-invert"/>
 
 ### Launching Alchitry Labs 2
-You can start alchitry labs by opening terminal from the bottom menu of the desktop (press windows / command image if the dock isn't visible) and type `a2` command (an alias that launches the Alchitry Labs V2 binary). 
+You can start alchitry labs by opening terminal from the bottom menu of the desktop (press windows / command image if the dock isn't visible, or the top left **activity** button). Then select Terminal from the dock:
+
+<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/fpga_applesilicon/2025-01-28-02-41-23.png"  class="center_thirty no-invert"/>
+<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/fpga_applesilicon/2025-01-28-02-52-41.png"  class="center_seventy no-invert"/>
+
+ and type `a2` command (an alias that launches the Alchitry Labs V2 binary). 
 
 Key in `debian` as password when prompted.
 
@@ -126,9 +131,7 @@ rm -rf alchitry-labs-2*
 ### Download the new version
 The VM image you download above comes with Alchitry Labs V2 `2.0.24`. It is **likely** that the author will bump the version from time to time. To download the latest build, go to the [download](https://alchitry.com/Alchitry-Labs-V2/download.html) page.  
 
-You can launch Firefox by clicking on the top left **Activities** button on the Desktop and selecting the icon on the bar below:
 
-<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/fpga_applesilicon/2025-01-28-02-41-23.png"  class="center_thirty no-invert"/>
 
 Click the `Download.tar.gz` (not the .deb!):
 
@@ -150,7 +153,6 @@ You should see a new folder created corresponding to the version of the alchitry
 
 You can run Alchitry Labs as per normal using the command `a2`. 
 
-Note that you can't just run the binary listed under `/bin` because it will use the pre-bundled JRE. We aliased the command `a2` to run the `.jar` file with the local JRE:
 
 ```
 # ~/.bashrc
@@ -161,9 +163,10 @@ alias a2='sudo java \
 com.alchitry.labs2.GUIKt'
 ```
 
+> Note that you can't just run the binary listed under `/bin` because it will use the pre-bundled JRE. We aliased the command `a2` to run the `.jar` file with the local JRE:
 
-
-
+{:.important}
+Ensure that in `~/Downloads` you have **deleted** the old alchitry labs directory and only has the most recent one
 
 
 
