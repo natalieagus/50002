@@ -173,7 +173,7 @@ Numbers are also encoded for storage and processing:
 {:.note-title}
 > Definition
 > 
-> 2's complement is a method of binary integer encoding used to represent both positive and negative integers. The **most significant bit** represents the sign (0 for positive, 1 for negative. )
+> 2's complement is a method of binary integer encoding used to represent both positive and negative integers. The **most significant bit** represents the sign (0 for positive, 1 for negative).
 
 2's complement is most common way computers **encode** signed integers because it simplifies arithmetic operations like addition, subtraction, and multiplication in binary.
 
