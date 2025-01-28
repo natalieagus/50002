@@ -69,7 +69,8 @@ Ensure that your desktop looks like this. If it doesn't it means that what you h
 <img src="{{ site.baseurl }}/docs/FPGA/images/fpga_applesilicon/2024-03-25-17-35-03.png"  class="center_full no-invert"/>
 
 ### Launching Alchitry Labs 2
-You can start alchitry labs by opening terminal from the bottom menu of the desktop (press windows / command image if the dock isn't visible, or the top left **activity** button). Then select Terminal from the dock:
+You can start alchitry labs by opening terminal from the bottom menu of the desktop (press **command** if the dock isn't visible to show it, or the top left **activity** button). Then select Terminal from the dock:
+
 
 <img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/fpga_applesilicon/2025-01-28-02-41-23.png"  class="center_thirty no-invert"/>
 
