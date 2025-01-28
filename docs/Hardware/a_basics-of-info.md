@@ -125,7 +125,7 @@ The examples below should provide a straightforward hints on [how to convert bet
 {:.note-title}
 > Definition
 > 
-> Encoding is the process of assigning *representations* to information. Strings of bits can mean some value of integers, but we can also assign a fixed repesentation to them. For example, given four choices `A`, `B`, `C`, and `D`, we can assign two bits each to encode each choice: `00`, `01`, `10`, `11` if they are *equally probable.* 
+> Encoding is the process of assigning *representations* to information. Strings of bits can mean some value of integers, but we can also assign a fixed representation to them. For example, given four choices `A`, `B`, `C`, and `D`, we can assign two bits each to encode each choice: `00`, `01`, `10`, `11` if they are *equally probable.* 
 
 More precisely, it is called the **fixed length encoding**, that is used in practice when all choices $$x_i, i=1,...N$$ are ***equally* probable**.  
 
@@ -718,7 +718,7 @@ Floating-point precision refers to the accuracy and range with which real number
 | Double Precision | 64   | 15-16                      | \(2.2 \times 10^{-308}\) to \(1.8 \times 10^{308}\) |
 | Quadruple Precision | 128 | 34                       | \(3.4 \times 10^{-4932}\) to \(1.2 \times 10^{4932}\) |
 
-Choosing the righ precision:
+Choosing the right precision:
 
 - **Half Precision:** Common in machine learning (e.g., GPUs) to save memory and increase speed for models tolerant of reduced precision.
 - **Single Precision:** Used in graphics processing, gaming, and systems where moderate precision suffices.
