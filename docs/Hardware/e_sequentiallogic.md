@@ -131,7 +131,7 @@ The voltage value at D can also be invalid (unstable, unreliable) due to any dis
 In practice, this is *not acceptable* because we do not want our electronic devices (e.g: computers) to have invalid output computed (e.g: be unstable, or hang, or freeze) at any point in time, *even when D is transitioning*. We want it to be **robust**, and **reliable** at **all** times. 
 
 {: .highlight } 
-Combinational component within an electronic device requires a certain amount of time <code>tpd</code> to produce meaningful results; and over this time-frame we need to hold its input <strong>stable</strong>, however external input is <strong>unreliable,</strong> so theres <strong>no guarantee</strong> that this requirement is fulfilled. 
+Combinational component within an electronic device requires a certain amount of time <code>tpd</code> to produce meaningful results; and over this time-frame we need to hold its input <strong>stable</strong>, however external input is <strong>unreliable,</strong> so there's <strong>no guarantee</strong> that this requirement is fulfilled. 
 
 ## Proposed Solution
 As a **solution** to this problem we create another device using D-latches called **D Flip-Flop** (DFF) or more informally a *Register* to **synchronize** external input with the circuit's CLK, and also *switch* between `write` and `memory` mode as we intend it to behave.
@@ -163,7 +163,7 @@ At first, each of the two rectangles are the symbol of a regular D-latch. Puttin
 
 
 ### General Anatomy
-We can decribe the structure of a Flip-Flop as follows:
+We can describe the structure of a Flip-Flop as follows:
 - The first D-latch that receives the external input D is called the **MASTER** latch, and the second D-latch is called the **SLAVE** latch.
 - There is an **inverter** applied on the G input on the master Flip-Flop, so the master latch receives or "sees" the **inverted**  clock signal.
 - The star ($$\star$$) symbol represents the intermediary output and its not observable outside of the system. 

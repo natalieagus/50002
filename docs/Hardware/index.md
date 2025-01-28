@@ -66,7 +66,7 @@ These topics are taught before the recess week. They are **tested** during our M
 ## [Programmability and Computability](https://natalieagus.github.io/50002/notes/turingmachine)
 1. Explain the workings of hypothetical Turing Machine
 2. Derive the concept of programmability in Turing machine
-3. Recognize the connection between Turing Machines and functions, and how functions can be computable 
+3. Recognise the connection between Turing Machines and functions, and how functions can be computable 
 4. Justify the significance of the computer science revolution
 
 ## [Instruction Set Architecture](https://natalieagus.github.io/50002/notes/instructionset)
