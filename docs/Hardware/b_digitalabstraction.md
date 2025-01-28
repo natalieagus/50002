@@ -172,7 +172,7 @@ We <span class="orange-bold">need</span> to account for the presence of some lig
 {:.note-title}
 > Definition
 >
-> There are 4 voltage specifications: Vol (V output low), Vil (V input low), Vil (V input low), and Vih (V input high) used as a framework to establish static discipline. 
+> There are 4 voltage specifications: Vol (V output low), Voh (V output high), Vil (V input low), and Vih (V input high) used as a framework to establish static discipline. 
 > 
 > It is <span class="orange-bold">important</span> that $$V_{ol}$$< $$V_{il}$$< $$V_{ih}$$ < $$V_{oh}$$. This way, output *amplifies*  the input via regeneration to ensure binary logic levels are maintained reliably across a digital circuit. See [appendix](#appendix) for further explanation. 
 > 
