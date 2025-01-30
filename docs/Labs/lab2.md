@@ -108,7 +108,7 @@ It is designed to create a **blinking** signal that can drive an LED, **toggling
   - `clk`: 1 bit clock signal, which drives the timing of the module.
     - By default, the FPGA supplies 100MHz clock (defined in the constraint file `alchitry.acf`)
     - You **can change** this value if your design fail to meet timings, e.g: 50MHz instead
-  - `rst`: 1 bit reset signal, which sets the counter back to its initial state when triggered.
+  - `rst`: 1 bit reset signal, which sets the counter back to its initial state (if stated) when triggered.
   
 - **Output**: 
   - `blink`: 1 bit output signal that drives the LED, toggling it on and off.
