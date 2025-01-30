@@ -107,7 +107,7 @@ Voltage is the **medium** used to encode binary information.
 
 The most naive way to use voltage to encode information is to use ‘low’ voltage to encode valid ‘0’ and ‘high’ voltage to encode valid ‘1’, and define the low and high threshold for each valid ‘0’ and ‘1’.
 
-Anything that is between the low and high threshold value is called the <span class="orange-bold">invalid zone</span> because it does not unambiguously represent a binary value. This is shown in the figure below:
+Anything that is between the low and high threshold value is called the <span class="orange-bold">invalid zone</span> because it does not unambiguously represent a binary value. The figure below illustrates a range of low and high voltages accepted by a digital device/system. Out of these voltage values, we can define specific voltage ranges and <span class="orange-bold">map</span> them to logic levels.
   
 <img src="https://dropbox.com/s/6uo61vk9yze1aot/Volt.png?raw=1"  class="center_seventy"    >
 
@@ -146,26 +146,33 @@ An unconnected terminal or a dangling wire in a digital circuit is <span class="
 
 
 ### A case without noise margin
-Consider two digital devices connected in series as shown in the figure below. These devices are called a **buffer**, meaning that they pass the same bit over (if it receives a low voltage, it will produce a low voltage and vice versa). If we were to *naively decide* that any voltage below $$V_{low}$$=`0.5V` as digital bit `0`, and any voltage above $$V_{high}$$=`2.5V` as digital bit `1`, then our device **may violate the static discipline.** 
+Consider two digital devices connected in series as shown in the figure below. 
 
-**Why?**
+<img src="{{ site.baseurl }}/docs/Hardware/images/cs-2025-two-buffers.drawio.png"  class="center_seventy"/>
 
+These devices are called a **buffer**, meaning they pass the same logic level through—if they receive a low voltage, they output a low voltage, and if they receive a high voltage, they output a high voltage. 
 
-<img src="https://dropbox.com/s/9lejkhiqx50ga8y/p4.png?raw=1"  class="center_fourty" >
+{:.new-title}
+> Buffer
+>
+> Buffer devices are used to **restore** signal integrity—even though they don’t alter the logic level (in == out), they help drive stronger signals, isolate circuit stages, and ensure that degraded or noisy signals remain within valid logic ranges.
 
-Suppose we supply 0.5V and the first buffer is able to produce also 0.5V, which means digital bit`0` . 
+If we were to *naively decide* that any voltage below $$V_{low}$$=`0.5V` as digital bit `0`, and any voltage above $$V_{high}$$=`2.5V` as digital bit `1`, then our device **may violate the static discipline.** 
+
+Suppose we supply `0.5V` and the first buffer is able to produce also `0.5V` as an output, which means digital bit`0` . 
 * <span class="orange-bold">Problem</span>: A *wire*, that connects two or more combinational devices together is susceptible to **noise**. 
 * The voltage value that is received at the second 2 may be *slightly higher* than 0.5V, for example: 0.55V instead, and therefore according to our specification, it is *no longer a valid bit `0`*.
 
 {: .note}
-Noise can knock the voltage down as well (not just up, it's basically random disturbance). The above is just an example that's affecting to the logical integrity of the devices in this example.
-
+Noise can knock the voltage **both** **up** and **down** because it is a random disturbance caused by factors like electromagnetic interference, power fluctuations, and thermal noise. If noise **increases** voltage, it might push a `0` into the undefined region or even falsely register as a `1`. Conversely, if noise **decreases** a voltage, it might push a `1` into the undefined region or even falsely register as a `0` under extreme circumstances. 
   
 Buffer 1 in the figure would **violates** the *contract* because given a **valid** input, it may be **unable** to produce a valid output (to **reach** the next buffer 2), because the `0.5V` produced at the output of buffer 1 may meet some disturbances that caused it to be slightly off, e.g: `0.55V`.
 
-### The 4 Voltage Specifications 
+To ensure **noise tolerance** and reliable signal transmission, the **range for valid output voltages must be <span class="orange-bold">narrower</span> than the range for valid input voltages**, so that small noise-induced changes do not cause a signal to be *misinterpreted* as the wrong logic level. This create noise margins that **absorb** small fluctuations and prevent logic errors. 
 
-  
+
+
+### The 4 Voltage Specifications 
 
 We <span class="orange-bold">need</span> to account for the presence of some light **noise**. Instead of naively setting some voltage $$V_{high}$$ and $$V_{low}$$ as we did above, we need to set a *range* of Voltages as valid bit `1` and `0` respectively. These ranges of valid voltages gives rise to **noise margin**, which purpose is to tolerate noise. 
 
@@ -191,12 +198,9 @@ To ensure static discipline, there must be a **gap** between the output and inpu
 
 ### Noise Margin
 
-The noise margin illustrated as the yellow region in the Figure below. It *noise margin* adds as a **precaution** against external disturbances (noise). 
+The noise margin illustrated as the yellow region in the figure below. It adds as a **precaution** against external disturbances (noise). 
 
 <img src="https://dropbox.com/s/pt0n36pmy9ncyc6/Volt_2.png?raw=1"     >
-
-
-
 
 The **absolute difference** between $$V_{ol}$$ and $$V_{il}$$ is called the **low bit noise margin**, and the **absolute difference** between $$V_{oh}$$ and $$V_{ih}$$ is called the **high bit noise margin**.
 
@@ -233,7 +237,7 @@ The image below shows the VTC of a **buffer**: a *low* $$V_{in}$$ gives a *low* 
 Forbidden zone is <span style="color:red; font-weight: bold;">not</span> equal to invalid zone. **Invalid Zone** is the zone where a voltage value does not correspond to digital bit `0` or `1` while **Forbidden Zone** is the zone whereby static discipline is violated because a valid input voltage does not produce a valid output voltage.
 
 Explanation:
-- The red zone is called the **forbidden zone**. It is formed by the four voltage specifications: $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, and $$V_{ih}$$ that we set for the entire system. <br>
+- The <span class="red-bold">red</span> zone is called the **forbidden zone**. It is formed by the four voltage specifications: $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, and $$V_{ih}$$ that we set for the entire system. 
 - The name *'forbidden zone'* comes from the fact that any value within this zone means that the device receives **valid** input (less than vil or more than vih) *but* is unable to produce a valid output hence **violating the static discipline** and cannot be used as a combinational logic device.
 
 {: .new-title}
