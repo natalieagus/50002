@@ -25,7 +25,7 @@ This method is tested on **M2 Max Mac Studio** and **15" M2 Macbook Air**.
 ### Download UTM
 You need to first [download UTM](https://mac.getutm.app). You can also use `brew` for this: 
 
-```
+```sh
 brew update 
 brew install --cask utm
 ```
@@ -36,7 +36,7 @@ After that, download the image from [here](https://sutdapac-my.sharepoint.com/:u
 * This image comes with Debian 12, Rosetta, Vivado 2023.2, Alchitry Labs 1.2.7 (legacy) and Alchitry Labs 2 pre-installed (current)
 
 Then **unzip** the downloaded file, either using Finder or CLI: 
-```
+```sh
 unzip <source.zip> -d <destination_directory>
 ```
 
@@ -75,7 +75,7 @@ You can start alchitry labs by opening terminal from the bottom menu of the desk
 
 <img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/fpga_applesilicon/2025-01-28-02-52-41.png"  class="center_seventy no-invert"/>
 
- and type `a2` command (an alias that launches the Alchitry Labs V2 binary). 
+and type `a2` command (an alias that launches the Alchitry Labs V2 binary). 
 
 Key in `debian` as password when prompted.
 
@@ -124,7 +124,7 @@ Find the synthesized binary and load it to your Alchitry Au FPGA:
 ### Delete the old version
 Open terminal, navigate to `Downloads`, and remove the old version of alchitry labs:
 
-```
+```sh
 cd ~/Downloads
 rm -rf alchitry-labs-2*
 ```
@@ -141,7 +141,7 @@ Click the `Download.tar.gz` (not the .deb!):
 Afterwards, open the terminal and cd to `Downloads`, and unzip the tarball, and remove the old tarball once done: 
 
 
-```
+```sh
 cd ~/Downloads
 tar -xvzf *linux-amd64.tar.gz
 rm *linux-amd64.tar.gz 
@@ -152,10 +152,11 @@ You should see a new folder created corresponding to the version of the alchitry
 
 ### Run Alchitry Labs with local JRE 
 
-You can run Alchitry Labs as per normal using the command `a2`. 
+You can run Alchitry Labs as per normal using the command `a2`. It is an alias, defined in `~/.bashrc`.
 
 
-```
+
+```sh
 # ~/.bashrc
 alias a2='sudo java \
 -Dapp.dir=$(find /home/debian/Downloads/alchitry-labs* -maxdepth 0 -type d)/lib/runtime \
