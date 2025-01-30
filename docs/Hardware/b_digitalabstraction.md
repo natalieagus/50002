@@ -228,9 +228,9 @@ The VTC is a **plot** between the input voltage ($$V_{in}$$) to a digital system
 {: .warning}
 VTC **does not** tell us how fast the device is. It just captures the static behaviour of the device and tells us what *kind* of device it is.
 
-The image below shows the VTC of a **buffer**: a *low* $$V_{in}$$ gives a *low* $$V_{out}$$ and vice versa. 
+The figure below shows the VTC of a **buffer**: a *low* $$V_{in}$$ gives a *low* $$V_{out}$$ and vice versa. 
 
-<img src="{{ site.baseurl }}/docs/Hardware/images/cs-2025-VTC_general.drawio.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Hardware/images/cs-2025-VTC_general.drawio.png"  class="center_fifty"/>
 
 
 {: .important}
@@ -261,7 +261,7 @@ As a digital circuit engineer, your steps would be:
 
 For example, the following device is called the 74HC32 Quad 2-Input OR Gate:
 
-<img src="{{ site.baseurl }}/docs/Hardware/images/74HC32-K78.jpg"  class="center_fifty no-invert"/>
+<img src="{{ site.baseurl }}/docs/Hardware/images/74HC32-K78.jpg"  class="center_thirty no-invert"/>
 
 Its datasheet reports the four voltage specs under various conditions (different temps, different voltage source level). Note how the relationship between the voltages is Vol < Vil < Vih < Voh  in all conditions. 
 
