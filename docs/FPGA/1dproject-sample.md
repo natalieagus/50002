@@ -3,7 +3,7 @@ layout: default
 permalink: /fpga/project-sample
 title: 50.002 Project Sample
 parent: 1D&2D Project (FPGA)
-nav_order:  1
+nav_order:  3
 ---
 
 * TOC

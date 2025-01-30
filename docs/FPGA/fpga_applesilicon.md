@@ -3,9 +3,8 @@ layout: default
 permalink: /fpga/fpga_applesilicon
 title: Running Vivado on Apple Silicon mac 
 description: This document gives a brief overview of how you can run Vivado on Apple Silicon mac with UTM 
-parent: Lucid V2 
-grand_parent: 1D&2D Project (FPGA)
-nav_order:  10
+parent: 1D&2D Project (FPGA) 
+nav_order:  2
 ---
 * TOC
 {:toc}
