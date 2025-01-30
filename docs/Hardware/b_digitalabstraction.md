@@ -226,32 +226,64 @@ VTC **does not** tell us how fast the device is. It just captures the static beh
 
 The image below shows the VTC of a **buffer**: a *low* $$V_{in}$$ gives a *low* $$V_{out}$$ and vice versa. 
 
-<img src="https://dropbox.com/s/vod5ltqh4kq9119/vtcbuffer.png?raw=1"   class="center_fifty"/>
+<img src="{{ site.baseurl }}/docs/Hardware/images/cs-2025-VTC_general.drawio.png"  class="center_seventy"/>
 
 
 {: .important}
-Forbidden zone is <span style="color:red; font-weight: bold;">not</span> equal to invalid zone. The latter is the zone where a voltage value does not correspond to digital bit `0` or `1` while the former is the zone whereby static discipline is violated because a valid input voltage does not produce a valid output voltage.
+Forbidden zone is <span style="color:red; font-weight: bold;">not</span> equal to invalid zone. **Invalid Zone** is the zone where a voltage value does not correspond to digital bit `0` or `1` while **Forbidden Zone** is the zone whereby static discipline is violated because a valid input voltage does not produce a valid output voltage.
+
+Explanation:
+- The red zone is called the **forbidden zone**. It is formed by the four voltage specifications: $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, and $$V_{ih}$$ that we set for the entire system. <br>
+- The name *'forbidden zone'* comes from the fact that any value within this zone means that the device receives **valid** input (less than vil or more than vih) *but* is unable to produce a valid output hence **violating the static discipline** and cannot be used as a combinational logic device.
 
 {: .new-title}
 > Think!
 > 
 > What will the VTC of an inverter look like? 
 
+### Purpose of Plotting VTC
+The purpose of plotting a VTC (*typically obtained from device measurements, i.e: we supply input voltages at intervals and measure the output*) is to help us to **determine** whether or not a digital device **can be used** as a combinational logic device. We plot the VTC so that we can find a set of four voltage specifications: $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, and $$V_{ih}$$ for the device so that **the device obeys the static discipline**.
 
-The purpose of plotting a VTC (*typically obtained from device measurements, i.e: we supply input voltages at intervals and measure the output*) is to help us to **determine** whether or not a digital device **can be used** as a combinational logic device. In other words, we obtain the VTC so that we can find a set of four voltage specifications: $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, and $$V_{ih}$$ for the device so that **the device obeys the static discipline**.
+**Semiconductor engineers and circuit designers** (from large manufacturers) typically does this work during manufacturing process. They determine the four voltage specification and plot VTCs from various transistor types primarily to **design** and **manufacture** logic gates and digital ICs. Small manufacturers typically don't do this and rely on **pre-defined specs** from transistor manufacturers.
 
-Explanation of the VTC figure above:
-- The red zone is called the **forbidden zone**. It is formed by the four voltage specifications: $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, and $$V_{ih}$$ that we set for the entire system. <br>
-- The name *'forbidden zone'* comes from the fact that  any value within this zone means that the device receives **valid** input but is unable to produce a valid output hence **violating the static discipline** and cannot be used as a combinational logic device.
+As a digital circuit engineer, your steps would be:  
 
-### Can a given device be used as a combinational logic device? 
+1. **Prototype & Characterize**: Purchase **sample** transistors from different manufacturers, build test circuits, and measure their VTC to evaluate their real-world performance.  
+2. **Analyze & Define Specs**: Compare the measured VTC against **proposed** digital logic voltage levels (Vol, Vil, Vih, Voh) and noise margins, tweak these proposals if necessary depending on constraints (cost, size, temperature) and selecting the best-performing components.  
+3. **Mass Production**: Once the chosen transistors meet the system's static discipline requirements, **bulk** order them for large-scale manufacturing and integration.
 
+### Real Life Example
+<span class="orange-bold">All</span> commercially available combinational digital devices (logic gate ICs, multiplexers, decoders, etc.) have their voltage specifications clearly documented in their datasheets. 
+
+For example, the following device is called the 74HC32 Quad 2-Input OR Gate:
+
+<img src="{{ site.baseurl }}/docs/Hardware/images/74HC32-K78.jpg"  class="center_fifty no-invert"/>
+
+Its datasheet reports the four voltage specs under various conditions (different temps, different voltage source level). Note how the relationship between the voltages is Vol < Vil < Vih < Voh  in all conditions. 
+
+<img src="{{ site.baseurl }}//docs/Hardware/images/b_digitalabstraction/2025-01-30-08-44-11.png"  class="center_seventy"/>
+
+Full specs can be found [here](https://www.mouser.com/datasheet/2/308/74HC32.REV1-102593.pdf).
+
+{:.impotant}
+These 4 voltage specs are **always** reported in datasheets of digital logic ICs because they define <span class="orange-bold">compatibility</span> between logic devices, ensuring reliable signal transmission and correct logic interpretation. Without these specs, designers couldn't guarantee proper operation, noise margins, or interoperability in digital circuits.
+
+
+### Determining if a digital device can be used as a combinational logic device
+
+{:.highlight}
 You can quickly tell if a digital device can be *potentially* be used as a combinational logic device **iff**: you can **find** a set of these four voltage specifications: $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, and $$V_{ih}$$ **whereby its VTC curve  does not cross the forbidden zone** and that $$V_{ol}$$< $$V_{il}$$ < $$V_{ih}$$ < $$V_{oh}$$.
-* We typically begin by *guessing* each value of $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, and $$V_{ih}$$ and check if the curve crosses the forbidden zone (check if static discipline obeyed) formed by these four values. 
-* If static discipline is violated, we either adjust our guess or find another device. 
-* Also, we want to choose  $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, and $$V_{ih}$$ that **maximises noise immunity**.
 
-If you can satisfy the condition highlighted above, then it means that the device is a combinational logic device. Its VTC curve has to possesses both **characteristics** below:
+Steps: 
+* We typically begin by *setting* $$V_{ol}$$ and $$V_{oh}$$ first which are typically set by the technology standards of the logic family (e.g., TTL, CMOS).
+* These ensure that the circuit produces reliable logic levels before worrying about how inputs interpret them 
+* Then, we can propose  $$V_{il}$$, and $$V_{ih}$$, and check if the curve crosses the forbidden zone (check if static discipline obeyed) formed by these four values. 
+* If static discipline is violated, we either adjust our guess or find another device. 
+
+**Goal**: we want to choose  $$V_{ol}$$, $$V_{oh}$$, $$V_{il}$$, and $$V_{ih}$$ that **maximises noise immunity**.
+
+### VTC Characteristics of a Combinational Logic Device
+The VTC curve of a combinational logic device must possess both **characteristics** below:
 
 1.  There exist *some region in the VTC* whereby its **absolute** `Gain` is $$>1$$ . `Gain` is actually a function of $$V_{in}$$ and is **formally** defined as: 
 
