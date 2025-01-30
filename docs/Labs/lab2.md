@@ -57,7 +57,7 @@ Create a new project with Blinker Demo as a template. Choose Alchitry Au. This i
 <img src="{{ site.baseurl }}//docs/Labs/images/lab2/2024-10-19-08-27-05.png"  class="center_seventy no-invert"/>
 
 There a few Lucid (`.luc`) source files created: 
-1. `alchitry_top.luc`: This is like the "main" file. You can interact with I/O (LEDs, buttons, switches) defined in the **constraint** file. 
+1. `alchitry_top.luc`: This is the **top-level** file, like a "main" file. It connects all submodules and interfaces with external I/O. The ports are defined in this top-level file, while the constraint file (.acf) **maps** them to physical FPGA pins. 
 2. `blinker.luc`: this is a custom module containg the logic of LED blinking 
 3. `reset_conditioner.luc`: this is a module obtained from Alchitry component library. It synchronizes the reset button so that all modules in the FPGA can receive the reset signal **at the same time**. 
 4. `Constraint files: alchitry.acf`: a constraint file **maps** the FPGA I/O pin with a logical name that you can define in `alchitry_top.luc`, so that you can define the logic to control these I/Os.
@@ -169,6 +169,14 @@ In the code above:
 
 
 Let's compare that again with Lucid’s/HDL `always` block:
+
+```verilog
+   always {
+        blink = counter.q[25]
+        counter.d = counter.q + 1
+    }
+```
+
 - Both lines of code are evaluated in **parallel** on each clock cycle.
 - The operations happen in a **non-blocking** manner, meaning the update of the counter and the assignment to the `blink` output are done concurrently, not one after the other.
 

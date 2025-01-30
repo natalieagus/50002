@@ -92,6 +92,23 @@ Implement an **adder/subtractor** unit that can add or subtract 32-bit two’s c
 
 The `ALUFN0` input signal controls whether the operation is an `ADD` or `SUBTRACT`.  `ALUFN0` will be set to `0` for an `ADD (S = A + B)` and `1` for a `SUBTRACT (S = A – B)`. To perform a `SUBTRACT`, the circuit first computes the two’s complement of the `B` operand before adding the resulting value with `A`. The two's complement of `B` is computed using the XOR gate and `ALUFN0` as carry in to the first Full Adder in the RCA. 
 
+### The Ripple Carry Adder 
+
+{:.note}
+A Ripple Carry Adder (RCA) is a simple binary adder that consists of multiple full adders (FA) connected in **series**. It is used to add **two** binary numbers.
+
+A full adder (FA) schematic is as shown:
+
+<img src="{{ site.baseurl }}/docs/Labs/images/cs-2025-1-bit-full-adder.drawio-2.png"  class="center_seventy"/>
+
+{:.highlight}
+As an exercise, derive the truth table of the FA above. 
+
+You can then connect 32 of these in **series** to form a 32-bit ripple-carry-adder. Below is an example of 4-bit ripple-carry-adder for your reference:
+
+<img src="{{ site.baseurl }}/docs/Labs/images/cs-2025-Copy of 4-bit-rca.drawio.png"  class="center_seventy"/>
+
+You are encouraged to create the ripple carry adder as a standalone module that accepts the number of bits of addition supported as the **parameter**. 
 
 ### Computing Overflow: `V`
 Note that **overflow** can never occur when the two operands to the addition have **different** signs. If the two operands have the same sign, then overflow can be detected if the sign of the result differs from the **sign** of the operands. Note that we use `XB`, **not** `B`.
