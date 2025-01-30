@@ -342,7 +342,7 @@ In digital systems, the term **"output amplifies input"** refers to the **restor
 
 As signals propagate through circuits, they experience degradation due to resistive losses (voltage drops in wires), capacitive effects (slower transitions), and noise accumulation (fluctuations from the environment). Without amplification, these effects accumulate, causing the signal to drift into the invalid zone or become indistinguishable. A gain greater than 1 ensures that outputs regenerate the input to valid logic levels (Vol or Voh), restoring signal integrity for subsequent stages.
 
----
+
 
 ### How Output Amplifies Input
 In digital logic gates, the transfer function ensures that small changes in input voltages near Vil or Vih result in **large** changes in output voltages, driving them to **valid** levels Vol for `0` or Voh for `1`. A <span class="orange-bold">steep</span> transfer function slope (gain > 1) allows the output to "snap" to valid states, effectively **amplifying** and **stabilizing** the input signal.
