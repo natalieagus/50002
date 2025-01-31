@@ -33,7 +33,7 @@ In this chapter, we'll explore combinational and sequential logic using FPGAs.
 {:.important}
 Unlike software simulations, FPGAs let you directly program hardware, giving you a real-world, hands-on understanding of how digital systems work. 
 
-FPGAs offer:
+**FPGAs offer**:
 
 1. Flexibility: Easily reprogram and experiment with different designs.
 2. Real-time Feedback: See your circuits in action, running in parallel.
@@ -49,6 +49,12 @@ To program the FPGA, we'll use the **[Lucid V2](https://alchitry.com/tutorials/l
 
 When you "program" an FPGA, you are configuring its logic cells and connections to implement your desired digital circuit or design. This is <span class="orange-bold">different</span> from programming software, as you are actually defining hardware behavior within the FPGA.
 
+{:.important}
+> The **Alchitry Au FPGA development kit** hardware given to you is the **original** version purchased prior to 2025, [not the V2](https://shop.alchitry.com/products/alchitry-au). Do <span class="orange-bold">not</span> confuse this to the AlchitryLabs IDE version (V2) and Lucid version (also V2). 
+>
+> We are using Lucid V2 with Alchitry Labs V2 to code, + Vivado to compile the binary to be loaded to our Alchitry Au FPGA. 
+>
+> Prior to 2025, we were using Alchitry Labs 1.2.7 and Lucid V1. It worked well, but there's no simulation so development is kind of rough. The V2 IDE supports simulation which **improves** the learning experience greatly. 
 
 ### Create New Project
 
