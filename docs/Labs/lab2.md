@@ -52,7 +52,7 @@ When you "program" an FPGA, you are configuring its logic cells and connections 
 
 ### Create New Project
 
-Create a new project with Blinker Demo as a template. Choose Alchitry Au. This is our FPGA development board.
+Create a new project with Blinker Demo as a template. Choose <span class="orange-bold">Alchitry Au</span> (<span class="orange-bold">not</span> Alchitry Au V2!). This is our FPGA development board.
 
 <img src="{{ site.baseurl }}//docs/Labs/images/lab2/2024-10-19-08-27-05.png"  class="center_seventy no-invert"/>
 
