@@ -76,7 +76,7 @@ You can however install the IDE and use the simulator on macOS (Apple Silicon). 
 Vivado is used to **synthesize** high-level hardware description code (in Verilog or Lucid translated to Verilog) into a netlist of logical gates. This netlist is then further **processed** through implementation steps, such as place-and-route, to produce a bitstream or **binary file** for programming the FPGA.
 
 
-We recommend you to instal Vivado ML Edition - 2023.2. You are free to install the [latest](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2024-2.html) version too: Vivado 2024.2. 
+We recommend you to install Vivado ML Edition - 2023.2. You are free to install the [latest](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2024-2.html) version too: Vivado 2024.2. 
 
 {:.highlight}
 Please just choose one and just install one version.
