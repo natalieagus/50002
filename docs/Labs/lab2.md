@@ -671,7 +671,7 @@ We need to use **edge detectors** to detect a down press (falling edge), as well
 Add **Button Conditioner** component to your project, then use it as follows:
 
 ```verilog
-  const CLK_FREQ = $is_sim() ? 1000 : 10000000 // put 1000 only for sim, 10M on hardware
+  const CLK_FREQ = $is_sim() ? 1000 : 100000000 // put 1000 only for sim, 100M on hardware
 
   .clk{
 
