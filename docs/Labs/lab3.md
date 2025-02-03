@@ -641,7 +641,7 @@ This 32-bit combinational multiplier, as part of the ALU, may fail to meet the t
 
 <img src="{{ site.baseurl }}//docs/Labs/images/lab3/2025-01-23-14-12-12.png"  class="center_seventy"/>
 
-To address this, you can modify the constraint file to use a slower clock, such as 50 MHz.
+To address this, you can modify the constraint file to use a slower clock, such as 10 MHz.
 
 <img src="{{ site.baseurl }}//docs/Labs/images/lab3/2025-01-23-13-55-19.png"  class="center_seventy"/>
 
