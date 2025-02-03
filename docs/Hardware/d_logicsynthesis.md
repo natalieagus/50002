@@ -316,10 +316,10 @@ Universal gates like NAND and NOR simplify circuit design, reduce manufacturing 
 
 ## Special Combinational Logic Devices
 
-### [The Multiplexer](https://www.youtube.com/watch?v=yXBAy432vT8&t=3493s)
+### [Multiplexer](https://www.youtube.com/watch?v=yXBAy432vT8&t=3493s)
   
 
-The Multiplexer (shorted as "mux") is a special combinational logic device that is very commonly used in practice. It is implemented using basic logic gates (INV, AND, and OR, or NANDs). The mux is expensive to manufacture, but *universal*, meaning that it can **implement any boolean function because essentially it "hardcodes" the truth table**. 
+Multiplexer (shorted as "mux") is a special combinational logic device that is very commonly used in practice. It is implemented using basic logic gates (INV, AND, and OR, or NANDs). The mux is expensive to manufacture, but *universal*, meaning that it can **implement any boolean function because essentially it "hardcodes" the truth table**. 
 
 The symbol for a mux is as shown in the image below. The truth table is written at the side. A mux **always** has **three** types of terminals: 
 * $$2^k$$ bits data inputs, 
@@ -337,11 +337,11 @@ Take some time to make sense of the truth table. That is if S=0, OUT = A. Else, 
 
 You can build a 2-input multiplexer using basic gates:
 
-<img src="https://dropbox.com/s/kl35pytim23xlm4/muxin.png?raw=1"   class="center_fifty"  >
+<img src="{{ site.baseurl }}/docs/Hardware/images/cs-2025-2-input-mux-basic.drawio.png"  class="center_fifty"/>
 
 Some properties about multiplexers:
 1. Muxes are **universal**, meaning that it can implement any boolean functions
-1. A Mux can have $$2^k$$ data inputs, and $$k$$ bits select inputs, and **only can have 1 output** terminal. 
+2. A Mux can have $$2^k$$ data inputs, and $$k$$ bits select inputs, and **only can have 1 output** terminal. 
 
 We can also generalise the multiplexer to take more inputs: 4, or 8, or 16, etc. We can either build a bigger multiplexer or cascade many 2-input multiplexers. The following figure shows an example of a 4-input multiplexer, implemented as a big mux (left) or using a series of 2-input mux (right):  
 
@@ -353,41 +353,58 @@ Similarly, you can build a 4-input mux using basic logic gates:
 
 Below is an example of how a mux can be used to implement a more complex combinational device, the full adder that we encounter in the lab. The truth table of a full adder is as shown, it is basically an addition (of three inputs) in base 2:
 
-<img src="https://dropbox.com/s/lryt8p85jrowz40/addr.png?raw=1" class="center_thirty"  >  
+
+| A | B | Cin | Cout | S  |
+|---|---|-----|------|----|
+| 0 | 0 |  0  |  0   |  0  |
+| 0 | 0 |  1  |  0   |  1  |
+| 0 | 1 |  0  |  0   |  1  |
+| 0 | 1 |  1  |  1   |  0  |
+| 1 | 0 |  0  |  0   |  1  |
+| 1 | 0 |  1  |  1   |  0  |
+| 1 | 1 |  0  |  1   |  0  |
+| 1 | 1 |  1  |  1   |  1  |
+
 
 The multiplexer can simply implement the truth table by mapping each type of output bit $$C_{out}$$, and $$S$$ in each of the input terminals of the mux as illustrated below (for the carry out): 
 
-
 <img src="https://dropbox.com/s/0vpdyz1lch62jd1/muxc.png?raw=1"  class="center_seventy" >
 
-We can do the same thing for $$S$$, and both of them combined will function as a full adder. 
+We can do the same thing for $$S$$, and both of these muxes will function as a full adder. 
 
-### [Decoder](https://www.youtube.com/watch?v=yXBAy432vT8&t=3938s)
+{:.note}
+> While it is convenient to use muxes to implement any combinational logic device by directly mapping its truth table, this approach is <span class="orange-bold">not</span> ideal in practical hardware design. 
+> 
+> First, a full adder implemented with logic gates (AND, OR, XOR) is typically more efficient in terms of **propagation** delay, as a dedicated gate-based circuit can compute outputs in fewer logic levels compared to a MUX implementation that must decode and select values. 
+> 
+> Second, a traditional gate-based design is more **scalable**, as cascading MUX-based full adders can quickly become <span class="orange-bold">impractical</span> when implementing larger adders (e.g., ripple-carry or carry-lookahead adders), whereas logic gates naturally extend to these architectures.
 
-The Decoder (also known as "demux" or "demultiplexer") is a special combinational logic device that is also very commonly used in practice. It can have $$k$$ select inputs, and $$2^k$$ possible output combinations. The schematic of a 1-select input decoder is:
+### [Demultiplexer](https://www.youtube.com/watch?v=yXBAy432vT8&t=3938s)
 
-<img src="{{ site.baseurl }}/docs/Hardware/images/demuxin.png"  class="center_fourty"/>
+A demultiplexer (demux) is a combinational circuit that **routes** a single input signal to one of multiple outputs based on a select signal. The demux has $$k$$ select inputs and $$2^k$$ possible output combinations. The schematic of a 1-select input demux is:
+
+<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-03-17-32-13.png"  class="center_fourty"/>
+
 
 {: .note-title}
 > Practice
 > 
-> Draw out the truth table of the decoder above.
+> Draw out the truth table of the demultiplexer above.
+
+A common subset of a demux is a **decoder**, as both circuits use select inputs to determine which output is activated. However, while a decoder simply **activates** one of its outputs based on the input combination, a demux not only selects an output but also **forwards** the input data to the selected output.
 
 
-The schematic of a 2-select inputs decoder: $$S_0$$ and $$S_1$$ is (we omit the "IN") because it is usually just VDD:
+The schematic of a 2-select inputs **decoder**: $$S_0$$ and $$S_1$$ is:
 
-<img src="https://dropbox.com/s/8uagnvsipvppgby/decoderinside.png?raw=1"   class="center_fourty"  >
+<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-03-17-42-43.png"  class="center_thirty"/>
 
-> Take some time to trace out the selector values to the output and draw out a truth table for the decoder. Do not worry about the logic gate schematics of a decoder. It is only there to show you that a decoder is made up of the normal logic gates like inverters and AND gates.
+> Take some time to trace out the selector values to the output and draw out a truth table for the decoder/demux. Do not worry about the logic gate schematics of a decoder. It is only there to show you that a decoder is made up of the normal logic gates like inverters and AND gates.
 
-Some properties about decoders:
+Some properties about decoders/demux:
 
-1. A Decoder is basically the *opposite* of a multiplexer. It has $$k$$ select inputs, and $$2^k$$  **possible data outputs**, and only 1 bit of input (typically VDD). The symbol is shown below:
-<img src="https://www.dropbox.com/s/ig6s46lb2s992c2/demux.png?raw=1"  class="center_thirty"   > 
-
-1. This figure omits the 1 bit input to the decoder because **it is always set to 1** in practice.
-2. Therefore, for a 4 bit decoder as shown in the figure above, the input signals are only the two **SELECTOR** signals, denoted as $$IA_0$$ and $$IA_1$$ in the figure.
-3. **At any given time** only 1 bit of the $$2^k$$ output bits can be  `1` (high). This is apparent when we try to draw the truth table for a $$k$$ input decoder.
+<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-03-17-38-36.png"  class="center_thirty"/>
+1. The symbol of a decoder/demux is shown as above
+2. A demux is basically the *opposite* of a multiplexer. It has $$k$$ select inputs, and $$2^k$$  **possible data outputs**, and only 1 bit of input to forward. A decoder does not "forward" any input, but instead only activates one of the output lanes.32. **At any given time** only 1 bit of the $$2^k$$ output bits can be  `1` (high). This is apparent when we try to draw the truth table for a $$k$$ input decoder.
 
 For example, the truth table for a 1-selector bit decoder is:
 
@@ -415,7 +432,7 @@ S_1 & S_0 & O_0 & O_1 & O_2 & O_3\\
 \end{matrix}
 $$
 
-In other words, only the selected output $$i$$ is HIGH ( `1`), and the rest of the $$2^k-1$$ data output is LOW (`0`).
+Only the selected output bit $$i$$ is HIGH ( `1`), and the rest of the $$2^k-1$$ data output is LOW (`0`).
 
 ### [Read-Only-Memories (ROM)](https://www.youtube.com/watch?v=yXBAy432vT8&t=4059s)
 
