@@ -87,6 +87,9 @@ You can choose to install natively ([next section](#installing-natively)) or [ut
 
 You can use VM like [VirtualBox](https://www.virtualbox.org) or [VMWare Fusion](https://www.vmware.com/products/desktop-hypervisor/workstation-and-fusion) (free pro personal license) and then [import the .ova file downloaded to VirtualBox](https://docs.oracle.com/cd/E26217_01/E26796/html/qs-import-vm.html) (or to [VMWare Fusion](https://www.tutorials24x7.com/mac/how-to-import-ovf-virtual-machine-on-vmware-fusion), or any other VM you use). You can immediately use the VM without installing anything. 
 
+{:.highlight}
+The login password for the Windows VM is `user`. 
+
 #### x86: Installing Natively 
 We recommend you to install [Vivado ML Edition - 2023.2](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2023-2.html). You are free to install the [latest](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2024-2.html) version too: Vivado 2024.2. 
 
