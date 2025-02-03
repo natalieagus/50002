@@ -67,23 +67,35 @@ At this point, you can test your code with Alchitry lab with the simulator, but 
 
 ## Vivado Installation 
 
+
+Vivado is used to **synthesize** high-level hardware description code (in Verilog or Lucid translated to Verilog) into a netlist of logical gates. This netlist is then further **processed** through implementation steps, such as place-and-route, to produce a bitstream or **binary file** for programming the FPGA.
+
+{:.highlight}
+Vivado is available to install only on Windows / Linux x86. 
+
 ### 🍎 Apple Silicon Mac 
 You <span class="orange-bold">cannot</span> natively install Vivado on Apple Silicon macs. Xilinx Vivado doesn’t officially support ARM as of early 2025. Current workaround utilises UTM + Debian 12 + Rosetta, [read this guide here](http://natalieagus.github.io/50002/fpga/fpga_applesilicon). 
 
 You can however install the IDE and use the simulator on macOS (Apple Silicon). Skip to [this](#alchitry-lab-installation) section. 
+
 ### Windows x86-64 or Linux x86-64
 
-Vivado is used to **synthesize** high-level hardware description code (in Verilog or Lucid translated to Verilog) into a netlist of logical gates. This netlist is then further **processed** through implementation steps, such as place-and-route, to produce a bitstream or **binary file** for programming the FPGA.
+#### x86: Utilise VM
+You can choose to install natively ([next section](#installing-natively)) or [utilise this VM (Windows 10 + Vivado 2024.2)](https://sutdapac-my.sharepoint.com/:u:/g/personal/natalie_agus_sutd_edu_sg/EZSy-DSoR6hKg4Url7eLgTIBzniiBAKnvlkbTRbaeaKBww?e=Z77ojU). You need to be logged into your SUTD email account to access.
 
+**Required space**: 100-120GB. 
 
-We recommend you to install Vivado ML Edition - 2023.2. You are free to install the [latest](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2024-2.html) version too: Vivado 2024.2. 
+You can use VM like [VirtualBox](https://www.virtualbox.org) or [VMWare Fusion](https://www.vmware.com/products/desktop-hypervisor/workstation-and-fusion) (free pro personal license) and then [import the .ova file downloaded to VirtualBox](https://docs.oracle.com/cd/E26217_01/E26796/html/qs-import-vm.html) (or to [VMWare Fusion](https://www.tutorials24x7.com/mac/how-to-import-ovf-virtual-machine-on-vmware-fusion), or any other VM you use). You can immediately use the VM without installing anything. 
+
+#### x86: Installing Natively 
+We recommend you to install [Vivado ML Edition - 2023.2](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2023-2.html). You are free to install the [latest](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2024-2.html) version too: Vivado 2024.2. 
 
 {:.highlight}
 Please just choose one and just install one version.
 
 This guide assumes you select Vivado ML Edition - 2023.2. 
 
-### Vivado ML Edition - 2023.2 
+#### Vivado ML Edition - 2023.2 
 [Create an AMD account](https://www.amd.com/en/registration/create-account.html?custtarg=aHR0cHM6Ly9hY2NvdW50LmFtZC5jb20vZW4vcHJvZmlsZS5odG1s) first. 
 
 Then, download [Vivado ML Edition - 2023.2 self-extracting web installer](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2023-2.html) (Windows / Linux)
@@ -144,7 +156,7 @@ Finally, ensure that Vivado is installed properly (you can open the app afterwar
 <img src="{{ site.baseurl }}//docs/FPGA/images/installation/2024-10-16-10-12-21.png"  class="center_seventy no-invert"/>
 
 
-### Set Vivado Location
+#### Set Vivado Location
 
 Set the Vivado installation location you did earlier in Alchitry Lab. It should be something like this `[VIVADO_INSTALLATION_DIRECTORY]/Vivado/[VERSION]`. In this example, we installed Vivado ML Edition 2023.2 in `/mnt/vivado`, and hence the location to select in Alchitry is `/mnt/vivado/Vivado/2023.2`. 
 
