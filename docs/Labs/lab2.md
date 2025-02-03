@@ -400,14 +400,14 @@ When you press **simulate**, you should see the `io_shield` being shown stacked 
 
 With this, you can test your adder. Instantiate an N-bit adder in your alchitry_top:
 
-```
+```verilog
     const SIZE = 8 // set SIZE to any number you want
     adder adder(#SIZE(SIZE))
 ```
 
 Then connect its I/O in the `always` block:
 
-```
+```verilog
     adder.a = io_dip[0] 
     adder.b = io_dip[1] 
     adder.subtract = io_dip[2][0]
