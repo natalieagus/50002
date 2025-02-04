@@ -80,7 +80,7 @@ You can however install the IDE and use the simulator on macOS (Apple Silicon). 
 
 ### Windows x86-64 or Linux x86-64
 
-#### x86: Utilise VM
+#### x86: Utilise a VM
 You can choose to install natively ([next section](#installing-natively)) or [utilise this VM (Windows 10 + Vivado 2024.2)](https://sutdapac-my.sharepoint.com/:u:/g/personal/natalie_agus_sutd_edu_sg/EZSy-DSoR6hKg4Url7eLgTIBzniiBAKnvlkbTRbaeaKBww?e=Z77ojU). You need to be logged into your SUTD email account to access.
 
 **Required space**: 100-120GB. 
@@ -89,6 +89,19 @@ You can use VM like [VirtualBox](https://www.virtualbox.org) or [VMWare Fusion](
 
 {:.highlight}
 The login password for the Windows VM is `user`. 
+
+If you have USB-C port with USB 4/Thunderbolt 3 or 4/USB 3 Gen 2x2 or Gen 2 connection or *better*, you can use an external SSD to store the VM image, and load it from there **directly** so it does not have to take up space in your internal SSD.  Both your external SSD and your laptop/desktop must support the same high-speed USB-C standard for optimal performance. 
+
+#### Shared Folders 
+
+Shared folders allow **seamless** file transfer between your host OS and your VM without using USB drives or network sharing. The steps highly depends on which hypervisor you used. Search on Google (or other search engines) for the most updated guides. 
+* In VirtualBox, this feature requires **Guest Additions**, 
+* In VMware, it requires VMware Tools
+
+Once enabled, the shared folder appears as a **mounted** **drive** or network location inside the VM, allowing easy access to host files. This is useful for file exchange, for example: you can create a Lucid V2 project in this shared folder and code in your host OS using Alchitry Labs (less lag). Then switch to your VM for [**building** the project](#create-a-test-project-and-build) using Vivado. Finally, switch back to your host OS to [load the binary to the FPGA using Alchitry loader](#using-alchitry-loader). 
+
+{:.note}
+When possible, configure your virtual machine to **access a USB device** so you can load the binary to the FPGA after compilation. Search on Google (or other search engines) for the most updated guides. 
 
 #### x86: Installing Natively 
 We recommend you to install [Vivado ML Edition - 2023.2](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2023-2.html). You are free to install the [latest](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2024-2.html) version too: Vivado 2024.2. 
@@ -164,13 +177,18 @@ Finally, ensure that Vivado is installed properly (you can open the app afterwar
 Set the Vivado installation location you did earlier in Alchitry Lab. It should be something like this `[VIVADO_INSTALLATION_DIRECTORY]/Vivado/[VERSION]`. In this example, we installed Vivado ML Edition 2023.2 in `/mnt/vivado`, and hence the location to select in Alchitry is `/mnt/vivado/Vivado/2023.2`. 
 
 <img src="{{ site.baseurl }}//docs/FPGA/images/installation/2024-10-16-11-10-22.png"  class="center_seventy no-invert"/>
-
-### Build the project
-After vivado location is set, you can **test build** the project:
-
 <img src="{{ site.baseurl }}//docs/FPGA/images/installation/2024-10-16-11-12-16.png"  class="center_seventy no-invert"/>
 
-If vivado location is set properly, you should see the message `Starting Vivado...`:
+### Create a test project and build
+After Vivado location is set, you can **test build** a project by creating a basic project from any given template:
+
+{:.important}
+Ensure you select Alchitry Au as the board, and not Alchitry Au V2!
+
+<img src="{{ site.baseurl }}/docs/FPGA/Lucid V2/images/Screenshot 2025-02-04 at 11.50.59 AM.png"  class="center_seventy"/>
+
+
+If Vivado location is set properly, you should see the message `Starting Vivado...`:
 
 <img src="{{ site.baseurl }}//docs/FPGA/images/installation/2024-10-16-11-15-07.png"  class="center_seventy no-invert"/>
 
@@ -184,13 +202,13 @@ When synthesis is done, you should see the message `Finished building project`:
 {:.note-title}
 > Debug Log 
 >
-> If project building fails, copy the debug log and search for the word `ERROR`. 
+> If project building fails, copy the debug log and search for the word `ERROR`. This might give you some clue on which module went wrong.
 
 ### Load to FPGA 
 
 Connect the FPGA board to your computer. It should detect the board **automatically**. 
 
-You can **load** the binary to the Alchitry Au FPGA using the solid arrow button (load flash, persistent) or the hollow arrow button (load RAM, not persistent upon reboot of FPGA). 
+You can **load** the binary to the Alchitry Au FPGA using the **solid** arrow button (load flash, persistent) or the *hollow* arrow button (load RAM, not persistent upon reboot of FPGA). 
 
 <img src="{{ site.baseurl }}//docs/FPGA/images/installation/2024-10-16-11-17-20.png"  class="center_fifty no-invert"/>
 
@@ -198,5 +216,7 @@ You can **load** the binary to the Alchitry Au FPGA using the solid arrow button
 
 <img src="{{ site.baseurl }}//docs/FPGA/images/installation/2024-10-16-11-18-24.png"  class="center_fifty no-invert"/>
 
-You can also load the binary to your FPGA using Alchitry Loader. It works the same. Alchitry Loader is **useful** for macOS users who cannot synthesise the binary natively, and can only **load** flash/RAM after synthesizing the binary elsewhere. 
+You can also load the binary to your FPGA using **Alchitry Loader**. It works the same as pressing the arrow button in Alchitry Labs. 
+* Alchitry Loader is **useful** for macOS users who cannot synthesise the binary natively, and can only **load** flash/RAM after synthesizing the binary elsewhere. 
+* It is also useful for users that use VMs to compile the binary using Vivado from the VM, and then load the compiled binary (**in the shared folder**) using Alchitry Loader
 
