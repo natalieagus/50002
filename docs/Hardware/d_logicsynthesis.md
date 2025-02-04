@@ -337,7 +337,7 @@ Take some time to make sense of the truth table. That is if S=0, OUT = A. Else, 
 
 You can build a 2-input multiplexer using basic gates:
 
-<img src="{{ site.baseurl }}/docs/Hardware/images/cs-2025-2-input-mux-basic.drawio.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-04-10-30-22.png"  class="center_seventy"/>
 
 Some properties about multiplexers:
 1. Muxes are **universal**, meaning that it can implement any boolean functions
@@ -351,6 +351,7 @@ Similarly, you can build a 4-input mux using basic logic gates:
 
 <img src="https://dropbox.com/s/pl9902hnvpeg9mp/4muxin.png?raw=1"  class="center_fifty"   >
 
+#### Using Mux to implement 1 bit FA 
 Below is an example of how a mux can be used to implement a more complex combinational device, the full adder that we encounter in the lab. The truth table of a full adder is as shown, it is basically an addition (of three inputs) in base 2:
 
 
@@ -366,11 +367,10 @@ Below is an example of how a mux can be used to implement a more complex combina
 | 1 | 1 |  1  |  1   |  1  |
 
 
-The multiplexer can simply implement the truth table by mapping each type of output bit $$C_{out}$$, and $$S$$ in each of the input terminals of the mux as illustrated below (for the carry out): 
+The multiplexer can simply implement the truth table by mapping each type of output bit $$C_{out}$$, and $$S$$ in each of the input terminals of the mux as illustrated below: 
 
-<img src="https://dropbox.com/s/0vpdyz1lch62jd1/muxc.png?raw=1"  class="center_seventy" >
+<img src="{{ site.baseurl }}/docs/Hardware/images/d_logicsynthesis/2025-02-04-10-31-14.png"  class="center_seventy"/>
 
-We can do the same thing for $$S$$, and both of these muxes will function as a full adder. 
 
 {:.note}
 > While it is convenient to use muxes to implement any combinational logic device by directly mapping its truth table, this approach is <span class="orange-bold">not</span> ideal in practical hardware design. 
@@ -379,11 +379,42 @@ We can do the same thing for $$S$$, and both of these muxes will function as a f
 > 
 > Second, a traditional gate-based design is more **scalable**, as cascading MUX-based full adders can quickly become <span class="orange-bold">impractical</span> when implementing larger adders (e.g., ripple-carry or carry-lookahead adders), whereas logic gates naturally extend to these architectures.
 
+#### Comparison 
+
+{:.highlight}
+Recall: NAND gates are made up of 4 transistors, and INV is made up of 2 transistors. 
+
+Let's compare the size of the 1-bit Full Adder using each implementation. 
+
+Full adder implementation using basic logic gates is as shown: 
+<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-04-10-32-35.png"  class="center_seventy"/>
+
+This uses on average **42-48 transistors**, depending on how optimised is the 3-input XOR gate:
+* 1 3-input XOR gate: 18-24 transistors 
+* 3 2-input AND gates: 18 transistors 
+* 1 2-input OR gate: 6 transistors 
+
+It can also be implemented using all NAND gates since NAND gates are **universal**:
+<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-04-10-46-37.png"  class="center_seventy"/>
+
+This uses on average **36 transistors** on average (9 2-input nand gates)
+
+Another (not so optimised) way is to implemented it straight from the **sum of products**: 
+<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-04-10-55-22.png"  class="center_seventy"/>
+
+This uses **94 transistors** on average. 
+
+Finally, the design with two 3-select muxes (two 8-to-1 muxes) require **160 transistors** on average (approximately 80 transistors to implement each mux)
+
+{:.note}
+From the comparison of different implementations of a 1-bit full adder, we can observe a **clear tradeoff** between circuit complexity, transistor count, and design approach. Choosing the right logic implementation can significantly impact the power, area, and performance of the circuit
+
+
 ### [Demultiplexer](https://www.youtube.com/watch?v=yXBAy432vT8&t=3938s)
 
 A demultiplexer (demux) is a combinational circuit that **routes** a single input signal to one of multiple outputs based on a select signal. The demux has $$k$$ select inputs and $$2^k$$ possible output combinations. The schematic of a 1-select input demux is:
 
-<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-03-17-32-13.png"  class="center_fourty"/>
+<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-04-11-07-26.png"  class="center_seventy"/>
 
 
 {: .note-title}
@@ -396,15 +427,16 @@ A common subset of a demux is a **decoder**, as both circuits use select inputs 
 
 The schematic of a 2-select inputs **decoder**: $$S_0$$ and $$S_1$$ is:
 
-<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-03-17-42-43.png"  class="center_thirty"/>
+<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-04-10-25-53.png"  class="center_seventy"/>
 
 > Take some time to trace out the selector values to the output and draw out a truth table for the decoder/demux. Do not worry about the logic gate schematics of a decoder. It is only there to show you that a decoder is made up of the normal logic gates like inverters and AND gates.
 
-Some properties about decoders/demux:
+#### Properties
 
-<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-03-17-38-36.png"  class="center_thirty"/>
+<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-04-11-08-04.png"  class="center_seventy"/>
+
 1. The symbol of a decoder/demux is shown as above
-2. A demux is basically the *opposite* of a multiplexer. It has $$k$$ select inputs, and $$2^k$$  **possible data outputs**, and only 1 bit of input to forward. A decoder does not "forward" any input, but instead only activates one of the output lanes.32. **At any given time** only 1 bit of the $$2^k$$ output bits can be  `1` (high). This is apparent when we try to draw the truth table for a $$k$$ input decoder.
+2. A demux is the *opposite* of a multiplexer. It has $$k$$ select inputs, and $$2^k$$  **possible data outputs**, and only 1 bit of input to forward. A decoder does not "forward" any input, but instead only activates one of the output lanes.32. **At any given time** only 1 bit of the $$2^k$$ output bits can be  `1` (high). This is apparent when we try to draw the truth table for a $$k$$ input decoder.
 
 For example, the truth table for a 1-selector bit decoder is:
 
@@ -436,10 +468,8 @@ Only the selected output bit $$i$$ is HIGH ( `1`), and the rest of the $$2^k-1$$
 
 ### [Read-Only-Memories (ROM)](https://www.youtube.com/watch?v=yXBAy432vT8&t=4059s)
 
-  
 
-One of the application of a decoder is to create a read-only-memories (ROM). 
-> You can buy them online, like [this product](https://learn.adafruit.com/digital-circuits-5-memories/read-only-memory). 
+One of the application of a decoder is to create a read-only-memories (ROM). You can buy them online, like [this product](https://learn.adafruit.com/digital-circuits-5-memories/read-only-memory). 
 
 For example, if we "**hardcode**" the Full-Adder using a decoder, we end up with the following schematic:<br>
 <img src="https://www.dropbox.com/s/t90f9n3ypg9aj9c/decoder.png?raw=1" class="center_seventy">
@@ -450,27 +480,29 @@ Explanation of the schematic above:
 - Recall that at  each **combination** of select signal $$A, B$$, and $$C_i$$, only one of the 8 outputs of the decoder will be  `1`. 
 
 For example, when $$A=0, B=0, C_{in}=1$$, the second output line of the decoder from the top, highlighted in blue in the image below is set to  `1`:
+
 <img src="https://dropbox.com/s/o5meriyxc47k0bn/sel1.png?raw=1" class="center_seventy" >
 
 * Since there exist a **pulldown** at the S line, it drains the `1` and results in `0` at S line towards the inverter. There's no pulldown for the $$C_{out}$$ line, so the value fed in towards the inverter in the $$C_{out}$$ line is `1`. The inverter invert these values as their final output.
 * Therefore, when $$A=0, B=0, C_i=1$$, $$S$$ is `1` and $$C_{out}$$ is `0`. 
 
-Note the **presence of inverters by invention** at the end of the two vertical output lines for $$S$$ and $$C_{out}$$, so the overall output is inverted to be  `1` for $$S$$ and `0` for $$C_{out}$$.
+{:.note}
+> In a ROM (Read-Only Memory) array using NFETs to **pull down** word lines, the presence of a pulldown (**NFET** turning ON) is interpreted as a logical '0'. However, since ROMs typically output data in an active-high format (1s and 0s directly), we need inverters to flip the signals correctly.
+>
+> Note the **presence of inverters by invention** at the end of the two vertical output lines for $$S$$ and $$C_{out}$$, so the overall output is inverted to be  `1` for $$S$$ and `0` for $$C_{out}$$.
+>
+> NFETs are preferred instead of PFET in a ROM design because they have lower resistance when ON, enabling faster and more power-efficient pull-down operation.
 
-By **invention**, the location of the "pulldown" circuits **correspond to a `1` in the truth table** for that particular output ($$S$$ or $$C_{out}$$).
+The location of the "pulldown" circuits **correspond to a `1` in the truth table** for that particular output ($$S$$ or $$C_{out}$$). For $$K$$ inputs, decoder produces $$2^K$$ signals, only  `1` which is asserted (valid "High", or simply "selected") at a time. The **properties** of ROM are as follows:
 
-For $$K$$ inputs, decoder produces $$2^K$$ signals, only  `1` which is asserted (valid "High", or simply "selected") at a time. 
-
-The **properties** of ROM are as follows:
-
-1. ROMs ignore the structure of combinational functions (our truth table is "**hardcoded**". 
-2. The selectors are like **addresses** of an entry.
+1. ROMs ignore the structure of combinational functions (our truth table is "**hardcoded**") 
+2. The selectors are the **address** of an entry.
 3. For an $$N$$-input boolean function, the size of ROM is roughly $$2^N \times \text{ \#outputs}$$. 
 
 {: .highlight} 
 For example, the Full Adder has 3 inputs (A, B, $$C_{in}$$), and 2 outputs ($$S$$ and $$C_{out}$$). Hence the size of the ROM is $$2^3 * 2 = 16$$.
 
-ROM is a **universal** tool for implementing combinational logic functions but may not always be practical for functions with a large number of inputs due to memory size constraints.
+ROM is a also **universal** tool for implementing combinational logic functions but may not always be practical for functions with a large number of inputs due to memory size constraints.
 
 ## [Summary](https://www.youtube.com/watch?v=yXBAy432vT8&t=4421s)
 [You may want to watch the post lecture videos here.](https://youtu.be/oo58e54SHjs)
@@ -480,13 +512,21 @@ Here are the key points from this notes:
 2. **Synthesize logic**: Given a truth table,  perform straightforward logic synthesis using **sum-of-products**. 
 3. **Boolean Algebra Minimisation**: Minimise boolean functions (e.g: basic sum-of-products) using DeMorgan's theorem, reduction rule, absorption rule, etc or Karnaugh Map to make the boolean equation more compact. This results in simplified hardware (cheaper, smaller) while retaining functionality.
 4. **Universal Gates**: NAND and NOR gates are universal. We can construct **any** combinational logic device by just using NAND gates or NOR gates alone. 
-5. **Complex Combinational Logic Device**: Special devices like decoder, multiplexer, and ROM are essential components. Multiplexers are used to implement **conditional logic** (if-else), decoders are used to perform address decoding among many others. Decoders can be used to implement a ROM. It maps the input address lines to specific memory locations within the ROM.
+5. **Complex Combinational Logic Device**: Special devices like demux, decoder, multiplexer, and ROM are essential components. Multiplexers are used to implement **conditional logic** (if-else), decoders are used to perform address decoding among many others. Decoders can be used to implement a ROM. It maps the input address lines to specific memory locations within the ROM.
+6. **Universal Logic Synthesizer**: Both ROMs and Muxes are <span class="orange-bold">universal logic synthesizer</span> and can be used to implement any logic. ROM essentially acts as a look-up table (LUT) where each input combination maps directly to a pre-defined output value. However, this results in **size explosion**. For $n$ inputs, the ROM requires $2^n$ rows,  leading to rapid growth in memory size for large input sizes. Mux-based designs do not suffer from exponential size explosion in the same way. A mux scales **hierarchically**, where smaller muxes can be used to build bigger muxes in a structured way rather than requiring an exponentially growing number of components like ROMs do. 
 
-ROM can be used to implement **any** combinational logic function. This is because ROM essentially acts as a look-up table (LUT) where each input combination maps directly to a pre-defined output value. However, this results in **size explosion**. For $n$ inputs, the ROM requires $2^n$ rows,  leading to rapid growth in memory size for large input sizes.
+Design tradeoff summary for logic synthesis:
+* ROM-based designs (easiest, simply store the truth table as-is) are useful when precomputed logic storage is acceptable and logic complexity is high. 
+* MUX-based designs are more efficient for small, optimized logic designs due to their faster and smaller implementation. 
+* Sum-of-Products (SOP) design is useful when a direct and systematic Boolean implementation is needed, making it ideal for medium-complexity logic functions. 
+* NAND-gate-based design is useful when minimizing component types is important, as NAND is a universal gate that can implement any logic efficiently.
+* Finally, highly optimized gate-level design (most difficult) is useful when minimizing transistor count, power consumption, and delay is critical for high-performance applications.
+
 
 {:.note}
 Designing and implementing the logic directly using gates like AND, OR, NOT, NAND, NOR, etc., rather than relying on a ROM to store the outputs leads to a more efficient design (smaller unit, cheaper unit, less power drawn), but it is challenging to do so and to test because it is prone to errors. 
 
+Studying **boolean algebra and minimization** is essential for **optimizing SOP-based and gate-level designs**, reducing the number of gates, transistors, power consumption, and delay for more efficient implementations.
 # Appendix
 
 
