@@ -13,10 +13,11 @@ nav_order:  2
 # Running Vivado on Apple Silicon mac
 {: .no_toc}
 
-As of early 2025, there's no officially supported way to run Vivado on Apple Silicon mac. We have managed to run Vivado + Alchitry lab on Debian 12 + Rosetta, running on UTM (virtual machines for mac). This document shares how you can download the prepared image and run it using UTM. 
+As of early 2025, there's no officially supported way to run Vivado on Apple Silicon mac. We have managed to run **Vivado + Alchitry Lab V2 on Debian 12 + Rosetta**, running on UTM (virtual machines for Apple Silicon mac). This document shares how you can download the prepared image and run it using UTM. 
+
 
 ## System Requirement 
-Apple Silicon mac with least 8 GB of RAM and **280GB** of free space for both downloading and unzipping (final free space needed: 160GB). 
+Apple Silicon mac with least 8 GB of RAM and **280GB** of free space for both **downloading** and **unzipping** (final free space needed: 160GB). You can use an external SSD + thunderbolt connection for this, directly store the VM image for usage, no need to migrate it to your machine. 
 
 {: .note}
 This method is tested on **M2 Max Mac Studio** and **15" M2 Macbook Air**. 
@@ -30,11 +31,12 @@ brew update
 brew install --cask utm
 ```
 
-### Download Image and Unzip
-After that, download the image from [here](https://sutdapac-my.sharepoint.com/:u:/g/personal/natalie_agus_sutd_edu_sg/ETc9Zr6Np4hBioSaB_ojFNEBF6zASGgDvlf_0-MFf7Z3Uw?e=pvGvWl)
+### Download the VM Image 
+After that, [download the VM Image from here](https://sutdapac-my.sharepoint.com/:u:/g/personal/natalie_agus_sutd_edu_sg/ETc9Zr6Np4hBioSaB_ojFNEBF6zASGgDvlf_0-MFf7Z3Uw?e=pvGvWl)
 * You need to be <span className="orange-bold">signed in to your SUTD account</span> 
 * This image comes with Debian 12, Rosetta, Vivado 2023.2, Alchitry Labs 1.2.7 (legacy) and Alchitry Labs 2 pre-installed (current)
 
+### Unzip
 Then **unzip** the downloaded file, either using Finder or CLI: 
 ```sh
 unzip <source.zip> -d <destination_directory>
