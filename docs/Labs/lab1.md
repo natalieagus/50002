@@ -266,7 +266,7 @@ Click the **Device Level Simulation** button, then:
 
 Take the **maximum** value from (1) and (2) above and report it as the tpd of the half-adder. 
 - How many `nand2` gates are there in the critical path of the device?
-- Do you find that the tpd of the half-adder is **exactly** sum of the **tpd** of these nand2 gates (in the critical path) computed in Task 1 above? If not, is it *more* or *less* than that? 
+- Do you find that the tpd of the half-adder is **exactly** sum of the **tpd** of these nand2 gates (in the critical path) computed in Task 2 above? If not, is it *more* or *less* than that? 
 
 {:.note-title}
 > Critical Path
@@ -305,7 +305,7 @@ From the same graph in Task 3:
 
 Take the **minimum** value from (1) and (2) above and report it as the tcd of the half-adder.
 - How many nand2 gates are there in the shortest path of the device?
-- Do you find that the tpd of the half-adder is **exactly** sum of the **tpd** of these nand2 gates (in the shortest path) computed in Task 1 above? If not, is it *more* or *less* than that? 
+- Do you find that the tcd of the half-adder is **exactly** sum of the **tcd** of these nand2 gates (in the shortest path) computed in Task 1 above? If not, is it *more* or *less* than that? 
 
 {:.note-title}
 > Shortest Path
