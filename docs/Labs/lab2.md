@@ -708,7 +708,7 @@ You can set the `io_led` to see the contents of the `current_value` dff and `cur
 
 You should observe the following:
 1. `current_value` is increased/decreased by `current_delta` steadily as per `slow_clock` signal when `io_button[1]` is toggled (center io button)
-2. When the counter is enabled, pressing  `io_button[0]` (up button) or `io_button[1]` (down button) will increase/decrease the speed of the counter. The value of `speed_pointer` in `led{5:0} should change accordingly 
+2. When the counter is enabled, pressing  `io_button[0]` (up button) or `io_button[2]` (down button) will increase/decrease the speed of the counter. The value of `speed_pointer` in `led{5:0} should change accordingly 
 3. Pressing `io_button[3]` (left button) or `io_button[4]` will increase or decrease the value of `current_delta` accordingly. When enabled, the `current_value` should increase/decrease by `current_delta` 
 
 At this point we have a working dynamic counter but the two constraints are not yet met:
