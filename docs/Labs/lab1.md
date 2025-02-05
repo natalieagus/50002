@@ -301,7 +301,7 @@ From the same graph in Task 3:
 {:.important-title}
 > Identify shortest path first from schematic
 > 
-> Similarly, you can work smarter by looking at the half-adder schematic and identify the **shortest path** of the device, so you'd know whether the tcd comes from the Sum bit or the Carry bit, and look at that graph directly instead of having to measure 4 tc values. 
+> Similarly, you can work smarter by looking at the half-adder schematic and identify the **shortest path** of the device, so you'd know whether the tcd comes from the Sum bit or the Carry bit, and look at that graph directly instead of having to measure 4 tc values. However, if there are multiple shortest paths from the schematic, then you have no choice but to compare all. 
 
 Take the **minimum** value from (1) and (2) above and report it as the tcd of the half-adder.
 - How many nand2 gates are there in the shortest path of the device?
