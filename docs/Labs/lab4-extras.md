@@ -20,12 +20,14 @@ Singapore University of Technology and Design
 # Lab 4: Beta Processor with FPGA (Self Guided Practice)
 {: .no_toc}
 
-This is a self-guided practice post Lab 4. You can read this handout at your own time to supplement your knowledge about I/O Handling, specifically focusing on the sequence of **interrupt handling**, transitioning to kernel mode, executing **privileged** operations, and returning to **user** mode using a simple assembly code example.
+This is a self-guided practice post Lab 4. You can read this handout at your own time to supplement your knowledge about I/O Handling, specifically focusing on the sequence of **interrupt handling**, transitioning to kernel mode, executing **privileged** operations, and returning to **user** mode using a simple assembly code example. 
 
 Here we also learn how to connect I/O units to the CPU using **shared-memory** I/O:
 1. Reading from input buffer
 2. Display certain memory content to output buffer and refresh it at a constant rate 
 
+{:.highlight}
+There's no questionnaire for this lab. 
 
 ## Beta Assembly Source Code
 We have written a simple 28-line that demonstrates a minimal kernel behavior. You can copy and paste this to `instruction_rom.luc` to learn how shared-memory I/O works. You need to manually ensure that the outputs are correct by observing each **state** of the Beta (PC content, Regfile content, control signals, etc) at each instruction execution. It is recommended that you write an automatic tester like you did for your ALU in Checkoff 1, but manual checks will do for a small scale project like your 1D project.
