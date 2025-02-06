@@ -369,7 +369,7 @@ JMP(R5)			|| jump to execute main program in user mode
 
 Advance to address `0x040`. 
 
-<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-57-00.png"  class="center_fifty no-invert/>
+<img src="{{ site.baseurl }}//assets/images/lab4-part2/2023-03-16-17-57-00.png"  class="center_fifty no-invert"/>
 
 Then set `io_dip[0] = 0xF` to view the content of `system_output_buffer`. You shall see the value `5` there. 
 
