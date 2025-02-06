@@ -619,7 +619,7 @@ Paste the following simple driver code inside `instruction_rom.luc`, under `cons
 Compile, and run the Beta FPGA again while observing that the states: `id`, `ia`, `pcsel_out`, etc should **match** the truth.  
 
 {: .important}
-What is the <span style="color:red; font-weight: bold;">true</span> value for all these states? Well, you learned the Beta ISA in the first half of the semester, didn't you? You should know how it works. 
+Take this opportunity to [revise Beta ISA and CPU](https://natalieagus.github.io/50002/notes/betacpu). 
 
 You can also paste this equivalent program in `bsim` and observe its states, ensure that it matches the FPGA's (yes, manual observation).
 
