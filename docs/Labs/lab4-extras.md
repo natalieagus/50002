@@ -1,7 +1,7 @@
 ---
 layout: default
 permalink: /lab/lab4-advanced
-title: Lab 4 - Beta Processor with FPGA (Extras)
+title: Lab 4 - Beta Processor with FPGA (Self Guided Practice)
 description: Lab 4 handout covering topics from Beta Datapath
 parent: Labs
 nav_order:  8
@@ -17,10 +17,10 @@ Information Systems Technology and Design
 Singapore University of Technology and Design
 <br>
 
-# Lab 4: Beta Processor with FPGA (Extras)
+# Lab 4: Beta Processor with FPGA (Self Guided Practice)
 {: .no_toc}
 
-This is a supplementary lab notes. It is ungraded and there's no questionnaire for this lab. You can read this handout at your own time. 
+This is a self-guided practice post Lab 4. You can read this handout at your own time to complete Lab 4 questionnaire. 
 
 Here we learn how to connect I/O units to the CPU using **shared-memory** I/O:
 1. Reading from input buffer
