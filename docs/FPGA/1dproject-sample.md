@@ -14,7 +14,7 @@ nav_order:  3
 {: .no_toc}
 
 {:.note}
-This project involves implementing an **FSM** and **datapath** for a specific game using LEDs as output and buttons as inputs. It is a **fixed** machine. Note that you can also implement an ISA to design a **programmable** machine for your project. 
+This project involves implementing an **FSM** and **datapath** for a specific game using LEDs as output and buttons as inputs. It is a **fixed** machine. Note that you can also implement an ISA to design a **programmable** machine for your project. [The complete code for this project can be found here](https://github.com/natalieagus/sample-1d-project-alchitry-v2). 
 
 
 ## Introduction
