@@ -413,7 +413,7 @@ This feature is achieved through the use of storage elements like flip-flops or 
 
 A **sequential** logic device has a *general* structure as shown below:
 
-
+<img src="{{ site.baseurl }}//docs/Hardware/images/e_sequentiallogic/2025-02-12-13-39-46.png"  class="center_fifty"/>
 
 In order for sequential logic devices to work, we need to obey the dynamic discipline and the t1 and t2 constraints. Failure to obey that might put the device into the metastable state. 
 
