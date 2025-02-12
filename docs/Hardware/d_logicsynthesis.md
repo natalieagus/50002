@@ -556,11 +556,11 @@ Here are the key points from this notes:
 6. **Universal Logic Synthesizer**: Both ROMs and Muxes are <span class="orange-bold">universal logic synthesizer</span> and can be used to implement any logic. ROM essentially acts as a look-up table (LUT) where each input combination maps directly to a pre-defined output value. However, this results in **size explosion**. For $n$ inputs, the ROM requires $2^n$ rows,  leading to rapid growth in memory size for large input sizes. Mux-based designs do not suffer from exponential size explosion in the same way. A mux scales **hierarchically**, where smaller muxes can be used to build bigger muxes in a structured way rather than requiring an exponentially growing number of components like ROMs do. 
 
 Design tradeoff summary for logic synthesis:
-* ROM-based designs (easiest, simply store the truth table as-is) are useful when precomputed logic storage is acceptable and logic complexity is high. 
-* MUX-based designs are more efficient for small, optimized logic designs due to their faster and smaller implementation. 
-* Sum-of-Products (SOP) design is useful when a direct and systematic Boolean implementation is needed, making it ideal for medium-complexity logic functions. 
-* NAND-gate-based design is useful when minimizing component types is important, as NAND is a universal gate that can implement any logic efficiently.
-* Finally, highly optimized gate-level design (most difficult) is useful when minimizing transistor count, power consumption, and delay is critical for high-performance applications.
+* **ROM**-based designs (easiest, simply store the truth table as-is) are useful when precomputed logic storage is acceptable and logic complexity is high. 
+* **Mux**-based designs are more efficient for small, optimized logic designs due to their faster and smaller implementation. 
+* **SOP** design is useful when a direct and systematic Boolean implementation is needed, making it ideal for medium-complexity logic functions. 
+* **NAND**-gate-based design is useful when minimizing component types is important, as NAND is a universal gate that can implement any logic efficiently.
+* Finally, **highly optimized gate-level design** (most difficult) is useful when minimizing transistor count, power consumption, and delay is critical for high-performance applications.
 
 
 {:.note}
