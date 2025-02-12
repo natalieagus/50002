@@ -128,7 +128,7 @@ If the *existing* stable input value in D is flipped, e.g: is changed from `1` t
 
 The voltage value at D can also be invalid (unstable, unreliable) due to any disturbance. This will affect the output at Q if G is 1, because it will pass **all** input from D to the output wire Q, regardless of whether it is a valid or stable input or not (during transition or any disturbance). We end up with potentially unstable/invalid output **half the time.
 
-In practice, this is *not acceptable* because we do not want our electronic devices (e.g: computers) to have invalid output computed (e.g: be unstable, or hang, or freeze) at any point in time, *even when D is transitioning*. We want it to be **robust**, and **reliable** at **all** times. 
+In practice, this is <span class="orange-bold">not acceptable</span> because we do not want our electronic devices (e.g: computers) to have invalid output computed (e.g: be unstable, or hang, or freeze) at any point in time, *even when D is transitioning*. We want it to be **robust**, and **reliable** at **all** times. 
 
 {: .highlight } 
 Combinational component within an electronic device requires a certain amount of time <code>tpd</code> to produce meaningful results; and over this time-frame we need to hold its input <strong>stable</strong>, however external input is <strong>unreliable,</strong> so there's <strong>no guarantee</strong> that this requirement is fulfilled. 
@@ -278,66 +278,94 @@ In any sequential logic circuit we use a **single synchronous clock**, meaning t
 In practice, it is **not possible** for any arbitrary input to always be synchronised with the clock, i.e: to obey the $$t_S$$ and $$t_H$$ requirements (of the external input facing 'upstream' DFF) at all times. For instance, when you type on your keyboard, you aren't able to synchronise that keyboard presses with your CPU clock, are you?  
 
 ### Violating the Dynamic Discipline
-Recall that dynamic discipline is crucial for any sequential logic circuit to work properly. We are now going to investigate what happens if **dynamic discipline is violated**.
+Recall that dynamic discipline is crucial for any sequential logic circuit to work properly. We are now going to investigate what happens if **dynamic discipline is violated**. In the figure below, suppose tH constraint is violated and the D latch captures an invalid voltage range: 
 
-<img src="https://dropbox.com/s/ucujrzj5imp4xxy/metas.png?raw=1" class="center_seventy" >
+<img src="{{ site.baseurl }}//docs/Hardware/images/e_sequentiallogic/2025-02-12-12-40-46.png"  class="center_seventy"/>
 
+We may end up storing the invalid values during `memory` mode (CLK is `0`) instead of a stable 0 or 1. This condition is what we refer to as the **metastable state**, where the output is **undefined** (does not correspond to any valid logic value) and could lead to <span class="orange-bold">unpredictable</span> behavior in the system. This is because:
+1. The output might resolve to either `0` or `1` after an **unpredictable** delay, meaning different runs on the same circuit could produce different results (non deterministic)
+2. This gets worse in downstream components: If multiple downstream gates receive the metastable signal, some might interpret it as 0 while others as 1, leading to inconsistent logic states and system instability.
+3. **Glitches**: If an intermediate or fluctuating voltage is fed into a gate, **different** transistors inside the gate may interpret it differently, leading to a glitch—a brief, unintended transition in the output. This will affect timing constraints of even more device downstream. 
 
-Look at the figure above. Let D be the "user" input to the Flip-Flop and OUT be the output "Q" of the Flip-Flop. When one of the timing constraints ($$t_{H}$$ in this case) imposed by the dynamic discipline is violated, we may end up storing the invalid values during `memory` mode. This event of storing invalid value is called the **metastable state**. 
-
-{: .important}
-When <span style="color:red; font-weight: bold;">dynamic discipline is violated</span>, there's no guarantee that our DFFs can produce a valid output: *it can be valid, or invalid*. When its output is invalid, we call it to be suffering from the **metastable state**. 
 
 ## [The Metastable State](https://www.youtube.com/watch?v=HlizelEp4Yc&t=5110s)
   
-{: .note-title}
-> Recall:
+{: .important-title}
+> The metastable state 
 > 
-> Due to the existence of a feedback loop in the D-latch as shown, it has a unique property where there exist a point in its voltage characteristics function whereby **Vin = Vout**. 
+> When the dynamic discipline (t1 and t2 time constraints) is violated, the dff may enter a **metastable** state, meaning its output is <span class="orange-bold">neither</span> a stable 0 nor a stable 1 for an <span class="orange-bold">unpredictable</span> duration. The output might still resolve to a valid 0 or 1, but the resolution time is uncertain, and this makes it <span class="orange-bold">dangerous</span>.
+> 
+> As mentioned above, if the resolution takes too long, it can **violate** timing constraints in downstream logic, leading to incorrect or unpredictable behavior. 
+>
+> If metastability **propagates**, different parts of the circuit might interpret the unstable signal differently, causing divergent outputs and system failures.
 
-<img src="https://dropbox.com/s/8jiw0mlsq8xvzsv/dff.png?raw=1" class="center_thirty" >
+### Cause
+Due to the existence of a feedback loop in the D-latch as shown, it has a unique property where there exist a point in its voltage characteristics function whereby **Vin = Vout**. 
 
-We can measure and plot $$V_{in}$$ (Q') versus $$V_{out}$$ (Q) in the D-latch, and come up with a VTC plot as follows:
+<img src="{{ site.baseurl }}//docs/Hardware/images/e_sequentiallogic/2025-02-12-11-58-43.png"  class="center_thirty"/>
 
-<img src="https://dropbox.com/s/t4ji250oufvdsun/metastable.png?raw=1" class="center_seventy"  >
+The VTC plot of the D-latch setup above is as follows:
 
+<img src="{{ site.baseurl }}//docs/Hardware/images/e_sequentiallogic/2025-02-12-12-09-30.png"  class="center_seventy"/>
 
-The <span style="color:red; font-weight: bold;">red</span> line signifies the feedback constraint, where we have **Q** at $$V_{out}$$ to be equivalent to **Q'** as $$V_{in}$$. **This is the effect of connecting the output of the multiplexer to itself, on the first input port**. 
+The <span style="color:red; font-weight: bold;">red</span> line signifies the feedback constraint, where we have **Q** at $$V_{out}$$ to be equivalent to **Q'** as $$V_{in}$$. **This is the effect of the feedback loop**. 
 
 The <span style="color:green; font-weight: bold;">green</span> line signifies the VTC of a "closed latch" state, i.e: when the selector bit of the multiplexer receives a  `0` as shown in the diagram above. 
 
 In the `memory` mode (closed-latch state), the D-latch passes the value from $$V_{in}$$ (Q') as the output at $$V_{out}$$ (Q), and thus we have a shape that resembles that of a **buffer**. 
 
 There are three points formed by the intersections of the <span style="color:red; font-weight: bold;">red</span> line (feedback constraint) and the <span style="color:green; font-weight: bold;">green</span> line (VTC of the closed latch), as indicated by the three circles in the figure above: 
-- Two end points that results in "valid" voltages (either `0` or `1`), and 
-- One middle point that is *METASTABLE* (denoted as $$V_m$$).
+- Two end points that results in "valid" voltages (either `0` or `1`). These are called low and high stable point. 
+- One middle point that called the *METASTABLE* point
+  - The Vin value at this point is denoted as $$V_m$$
 
-{: .new-title}
-> Think!
-> 
-> What is the **significance** (meaning) of these solution points? Well, we are indeed creating a device which output is connected back as its input, so we need to know where the system will *tend towards*. 
+
+{: .highlight}
+> What is the **significance** (meaning) of these solution points? 
+>
+> The **stable** equilibrium points (high and low) are where the D-latch naturally settles, corresponding to the stored logic `1` and logic `0` states. The *metastable* point is an <span class="orange-bold">unstable</span> equilibrium where the system momentarily balances but will eventually resolve to one of the stable states due to noise or small perturbations.
 
 ### Thought Experiments
 Let's think about a few scenarios while looking at the VTC plot above.
 
 #### 1: Initial $$V_{in}$$ value is *well* *below* $$V_m$$. 
 
-With time this initial condition will produce an even LOWER $$V_{out}$$. This $$V_{out}$$ becomes a new $$V_{in_2}$$ when the signal traverse the loop for the second time, and produce another even lower $$V_{out_2}$$. **Eventually**, the value of $$V_{out_N}$$ after certain N loops traversal tends towards the **stable** low indicated by the teal circle on the left. 
-
-**With each loop $$i$$, $$V_{out_i}$$ produced is always LESS than $$V_{in_i}$$**, and thus after a few loops, the final value of $$V_{out}$$  tends towards the <span style="color:teal; font-weight: bold;">teal</span> point of the left. 
+This will land the output voltage at the low stable equilibrium region. 
+* With initial $$V_{in}$$ value << $$V_m$$, the device will produce a lower $$V_{out}$$ 
+* This $$V_{out}$$ will loop back as $$V_{in}$$, and produce an even lower value of $$V_{out}$$  at the next iteration
+* **Eventually**, the value of $$V_{out_N}$$ after certain N loops traversal tends towards the **stable** low equilibrium point 
 
 
 #### 2: Initial value of $$V_{in}$$ is well above $$V_m$$
-Conversely, with time this initial condition will produce an even HIGHER $$V_{out}$$ and it tends towards the stable high indicated by the <span style="color:teal; font-weight: bold;">teal</span> circle on the right. This happens since $$V_{out_i}$$ is always greater than $$V_{in_i}$$ at each loop $$i$$.
+
+This will land the output voltage at the high stable equilibrium region. 
+* Conversely,with initial $$V_{in}$$ value >> $$V_m$$, the device will produce a higher $$V_{out}$$
+* As this Vout loops back and becomes a new $$V_{in}$$,  it will produce an even higher value of $$V_{out}$$ at the next iteration 
+* Since $$V_{out_i}$$ is always greater than $$V_{in_i}$$ at each loop $$i$$, we will eventually have a $$V_{out}$$ value that tends towards the **stable** high equilibrium point
 
 #### 3: Initial value of $$V_{in}$$ is equal or near to $$V_m$$
-However, if we have $$V_{in} = V_m$$, then from the graph we can easily see that $$V_{out}$$ will *again* be at equivalent value, at $$V_m$$ in the following loop traversal. This $$V_{out} = V_m$$ will be an input back at $$V_{in}$$ (in the next loop), which will produce $$V_m$$ again *over and over* (perpetually) under **ideal, noise-free case**. 
+
+We are at the metastable point. 
+* If we have $$V_{in} = V_m$$ (exactly at $$V_m$$), then its $$V_{out}$$ will be near $$V_m$$ again.
+* Under noise-free condition, $$Vout$$ will always be equal to $$V_{in}$$ no matter how many times the signal loops (no improvement!)
+* We might indefinitely be stuck at this metastable point (invalid voltage value) 
+
+{:.warning-title}
+> Why is invalid logic value a problem? 
+> 
+> If an upstream component propagates an invalid (metastable) voltage, downstream logic gates may interpret it <span class="orange-bold">inconsistently</span>, leading to **unpredictable** or **divergent** outputs. This can cause timing violations, glitches, or delayed resolution, potentially corrupting data or causing system instability. 
+>
+> **Unpredictable output**: Digital devices receiving invalid voltage input value may produce either `0` or `1` <span class="orange-bold">randomly</span>, meaning that different executions of the same operation may yield different results, making the system unreliable
+> 
+> **Divergent output**: If multiple downstream gates receive an invalid signal (metastable), some gates might *interpret* it as `0` (settled to `0`) while others *interpret* it as `1` (settled to `1`), causing different parts of the circuit to operate on **conflicting** logic states, leading to glitches, race conditions, or system instability
 
 ### Noise is Good, Sometimes
-Therefore, without the presence of noise or external disturbances, if $$V_in$$ is *exactly* at $$V_m$$ then there is **always** a **chance** that we MIGHT *wait* **forever** for it to be able to settle to either a stable values. A small presence of noise will drive $$V_{in}$$ down or up and eventually it *may* settle to a stable value, however this is **not guaranteed in bounded time**. 
+Without the presence of noise or external disturbances, if $$V_in$$ is *exactly* at $$V_m$$ then there is **always** a **chance** that we *MIGHT* *wait* **forever** for it to be able to settle to either a stable values. A small presence of noise will drive $$V_{in}$$ down or up and eventually it *may* settle to a stable value, however this is **not guaranteed in bounded time**. 
 
 {: .important}
-Remember that even though the output *might* settle to some valid value eventually, this does **not** necessarily correspond to the correct input (that was causing this metastable state). The actual true value of the input is <span style="color:red; font-weight: bold;">gone</span> (when it violates the dynamic discipline). 
+> If we wait for a metastable value to settle, it may resolve to the *wrong* state (not necessarily the original input), but this is <span class="orange-bold">still preferable</span> to remaining in an undefined state indefinitely. Digital systems require a definite `0` or `1` to ensure **predictable** operation, even if the resolved state doesn’t always match the original input. 
+> 
+> The actual true value of the input is <span style="color:red; font-weight: bold;">effectively lost</span> (when it violates the dynamic discipline that caused this metastable state for example). 
 
 ### Properties of Metastable State
 The state whereby your SL device is unable to settle to a stable valid value for unknown period of time is called the **metastable** state. Obviously we **do not** want this because the output of the device is invalid during this unknown time frame, and therefore rendered *useless*. 
@@ -471,9 +499,7 @@ Once again, BOTH $$t_1$$ and $$t_2$$ constraints must be fulfilled within **any 
 ### tpd of CL
 We can call the $$t_{PD} CL$$ (propagation delay of the CL) as the time taken to do **actual work** or **logic computation**. 
 
-{: .new-title}
-> Think!
-> 
+{: .highlight} 
 > It should be clear by now why the input to this CL must be stable for at least $$t_{pd}$$ for it to have meaningful output, and how our new circuit with DFFs (obeying dynamic discipline, $$t_1$$, and $$t_2$$ constraint) guarantees this -- something that unreliable external input alone cannot guarantee if it were to be fed directly to the CL units.
 
 The propagation or contamination delays of a Flip-Flop is not considered a logic computation, because unlike combinational logic devices (that can be made to implement functionalities such as addition, subtraction, boolean expressions, etc), a Flip-Flop **does not implement** any other special functionalities except to function as a memory device. 

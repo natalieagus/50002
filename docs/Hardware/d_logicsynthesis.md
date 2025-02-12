@@ -337,13 +337,13 @@ Take some time to make sense of the truth table. That is if S=0, OUT = A. Else, 
 
 You can build a 2-input multiplexer using basic gates:
 
-<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-04-10-30-22.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-04-10-30-22.png"  class="center_fifty"/>
 
 Some properties about multiplexers:
 1. Muxes are **universal**, meaning that it can implement any boolean functions
 2. A Mux can have $$2^k$$ data inputs, and $$k$$ bits select inputs, and **only can have 1 output** terminal. 
 
-We can also generalise the multiplexer to take more inputs: 4, or 8, or 16, etc. We can either build a bigger multiplexer or cascade many 2-input multiplexers. The following figure shows an example of a 4-input multiplexer, implemented as a big mux (left) or using a series of 2-input mux (right):  
+We can also generalise the multiplexer to take more inputs: 4, or 8, or 16, etc. We can either build a bigger multiplexer from scratch or cascade many 2-input multiplexers. The following figure shows an example of a 4-input multiplexer, implemented as a big mux (left) or using a series of 2-input mux (right):  
 
 <img src="https://dropbox.com/s/g5sqzvvn5pqwoha/4mux.png?raw=1"   class="center_seventy"   > 	
   
@@ -369,7 +369,7 @@ Below is an example of how a mux can be used to implement a more complex combina
 
 The multiplexer can simply implement the truth table by mapping each type of output bit $$C_{out}$$, and $$S$$ in each of the input terminals of the mux as illustrated below: 
 
-<img src="{{ site.baseurl }}/docs/Hardware/images/d_logicsynthesis/2025-02-04-10-31-14.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Hardware/images/d_logicsynthesis/2025-02-04-10-31-14.png"  class="center_fourty"/>
 
 
 {:.note}
@@ -387,7 +387,7 @@ Recall: NAND gates are made up of 4 transistors, and INV is made up of 2 transis
 Let's compare the size of the 1-bit Full Adder using each implementation. 
 
 Full adder implementation using basic logic gates is as shown: 
-<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-04-10-32-35.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-04-10-32-35.png"  class="center_thirty"/>
 
 This uses on average **42-48 transistors**, depending on how optimised is the 3-input XOR gate:
 * 1 3-input XOR gate: 18-24 transistors 
@@ -400,7 +400,11 @@ It can also be implemented using all NAND gates since NAND gates are **universal
 This uses on average **36 transistors** on average (9 2-input nand gates)
 
 Another (not so optimised) way is to implemented it straight from the **sum of products**: 
-<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-04-10-55-22.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-12-11-53-26.png"  class="center_seventy"/>
+
+$$S = \bar{A}\bar{B}C_{in}$$ + $$\bar{A}B\bar{C_{in}}$$ + $$A\bar{B}\bar{C_{in}}$$ + $$ABC_{in}$$
+
+$$C_{in} = \bar{A}BC_{in}$$ + $$AB\bar{C_{in}}$$ + $$A\bar{B}C_{in}$$ + $$ABC_{in}$$
 
 This uses **94 transistors** on average. 
 
@@ -414,7 +418,7 @@ From the comparison of different implementations of a 1-bit full adder, we can o
 
 A demultiplexer (demux) is a combinational circuit that **routes** a single input signal to one of multiple outputs based on a select signal. The demux has $$k$$ select inputs and $$2^k$$ possible output combinations. The schematic of a 1-select input demux is:
 
-<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-04-11-07-26.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-04-11-07-26.png"  class="center_forty"/>
 
 
 {: .note-title}
@@ -427,13 +431,13 @@ A common subset of a demux is a **decoder**, as both circuits use select inputs 
 
 The schematic of a 2-select inputs **decoder**: $$S_0$$ and $$S_1$$ is:
 
-<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-04-10-25-53.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-04-10-25-53.png"  class="center_forty"/>
 
 > Take some time to trace out the selector values to the output and draw out a truth table for the decoder/demux. Do not worry about the logic gate schematics of a decoder. It is only there to show you that a decoder is made up of the normal logic gates like inverters and AND gates.
 
 #### Properties
 
-<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-04-11-08-04.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-04-11-08-04.png"  class="center_fifty"/>
 
 1. The symbol of a decoder/demux is shown as above
 2. A demux is the *opposite* of a multiplexer. It has $$k$$ select inputs, and $$2^k$$  **possible data outputs**, and only 1 bit of input to forward. A decoder does not "forward" any input, but instead only activates one of the output lanes.32. **At any given time** only 1 bit of the $$2^k$$ output bits can be  `1` (high). This is apparent when we try to draw the truth table for a $$k$$ input decoder.
