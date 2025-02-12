@@ -13,29 +13,30 @@ We are using [Alchitry Au FPGA Development Board](https://www.sparkfun.com/produ
 
 It is crucial that you start familiarising yourself with coding the FPGA right away after you obtain the kit. Failure to do so will result in inevitable sufferings towards the end of the semester, which we do not want you to go through. This is <span style="color:red; font-weight: bold;">unlike</span> any programming subjects that you have learned in previous terms.
 
-The FPGA tutorials are written in Lucid programming language, specifically Lucid V2 programming language.
+The FPGA tutorials are written in Lucid programming language, specifically **Lucid V2** programming language.
 1. [Product description, schematics for: Au, Io, and Br. ](https://drive.google.com/drive/folders/1p8nP67o50hCzpcxhIxo2FYi0QfdDwFc2?usp=sharing)
    * The Br reference schematic is different from original Alchitry due to our custom PCB. [<span style="color:red; font-weight: bold;">Use our NEW one here</span>](https://drive.google.com/file/d/1T3Vth8YpqDq1iOcPEW6TWjwVH0-h-59C/view?usp=sharing). 
    * Please DO NOT use Alchitry original Br, the schematic is DIFFERENT (see below)
 2. [Lucid V2 documentation](https://alchitry.com/tutorials/lucid-reference/): : We will program the FPGA using **Lucid**, <span style="color:red; font-weight: bold;">not</span> Verilog. However, you can choose to program it using Verilog if you have prior experience. 
 
 
-## Sample Code 
-You can see our instructor Github repo (TBC) on more sample Au Projects. This repo contains many small alchitry projects for your reference. Checkout the other repositories as well that contains specific code for other drivers:
+## I/O Drivers 
+You can refer to these repositories for the following drivers in LucidV2: 
 1. WS2812B (TBC)
 2. HUB75 RGB LED Matrix (TBC)
 3. 75HC595 Shift Register (TBC)
 4. MAX7219(TBC)
 
-<!-- 5. [WS2812B](https://github.com/natalieagus/ws2812b)
-6. [HUB75 RGB LED Matrix](https://github.com/natalieagus/rgbledmatrix)
-7. [75HC595 Shift Register](https://github.com/natalieagus/74hc595)
-8. [MAX7219](https://github.com/natalieagus/max7219) -->
+These are the same drivers but implemented in LucidV1. Please adapt it to LucidV2 on your own if you visit this page and the above is still TBC. 
+1. [WS2812B](https://github.com/natalieagus/ws2812b)
+2. [HUB75 RGB LED Matrix](https://github.com/natalieagus/rgbledmatrix)
+3. [75HC595 Shift Register](https://github.com/natalieagus/74hc595)
+4. [MAX7219](https://github.com/natalieagus/max7219) 
 
-If you're looking for 1D project sample for 50.002, checkout [this repository](https://github.com/natalieagus/sample-1d-project-alchitry-v2).
+If you're looking for 1D project sample for 50.002 in LucidV2, checkout [this repository](https://github.com/natalieagus/sample-1d-project-alchitry-v2).
 
 
-**More material that are recommended:**
+**More materials that are recommended:**
 1. [Background tutorial](https://alchitry.com/tutorials/background/)
 2. [Your First FPGA Project](https://alchitry.com/tutorials/lucid_v1/your-first-fpga-project/) and [external IO setup](https://learn.sparkfun.com/tutorials/external-io-and-metastability/all) 
 3. [Synchronous Logic](https://alchitry.com/tutorials/lucid_v1/synchronous-logic/) (Related to Week 3 materials)
