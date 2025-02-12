@@ -381,12 +381,55 @@ The multiplexer can simply implement the truth table by mapping each type of out
 
 #### Comparison 
 
+This section compares the size (and cost) of making 1-bit FA through various methods:
+1. Straightforward logic synthesis (SOP)
+2. Logic synthesis after minimisation 
+3. NAND-gates only synthesis 
+4. Using multiplexer
+
 {:.highlight}
 Recall: NAND gates are made up of 4 transistors, and INV is made up of 2 transistors. 
 
 Let's compare the size of the 1-bit Full Adder using each implementation. 
 
-Full adder implementation using basic logic gates is as shown: 
+##### Straightforward implementation based on SOP
+The SOP of 1-bit FA is: 
+
+$$
+\begin{align}
+S &= \bar{A}\bar{B}C_{in} + \bar{A}B\bar{C_{in}} + A\bar{B}\bar{C_{in}} + ABC_{in} \\
+C_{in} &= \bar{A}BC_{in} + AB\bar{C_{in}} + A\bar{B}C_{in} + ABC_{in}
+\end{align}
+$$
+
+<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-12-11-53-26.png"  class="center_seventy"/>
+
+This uses **94 transistors** on average. 
+
+##### After minimisation 
+
+The Sum bit of an FA can be implemented with XOR gates:
+
+$$\begin{align}
+S &= \bar{A}\bar{B}C_{in} + \bar{A}B\bar{C_{in}} + A\bar{B}\bar{C_{in}} + ABC \\
+&= A \oplus B \oplus C
+\end{align}$$
+
+The Cout bit can be minimised further using a mixture of laws (absorption, distributive, complement, and identity):
+
+$$\begin{align}
+C &= \bar{A}BC_{in} + A\bar{B}C_{in} + AB\bar{C_{in}} + ABC \\
+&= BC_{in}(\bar{A}+A) + A\bar{B}C_{in} + AB\bar{C_{in}} \\
+&= BC_{in} + A\bar{B}C_{in} + AB\bar{C_{in}} \\
+&= C_{in}(B+A\bar{B}) + AB\bar{C_{in}}\\
+&= C_{in}(B+A) + AB\bar{C_{in}} \\
+&= C_{in}B + C_{in}A + AB\bar{C_{in}}\\ 
+&= C_{in}B + A(C_{in} + B \bar{C_{in}})\\
+&= C_{in}B + A(C_{in}+B) \\
+&= C_{in}B + AC_{in} + AB
+\end{align}$$
+
+Full adder implementation using basic logic gates is according to the minimised logic above is: 
 <img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-04-10-32-35.png"  class="center_thirty"/>
 
 This uses on average **42-48 transistors**, depending on how optimised is the 3-input XOR gate:
@@ -394,20 +437,13 @@ This uses on average **42-48 transistors**, depending on how optimised is the 3-
 * 3 2-input AND gates: 18 transistors 
 * 1 2-input OR gate: 6 transistors 
 
+##### NAND gates only
 It can also be implemented using all NAND gates since NAND gates are **universal**:
 <img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-04-10-46-37.png"  class="center_seventy"/>
 
-This uses on average **36 transistors** on average (9 2-input nand gates)
+This uses on average **36 transistors** on average (9 2-input nand gates). Implementation can be tricky, but there exist clear pattern(s) to follow. It is out of our syllabus. 
 
-Another (not so optimised) way is to implemented it straight from the **sum of products**: 
-<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-12-11-53-26.png"  class="center_seventy"/>
-
-$$S = \bar{A}\bar{B}C_{in}$$ + $$\bar{A}B\bar{C_{in}}$$ + $$A\bar{B}\bar{C_{in}}$$ + $$ABC_{in}$$
-
-$$C_{in} = \bar{A}BC_{in}$$ + $$AB\bar{C_{in}}$$ + $$A\bar{B}C_{in}$$ + $$ABC_{in}$$
-
-This uses **94 transistors** on average. 
-
+##### Using Multiplexers 
 Finally, the design with two 3-select muxes (two 8-to-1 muxes) require **160 transistors** on average (approximately 80 transistors to implement each mux)
 
 {:.note}
@@ -531,6 +567,9 @@ Design tradeoff summary for logic synthesis:
 Designing and implementing the logic directly using gates like AND, OR, NOT, NAND, NOR, etc., rather than relying on a ROM to store the outputs leads to a more efficient design (smaller unit, cheaper unit, less power drawn), but it is challenging to do so and to test because it is prone to errors. 
 
 Studying **boolean algebra and minimization** is essential for **optimizing SOP-based and gate-level designs**, reducing the number of gates, transistors, power consumption, and delay for more efficient implementations.
+
+You <span class="orange-bold">won't</span> be required to design or draw circuits from scratch in this course. Instead, you'll be given pre-designed circuits, and your task will be to analyze and trace their behavior.
+
 # Appendix
 
 
