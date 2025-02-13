@@ -181,7 +181,7 @@ The newest Alchitry Labs V2 requires Java 22 or newer. You need to upgrade your 
 
 The compressed file should be downloaded to `~/Downloads` directory. From there, extract it and move to `/usr/lib/jvm`:
 
-```
+```bash
 cd ~/Downloads
 sudo tar -xvzf jdk-VERSION_linux-x64_bin.tar.gz -C /usr/lib/jvm
 ```
@@ -191,7 +191,7 @@ Replace `VERSION` with whatever version you are downloading, e.g: `23.0.2`
 
 Then update `update-alternatives`:
 
-```
+```bash
 sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk-VERSION/bin/java 1
 sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/jdk-VERSION/bin/javac 1
 sudo update-alternatives --install /usr/bin/jar jar /usr/lib/jvm/jdk-VERSION/bin/jar 1
@@ -199,7 +199,7 @@ sudo update-alternatives --install /usr/bin/jar jar /usr/lib/jvm/jdk-VERSION/bin
 
 Then set the new JDK as default:
 
-```
+```bash
 sudo update-alternatives --config java
 ``` 
 
