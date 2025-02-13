@@ -173,6 +173,37 @@ com.alchitry.labs2.GUIKt'
 Ensure that in `~/Downloads` you have **deleted** the old alchitry labs directory and only has the most recent one
 
 
+### Updating Java Version
+
+The newest Alchitry Labs V2 requires Java 22 or newer. You need to upgrade your java version to run it. First, go to [Oracle website](docs/FPGA/images/Screenshot 2025-02-13 at 4.03.48 PM.png) and download the latest java:
+
+<img src="{{ site.baseurl }}/docs/FPGA/images/Screenshot 2025-02-13 at 4.03.48 PM.png"  class="center_seventy"/>
+
+The compressed file should be downloaded to `~/Downloads` directory. From there, extract it and move to `/usr/lib/jvm`:
+
+```
+cd ~/Downloads
+sudo tar -xvzf jdk-VERSION_linux-x64_bin.tar.gz -C /usr/lib/jvm
+```
+
+{:.important}
+Replace `VERSION` with whatever version you are downloading, e.g: `23.0.2`
+
+Then update `update-alternatives`:
+
+```
+sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk-VERSION/bin/java 1
+sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/jdk-VERSION/bin/javac 1
+sudo update-alternatives --install /usr/bin/jar jar /usr/lib/jvm/jdk-VERSION/bin/jar 1
+```
+
+Then set the new JDK as default:
+
+```
+sudo update-alternatives --config java
+``` 
+
+You’ll see a list of installed JDKs—choose the number corresponding to `/usr/lib/jvm/jdk-VERSION/bin/java`. 
 
 
 <!-- 
