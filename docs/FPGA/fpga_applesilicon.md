@@ -32,7 +32,7 @@ brew install --cask utm
 ```
 
 ### Download the VM Image 
-After that, [download the VM Image from here](https://sutdapac-my.sharepoint.com/:u:/g/personal/natalie_agus_sutd_edu_sg/ETc9Zr6Np4hBioSaB_ojFNEBF6zASGgDvlf_0-MFf7Z3Uw?e=pvGvWl)
+After that, [download the VM Image from here](https://sutdapac-my.sharepoint.com/:u:/g/personal/natalie_agus_sutd_edu_sg/ETc9Zr6Np4hBioSaB_ojFNEBcSYvuPXhBXLv_XUeNK6WZA?e=d0koOc)
 * You need to be <span className="orange-bold">signed in to your SUTD account</span> 
 * This image comes with Debian 12, Rosetta, Vivado 2023.2, Alchitry Labs 1.2.7 (legacy) and Alchitry Labs 2 pre-installed (current)
 
