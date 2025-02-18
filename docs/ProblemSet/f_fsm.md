@@ -61,10 +61,11 @@ We can obtain the answers  easily by running the FSM step by step. At each label
 </ul></p></div>
 
 ## An Incomplete State Machine (Basic)
-The ACME Company has recently received an order from a Mr. Wiley E. Coyote for their all-digital Perfectly Perplexing Padlock:
+The ACME Company has recently received an order from a Mr. Wiley E. Coyote for their all-digital Perfectly Perplexing Padlock (P3):
 * The P3 has **two** buttons ("0" and "1") that when pressed cause the FSM controlling the lock to advance to a new state. 
 * In addition to advancing the FSM, each button press is encoded on the B signal (B=0 for button "0", B=1 for button "1"). 
 * The padlock **unlocks** when the FSM sets the UNLOCK output signal to 1, which it does whenever the last N button presses correspond to the unique N-digit combination.
+* The FSM should **not** fully reset if a valid prefix of the sequence is still present, so after an incorrect input, check if the last entered digit matches the beginning of the correct sequence.
 
   
 Unfortunately the design notes for the P3 are *incomplete*. Using the specification above and clues gleaned from the partially completed diagrams below **fill in the information that is missing from the state transition diagram** with its **accompanying truth table**. 
