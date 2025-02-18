@@ -272,7 +272,7 @@ An adder is a **combinational** logic device. This means that its output depends
   - `SIZE`: determines the size of the adder  
 - In the **port list**:
   - Define the inputs: `a` and `b` (`SIZE` bit each),  `subtract` (1 bit, `0` to add, `1` to sub)
-  - Define the output: `s` (`SIZE` bit, computing the add/sub output), `v` (1 bit, indicating overflow), `n` (1 bit, indicating negative output)
+  - Define the output: `s` (`SIZE` bit, computing the add/sub output), `v` (1 bit, indicating overflow), `n` (1 bit, indicating negative output), `z` (1 bit, indicating zero output)
 - In the **module body**:
   - There's no need to instantiate any module
   - Write the adder logic in the `always` block 
@@ -305,6 +305,12 @@ Computing `n` is straightforward: connect it to the MSB of `s`. However, since `
   n = s[SIZE-1] // NOT ALLOWED 
 ```
 
+Computing `z` is also straightforward: do a reduction OR to `s` and negate it:
+
+```
+  z = ~|s
+```
+
 You can "name" an intermediary signal using the [`sig` type](https://alchitry.com/tutorials/lucid-reference/#types). This is the format:
 
 ```verilog
@@ -324,6 +330,7 @@ always{
   addition_result = a + b
   s = addition_result
   n = addition_result[SIZE-1]
+  z = ~|addition_result
 }
 ```
 
