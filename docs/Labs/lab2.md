@@ -273,6 +273,7 @@ An adder is a **combinational** logic device. This means that its output depends
 - In the **port list**:
   - Define the inputs: `a` and `b` (`SIZE` bit each),  `subtract` (1 bit, `0` to add, `1` to sub)
   - Define the output: `s` (`SIZE` bit, computing the add/sub output), `v` (1 bit, indicating overflow), `n` (1 bit, indicating negative output), `z` (1 bit, indicating zero output)
+    - Note that `z` is not directly required for Lab 2 Checkoff, but you will need it in Lab 3 so we add it here for completeness sake
 - In the **module body**:
   - There's no need to instantiate any module
   - Write the adder logic in the `always` block 
