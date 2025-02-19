@@ -65,15 +65,15 @@ The ACME Company has recently received an order from a Mr. Wiley E. Coyote for t
 * The P3 has **two** buttons ("0" and "1") that when pressed cause the FSM controlling the lock to advance to a new state. 
 * In addition to advancing the FSM, each button press is encoded on the B signal (B=0 for button "0", B=1 for button "1"). 
 * The padlock **unlocks** when the FSM sets the UNLOCK output signal to 1, which it does whenever the last N button presses correspond to the unique N-digit combination.
-* The FSM should **not** fully reset if a valid prefix of the sequence is still present, so after an incorrect input, check if the last entered digit matches the beginning of the correct sequence.
+* The FSM should **not** fully reset if a valid prefix (1 bit) of the sequence is still present, so after an incorrect input, **check if the last entered digit matches the beginning of the correct sequence**.
 
   
 Unfortunately the design notes for the P3 are *incomplete*. Using the specification above and clues gleaned from the partially completed diagrams below **fill in the information that is missing from the state transition diagram** with its **accompanying truth table**. 
 
-<img src="{{ site.baseurl }}/assets/images/pset/fsm-2.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}//docs/ProblemSet/images/f_fsm/2025-02-19-11-25-26.png"  class="center_seventy"/>
 
 When done,
-*  Each state in the transition diagram should be assigned a 2-bit state name `S1S0` (note that in this design the state name is not derived from the combination that opens the lock),
+*  Each state in the transition diagram should be assigned a 2-bit state name `S1 S0` (note that in this design the state name is not derived from the combination that opens the lock),
 *  The arcs leaving each state should be mutually exclusive and collectively exhaustive,
 *  The value for UNLOCK should be specified for each state, and the truth table should be completed.
 
@@ -83,9 +83,9 @@ Also, **what** is the **combination** of the lock?
 <p>
 This state machine is a <strong>Moore machine</strong>. The completed state transition diagram and truth table is as follows:
 <br>
-<img src="https://dropbox.com/s/nstfdu7qea4dozo/Q2%202.png?raw=1"  class="center_seventy">
+<img src="{{ site.baseurl }}//docs/ProblemSet/images/f_fsm/2025-02-19-11-28-24.png"  class="center_seventy"/>
 <br>
-The combination for the lock is <code>100</code>.
+The combination for the lock is <code>010</code>.
 </p></div>
 
 ## Constructing an FSM (Basic)
