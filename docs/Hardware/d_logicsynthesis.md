@@ -454,8 +454,7 @@ From the comparison of different implementations of a 1-bit full adder, we can o
 
 A demultiplexer (demux) is a combinational circuit that **routes** a single input signal to one of multiple outputs based on a select signal. The demux has $$k$$ select inputs and $$2^k$$ possible output combinations. The gate-level schematic of a 1-select input demux and its corresponding symbol is:
 
-<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-20-17-23-51.png"  class="center_seventy"/>
-
+<img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-20-17-25-20.png"  class="center_seventy"/>
 
 {: .note-title}
 > Practice
