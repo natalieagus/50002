@@ -174,7 +174,7 @@ Finally, ensure that Vivado is installed properly (you can open the app afterwar
 
 #### Set Vivado Location
 
-Set the Vivado installation location you did earlier in Alchitry Lab. It should be something like this `[VIVADO_INSTALLATION_DIRECTORY]/Vivado/[VERSION]`. In this example, we installed Vivado ML Edition 2023.2 in `/mnt/vivado`, and hence the location to select in Alchitry is `/mnt/vivado/Vivado/2023.2`. 
+Set the Vivado installation location you did earlier in Alchitry Lab. It should be something like this `[VIVADO_INSTALLATION_DIRECTORY ]/Vivado/[VERSION]`. In this example, we installed Vivado ML Edition 2023.2 in `/mnt/vivado`, and hence the location to select in Alchitry is `/mnt/vivado/Vivado/2023.2`. 
 
 <img src="{{ site.baseurl }}//docs/FPGA/images/installation/2024-10-16-11-10-22.png"  class="center_seventy no-invert"/>
 <img src="{{ site.baseurl }}//docs/FPGA/images/installation/2024-10-16-11-12-16.png"  class="center_seventy no-invert"/>
