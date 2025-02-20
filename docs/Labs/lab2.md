@@ -23,6 +23,9 @@ Singapore University of Technology and Design
 ## Starter Code
 There's no starter code for this lab. You simply need to have [Alchitry Labs V2](https://alchitry.com/alchitry-labs/) installed. You don't need Vivado for this lab, we are only going to run simulations. 
 
+{:.important}
+Consult FPGA resources [listed here](https://natalieagus.github.io/50002/fpga/intro) before coming to the lab or after the lab to enhance your knowledge on FPGA programming in general. This will greatly accelerate the quality of your 1D & 2D project. 
+
 ## Related Class Materials
 The lecture notes on **[sequential logic](https://natalieagus.github.io/50002/notes/sequentiallogic)** and **[logic synthesis](https://natalieagus.github.io/50002/notes/logicsynthesis)** are closely related to this lab.
 

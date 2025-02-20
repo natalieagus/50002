@@ -19,10 +19,46 @@ The FPGA tutorials are written in Lucid programming language, specifically **Luc
    * Please DO NOT use Alchitry original Br, the schematic is DIFFERENT (see below)
 2. [Lucid V2 documentation](https://alchitry.com/tutorials/lucid-reference/): : We will program the FPGA using **Lucid**, <span style="color:red; font-weight: bold;">not</span> Verilog. However, you can choose to program it using Verilog if you have prior experience. 
 
+## Beginner Tutorials
+
+Consult these tutorials by Alchitry to get started: 
+1. [Background tutorial](https://alchitry.com/tutorials/background/)
+2. [Your First FPGA Project](https://alchitry.com/tutorials/lucid_v1/your-first-fpga-project/) and [external IO setup](https://learn.sparkfun.com/tutorials/external-io-and-metastability/all) 
+3. [Synchronous Logic](https://alchitry.com/tutorials/lucid_v1/synchronous-logic/) (Related to Week 3 materials)
+4. [Io Element Project](https://alchitry.com/tutorials/lucid_v1/io-element/)
+5. [ROM and FSMs Project](https://alchitry.com/tutorials/lucid_v1/roms-and-fsms/) (Related to Week 2-5 materials)
+6. [Basic CPU](https://alchitry.com/tutorials/lucid_v1/hello-your-name-here/)  (Related to Beta CPU)
+7. [DDR3 RAM](https://alchitry.com/tutorials/lucid_v1/ddr3-memory/) (intermediate) 
+
+## Recommended Tutorials 
+
+Consult these tutorials based on your needs:
+1. [Alchitry Pinout](https://natalieagus.github.io/50002/fpga/fpga_4_2024)
+2. [Board Reset](https://natalieagus.github.io/50002/fpga/fpga_1_2024)
+3. [Random Number Generation](https://natalieagus.github.io/50002/fpga/fpga_2_2024)
+4. [Seven Segment](https://natalieagus.github.io/50002/fpga/fpga_3_2024)
+5. [LucidV2 Pitfalls](https://natalieagus.github.io/50002/fpga/fpga_5_2024)
 
 ## I/O Drivers 
-You can refer to these repositories for the following drivers in LucidV2: 
-1. WS2812B (TBC)
+
+Driving LED displays efficiently requires understanding various communication protocols and hardware interfaces. In this guide, we will explore how to control **WS2812B addressable LEDs, HUB75 RGB LED matrices, 74HC595 shift registers, and MAX7219 LED drivers** using an FPGA.
+
+1. **[WS2812B](https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf) (Addressable RGB LEDs)**  
+   WS2812B LEDs are individually addressable RGB LEDs with an integrated driver chip. They use a single-wire **timing-based protocol** to transmit color data in a daisy-chain fashion. Since precise timing is required, controlling WS2812B from an FPGA involves generating **accurate** pulse widths to match the protocol specifications.
+
+2. **[HUB75](https://learn.adafruit.com/32x16-32x32-rgb-led-matrix/overview) RGB LED Matrix**  
+   The HUB75 interface is commonly used in large RGB LED panel displays. It utilizes a **multiplexed row-column addressing scheme**, requiring multiple control signals, including row selection, RGB data lines, and clock signals. Driving a HUB75 matrix with an FPGA involves sequentially scanning rows while updating pixel data at high speed to achieve a flicker-free display.
+
+3. **[74HC595](https://www.diodes.com/assets/Datasheets/74HC595.pdf) Shift Register**  
+   The **74HC595** is an **8-bit serial-in, parallel-out shift register** used for expanding output pins. It is often used in LED matrix displays to control multiple LEDs with fewer FPGA I/O pins. The FPGA shifts data into the register using a **serial clock (SCK) and latch enable (LE) signal**, allowing efficient control of large LED arrays.
+
+4. **[MAX7219](https://www.analog.com/media/en/technical-documentation/data-sheets/max7219-max7221.pdf) LED Driver**  
+   The **MAX7219** is a serially interfaced **LED driver** designed for controlling 7-segment displays, dot matrices, and bar graphs. It simplifies driving multiple LEDs by handling current regulation and multiplexing internally. Communication with the MAX7219 is done using a **simple SPI-like protocol**, making it an efficient solution for driving multiple digits or LED segments with minimal FPGA resources.
+
+Each of these devices requires a *different* approach to interfacing with an FPGA. 
+
+You can refer to these repositories for demos of following drivers in LucidV2 & its guide: 
+1. [WS2812B](https://github.com/natalieagus/ws2812b-v2), [guide](https://natalieagus.github.io/50002/fpga/fpga_6_2024)
 2. HUB75 RGB LED Matrix (TBC)
 3. 75HC595 Shift Register (TBC)
 4. MAX7219(TBC)
@@ -35,15 +71,6 @@ These are the same drivers but implemented in LucidV1. Please adapt it to LucidV
 
 If you're looking for 1D project sample for 50.002 in LucidV2, checkout [this repository](https://github.com/natalieagus/sample-1d-project-alchitry-v2).
 
-
-**More materials that are recommended:**
-1. [Background tutorial](https://alchitry.com/tutorials/background/)
-2. [Your First FPGA Project](https://alchitry.com/tutorials/lucid_v1/your-first-fpga-project/) and [external IO setup](https://learn.sparkfun.com/tutorials/external-io-and-metastability/all) 
-3. [Synchronous Logic](https://alchitry.com/tutorials/lucid_v1/synchronous-logic/) (Related to Week 3 materials)
-4. [Io Element Project](https://alchitry.com/tutorials/lucid_v1/io-element/)
-5. [ROM and FSMs Project](https://alchitry.com/tutorials/lucid_v1/roms-and-fsms/) (Related to Week 2-5 materials)
-6. [Basic CPU](https://alchitry.com/tutorials/lucid_v1/hello-your-name-here/)  (Related to Beta CPU)
-7. [DDR3 RAM](https://alchitry.com/tutorials/lucid_v1/ddr3-memory/) (intermediate) 
 
 ## Br Board Schematic
 
