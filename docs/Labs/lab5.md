@@ -32,9 +32,7 @@ Then open `bsim.jar`. This is a Beta CPU emulator. Open the file `lab5_submit.ua
 
 ## Submission and Questionnaire
 
-Once you ar
-
-As usual, complete the questionnaire for this lab on eDimension before its due date. 
+As usual, complete the questionnaire for this lab on eDimension before its due date. There's no need to submit the code. They are for practice purposes only and serve as a recap for your final exam.
 
 ## Related Materials
 The lecture notes on [Stack and Procedures](https://natalieagus.github.io/50002/notes/stackandprocedures) is closely related for this lab. Related sections include:
