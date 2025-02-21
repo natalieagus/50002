@@ -315,7 +315,7 @@ Computing `z` is also straightforward: do a reduction OR to `s` and negate it:
   z = ~|s
 ```
 
-You can "name" an intermediary signal using the [`sig` type](https://alchitry.com/tutorials/lucid-reference/#types). This is the format:
+You can "name" an intermediary signal using the [`sig` type](https://alchitry.com/tutorials/lucid-reference/#types). These are used as basic **connections**  (wire) between parts of your design. This is the format:
 
 ```verilog
 sig sig_name
