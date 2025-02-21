@@ -58,6 +58,7 @@ One of the cheapest ways to encode information in terms of 0s and 1s is using   
 
 {:.note-title}
 > Digital Abstraction
+> 
 > The method of determining *discrete* values out of analog voltage (which value is originally made up of real number, and therefore *continuous* and *infinite*) is called the **digital abstraction**.
 
 This is how digital circuits work.  We need to find a **reliable framework** to determine **digital** signal values out of analog voltage values. This framework is called the [Static Discipline](#the-static-discipline).  
