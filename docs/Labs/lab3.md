@@ -99,7 +99,7 @@ A Ripple Carry Adder (RCA) is a simple binary adder that consists of multiple fu
 
 A full adder (FA) schematic is as shown:
 
-<img src="{{ site.baseurl }}/docs/Labs/images/cs-2025-1-bit-full-adder.drawio-2.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/cs-2025-1-bit-full-adder.drawio-2.png"  class="center_thirty"/>
 
 {:.highlight}
 As an exercise, derive the truth table of the FA above. 
