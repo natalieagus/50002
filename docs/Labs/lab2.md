@@ -686,6 +686,7 @@ We need to use **edge detectors** to detect a down press (falling edge), as well
 
 Add **Button Conditioner** component to your project, then use it as follows:
 
+{% raw %}
 ```verilog
   const CLK_FREQ = $is_sim() ? 1000 : 100000000 // put 1000 only for sim, 100M on hardware
 
@@ -709,8 +710,9 @@ Add **Button Conditioner** component to your project, then use it as follows:
 
   }
 ```
+{% endraw %}
 
-Now you can use `io_button_edge[i].out` to trigger state transition during the `IDLE` state. Complete your FSM logic for state: `IDLE, STOP, FASTER`, and `INCREASE`. 
+Now you can use `io_button_edge.out[i]` to trigger state transition during the `IDLE` state. Complete your FSM logic for state: `IDLE, STOP, FASTER`, and `INCREASE`. 
 
 
 ### Task 5: Test the simple FSM with I/O 
