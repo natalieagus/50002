@@ -510,13 +510,14 @@ Only the selected output bit $$i$$ is HIGH ( `1`), and the rest of the $$2^k-1$$
 
 One of the application of a decoder is to create a read-only-memories (ROM). You can buy them online, like [this product](https://learn.adafruit.com/digital-circuits-5-memories/read-only-memory). 
 
-For example, if we "**hardcode**" the Full-Adder using a decoder, we end up with the following schematic:<br>
+For example, if we "**hardcode**" the Full-Adder using a decoder, we end up with the following ROM design:<br>
+
 <img src="https://www.dropbox.com/s/t90f9n3ypg9aj9c/decoder.png?raw=1" class="center_seventy">
 
 Explanation of the schematic above:
-
-- At the output of the decoder, the little circuit with inverted triangle symbol signifies a **pulldown circuit** (an NFET connected to ground), which will "drain" a signal into LOW (0).
+- At the output of the decoder, we have a **pulldown circuit** (an NFET connected to ground), which will "drain" a signal into LOW (`0`).
 - Recall that at  each **combination** of select signal $$A, B$$, and $$C_i$$, only one of the 8 outputs of the decoder will be  `1`. 
+- The vertical wire with the VDD and the decoder output is <span class="orange-bold">not connected</span> (has no relationship) except for those joined by the NFETs. 
 
 For example, when $$A=0, B=0, C_{in}=1$$, the second output line of the decoder from the top, highlighted in blue in the image below is set to  `1`:
 
@@ -536,7 +537,7 @@ The location of the "pulldown" circuits **correspond to a `1` in the truth table
 
 1. ROMs ignore the structure of combinational functions (our truth table is "**hardcoded**") 
 2. The selectors are the **address** of an entry.
-3. For an $$N$$-input boolean function, the size of ROM is roughly $$2^N \times \text{ \#outputs}$$. 
+3. For an $$N$$-input boolean function, the size of ROM is roughly $$2^N \times \text{#outputs}$$. 
 
 {: .highlight} 
 For example, the Full Adder has 3 inputs (A, B, $$C_{in}$$), and 2 outputs ($$S$$ and $$C_{out}$$). Hence the size of the ROM is $$2^3 * 2 = 16$$.
