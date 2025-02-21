@@ -131,7 +131,7 @@ It is designed to create a **blinking** signal that can drive an LED, **toggling
   - The **blink** signal is assigned the value of the 26th bit (MSB) of the counter. This effectively divides the clock by $$2^{26}$$, slowing down the frequency to a human-visible rate for blinking.
 
 {:.note}
-Dividing 100 MHz by $$2^{26}$$ results in a frequency of approximately 1.49 Hz, meaning that the signal toggles 3 times per 2 seconds (approximately). Each time the signal toggles, it goes from **on to off** *or* **off to on**. Since this toggle happens 3 times every 2 seconds, the LED will change its state (on to off, or off to on) at that rate. Therefore, the blink will turn on and off once every 1.34 seconds, with both the on and off states taking about 0.67 seconds each.
+Dividing  default onboard 100 MHz by $$2^{26}$$ results in a frequency of approximately 1.49 Hz, meaning that the signal toggles 3 times per 2 seconds (approximately). Each time the signal toggles, it goes from **on to off** *or* **off to on**. Since this toggle happens 3 times every 2 seconds, the LED will change its state (on to off, or off to on) at that rate. Therefore, the blink will turn on and off once every 1.34 seconds, with both the on and off states taking about 0.67 seconds each.
 
 - **Incrementing the Counter**: 
   - The counter's value (`counter.d`) is updated by adding 1 to the current value (`counter.q + 1`), causing it to increment on **each** clock cycle.
