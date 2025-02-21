@@ -94,7 +94,7 @@ See the table below to find out the direct conversion between binary, octal, hex
 {: .note-title}
 > Prefix and Suffix
 > 
-> We typically use the **prefix** `0x`  to indicate that a number system is encoded in **hexadecimal** and not decimal.  If we encode a number in binary, we can use the **prefix** `0b` or not at all (because it is pretty obvious since a string of numbers only contain `0`s and `1`s). Numbers encoded in oct will have the **suffix** $$_8$$.
+> We typically use the **prefix** `0x`  to indicate that a number system is encoded in **hexadecimal** and not decimal.  If we encode a number in binary, we can use the **prefix** `0b` or not at all based on context (because it is pretty obvious since a string of numbers only contain `0`s and `1`s). Numbers encoded in oct will have the **suffix** $$_8$$.
 
 
 The examples below should provide a straightforward hints on [how to convert between the number systems](https://www.youtube.com/watch?v=IicB30kA3pY&list=PLklpDKpv-EBj1agIq4vB1iB6ahMT8_2A_&index=1&t=780s). 
