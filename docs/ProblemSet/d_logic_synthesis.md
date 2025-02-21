@@ -37,7 +37,7 @@ Each topic's questions are grouped into **three** categories: basic, intermediat
 $$\begin{matrix} 
 A & B & C & D & F \\ \hline 0 & 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 1 & 1 \\ 0 & 0 & 1 & 0 & 1 \\ 0 & 0 & 1 & 1 & 1 \\ 0 & 1 & 0 & 0 & 1 \\ 0 & 1 & 0 & 1 & 1 \\ 0 & 1 & 1 & 0 & 1 \\ 0 & 1 & 1 & 1 & 1 \\ 1 & 0 & 0 & 0 & 1 \\ 1 & 0 & 0 & 1 & 1 \\ 1 & 0 & 1 & 0 & 1 \\ 1 & 0 & 1 & 1 & 0 \\ 1 & 1 & 0 & 0 & 1 \\ 1 & 1 & 0 & 1 & 0 \\ 1 & 1 & 1 & 0 & 1 \\ 1 & 1 & 1 & 1 & 0 \\ \hline \end{matrix}$$
 <br><br>
-2. The final boolean expression is: $$F = \overline{A(B+C)D}$$
+1. The final boolean expression is: $$F = \overline{A(B+C)D}$$. This is obtained straight from the diagram. Look at the **pull down** circuitry and you will figure out that if A *and*, B *or* C, *and* D is 1, then you will get a `0` as the output, hence the expression. Ideally you don't take the sum of products for this case because there are so many `1`s. You can look at rows with `0` instead, do the sum of products for that and NOT the entire term. You will need a few steps to simplify it though. 
 </p></div><br>
 
 
