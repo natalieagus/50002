@@ -292,7 +292,7 @@ Perform any **logical** computations using the ALU (similar to `OP` above). The 
 
 The instructions that fall under `OPC` category are: `ADDC, SUBC, MULC, DIVC, ANDC, ORC, XORC, CMPEQC, CMPLTC, CMPLEC, SHLC, SHRC`, and `SRAC`. It's general format is:
 
-<img src="https://dropbox.com/s/wcirw4bgwhh2xbg/opc_insdfhi9j45vnuw7n0/opc.png?raw=1" class="center_fifty"  >
+<img src="https://www.dropbox.com/scl/fi/opl8h66d1bmvy4fxs7kq8/opc_ins.png?rlkey=6uhgedr597l6csazyfgh16elj&raw=1" class="center_fifty"  >
 
 **Register Transfer Language**<br>
 `PC` $$\leftarrow$$ `PC+4`<br>
