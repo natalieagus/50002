@@ -70,7 +70,7 @@ The ACME Company has recently received an order from a Mr. Wiley E. Coyote for t
   
 Unfortunately the design notes for the P3 are *incomplete*. Using the specification above and clues gleaned from the partially completed diagrams below **fill in the information that is missing from the state transition diagram** with its **accompanying truth table**. 
 
-<img src="{{ site.baseurl }}//docs/ProblemSet/images/f_fsm/2025-02-19-11-25-26.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}//docs/ProblemSet/images/f_fsm/2025-02-24-16-22-45.png"  class="center_seventy"/>
 
 When done,
 *  Each state in the transition diagram should be assigned a 2-bit state name `S1 S0` (note that in this design the state name is not derived from the combination that opens the lock),
@@ -83,7 +83,7 @@ Also, **what** is the **combination** of the lock?
 <p>
 This state machine is a <strong>Moore machine</strong>. The completed state transition diagram and truth table is as follows:
 <br>
-<img src="{{ site.baseurl }}//docs/ProblemSet/images/f_fsm/2025-02-19-11-28-24.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}//docs/ProblemSet/images/f_fsm/2025-02-24-16-23-16.png"  class="center_seventy"/>
 <br>
 The combination for the lock is <code>010</code>.
 </p></div>
