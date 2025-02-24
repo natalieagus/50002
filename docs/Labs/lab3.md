@@ -643,7 +643,7 @@ This 32-bit combinational multiplier, as part of the ALU, may fail to meet the t
 
 To address this, you can modify the constraint file to use a slower clock, such as 10 MHz.
 
-<img src="{{ site.baseurl }}//docs/Labs/images/lab3/2025-01-23-13-55-19.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}//docs/Labs/images/lab3/2025-02-24-17-23-16.png"  class="center_seventy"/>
 
 {:.note}
 As part of your 2D project: Optimisation part, you can consider using other multiplier designs that can pass the original 100MHz clk. 
