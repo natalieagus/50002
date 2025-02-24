@@ -725,6 +725,10 @@ For your 1D project, you will need to downsize the ALU to support 16-bit instead
 Carefully **consult Checkoff 1: ALU** schedule, requirements and rubrics given in the course handout. <span class="orange-bold">Do not miss your checkoff slot</span>. 
 
 ### 1D Checkoff 1: ALU 
+
+{:.important}
+[Give the 1D handout a read](https://natalieagus.notion.site/50-002-1D-Project-Electronic-Hardware-Prototype-EHP-30-d2b68e992aca4020ad84020e7df002cb) before Checkoffs to ensure that you don't miss any information or requirements. 
+
 For your Checkoff 1: ALU, you're also required to create **additional** functionalities. You **are allowed** to use Lucid math and comparison operator for this **NEW** functionality. For example, if your new operation involves `DIVISION` between A and B, you're allowed to implement it as follows:
 
 ```cpp
