@@ -77,7 +77,7 @@ as the part with the highest gain in the middle of the graph can most probably b
 
 <img src="https://dropbox.com/s/q363sc7ov84ww45/Q2.png?raw=1"    class="center_fifty"    >
 
-[Video explanation here.](https://youtu.be/W5rF1_6WpGI)
+[Video explanation here.](https://youtu.be/KsgLQ5mJxQ4)
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 No. This device gain is not more than 1, hence it cannot be used as a combinational device.
