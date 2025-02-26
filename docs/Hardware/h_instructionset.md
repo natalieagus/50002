@@ -576,7 +576,7 @@ ans: LONG(0)
 
 Of course then the final step is to **convert** this into machine language and load it to the Memory Unit, and allow the PC of the $$\beta$$ machine to execute the first line of instruction (ADDC) . 
 
-To see how the code works in person, **open** `bsim.jar` in your `/50002` lab starter kit, **paste** the assembly code above and run it. 
+To see how the code works in person, **download** `bsim.jar` from [here](https://github.com/natalieagus/bsim-kit), **paste** the assembly code above and run it. 
 <img src="https://dropbox.com/s/oo514c8yuq48ies/bsimsample.png?raw=1"  class="center_seventy"  >
 
 When the machine halts, we should have the answered stored somewhere in the memory unit, thus effectively enabling $$\beta$$ machine to emulate the ability of Machine $$M$$ without changing its datapath. We will learn more about how to hand assemble and manually execute the code soon. Right now, this is here to give you a *preview* of what is to come in the next few weeks. 

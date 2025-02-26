@@ -59,7 +59,10 @@ This unit can be easily implemented using a read only memory.
 
 We will go through the function of each instruction and understand how the given $$\beta$$ datapath is able to execute the instruction properly by producing appropriate control signals as shown above. 
 
-  
+## Download BSIM 
+
+
+BSIM is a Beta simulator for the 50.002 Beta CPU. You can run Beta instructions there and observe the output in action. Please [download it from here](https://github.com/natalieagus/bsim-kit) before proceeding. 
 
 ## [Instruction Cycles](https://www.youtube.com/watch?v=4T9MR8BSzt0&t=119s)
 At each clock cycle, the CPU has to first **fetch** the current instruction from the Memory and **decode** its `OPCODE`. This instruction tells the CPU what to *do* for this clock cycle.  

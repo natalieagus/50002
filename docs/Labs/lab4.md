@@ -621,7 +621,7 @@ Compile, and run the Beta FPGA again while observing that the states: `id`, `ia`
 {: .important}
 Take this opportunity to [revise Beta ISA and CPU](https://natalieagus.github.io/50002/notes/betacpu). 
 
-You can also paste this equivalent program in `bsim` and observe its states, ensure that it matches the FPGA's (yes, manual observation).
+You can also paste this equivalent program in [`bsim`](https://github.com/natalieagus/bsim-kit) and observe its states, ensure that it matches the FPGA's (yes, manual observation).
 
 ```nasm
 .include beta.uasm
