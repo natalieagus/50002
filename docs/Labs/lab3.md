@@ -720,7 +720,7 @@ Ensure that you test your ALU **comprehensively** because you will be using it f
 
 Congratulations 🎉🎉! You have successfully built a 32-bit ALU in this lab and familiarse yourself with programming FPGA with Lucid. You will be required to **utilise it** in Lab 4 (Beta CPU), so **please keep a copy of your answer**. 
 
-For your 1D project, you will need to downsize the ALU to support 16-bit instead of 32-bit. It shouldn't be too much work to modify. You might also want to consider creating **automatic tester** using the `fsm` module for your 1D Project Checkoff 1: ALU. Read the FPGA tutorials linked in our course handout for further information, and don't forget to polish your knowledge on Sequential Logic before proceeding. 
+**For your 1D project, you need to demonstrate a working ALU in your Alchitry Au FPGA hardware (not simulator!)**. You might also want to consider creating **automatic tester** using the `fsm` module for your 1D Project Checkoff 1: ALU. Read the FPGA tutorials linked in our course handout for further information, and don't forget to polish your knowledge on Sequential Logic before proceeding. 
 
 Carefully **consult Checkoff 1: ALU** schedule, requirements and rubrics given in the course handout. <span class="orange-bold">Do not miss your checkoff slot</span>. 
 
