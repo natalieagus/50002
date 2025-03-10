@@ -99,9 +99,9 @@ Its job is to parse a symbolic **language** (assembly language) used to represen
 {:.highlight-title}
 > `beta.uasm`
 > 
-> In this course, we utilise `beta.uasm` and `bsim` as our assembler. `bsim` also contains the "hardware" of our toy Beta CPU, and it only **understands** machine language in terms of 1s and 0s (the 32-bit instructions loaded at each CLK cycle). 
+> In this course, we utilise [`beta.uasm`](https://github.com/natalieagus/bsim-kit/blob/main/beta.uasm) as our assembler. `bsim` is the simulator for our toy Beta CPU, and it only **understands** machine language in terms of 1s and 0s (the 32-bit instructions loaded at each CLK cycle). If you haven't done so, you can [download both from here](https://github.com/natalieagus/bsim-kit). 
 
-The aseembler enables us to write programs for our Beta CPU symbolic language called **beta assembly language** for our `bsim` to execute.  
+The assembler enables us to write programs for our Beta CPU symbolic language called **beta assembly language** for our `bsim` to execute.  
 
 
 ### UASM 
