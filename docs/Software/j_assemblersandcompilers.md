@@ -291,7 +291,56 @@ HALT()
 x : . 
 ```
 
-### [Example 3: Conditionals and Loops](https://www.youtube.com/watch?v=Hhq3RhZcngQ&t=2206s)
+### Example 3: Conditionals
+
+C Code:
+
+```cpp 
+x = 128
+number = 5; // Change this value to test different cases
+    
+// If-else condition to check the number
+if (number > 0) {
+	x = x + 1
+} else if (number < 0) {
+	x = x - 1
+} else {
+	x = 0
+}
+```
+
+Might translate to the following $$\beta$$ assembly code:
+```nasm
+.include beta.uasm
+
+LD(R31, number, R1) | put number to R1
+LD(R31, x, R2) | put x to R2
+
+CMPLEC(R2, R31, R3) | check if number is > 0
+BEQ(R3, number_gt_zero, R31) 
+CMPLT(R2, R31, R3) | check if number is < 0
+BEQ(R3, number_lt_zero, R31) 
+| if reach here, number is zero
+ADDC(R31, 1, R1) 
+BR(halt)
+
+number_gt_zero: 
+ADDC(R2, 1, R2) 
+BR(halt)
+
+number_lt_zero:
+SUBC(R2, 1, R2) 
+BR(halt)  
+
+halt:
+ST(R2, x, R31)
+HALT()
+
+number : LONG(20)
+x : LONG(128)
+```
+
+### [Example 4: Conditionals and Loops](https://www.youtube.com/watch?v=Hhq3RhZcngQ&t=2206s)
 C Code: 
 ```cpp
 int n = 20;
