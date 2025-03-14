@@ -97,9 +97,11 @@ This layer includes interpretive software tools such as the Operating System and
 Its job is to parse a symbolic **language** (assembly language) used to represent instructions for the CPU to execute. 
 
 {:.highlight-title}
-> `beta.uasm`
+> `beta.uasm` and `bsim`
 > 
-> In this course, we utilise [`beta.uasm`](https://github.com/natalieagus/bsim-kit/blob/main/beta.uasm) as our assembler. `bsim` is the simulator for our toy Beta CPU, and it only **understands** machine language in terms of 1s and 0s (the 32-bit instructions loaded at each CLK cycle). If you haven't done so, you can [download both from here](https://github.com/natalieagus/bsim-kit). 
+>`bsim` is the simulator for our toy Beta CPU, and the simulator part only **understands** machine language in terms of 1s and 0s (the 32-bit instructions loaded at each CLK cycle). `bsim` also incorporates an assembler, which is a proram that converts text files into binary memory. It utilises `beta.uasm` which contains all symbol definitions for all the registers and macro definitions for Beta instructions. 
+> 
+> If you haven't done so, you can [download both from here](https://github.com/natalieagus/bsim-kit). 
 
 The assembler enables us to write programs for our Beta CPU symbolic language called **beta assembly language** for our `bsim` to execute.  
 
@@ -107,17 +109,22 @@ The assembler enables us to write programs for our Beta CPU symbolic language ca
 ### UASM 
 
 {: .note}
-UASM is MIT's 6.004 Micro Assembly Language.
+UASM is MIT's 6.004 Micro Assembly Language. It describes the Beta instructions to the built-in assembler in `bsim`. 
 
-We explain the anatomy of an assembler briefly using `bsim` and `beta.uasm`. In order to write a programs that can be runnable by our Beta CPU in `bsim` conveniently, we need a UASM:
+In order to write a programs that can be runnable by our Beta CPU in `bsim` conveniently, we need a UASM:
 * A **symbolic language** (UASM) for **representing** strings of bits of instructions.
 * A Program for **translating** UASM source code into binary. 
 
 <img src="https://dropbox.com/s/5krjxvccdmeesge/uasmstuff.png?raw=1" class="center_seventy" >
 
-A UASM source file contains (in symbolic text) **values of successive bytes to be loaded into memory**. We can define various things in UASM source file.
+A UASM source file contains (in symbolic text) **values of successive bytes to be loaded into memory**. We can define various things in UASM source file. Refer to `beta.uasm`: 
+* It reads **arithmetic** expressions and evaluates them to produce 8-bit values, which it then adds sequentially to the array of bytes which will eventually be **loaded into the Beta’s memory**. 
+* UASM supports several useful language features like *symbols* and *labels* that make it **easier** to write assembly language programs. 
+* Symbols and labels let us give *names* to particular values and addresses. 
+* Macros let us create shorthand notations for sequences of expressions that, when evaluated, will generate the binary representations for instructions and data.
 
-{: .warning-title}
+
+{: .note-title}
 > Read the bsim Documentation
 >
 > Please <span style="color:red; font-weight: bold;">read</span>  the `bsim` [documentation](https://www.dropbox.com/scl/fi/psjv77mobp12srafj3us2/bsim.pdf?rlkey=qismnxs1al85qyorj1rxit7ow&dl=1) to know more about the syntax of the Beta assembly language.  
@@ -126,8 +133,6 @@ A UASM source file contains (in symbolic text) **values of successive bytes to b
 
 
 The next few sections explains the **syntax** that's acceptable by the Beta Assembler. We will use the same syntax in exams and problem sets.
-
-
 
 
 ### Symbols
@@ -146,8 +151,8 @@ ADDC(R1, y, R1) | equivalent to ADDC(0x1, 0x1004, 0x1)
 ADDC(R1, R2, R3) | not an error, equivalent to ADDC(0x1, 0x2, 0x3)
 ```
 
-### The dot variable
-The `.` is a **Special variable** which dictates where *next* byte address to be filled in memory is. 
+### The dot `.` 
+The `.` is a **special symbol** which dictates where *next* byte address to be filled in memory is. 
 
   
 ```nasm
