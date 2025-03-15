@@ -340,7 +340,7 @@ number : LONG(20)
 x : LONG(128)
 ```
 
-### [Example 4: Conditionals and Loops](https://www.youtube.com/watch?v=Hhq3RhZcngQ&t=2206s)
+### [Example 4: Loops](https://www.youtube.com/watch?v=Hhq3RhZcngQ&t=2206s)
 C Code: 
 ```cpp
 int n = 20;

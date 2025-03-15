@@ -44,7 +44,11 @@ Design 5 combinational ALU components: adder/subtractor, compare, boolean, shift
 This lab will deepen your understanding of building circuits to achieve specific logic functions. For instance, an adder circuit performs binary addition on inputs A and B. You'll also make it **programmable** using the `ALUFN` control signal.
 
 {: .warning}
-You are <span style="color:red; font-weight: bold;">NOT</span> allowed to use **any** of Lucid's **math** and **comparison** operators when implementing this lab's ALU 13 functionalities. This is the requirement of your 1D project because we would like you to learn the basics and not solely rely on Vivado's capability on creating components of the ALU. Please follow the implementation of the units from the given schematics. **Failure to comply will result in -2% of your overall grades**. However, you can use them for array indexing or checking conditions in loops. 
+> You are <span style="color:red; font-weight: bold;">NOT</span> allowed to use **any** of Lucid's **math** and **comparison** operators when implementing this lab's ALU 13 functionalities. This is the requirement of your 1D project because we would like you to learn the basics and not solely rely on Vivado's capability on creating components of the ALU. 
+> 
+> Please follow the implementation of the units **from the given schematics in this lab**. For instance, you cannot implement shifts (SHL, SHR, SRA) trivially using `>>` and `<<`, and you cannot implement ADD and SUB using `+` or `-`, etc. 
+> 
+> **Failure to comply will result in -2% of your overall grades**. However, you can use them for array indexing or checking conditions in loops. 
 
 ## Introduction 
 
@@ -641,12 +645,13 @@ This 32-bit combinational multiplier, as part of the ALU, may fail to meet the t
 
 <img src="{{ site.baseurl }}//docs/Labs/images/lab3/2025-01-23-14-12-12.png"  class="center_seventy"/>
 
-To address this, you can modify the constraint file to use a slower clock, such as 10 MHz.
+To address this, you can modify the constraint file to use a slower clock, such as 10 MHz. <span class="orange-bold">Remember</span> to <span class="orange-bold">adjust</span> the clock frequency of your `button_conditioner` to <span class="orange-bold">match</span> this too, <span class="orange-bold">otherwise your buttons won't work!</span>  
 
 <img src="{{ site.baseurl }}//docs/Labs/images/lab3/2025-02-24-17-23-16.png"  class="center_seventy"/>
 
 {:.note}
 As part of your 2D project: Optimisation part, you can consider using other multiplier designs that can pass the original 100MHz clk. 
+
 
 ## Task 6: Assembling the ALU
 
