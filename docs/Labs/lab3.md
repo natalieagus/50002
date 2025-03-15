@@ -46,7 +46,7 @@ This lab will deepen your understanding of building circuits to achieve specific
 {: .warning}
 > You are <span style="color:red; font-weight: bold;">NOT</span> allowed to use **any** of Lucid's **math** and **comparison** operators when implementing this lab's ALU 13 functionalities. This is the requirement of your 1D project because we would like you to learn the basics and not solely rely on Vivado's capability on creating components of the ALU. 
 > 
-> Please follow the implementation of the units **from the given schematics in this lab**. For instance, you cannot implement shifts (SHL, SHR, SRA) trivially using `>>` and `<<`, and you cannot implement ADD and SUB using `+` or `-`, etc. 
+> Please follow the implementation of the units **from the given schematics in this lab**. For instance, you shouldn't implement shifts (SHL, SHR, SRA) trivially using `>>` and `<<`, and you should't implement ADD and SUB using `+` or `-`, etc. Instead you should create a ripple carry adder unit to implement ADD/SUB functionality, and create the shifter unit using multiplexers as shown in this handout. 
 > 
 > **Failure to comply will result in -2% of your overall grades**. However, you can use them for array indexing or checking conditions in loops. 
 
