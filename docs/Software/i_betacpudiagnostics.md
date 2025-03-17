@@ -295,8 +295,8 @@ HALT()
 ```
 
 At first glance, the program above seems to be able to detect the faulties just fine. You might think the following:
-1. The content of `R0` will be `8` instead of `12` if the `ASEL` mux is faulty, and 
-2. The content of `Mem[28]` will be `4` instead of `8` if the `RA2SEL` mux is faulty 
+1. The content of `R2` will be `8` instead of `12` if the `ASEL` mux is faulty, and 
+2. The content of `Mem[28]` will be `8` instead of `4` if the `RA2SEL` mux is faulty 
 
 However, since `PC` starts from `0`, the **first** instruction that the CPU will attempt to execute will be `LONG(8)` and **not** `LDR(constant, R0)`. This will trigger a **software interrupt** and therefore `P7` <span style="color:#ff791a; font-weight: bold;">will not</span> be able to immediately isolate either of the faults.
 
