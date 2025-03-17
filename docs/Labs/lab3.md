@@ -44,7 +44,7 @@ Design 5 combinational ALU components: adder/subtractor, compare, boolean, shift
 This lab will deepen your understanding of building circuits to achieve specific logic functions. For instance, an adder circuit performs binary addition on inputs A and B. You'll also make it **programmable** using the `ALUFN` control signal.
 
 {: .warning}
-> You are <span style="color:red; font-weight: bold;">NOT</span> allowed to use **any** of Lucid's **math** and **comparison** operators when implementing this lab's ALU 13 functionalities. This is the requirement of your 1D project because we would like you to learn the basics and not solely rely on Vivado's capability on creating components of the ALU. 
+> You are <span style="color:red; font-weight: bold;">NOT</span> allowed to use **any** of Lucid's **math** and **comparison** operators when implementing this lab's ALU 13 functionalities. This is the requirement of your 1D project because we would like you to learn the basics and not solely rely on Vivado's capability on creating components of the ALU. Please [give the 1D project handout a read](https://natalieagus.notion.site/1D-Project-Part-2-Electronic-Hardware-Prototype-EHP-30-d2b68e992aca4020ad84020e7df002cb) for further information. 
 > 
 > Please follow the implementation of the units **from the given schematics in this lab**. For instance, you shouldn't implement shifts (SHL, SHR, SRA) trivially using `>>` and `<<`, and you should't implement ADD and SUB using `+` or `-`, etc. Instead you should create a ripple carry adder unit to implement ADD/SUB functionality, and create the shifter unit using multiplexers as shown in this handout. 
 > 
