@@ -175,6 +175,8 @@ In general, a `REGFILE` system **must** have combinational read ports and sequen
 For this example, we follow the $$\beta$$: to have 2 read ports and 1 write ports. One possible REGFILE schematic for this custom game datapath is as such:
 <img src="{{ site.baseurl }}/docs/FPGA/images/1d-diagram-regfile.drawio.png"  class="center_seventy"/>
 
+We always output the content of R0, R1, and R5 at all times (not as an addressable read port) because we need to display P1's score (R0), P2's score (R1), and Timer (R5) to LEDs/7segment. 
+
 ### Implementing the `REGFILE` 
 
 Coding a `REGFILE` on an FPGA is not an issue after you have a clear idea about its addressing system, and input/output ports of the module. This `REGFILE` should be implemented as a single file, e.g: `regfile.luc`. 
