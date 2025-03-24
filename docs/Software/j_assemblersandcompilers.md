@@ -313,12 +313,12 @@ Might translate to the following $$\beta$$ assembly code:
 ```nasm
 .include beta.uasm
 
-LD(R31, number, R1) | put number to R1
-LD(R31, x, R2) | put x to R2
+LD(R31, x, R1) | put x to R1
+LD(R31, number, R2) | put number to R2
 
-CMPLEC(R2, R31, R3) | check if number is > 0
+CMPLE(R2, R31, R3) | check if number is <= 0
 BEQ(R3, number_gt_zero, R31) 
-CMPLT(R2, R31, R3) | check if number is < 0
+CMPEQ(R2, R31, R3) | check if number is == 0
 BEQ(R3, number_lt_zero, R31) 
 | if reach here, number is zero
 ADDC(R31, 1, R1) 
