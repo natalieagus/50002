@@ -319,6 +319,10 @@ There are four major **events**, color coded in the FSM diagram below (please op
 * `DECREASE TIMER`	event (blue)
 * `COMPUTE WINNER` event (purple)
 
+
+{:.note}
+> Note that the signals `regfile_wa` is symbolised as `rc`, `regfile_ra1` and `regfile_ra2` are symbolised as `ra` and `rb` respectively, and `regfile_we` is symbolised as `we` in the figure below (due to space constraint).
+
 <img src="{{ site.baseurl }}/docs/FPGA/images/fsm-1d.png"  class="center_seventy"/>
 
 ### Button Press Event
