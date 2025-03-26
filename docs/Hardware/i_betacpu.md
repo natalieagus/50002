@@ -651,8 +651,8 @@ Software explicitly instructs the CPU how to interpret numbers as signed or unsi
   - Binary pattern: `11111111`
   - Signed interpretation (software-decided): `-1`
   - Unsigned interpretation (software-decided): `255`
-  - If software executes an unsigned comparison instruction (like `bltu`), the CPU circuit **checks** this bit pattern as **unsigned (255)**, and branches accordingly.
-  - If software executes a signed comparison instruction (like blt), the CPU circuit **checks the same bit pattern as signed** (-1 in two’s complement), and branches differently.
+  - If software executes an unsigned comparison instruction (like `bltu`, branch less than unsigned), the CPU circuit **checks** this bit pattern as **unsigned (255)**, and branches accordingly.
+  - If software executes a signed comparison instruction (like `blt`, branch less than), the CPU circuit **checks the same bit pattern as signed** (-1 in two’s complement), and branches differently.
 
 We **design** and **build** CPU hardware circuits (like ALUs and comparison units) that perform arithmetic **differently** for signed or unsigned instructions as *explicitly requested* by software.
 
