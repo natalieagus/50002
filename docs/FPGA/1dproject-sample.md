@@ -63,7 +63,13 @@ Above shows the rough sketch of the prototype. Here's the breakdown:
 Consult [Appendix](#appendix) for screenshots of products. 
 
 ## Feasibility 
-We assume that we connect all device's **ground** to the common **ground** (FPGA's & Battery's ground).
+
+This section outlines the hardware feasibility of the proposed prototype. Here we consider the number of pins required for all I/O and external power supply.  We assume that we connect all device's **ground** to the common **ground** (FPGA's & Battery's ground). 
+
+{:.warning}
+> Always Use a Common Ground with External Power Sources 
+>
+> ⚠️ Always connect the ground (GND) of any external battery or power supply to the FPGA ground to ensure a common reference voltage. Failure to do so may cause erratic behavior or damage your FPGA board and external components.
 
 ### Output connections
 
