@@ -632,6 +632,38 @@ is_zero: JMP(R31)
 ## More about RESET
 The $$\beta$$ processor accept external `RESET` signal that can reset the value of the `PC`. The signal `RESET` must be `1` for <span style="color:red; font-weight: bold;">several</span> clock cycles in order to ensure that the values affected by `RESET` propagates throughout the entire circuit. During the period where `RESET = 1`, we need to make sure that `WR` is `0` so that we do not accidentally overwrite the content of the physical memory.
 
+## How Does CPU Interpret Signed vs Unsigned Numbers?
+
+The CPU hardware sees numbers purely as binary bit patterns. It does not inherently know if they represent signed *or* unsigned values. It's similar to the word **"bank"**, which can mean either a **financial institution** or the **side of a river** in english. **The meaning depends entirely on context**. 
+
+For example, the binary number `11111111` can represent the unsigned value `255` or the signed value `-1`, and it's the software (instructions) that explicitly tells the CPU how to interpret this pattern.
+
+{:.note}
+The CPU never interprets binary patterns as signed or unsigned. It simply performs arithmetic operations using circuits that handle binary patterns in specific ways (e.g., addition via ALU).
+
+
+
+### Software Handling 
+
+Software explicitly instructs the CPU how to interpret numbers as signed or unsigned through specific **assembly instructions** or by using **data types** in high-level programming languages. For example, in RISC-V:
+- The instruction `addi` (signed addition) and `addiu` (unsigned addition) both perform exactly the same binary operation (addition) inside the CPU hardware. The CPU just adds bits, oblivious to signed or unsigned interpretation.
+- The difference comes afterward: **software** chooses to interpret the result as signed or unsigned depending on what was intended. For instance:
+  - Binary pattern: `11111111`
+  - Signed interpretation (software-decided): `-1`
+  - Unsigned interpretation (software-decided): `255`
+  - If software executes an unsigned comparison instruction (like `bltu`), the CPU circuit **checks** this bit pattern as **unsigned (255)**, and branches accordingly.
+  - If software executes a signed comparison instruction (like blt), the CPU circuit **checks the same bit pattern as signed** (-1 in two’s complement), and branches differently.
+
+We **design** and **build** CPU hardware circuits (like ALUs and comparison units) that perform arithmetic **differently** for signed or unsigned instructions as *explicitly requested* by software.
+
+{:.note}
+> Analogy
+> 
+> Software choosing interpretation is similar to specifying units when measuring something.
+> 
+> The hardware (CPU) is like a ruler that measures a length as "100". Software decides explicitly whether that "100" is centimeters or inches, changing its interpretation and usage entirely.
+
+
 
 ## [CPU Benchmarking](https://www.youtube.com/watch?v=4T9MR8BSzt0&t=4767s)
 
@@ -661,6 +693,7 @@ Typically, one will choose a particular program (written in a particular languag
 
 {: .highlight}
 The higher the $$MIPS$$, the faster it takes to run the benchmark program. Therefore we can say that a CPU with the highest $$MIPS$$ has the best performance.
+
 
 ## Summary
 You may want to watch the post lecture videos here:
