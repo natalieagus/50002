@@ -168,6 +168,19 @@ To write to a DRAM cell, we do:
 #### DRAM Issue
 The major problem with DRAM is that the capacitor ***will leak charge*** over time, so the voltage value stored in the cells will fade (get corrupted) over time. To tackle this problem, each DRAM cell has to be **refreshed** very frequently to keep the data intact. These refresh cycles cause DRAM to be ***significantly slower*** than SRAM, although a DRAM cell is cheaper to make as compared to an SRAM cell (fewer number of transistors in a DRAM cell). 
 
+For instance, the RAM Corsair Vengeance LPX DDR4-3200 (CL16), sold in 8GB or 16GB modules **advertises** 25.6 GB/s bandwidth. However, periodic refresh cycles (tRFC, tREFI) temporarily block memory access. This leads to around 4–5% performance loss, reducing real-world bandwidth to about 24.5 GB/s. This refresh overhead isn’t shown in consumer specs but affects actual performance.
+
+| Spec                             | Value                          |
+|----------------------------------|--------------------------------|
+| Advertised Speed                 | DDR4-3200                      |
+| Data Rate                        | 3200 MT/s                      |
+| Bus Width                        | 64 bits = 8 bytes              |
+| Theoretical Bandwidth            | 3200 × 8 = 25.6 GB/s           |
+| tRFC (Refresh Cycle Time)        | ~350 ns                        |
+| tREFI (Refresh Interval)         | ~7.8 µs                        |
+| % Time Lost to Refresh           | ~4.5%                          |
+| Estimated Real Bandwidth         | ~24.5 GB/s                     |
+
 
 ### Application
 In practice, our computers' physical memory (RAM) uses DRAM technology. We typically use 8 GB, 16 GB, and 32 GB in consumer grade PCs at the time this document is written (year 2023). Our CPU **cache** uses SRAM technology. We usually see the following specs when we shop for a CPU. The column "cache" refers to CPU cache which is commonly built using SRAMs. 
