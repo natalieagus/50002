@@ -56,7 +56,8 @@ In our computers, numerous applications operate simultaneously—such as Chrome,
 > A **program** and a **process** are terms that are  very closely related. Formally, we refer to a **program** as a group of instructions made to carry out a specified task whereas a process simply means *a program that is currently running* or *a program in execution*. We can open and run the same program `N` times simultaneously, forming `N` distinct processes (e.g: opening multiple instances of text editors). In this course, we relax this strict distinction and use them *interchangeably* to explain certain concepts easily.
 
 To transform a program into a process, the Operating System (OS) allocates a specific area in the physical memory. This memory image of a single process generally includes the following segments:
-\<img src="{{ site.baseurl }}/docs/Software/images/labs-Generic Memory Layout.drawio-3.png"  class="center_seventy"/>
+
+<img src="{{ site.baseurl }}/docs/Software/images/labs-Generic Memory Layout.drawio-3.png"  class="center_seventy"/>
 
 You have already known several segments:
 1. **Read-only segment**: contains the process' executable instruction and data. 
