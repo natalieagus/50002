@@ -376,7 +376,7 @@ The dirty bit (`1` or `0`) is used to indicate whether we need to **update** the
   
 
 ### LRU: Least Recently Used Bits
-The LRU bit is present in **each** cache line for FA and NWSA cache only regardless of the block size (not DM cache because DM cache does not have a replacement policy). For a cache of size `N`, we need `N log N` bits per cache to store the LRU bit. 
+The LRU bit is present in **each** cache line for FA and NWSA cache only regardless of the block size (not DM cache because DM cache does not have a replacement policy). For a cache with associativity `N`, we need `N log N` bits in total to store the LRU bit alone.
 
 
 The helper bits can be illustrated in a diagram like below. Below we have a sample of 3WSA cache with block size of `2`:
