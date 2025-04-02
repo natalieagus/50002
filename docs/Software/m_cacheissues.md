@@ -281,7 +281,6 @@ There's no one superior replacement policy. One replacement policy can be better
 {: .note}
 Refer to our Problem Set for various exercises with all 3 replacement policies. 
 
-### Comparison
 **Random** replacement policy is the simplest to implement as it does not require much additional hardware overhead. However in practice, **LRU** may generally gives a better experience because it conforms to locality of reference, and is better when `N` is small (since it is expensive to implement). **LRR** is performs well on specific pattern of usage where we don't frequently revisit oldest cached data. Finally, **random** method is preferable when `N` is super large, which in turn will be too costly to implement LRU or LRR. 
 
 ## [The Cache Block Size](https://www.youtube.com/watch?v=2OARjqLK4io&t=1860s)
