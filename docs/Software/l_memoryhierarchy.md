@@ -249,6 +249,15 @@ Evidence that memory reference patterns exhibit [*locality of reference*](https:
 2.  Related program instructions are *near* one another
 3.  Data (e.g: arrays) are also *nearby* one another 
 
+There are two main types of locality:
+1. **Temporal Locality**: when a program accesses the same memory location multiple times within a short time span
+   * Cache memory exploits this by keeping <span class="orange-bold">recently accessed data</span> available for quick reuse
+2. **Spatial Locality**: when a program accesses memory locations that are physically close to each other, such as elements in an array accessed sequentially
+   * Caches take advantage of this by fetching and <span class="orange-bold">storing blocks of memory</span>, so nearby addresses are already loaded when needed.
+
+We will learn more about this in the next chapter. 
+
+
 ## [The Cache Idea](https://www.youtube.com/watch?v=m5_u3sQ9bXo&t=1800s)
 Here we discuss the first component of our memory hierachy: the cache. 
 

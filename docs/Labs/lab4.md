@@ -155,7 +155,7 @@ Note that we can declare our `simple_ram` with `#SIZE(4), #DEPTH(WORDS*4)` if we
 
 ## Part A: PC Unit
 ### PC Unit Schematic
-Here is the suggested PC Unit schematic that you can implement. Take note of the input and output notes. This will come in very useful when creating the module for your PC Unit. 
+Here is the suggested PC Unit schematic that you can implement. Take note of the input and output nodes. This will come in very useful when creating the module for your PC Unit. 
 
 <img src="/50002/assets/contentimage/lab4/pcunit.png"  class="center_seventy"/>
 
@@ -378,16 +378,15 @@ The control logic should be tailored to generate the control signals your logic 
 
 ```verilog
   const CU_ROM = { 
-    b01110000000000010,
-    b00000011000110110,
-    b00000011000010110,
-    b00000011000000110,
-    b01110000000000010,
-    b00000010101100110,
-    b00000010111100110, 
-    b00000010110000110,
-    b01110000000000010,
-    b00000011101110110,
+    b01110000000000010, // OPCODE 0x3F (ILLOP)
+    b00000011000110110, // OPCODE 0x3E SRAC
+    b00000011000010110, // OPCODE 0x3D SHRC
+    b00000011000000110, // OPCODE 0x3C SHLC
+    b01110000000000010, // OPCODE 0x3B (ILLOP)
+    b00000010101100110, // OPCODE 0x3A XORC
+    b00000010111100110, // OPCODE 0x39 ORC
+    b00000010110000110, // OPCODE 0x38 ANDC
+    b01110000000000010, // OPCODE 0x37 (ILLOP)
     ...
 ```
 
@@ -677,7 +676,7 @@ As stated in the beginning of this document, you need to complete all the above 
 {: .new-title}
 > Checkoff 
 >
-> You need to demonstrate that your Beta runs properly on the FPGA to our TA by the stipulated due date (consult course handout). To do this, you are to **design** a short test code in Beta Assembly (8-10 lines). Your code must contain at least a `BNE/BEQ`, `JMP`, `OP`, `OPC`, `LD/LDR` and `ST` instruction each. 
+> You need to demonstrate that your Beta runs properly on the FPGA to our TA by the stipulated due date (consult course handout). To do this, you are to **design** a short test code in Beta Assembly (**max** 10 lines). Your code must contain at least a `BNE/BEQ`, `JMP`, `OP`, `OPC`, `LD/LDR` and `ST` instruction each. 
 
 Neatly document your test instruction in `instruction_rom.luc` to facilitate a smoother checkoff process.
 
