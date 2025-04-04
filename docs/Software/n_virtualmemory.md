@@ -262,7 +262,7 @@ The number of LRU bits needed **per entry** in the page table is $$v$$ (#VPN) bi
 This section is difficult and requires patience and practice to excel. Take it easy.
 
 Suppose our system conforms to **byte addressing** convention. Given a `VA` of `(v+p)` bits and a `PA` of `(m+p)` bits, we can deduce the following information (assume byte addressing):
-*  The size of VM is: $$2^{v+p}$$ bytes  (or $$2^{VA} bytes)
+*  The size of VM is: $$2^{v+p}$$ bytes  (or $$2^{VA}$$ bytes)
 *  There are $$2^{p}$$ bytes per page since we have $$p$$ bits of `PO`
 *  The actual size of the physical memory is: $$2^{m+p}$$ bytes (or $$2^{PA}$$ bytes)
 *  The page table must store $$(2 + m) \times 2^v$$ bits *plus* however many helper bits depending on the replacement policy, because:
