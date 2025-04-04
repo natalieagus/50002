@@ -269,7 +269,7 @@ Suppose our system conforms to **byte addressing** convention. Given a `VA` of `
 	* There are $$2^v$$ rows, 
 	* Each row stores `m` bits of `PPN`
 	* Each row also has a few helper bits:  `2` bits for `D` and `R`, *and* `v`* bits for `LRU` ordering (if LRU is used)
-    	* Note that actual implementation might vary, e.g: LRU might be implemented in a separate unit 
+    * Note that actual implementation might vary, e.g: LRU might be implemented in a separate unit 
 	* The $$v$$ VPN bits are *not exactly stored* as entries in the page table, but used as indexing (addressing, eg: using a **decoder** to select exactly one page table row using $$v$$ bits as the selector to the decoder)
 
 
