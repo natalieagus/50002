@@ -375,7 +375,7 @@ The OS Kernel will then handle this "missing" page and start copying them over t
 {: .highlight}
 Many page faults will occur as the process begins its execution **until most of the working set of pages are in physical memory** (not the entire process, as some processes can be way larger than the actual size of your physical memory, e.g: your video games). If you're interested to know how `VA` is mapped to swap space, [refer to this section](#mapping-va-to-swap-space) in Appendix. 
 
-In other words, the OS  Kernel <span class="orange-bold">bring only necessary pages</span> that are going to be executed onto the physical memory as the process runs, abd thus the name **demand paging** for this technique.
+In other words, the OS  Kernel <span class="orange-bold">bring only necessary pages</span> that are going to be executed onto the physical memory as the process runs, and thus the name **demand paging** for this technique.
 
 ### [Replacing Resident Pages](https://www.youtube.com/watch?v=19wS4GC6mbQ&t=2978s)
 
