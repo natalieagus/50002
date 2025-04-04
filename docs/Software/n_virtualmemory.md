@@ -476,7 +476,10 @@ The state of the physical memory after **both** instructions are executed in seq
 {: .new-title}
 > Context Switching
 > 
-> **Context switching** refers to the procedure that a CPU must follow when changing the execution of one process with another. This is done to ensure that the process can be *restored* and its execution can be *resumed* again at a later point. A proper hardware support that enables rapid context switching **is crucial** as it enables users to multitask when using the machine. We learn about this in more depth next term.
+> **Context switching**  is the process where an operating system saves the current state of a running process (or thread) and then loads the state of another process, allowing the CPU to switch between different tasks.
+> 
+> It is a strict procedure that a CPU must follow when changing the execution of one process with another. This is done to ensure that the process can be *restored* and its execution can be *resumed* again at a later point. A proper hardware support that enables rapid context switching **is crucial** as it enables users to multitask when using the machine. We learn about this in more depth next term.
+
 
 A single core CPU is capable of giving the illusion that it is running **many** processes at the same time. 
 
