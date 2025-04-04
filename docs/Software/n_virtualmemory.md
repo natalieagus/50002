@@ -564,7 +564,7 @@ Page must be fetched from the swap space and copied over to the Physical Memory.
 > * What happens if the page is `Not Resident` and if Physical Memory is full? Assume LRU policy is used. 
 > * Which part of the TLB that we need to update on each memory reference request? What about the cache? Why? 
 > * What should be done if TLB `MISS` happens? 
-> * Is it possible* for cache `HIT` to occur but the requested page is **not resident**? Why or why not?  
+> * Is it possible for cache `HIT` to occur but the requested page is **not resident**? Why or why not?  
 
 
 ## [Summary](https://www.youtube.com/watch?v=19wS4GC6mbQ&t=4180s) 
