@@ -15,11 +15,18 @@ code {
   // }
 }
 
-pre, code {
-  white-space: pre-wrap;       /* Allow wrapping */
-  word-wrap: break-word;
-  overflow-x: auto;            /* Scroll if needed */
+p code {
+  white-space: normal; /* Allows wrapping */
+  word-break: break-word; /* Optional: breaks long words if needed */
 }
+
+
+// pre, code {
+//   white-space: pre-wrap;       /* Allow wrapping */
+//   word-wrap: break-word;
+//   overflow-x: auto;            /* Scroll if needed */
+//   // word-break: break-word;
+// }
 
 
 // Avoid appearance of dark border around visited code links in Safari
