@@ -305,7 +305,7 @@ if (number > 0) {
 } else if (number < 0) {
 	x = x - 1
 } else {
-	x = 0
+	x = 1
 }
 ```
 
@@ -321,19 +321,19 @@ BEQ(R3, number_gt_zero, R31)
 CMPEQ(R2, R31, R3) | check if number is == 0
 BEQ(R3, number_lt_zero, R31) 
 | if reach here, number is zero
-ADDC(R31, 1, R1) 
+ADDC(R31, 1, R1)  | set 1 to x
 BR(halt)
 
 number_gt_zero: 
-ADDC(R2, 1, R2) 
+ADDC(R1, 1, R1) | x = x + 1 
 BR(halt)
 
 number_lt_zero:
-SUBC(R2, 1, R2) 
+SUBC(R1, 1, R1) | x = x - 1 
 BR(halt)  
 
 halt:
-ST(R2, x, R31)
+ST(R1, x, R31)
 HALT()
 
 number : LONG(20)
