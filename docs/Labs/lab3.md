@@ -493,6 +493,56 @@ module x_bit_left_shifter #(
 }
 ```
 
+Then you can utilise it to create a **left_shifter** unit by instantiating 5 of the `x_bit_left_shifter`:
+
+```verilog
+module left_shifter (
+    input a[32],
+    input b[5],
+    input pad, // 0 or 1 to pad the empty spaces
+    output shl[32]
+  ) {
+
+  // instantiate 5 units of left shifter with different values 
+  x_bit_left_shifter shifter16(#SHIFT(16));
+  x_bit_left_shifter shifter8(#SHIFT(8));
+  x_bit_left_shifter shifter4(#SHIFT(4));
+  x_bit_left_shifter shifter2(#SHIFT(2));
+  x_bit_left_shifter shifter1(#SHIFT(1));
+ 
+  always {
+
+    // connect the padding 
+    shifter16.pad = pad;
+    shifter8.pad = pad;
+    shifter4.pad = pad;
+    shifter2.pad = pad;
+    shifter1.pad = pad;
+    
+    // enable or disable each shifter using each bit of b
+    shifter16.a = a;
+    shifter16.do_shift = b[4];
+    
+    shifter8.a = shifter16.out;
+    shifter8.do_shift = b[3];
+    
+    shifter4.a = shifter8.out;
+    shifter4.do_shift = b[2];
+    
+    shifter2.a = shifter4.out;
+    shifter2.do_shift = b[1];
+    
+    shifter1.a = shifter2.out;
+    shifter1.do_shift = b[0];
+    
+    // set output as the output of the smallests shifter 
+    shl = shifter1.out;
+  }
+}
+```
+
+Refer to the above two modules to create a right shifter set, or use the **alternative approach** above. 
+
 #### Instance Parameters
 
 If you want to create instances of N modules with the same parameter, you can use this format: 
