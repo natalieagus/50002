@@ -452,31 +452,43 @@ module mux_2 (
 }
 ```
 
-Then, you might want to implement `x_bit_left_shifter.luc` unit, where x is an arbitrary value. You can supply a `SHIFT` parameter to this module: 
+Then, you might want to utilise the following `x_bit_left_shifter.luc` unit, where x is an arbitrary value depending on `SIZE` parameter. You can supply a `SHIFT` parameter to this module: 
 
 ```cpp
 module x_bit_left_shifter #(
-  // parameter declaration, to be set during module instantiation
-  // default value given is 8
-  SHIFT = 8 : SHIFT > -1 & SHIFT < 32
+    // parameter declaration, to be set during module instantiation
+    // default value given is 8
+    SHIFT = 8 : SHIFT > -1 & SHIFT < 32,
+    SIZE = 32 : SIZE > 0
   )(
-    input a[32],
-    input shift,
+    input a[SIZE],
+    input do_shift,
     input pad,
-    output out[32]
+    output out[SIZE]
   ) {
-  
+ 
   // module declarations
   // instantiate mux_2 (32 of them)
   // other useful intermediary signals, e.g: shifted_bits[32] 
+  mux2 shift_unit[SIZE];
+  sig in_1shift_unit[SIZE]; // input s1 of each shift_unit mux
   
   always {
+    
     // assign value to shifted_bits[32] depending on the value of SHIFT
     // connect the selector of each mux_2 with shift 
-    // 
+    shift_unit.s0 = SIZEx{do_shift};
+    in_1shift_unit = c{a[SIZE-1-SHIFT:0], SHIFTx{pad}};
+   
     // use a repeat-loop to: 
     // connect input[0] of each mux_2 with a[i]
     // connect input[1] of each mux_2 with the shifted_bits[i] 
+    repeat(i, SIZE){
+       shift_unit.in[i] = c{in_1shift_unit[i], a[i]};
+    }
+
+    out = shift_unit.out;
+    
   }
 }
 ```
