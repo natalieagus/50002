@@ -734,24 +734,46 @@ Carefully **consult Checkoff 1: ALU** schedule, requirements and rubrics given i
 {:.important}
 [Give the 1D handout a read](https://natalieagus.notion.site/50-002-1D-Project-Electronic-Hardware-Prototype-EHP-30-d2b68e992aca4020ad84020e7df002cb) before Checkoffs to ensure that you don't miss any information or requirements. 
 
-For your Checkoff 1: ALU, you're also required to create **additional** functionalities. You **are allowed** to use Lucid math and comparison operator for this **NEW** functionality. For example, if your new operation involves `DIVISION` between A and B, you're allowed to implement it as follows:
+For your Checkoff 1: ALU, you're also required to create **additional** functionalities. You **are allowed** to use Lucid math and comparison operator for this **NEW** functionality. For example, if your new operation involves `ROTATE_SHIFT` between A and B, you're allowed to implement it as follows:
 
-```cpp
-// divide a by b
-module divider (
-    input a[32], // dividend
-    input b[32], // divisor
-    output d[32] // a/b
+
+```verilog
+module rotate_shift_right (
+    input a[32], 
+    input b[5], 
+    output shift[32]
   ) {
 
   always {
-    d = a/b;
+    shift = (a >> b) | (in << (32 - b))
+  }
+}
+
+module rotate_shift_left (
+    input a[32], 
+    input b[5], 
+    output shift[32]
+  ) {
+
+  always {
+    shift = (a << b) | (in >> (32 - b))
   }
 }
 
 ```
 
 Only the original 13 functionalities must be implemented using logic gates as per the circuitry given in this lab handout. 
+
+{:.warning}
+> Avoid Division by Non-Powers of 2
+>
+> Do not use expressions like a / b where b is not a power of 2. 
+> 
+> Division in hardware is complex: it requires a divider circuit, which is large, slow, and significantly more complicated than an adder or shifter.
+> Most hardware division uses restoring or non-restoring algorithms, or iterative subtraction, which take **multiple** clock cycles. This introduces sequential logic into your ALU, instead of keeping it purely combinational. As a result, it can mess up your timing, increase your critical path delay, and make synthesis and debugging harder.
+>
+> If you need to divide by a power of 2, use right shifts instead.
+
 
 {: .highlight}
 When you're done with the implementation of your ALU, head to eDimension to complete this lab quiz. 
