@@ -707,9 +707,9 @@ This 32-bit combinational multiplier, as part of the ALU, may fail to meet the t
 
 <img src="{{ site.baseurl }}//docs/Labs/images/lab3/2025-01-23-14-12-12.png"  class="center_seventy"/>
 
-To address this, you can modify the constraint file to use a slower clock, such as 10 MHz. <span class="orange-bold">Remember</span> to <span class="orange-bold">adjust</span> the clock frequency of your `button_conditioner` to <span class="orange-bold">match</span> this too, <span class="orange-bold">otherwise your buttons won't work!</span>  
+To address this, you can modify the constraint file to use a slower clock, such as 10 MHz. Create a new constraint file (you can name it anything) and paste the content of `alchitry.acf` to it, and modify the clock signal. Don't forget to <span class="orange-bold">delete</span> the default `alchitry.acf`.  <span class="orange-bold">Remember</span> to <span class="orange-bold">adjust</span> the clock frequency of your `button_conditioner` to <span class="orange-bold">match</span> this too, <span class="orange-bold">otherwise your buttons won't work!</span>  
 
-<img src="{{ site.baseurl }}//docs/Labs/images/lab3/2025-02-24-17-23-16.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}//docs/Labs/images/lab3/2025-02-24-17-23-16.png"  class="center_thirty"/>
 
 {:.note}
 As part of your 2D project: Optimisation part, you can consider using other multiplier designs that can pass the original 100MHz clk. 
