@@ -614,6 +614,29 @@ When you brainstorm for a game, try to keep two very **important** things in min
 1. **Ideation:** A good game doesn't have to be complicated. It can be a very simple math-based game, or strategy game. You can find inspiration using simple arcade games in the 1990s. 
 2. **Think about the external I/O devices that you have to manage.**
 
+#### Bootstram ALU Output to Control Unit FSM
+
+You can also have the option to pass ALU's output directly to the Control Unit (not used in this example). This way you don't need to have a "branch" state, but you can straightaway check the output of the ALU and go to different state as needed with if-else:
+
+```verilog
+    GameStates.BRANCH_CHECK_GAMETIMER:
+        alufn = b110011            //CMPEQ
+        regfile_ra1 = d5          //timer reg
+        asel = b00
+        bsel = b10                //constant 0
+        if (|alu_output){
+            // timer is zero
+           game_fsm.d = GameStates.CHECK_DRAW 
+        }
+        else{
+            // timer is not zero
+           game_fsm.d = GameStates.DECREASE_GAMETIMER 
+        }
+```
+
+{:.note}
+The design of the datapath is entirely up to you: selecting which output to connect directly to control unit FSM, deciding the size of asel/bsel/wdsel mux, etc. 
+
 ## Selecting I/O Devices
 This project utilises simple 7 segments, LEDs, and arcade buttons as its interface. This is sufficient to score full marks on your project if executed seamlessly. 
 
@@ -660,6 +683,9 @@ The sample project demonstrates how to design a fixed machine using an FSM and d
 Players interact with the game using arcade buttons, with LEDs and 7-segment displays providing visual feedback. The game mechanics involve players collecting points from a randomly increasing counter while adhering to constraints such as limited button presses and a countdown timer. 
 
 You can use this guide as a **benchmark**  to plan and execute your project. 
+
+{:.important}
+Give the [debugging tips](https://natalieagus.github.io/50002/fpga/fpga_8_2024) handout a read if you run into bugs. They contain many tips and tricks to help you figure out the bug in your project. Good luck! 
 
 # Appendix 
 
