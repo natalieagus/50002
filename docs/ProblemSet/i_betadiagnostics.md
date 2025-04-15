@@ -96,7 +96,7 @@ ADDC(R0, 1, R1)
 **Program 6**: (executed for two CLK cycles)
 ```nasm
 .=0  
-LDR(R31, .+8, R0)  
+LDR(.+8, R0)  
 ADDC(R0, 1, R1)  
 x : LONG(3)
 ```
