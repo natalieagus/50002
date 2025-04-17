@@ -703,13 +703,21 @@ Connect the output of your multiplier to the output of your alu for now:
 ```
 
 ### Failed Timing Warning 
-This 32-bit combinational multiplier, as part of the ALU, may fail to meet the timing specifications for a 100 MHz clock in a sequential device. However this should still produce a working binary and <span class="orange-bold">does not</span> affect other parts of your ALU. It might even give the right output for the multiplier (small bit multiplications).
+This 32-bit combinational multiplier, as part of the ALU, may fail to meet the timing specifications for a 100 MHz clock in a sequential device. However this should still produce a working binary and <span class="orange-bold">does not</span> affect other parts of your ALU. It might even give the right output for the multiplier (small bit multiplications). 
+
+Basically, if your project fails timing, that means your design logic is too slow to keep up with the 100 MHz clock (i.e., 10 ns per cycle). Even if Vivado compiles it, the actual hardware may behave unpredictably. You should lower the clock frequency in the constraint file (e.g., set to 10 MHz) so Vivado **checks** for more relaxed timing.
+
 
 <img src="{{ site.baseurl }}//docs/Labs/images/lab3/2025-01-23-14-12-12.png"  class="center_seventy"/>
 
-To address this, you can modify the constraint file to use a slower clock, such as 10 MHz. Create a new constraint file (you can name it anything) and paste the content of `alchitry.acf` to it, and modify the clock signal. Don't forget to <span class="orange-bold">delete</span> the default `alchitry.acf`.  <span class="orange-bold">Remember</span> to <span class="orange-bold">adjust</span> the clock frequency of your `button_conditioner` to <span class="orange-bold">match</span> this too, <span class="orange-bold">otherwise your buttons won't work!</span>  
+To address this, you can modify the constraint file to **let  Vivado analyze with a slower clock**, e.g 10MHz. 
+
+Create a new constraint file (you can name it anything) and paste the content of `alchitry.acf` to it, and modify the clock signal. Don't forget to <span class="orange-bold">delete</span> the default `alchitry.acf`.  
 
 <img src="{{ site.baseurl }}//docs/Labs/images/lab3/2025-02-24-17-23-16.png"  class="center_thirty"/>
+
+<span class="orange-bold">But remember: the onboard clock is still 100 MHz</span>. You must manually slow your logic (e.g., FSM or output updates in ALU Manual Tester) to match this by adding delay logic (like a clock divider). For example: delay each FSM state by 10 times using a counter, so your effective FSM cycle is 1 per microsecond instead of 1 per 10 ns.
+
 
 {:.note}
 As part of your 2D project: Optimisation part, you can consider using other multiplier designs that can pass the original 100MHz clk. 
