@@ -677,7 +677,7 @@ Create a new constraint file (you can name it anything) and paste the content of
 
 <img src="{{ site.baseurl }}//docs/Labs/images/lab3/2025-02-24-17-23-16.png"  class="center_thirty"/>
 
-<span class="orange-bold">But remember: the onboard clock is still 100 MHz</span>. You must manually slow your logic (e.g., FSM or output updates in Beta Manual Tester) to match this by adding delay logic (like a clock divider). For example: delay each FSM state by 10 times using a counter, so your effective FSM cycle is 1 per microsecond instead of 1 per 10 ns.
+<span class="orange-bold">But remember: the onboard clock is still 100 MHz</span>. You must manually slow your logic (e.g., FSM or output updates in Beta Manual Tester) to match this by adding delay logic (like a clock divider). For example: delay each FSM state by 10 times using a counter, so your effective FSM cycle is 1 per microsecond instead of 1 per 10 ns. [Consult this handout for details](https://natalieagus.github.io/50002/fpga/fpga_8_2024#delay-your-fsm-transition). 
 
 
 ## In-Person Checkoff
