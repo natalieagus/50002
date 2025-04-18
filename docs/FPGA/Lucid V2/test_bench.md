@@ -1,7 +1,7 @@
 ---
 layout: default
-permalink: /fpga/fpga_9_2024
-title: Debugging Strategies
+permalink: /fpga/test_bench
+title: Test Bench Modules
 description: How to use test bench modules
 parent: Lucid V2
 grand_parent: 1D&2D Project (FPGA)
