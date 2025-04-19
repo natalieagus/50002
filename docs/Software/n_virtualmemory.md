@@ -468,7 +468,7 @@ The state of the physical memory after **both** instructions are executed in seq
 {: .new-title}
 > Think!
 > 
-> Enhance your understanding by adding TLB into the picture. If a TLB of size 2 (stores the 2 most recently used mapping) is used, what will its state be in the beginning? After **`LD(R31, 0x2C8, R0)`** is executed? Then after **`ST(R31, 0x600, R31)`** is executed next?  
+> Enhance your understanding by adding TLB into the picture. If a TLB contains VPN 2 -> 4, and VPN 7 -> 2 entries in the beginning, what would its content be after the two LD and ST access? 
 
 
 ## [Context Switching](https://www.youtube.com/watch?v=19wS4GC6mbQ&t=3411s)
