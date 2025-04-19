@@ -614,12 +614,19 @@ On CPU READ/LOAD request for address A:
 
 ### WRITE/STORE request
 
+{:.note-title}
+> Why do we need to fetch data from memory first (if miss) during write? 
+> 
+> In cache-based systems, the unit of transfer between memory and cache is the entire block (e.g., 64 bytes), not just the single word or byte you're writing.
+> Even if you're only writing one word, the cache must first **fetch** the **entire** block from memory to preserve the rest of the data in that block. This ensures future reads to nearby addresses *within the same block* return correct data. Without fetching first, you'd risk overwriting part of the block while leaving the rest undefined or stale.
+
 ```yaml
 On CPU WRITE/STORE (new_content) request to address A:
 
 	check for A in TAG field of cache lines with V==1
 	
 	if MISS:
+		fetch word from memory 
 		if DM cache:
 			selected cache line to replace 
 			is cache line with index matching last K bits of A
@@ -638,7 +645,7 @@ On CPU WRITE/STORE (new_content) request to address A:
 				compute the content's address 
 				and update physical memory
 		
-		// at this point the cache line is safe to be overwritten
+	// at this point the cache line is safe to be overwritten or HIT
 	if DM cache:
 		write higher T bits of A to the 
 		TAG field of the selected cache line, 
