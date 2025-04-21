@@ -261,14 +261,19 @@ Firstly, we need to establish some notion:
 * Otherwise, if the MSB of the content in PC Register MSB is 0, the CPU is said to be running in the **User Mode**.
 
 #### Kernel and User Space
-That means we can divide the physical memory address space into two sections: 
+
+With this convention of using the MSB of the PC as the status bit, we theoretically can divide the physical memory address space into two sections: 
 * **User space**: Addresses which MSB is `0`: from `0x0000 0000` to `0x7FFF FFFF`
 * **Kernel space**: Addresses which MSB is `1`: from `0x8000 0000` to `0xFFFF FFFF`.
 
 Kernel program and kernel data (privileged information, data structures, etc) are stored in the **kernel space**. The rest of the program in the system live in the **user space**. 
 
+{:.note}
+Note that this is just an example. In other architectures, the MMUs can perform **memory protection** (protect certain regions) depending on the status bit, e.g: the MMU utilises the CSR (control status register) in RISC-V that contains the current privilege level and triggers a **page fault** if one tries to access illegal memory location.
 
 #### User Mode Restrictions
+
+The restrictions are illustrated using Beta CPU as example.
 
 ##### Restricted Branch
 Programs running in user mode (`PC31 == 0`) can **never** branch or jump to instructions in the kernel space placed at higher memory address (`0x8000000` onwards). Computations of next instruction address in`BEQ`, `BNE`, and `JMP` cannot change `PC31` value from `0` to `1`. 
