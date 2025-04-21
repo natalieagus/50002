@@ -21,7 +21,8 @@ Singapore University of Technology and Design
 
 # Clocks 
 
-This document is written to guide you with generating new clock signals for your project should it fails to meet timing specifications. 
+This document is written to guide you with generating new clock signals for your project should it fails to meet timing specifications. If your project **works** in simulation but behaves erratically on physical FPGA, it is likely that you have timing issues. 
+
 
 ## Motivation 
 
@@ -86,7 +87,7 @@ You can find out *how long* you need to wait for the output of the ALU to stabil
 
 In this method, we will use Vivado to use a MMCM (Mixed-Mode Clock Manager) to generate a custom clock signal from the default 100 MHz input clock. 
 
-{:note-title}
+{:.note-title}
 > MMCM 
 >
 > An MMCM (Mixed-Mode Clock Manager) is a clock management block in Xilinx FPGAs that generates derived clocks with configurable frequency, phase, and duty cycle.
@@ -212,11 +213,15 @@ module alchitry_top (
 The two LEDs are:
 
 ```verilog
-        io_led[0][0] = led_state.q
+        io_led[0][0] = led_state.q // will blink 10x faster than the other LED
         io_led[1][0] = led_state_slow.q
 ```
 
-One will blink 10 times faster than the other.
 
 ## Summary
 
+If your project **works** in simulation but behaves erratically on physical FPGA, it is likely that you have timing issues. 
+
+Whenever your project fails to meet timing constraints, remember to:
+1. Modify `alchitry.acf` to let Vivado do the timing analysis properly with the new clock frequency and ensure that it meets the timing constraints 
+2. Create a new clock using Vivado Clock Wiz (better choice), *or* manually delay certain FSM states where you suspect takes more than 10ns to complete (works, but more of a guessing game)
