@@ -302,7 +302,7 @@ Executing any of these faulty instructions caused any process running in user mo
 
 I/O devices **are actually shared** among all processes in the system, but  their programs are written with complete disregard for other processes in the memory. Therefore, user processes may utilise **traps** to synchronously interrupt themselves, and *legally* switch to the Kernel mode whenever they need access to the I/O devices (or other kernel services).  
 
-User processes do not have *privileged* access, meaning that they do not directly control the use of* any hardware (I/O) devices, such as getting keyboard input, mouse click, perform disk saves, etc. It needs to **trap** itself to the Kernel program and execute **specific** parts of the Kernel code to obtain access to these I/O devices. 
+User processes do not have *privileged* access, meaning that they do not directly control the use of any hardware (I/O) devices, such as getting keyboard input, mouse click, perform disk saves, etc. It needs to **trap** itself to the Kernel program and execute **specific** parts of the Kernel code to obtain access to these I/O devices. 
 
 
 As said above, the event of transferring control of the CPU to OS Kernel synchronously / voluntarily when a process needs Kernel's services is known as the **system call** (a.k.a: **SVC**, or **supervisor call**). This can be done by leaving the index of the requested service at `Reg[R0]` and executing a specific illegal operation (an instruction with `OPCODE` not corresponding to any other instruction in the ISA). In `bsim`, this `OPCODE` is chosen to be `1`. 
