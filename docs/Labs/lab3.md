@@ -707,7 +707,6 @@ This 32-bit combinational multiplier, as part of the ALU, may fail to meet the t
 
 Basically, if your project fails timing, that means your design logic is too slow to keep up with the 100 MHz clock (i.e., 10 ns per cycle). Even if Vivado compiles it, the actual hardware may behave unpredictably. You should lower the clock frequency in the constraint file (e.g., set to 10 MHz) so Vivado **checks** for more relaxed timing.
 
-
 <img src="{{ site.baseurl }}//docs/Labs/images/lab3/2025-01-23-14-12-12.png"  class="center_seventy"/>
 
 To address this, you can modify the constraint file to **let  Vivado analyze with a slower clock**, e.g 10MHz. 
