@@ -154,7 +154,7 @@ constant: LONG(8)
 answer: LONG(4)
 ```
 
-In a fully working Beta CPU, we should observe that constant `8` is stored in Memory address `0xFFFC` (`Mem[answer]`). However, if the `RA2SEL` mux is faulty as described above, we will see that the content of `R31` (which is `0`) will instead be stored into `Mem[answer]`. 
+In a fully working Beta CPU, we should observe that constant `8` is stored in Memory address `0xFFFC` (as the content `Mem[answer]`). However, if the `RA2SEL` mux is faulty as described above, we will see that the content of `R31` (which is `0`) will instead be stored into `Mem[answer]`. 
 
 **Explanation**:
 * The 16-bit signed constant of the `ST` instruction is `0xFFFC`
