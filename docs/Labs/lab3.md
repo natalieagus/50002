@@ -132,7 +132,7 @@ Here’s the detailed schematic of the adder to get you started:
 
 <img src="{{ site.baseurl }}/assets/contentimage/lab3-fpga/2024-50002-ADDER.drawio.png"  class="center_full"/>
 
-You may start by making a 1-bit **Full Adder** module first, and **then** create a 32-bit RCA module. Afterwards, assemble everything inside `adder.luc`. 
+You may start by making a 1-bit **Full Adder** module first inside `fa.luc`, and **then** create a 32-bit RCA module in `rca.luc`. Afterwards, assemble everything inside `adder.luc`. 
 
 ### Implementation Tips 
 
