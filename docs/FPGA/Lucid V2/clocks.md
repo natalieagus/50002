@@ -37,7 +37,7 @@ Changing the clock frequency in the `alchitry.acf` constraint file does **not** 
 
 ## Method 1: Delay the FSM 
 
-If you need more than 10 ns (since the onboard clock is fixed at 100Mhz) of time per state, for instance: your ALU's tpd for `CMPEQ` or `MUL` is taking too long, you need to loop a few times in the same state before capturing the output of your ALU. Otherwise, your ALU won't be abl to output the correct value in the same clock cycle. 
+If you need more than 10 ns (since the onboard clock is fixed at 100Mhz) of time per state, for instance: your ALU's tpd for `CMPEQ` or `MUL` is taking too long, you need to loop a few times in the same state before capturing the output of your ALU. Otherwise, your ALU won't be able to output the correct value in the same clock cycle. 
 
 The following state won't behave as expected. We won't store the right `CMPEQ` result into `R6` in this state for example: 
 
