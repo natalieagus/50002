@@ -289,7 +289,7 @@ The inputs to the compare unit are:
 2. The `Z`, `V`, and `N` bits. They're the output of the adder/subtractor unit. The adder **must** be in **subtraction** mode. 
 
 
-*Why should the adder be in subtraction mode? *
+*Why should the adder be in subtraction mode?*
 
 
 ### Performance
