@@ -62,7 +62,7 @@ The cache contains  a **copy** of some recently or frequently used data `Mem[A]`
 {: .note}
 The CPU is able to both **read** from the cache and **write** to the cache (like normal `LD` and `ST` to the RAM).
 
-Without the presence of cache device, the CPU has to frequently access the RAM. Frequent `LD` and `ST` to the Physical Memory becomes the main <span style="color:red; font-weight: bold;">bottleneck</span> for CPU performance. This is because the time taken for a *write* and *read* in `DRAM`  is significantly longer than optimum  CPU `CLK` cycle. 
+Without the presence of cache device, the CPU has to frequently access the RAM. Frequent `LD` and `ST` to the Physical Memory becomes the main <span style="color:red; font-weight: bold;">bottleneck</span> for CPU performance. This is because the time taken for a *write* and *read* operation in `DRAM`  is significantly longer than the optimum  CPU `CLK` cycle. 
 
 In this chapter, we will learn various cache design issues such as its (hardware) **parameters**: cache size, cache block size, associativity, and read/write/replacement policies.
 
