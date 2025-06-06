@@ -13,6 +13,7 @@ This page is dedicated to list certain useful and fun resources to aid your lear
 ### Fun Games 
 [Digital Logic Simulator Game](https://sebastian.itch.io/digital-logic-sim).
 [You're the OS Game](https://drfreckles42.itch.io/youre-the-os)
+[Turing Complete](https://store.steampowered.com/app/1444480/Turing_Complete/)
 
 ### Amazing Articles
 [Putting the "You" in CPU](https://cpu.land): A nice article that explains how CPU works and more. 
