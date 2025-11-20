@@ -1,10 +1,10 @@
 ---
 layout: default
-permalink: /lab/lab1
-title: Lab 1 - CMOS
+permalink: /lab/supp-cmos
+title: CMOS (JSIM)
 description: Lab 1 handout covering topics from Digital Abstraction, CMOS Technology, and Logic Synthesis
 parent: Labs
-nav_order:  2
+nav_order:  10
 ---
 
 * TOC
@@ -17,7 +17,7 @@ Information Systems Technology and Design
 Singapore University of Technology and Design
 <br>
 
-# Lab 1: CMOS
+# CMOS (JSIM)
 {: .no_toc}
 
 ## Starter Code 
@@ -143,8 +143,7 @@ To measure the gate's **contamination** delay, we need to find two values from t
 
 <img src="{{ site.baseurl }}/docs/Labs/images/lab1/tc-fall.gif"  class="center_seventy no-invert"/>
 
-{:.highlight}
-Head to edimension to answer questions pertaining to this task. 
+
 
 ### Task 2: Measure Propagation Delay (tpd)
 
@@ -165,8 +164,7 @@ Similarly, we need to find two values from the waveform: **tp rise** and **tp fa
 
 *No gifs provided here. You are to figure out the starting and ending measurement points yourself to compute tp rise and tp fall.*
 
-{:.highlight}
-Head to edimension to answer questions pertaining to this task. 
+
 
 ### Conclusion
 
@@ -275,8 +273,6 @@ Take the **maximum** value from (1) and (2) above and report it as the tpd of th
 > 
 > It is the path that takes the **most** time for a signal to travel through the circuit, and it defines the overall speed at which the circuit can operate, as the circuit cannot produce a valid output (all bits) until all signals have propagated through this path.
 
-{:.highlight}
-Head to edimension to answer questions pertaining to this task. 
 
 #### Conclusion
 
@@ -314,9 +310,6 @@ Take the **minimum** value from (1) and (2) above and report it as the tcd of th
 > 
 > This path defines the contamination delay because it represents the **fastest** possible route for a signal to propagate through the circuit, indicating the **earliest** time at which any output may change (such as become invalid from previously being valid) in response to a change at the input.
 
-
-{:.highlight}
-Head to edimension to answer questions pertaining to this task. 
 
 #### Conclusion
 The contamination delay (tcd) of a logic gate is not exactly the sum of the contamination delays of the individual gates making the shortest path due to to the same reasons presented [above](#conclusion-1). 

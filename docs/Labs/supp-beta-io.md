@@ -1,7 +1,7 @@
 ---
 layout: default
 permalink: /lab/supp-beta-io
-title: Beta Processor IO (Self Guided Practice)
+title: Beta Processor IO 
 description: Lab handout covering topics from Beta Datapath
 parent: Labs
 nav_order:  8
@@ -17,7 +17,7 @@ Information Systems Technology and Design
 Singapore University of Technology and Design
 <br>
 
-# Beta Processor I/O (Self Guided Practice)
+# Beta Processor I/O 
 {: .no_toc}
 
 This is a self-guided practice post Lab 4. You can read this handout at your own time to supplement your knowledge about I/O Handling, specifically focusing on the sequence of **interrupt handling**, transitioning to kernel mode, executing **privileged** operations, and returning to **user** mode using a simple assembly code example. 

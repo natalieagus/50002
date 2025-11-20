@@ -20,7 +20,7 @@ There are 6 mandatory labs for 50.002:
 Consult your course handout for exact due dates and assessment weightage. 
 
 There are also the following supplementary Labs for your own revision:
-1. [Digital Abstraction with JSIM](supp)
-2. [CMOS with JSIM](supp)
+1. [Digital Abstraction with JSIM](https://natalieagus.github.io/50002/lab/supp-digital-abs)
+2. [CMOS with JSIM](https://natalieagus.github.io/50002/lab/supp-cmos)
 3. [Beta Processor IO](https://natalieagus.github.io/50002/lab/supp-beta-io)
 4. [Beta Assembly](https://natalieagus.github.io/50002/lab/supp-asm)

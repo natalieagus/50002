@@ -4,7 +4,7 @@ permalink: /lab/supp-asm
 title: Assembly Language
 description: Lab handout covering topics from Stack and Procedure
 parent: Labs
-nav_order: 10
+nav_order: 11
 ---
 
 * TOC
@@ -154,7 +154,7 @@ The test jig uses our **usual** convention for subroutine calls:
 * Control is **transferred** to the **beginning** of the Moo subroutine, leaving the **return** address in register `LP`. 
 * The result (bulls and cows values) should be returned in `R0`.
 
-Your code should use the following template. It is already given in `lab5_submit.uasm`. Be sure to **include** the **last TWO lines** since they **allocate** space for the stack used by the test jig when calling your program:
+Your code should use the following template. It is already given in `workspace.uasm`. Be sure to **include** the **last TWO lines** since they **allocate** space for the stack used by the test jig when calling your program:
 
 ```nasm
 .include beta.uasm
@@ -216,7 +216,7 @@ The test jig will try 32 different test values and type out any error messages o
 
 <img src="/50002/assets/contentimage/lab5/3.png"  class=" center_seventy"/>
 
-<span style="color:red; font-weight: bold;">DO NOT</span> press the green tick. The **success** checkoff message is sufficient to know that your program works fine for submission. If there exist an error, such message will be printed out:
+<span style="color:red; font-weight: bold;">DO NOT</span> press the green tick. The **success** checkoff message is sufficient to know that your program works <span class="orange-bold">correctly</span>. If there exist an error, such message will be printed out:
 
 <img src="/50002/assets/contentimage/lab5/4.png"  class=" center_seventy"/>
 

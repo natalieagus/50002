@@ -1,8 +1,8 @@
 ---
 layout: default
-permalink: /lab/lab0
-title: Lab 0 - Digital Abstraction
-description: Lab 0 handout covering topics from Digital Abstraction,
+permalink: /lab/supp-digital-abs
+title: Digital Abstraction (JSIM)
+description: Lab handout covering topics from Digital Abstraction,
 parent: Labs
 nav_order:  0
 ---
@@ -17,12 +17,12 @@ Information Systems Technology and Design
 Singapore University of Technology and Design
 <br>
 
-# Lab 0: Digital Abstraction
+# Digital Abstraction (JSIM)
 {: .no_toc}
 
 ## Starter Code and Tools 
 
-We will be using MIT's JSim for this lab, a **circuit simulation program** useful to study the theoretical behaviour of various logic gates and digital circuits. 
+We are using MIT's JSim for this lab, a **circuit simulation program** useful to study the theoretical behaviour of various logic gates and digital circuits. 
 
 Clone the starter code from here:
 
@@ -116,8 +116,6 @@ The `z` plot essentially illustrates the **truth table** (logic specification) o
 
 Each waveform plot has an oscilloscope like grid in the background. You can use keyboard shortcut `x` to **zoom out**, `X` to **zoom in**, and `c` to reset. Use the **slider** to scroll to the time you want. 
 
-{:.highlight}
-Head to edimension to answer some questions about this task.
 
 ### Task 2: Generate OR Gate Waveform
 
@@ -127,17 +125,13 @@ You should get the following waveform now:
 
 <img src="{{ site.baseurl }}//docs/Labs/images/lab0/2024-06-27-10-38-55.png"  class="center_seventy no-invert"/>
 
-{:.highlight}
-Head to edimension to answer some questions about this task.
-
 ### Task 3: Generate XOR Gate Waveform
 
 Finally, replace `or2` with `xor2` to obtain the following waveform: 
 
 <img src="{{ site.baseurl }}//docs/Labs/images/lab0/2024-06-27-10-39-50.png"  class="center_seventy no-invert"/>
 
-{:.highlight}
-Head to edimension to answer some questions about this task.
+
 
 ### Interpreting Analog Values as Digital Logic Values
 The goal of Task 1-3 is to condition you with **waveform plots** (y-axis signifies voltage value, and x-axis signifies time). These voltage values can then be converted into **digital values** if it meets certain threshold:
@@ -247,8 +241,7 @@ For instance, set the value of `sw` of MPU1 and MPU2 to be **10**. Then, observe
 
 <img src="{{ site.baseurl }}//docs/Labs/images/lab0/2024-06-27-13-42-27.png"  class="center-full no-invert"/>
 
-{:.highlight}
-Head to edimension to answer some questions about this task.
+
 
 {:.warning-title}
 > VTC Characteristics vs. Switching Speed
@@ -286,8 +279,6 @@ The **noise immunity** of a gate is the **smaller** of the low noise margin (Vil
 - If we specify Vol = 0.3V and Voh = 3.0V, what is the **largest** possible noise immunity we could specify? 
 - If we specify Vol = 0.5V and Voh = 2.5V, what is the **largest** possible noise immunity we could specify?  
   	
-{: .highlight}
-Head to edimension to answer some questions about this task.
 
 ## Summary 
 
