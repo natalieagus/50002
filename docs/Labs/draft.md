@@ -1,6 +1,6 @@
 ---
 layout: default
-permalink: /lab/lab4
+permalink: /lab/draft
 title: Lab 2 FPGA
 nav_order:  4
 nav_exclude: true

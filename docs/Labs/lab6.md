@@ -1,6 +1,6 @@
 ---
 layout: default
-permalink: /lab/lab4
+permalink: /lab/lab6
 title: Lab 6 - Beta Processor with FPGA 
 description: Lab 6 handout covering topics from Beta Datapath
 parent: Labs

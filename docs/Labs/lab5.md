@@ -1,6 +1,6 @@
 ---
 layout: default
-permalink: /lab/lab3
+permalink: /lab/lab5
 title: Lab 5 - Arithmetic Logic Unit with FPGA 
 description: Lab 5 handout covering topics from Logic Synthesis, and Designing an Instruction Set
 parent: Labs
