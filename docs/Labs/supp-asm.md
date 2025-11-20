@@ -1,8 +1,8 @@
 ---
 layout: default
-permalink: /lab/lab5
-title: Lab 5 -  Assembly Language
-description: Lab 5 handout covering topics from Stack and Procedure
+permalink: /lab/supp-asm
+title: Assembly Language
+description: Lab handout covering topics from Stack and Procedure
 parent: Labs
 nav_order: 10
 ---
@@ -17,7 +17,7 @@ Information Systems Technology and Design
 Singapore University of Technology and Design
 <br>
 
-# Lab 5: Assembly Language
+# Beta Assembly 
 {: .no_toc}
 
 ## Starter Code
@@ -28,11 +28,7 @@ Clone the starter code from here:
 git clone https://github.com/natalieagus/lab-beta-assembly-starter
 ```
 
-Then open `bsim.jar`. This is a Beta CPU simulator. Open the file `lab5_submit.uasm` and work the answer for this lab there. 
-
-## Submission and Questionnaire
-
-As usual, complete the questionnaire for this lab on eDimension before its due date. There's no need to submit the code. They are for practice purposes only and serve as a recap for your final exam.
+Then open `bsim.jar`. This is a Beta CPU simulator. Open the file `workspace.uasm` and work the answer for this lab there. 
 
 ## Related Materials
 The lecture notes on [Stack and Procedures](https://natalieagus.github.io/50002/notes/stackandprocedures) is closely related for this lab. Related sections include:
@@ -162,7 +158,7 @@ Your code should use the following template. It is already given in `lab5_submit
 
 ```nasm
 .include beta.uasm
-.include lab5checkoff.uasm
+.include asm-lab-checkoff.uasm
 
 count_bull_cows: | your subroutine must have this name
 	| standard subroutine entry sequence
