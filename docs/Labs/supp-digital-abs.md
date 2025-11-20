@@ -4,7 +4,7 @@ permalink: /lab/supp-digital-abs
 title: Digital Abstraction (JSIM)
 description: Lab handout covering topics from Digital Abstraction,
 parent: Labs
-nav_order:  0
+nav_order:  9
 ---
 
 * TOC

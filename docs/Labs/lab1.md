@@ -1,9 +1,9 @@
 ---
 layout: default
-permalink: /lab/lab3
-title: Lab 3 - Clocked Circuits 
-description: Lab 2 handout covering topics from sequential logic
-nav_order:  5
+permalink: /lab/lab1
+title: Lab 1 - Binary Arithmetic 
+description: Lab 1 handout covering topics from binary counting and digital abstraction
+nav_order:  3
 ---
 
 * TOC
@@ -16,6 +16,6 @@ Information Systems Technology and Design
 Singapore University of Technology and Design
 <br>
 
-# Lab 3: Clocked Circuits
+# Lab 1: Binary Arithmetic
 {: .no_toc}
 

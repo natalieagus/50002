@@ -4,7 +4,7 @@ permalink: /lab/supp-beta-io
 title: Beta Processor IO 
 description: Lab handout covering topics from Beta Datapath
 parent: Labs
-nav_order:  8
+nav_order:  11
 ---
 
 * TOC

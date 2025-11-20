@@ -4,7 +4,7 @@ permalink: /lab/supp-asm
 title: Assembly Language
 description: Lab handout covering topics from Stack and Procedure
 parent: Labs
-nav_order: 11
+nav_order: 12
 ---
 
 * TOC
