@@ -4,6 +4,7 @@ permalink: /lab/lab2
 title: Lab 2 - Combinational Logic
 description: Lab 2 handout covering topics from boolean algebra and CMOS
 nav_order:  4
+parent: Labs
 ---
 
 * TOC

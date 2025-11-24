@@ -4,6 +4,7 @@ permalink: /lab/lab3
 title: Lab 3 - Clocked Circuits 
 description: Lab 2 handout covering topics from sequential logic
 nav_order:  5
+parent: Labs
 ---
 
 * TOC
