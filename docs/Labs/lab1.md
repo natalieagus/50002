@@ -48,10 +48,6 @@ Consult FPGA resources [listed here](https://natalieagus.github.io/50002/fpga/in
 ## Related Class Materials
 The lecture notes on **[digital abstraction](https://natalieagus.github.io/50002/notes/digitalabstraction)** and **[basics of information](https://natalieagus.github.io/50002/notes/basicsofinformation)** are closely related to this lab.
 
-## Related Class Materials
-
-The lecture notes on **[digital abstraction](https://natalieagus.github.io/50002/notes/digitalabstraction)** and **[basics of information](https://natalieagus.github.io/50002/notes/basicsofinformation)** are the conceptual backbone for this lab.
-
 From **Basics of Information** we already saw:
 - How information is represented as **bits** and how to convert between **binary, decimal, octal, and hex**. 
   - In this lab, when you write `8b00001010`, `8h0A`, or `8d10`, you are using exactly those number system ideas to describe the *same* 8-bit pattern that will drive output LEDs so that they are "visible" to us.
