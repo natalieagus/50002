@@ -150,9 +150,9 @@ You can just utilise this function instead of writing a bunch of `$tick_clock` e
 
 This section is written to tackle any bugs you might have met while writing test files: 
 
-- Make sure all other lucid modules **do not** have error (highlighted red), else the run button will not show up
+- Make sure all other lucid modules **do not** have error (highlighted <span class="orange-bold">red</span>), else the run button will not show up
 
-- If you want to use the output value of a module make sure to capture it after clock advancement, *not before;* else your output value would be 1 cycle behind
+- If you want to use the output value of a module make sure to capture it AFTER clock advancement, *NOT before;* else your output value would be 1 cycle behind
     <img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/test_bench_images/Pasted image 20250417230931.png"  class="center_fifty no-invert"/>
 
 - If the terminal is stuck at running test bench, just close and reopen Alchitry Lab, it should not take more than a few seconds to run. Unless you advance the clock more than 20 times, then it will start to slow down. 
