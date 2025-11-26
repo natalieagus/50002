@@ -37,7 +37,7 @@ By the end of this lab, you should be able to:
 * Build intuition for **bit flow** from inputs through logic to outputs
 
 ### Submission
-There's no code submission/checkoffs for this lab. Simply complete the Lab Questionnaire on eDimension.
+There's no code submission/checkoffs for this lab. Simply complete the Lab Questionnaire (3%) on eDimension.
 
 ### Starter Code
 There's no starter code for this lab. You simply need to have [Alchitry Labs V2](https://alchitry.com/alchitry-labs/) installed. You don't need Vivado for this lab, we are only going to run simulations. 
@@ -48,21 +48,14 @@ Consult FPGA resources [listed here](https://natalieagus.github.io/50002/fpga/in
 ## Related Class Materials
 The lecture notes on **[digital abstraction](https://natalieagus.github.io/50002/notes/digitalabstraction)** and **[basics of information](https://natalieagus.github.io/50002/notes/basicsofinformation)** are closely related to this lab.
 
-From **Basics of Information** we already saw:
-- How information is represented as **bits** and how to convert between **binary, decimal, octal, and hex**. 
-  - In this lab, when you write `8b00001010`, `8h0A`, or `8d10`, you are using exactly those number system ideas to describe the *same* 8-bit pattern that will drive output LEDs so that they are "visible" to us.
-- That bits are not just numbers but **encodings** of choices or values. 
-  - Here, each switch and LED is literally one encoded bit. A row of switches or LEDs is a small fixed length code word you can think of as a number, a character, or a choice.
-- The introduction to **logic gates and Boolean operations** (AND, OR, XOR, NOT, BUFFER). 
-  - In this lab, the bitwise operators `&`, `|`, and `^` on `io_dip` are the HDL versions of those gates. We see the truth table from the notes appear on real LEDs.
-
-From **Digital Abstraction** we already saw:
-- The move from messy analog voltage to clean digital **0 and 1** using a voltage threshold model.
-  - In this lab, you treat every wire as carrying either a logical `0` or `1`. The simulator hides the analog details and lets you focus on bits on wires.
-- The **static discipline**: valid inputs must produce valid outputs if every block obeys the voltage contract. 
-  - In this lab, static discipline shows up as: every output and every `sig` must be driven for all input patterns. If you leave an output floating or only sometimes assign a `sig`, the tool reports an error or infers illegal “memory”.
-- The idea of a **combinational device** whose outputs are a pure function of current inputs only. 
-  - In this lab, the `always` block is used to describe such combinational devices. Designs where every output is defined for every input and does not depend on past values obey that combinational model.
+| Lecture notes topic                                                                                                   | Lab 1 part                                                                                                                                  |                                                                                |
+| --------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| Number systems: binary, decimal, octal, hex (Basics of Information)                                                   | Using `8b00001010`, `8h0A`, `8d10` to describe the same 8 bit pattern that drives LEDs                                                      |                                                                                |
+| Bits as encodings, not just numbers (Basics of Information)                                                           | Treating each switch and LED as one encoded bit; viewing a row of switches/LEDs as a fixed length code word (number, character, or choice)  |                                                                                |
+| Basic logic gates and Boolean operations AND, OR, XOR, NOT, BUFFER (Basics of Information)                            | Using bitwise `&`, `                                                                                                                        | `, `^`, `!`on`io_dip` to implement gate truth tables and see them on real LEDs |
+| Analog to digital abstraction via voltage thresholds (Digital Abstraction)                                            | Treating every wire in the simulator as carrying a logical `0` or `1` while ignoring the analog details                                     |                                                                                |
+| Static discipline: valid inputs yield valid outputs when every block obeys the voltage contract (Digital Abstraction) | Ensuring every `sig` and output is driven for all input patterns in `always`; avoiding floating signals and unintended inferred memory      |                                                                                |
+| Combinational device definition: outputs depend only on current inputs (Digital Abstraction)                          | Using `always` blocks to describe combinational behaviour where outputs are fully specified for every input and never depend on past values |                                                                                |
 
 
 
@@ -195,6 +188,10 @@ module module_name #(
     // module body
 }
 ```
+
+
+We will not touch parameter for now, that's for the next lab.
+
 
 {:.note}
 By organizing your design into modules, you create **reusable**, **testable** blocks that can be **combined** to form larger systems.
@@ -844,6 +841,98 @@ This is useful when working with large arrays that require repetition such as dr
 {:.note}
 There's no right and wrong way to build an array. Sometimes, the simplest method is best, that is `io_led = {8h0, 8h0, 8h0}`. You don't need to over-refactor or over-engineer your HDL code, and certainly there's no need to apply your "clean code" software principles here, unless you're already experienced in HDL. Remember that this is a group work and group members have various background. So let's stick with the "simple is best" philosophy for now.
 
+## Auto Truncation, Auto Extension, and Width Mismatches
+
+In an ideal, strictly-typed world, <span class="orange-bold">every signal assignment would have perfectly matching widths</span>. In reality, Lucid is permissive and will try to “help” you by automatically resizing values when the widths do not match. This makes code compile, but it can also silently change the meaning of your circuit. You should [consult](https://alchitry.com/tutorials/lucid-reference/#numbers) the documentation to find out more.
+
+In life, you should treat **any width mismatch as a design error**, even if your IDE allows it.
+
+### Auto extension (narrow to wide)
+
+When the right-hand side is **narrower** than the left-hand side, Lucid will **EXTEND** the value to fit the target width by adding `0`s to the most significant bits.
+
+```verilog
+// io_led[0] is 8 bits
+io_led[0] = hF      // hF is 4 bits: 1111
+```
+
+Lucid interprets this as:
+
+```text
+0000 1111  →  8b00001111
+```
+
+No new “value” was created. Four new wires were simply tied to `0` to make the widths match. This is convenient, but dangerous if you are not tracking the widths mentally (see next Lab's pitfalls).
+
+
+### Auto truncation (wide to to narrow)
+
+When the right-hand side is **wider** than the left-hand side, Lucid will **truncate** the value by **discarding the most significant bits**.
+
+```verilog
+// io_led[0] is 8 bits
+io_led[0] = 16h00FF
+```
+
+Binary form of the right-hand side:
+
+```text
+0000 0000 1111 1111   (16 bits)
+```
+
+After truncation:
+
+```text
+1111 1111   →  8b11111111
+```
+
+The top 8 bits are simply thrown away. Those wires never connect to anything. Again, Lucid will compile this, but you must be consciously aware that half the information is being destroyed.
+
+
+### Dimension mismatch (2D vs 1D)
+
+Automatic fixing does **not** apply to dimension mismatches.
+
+```verilog
+// io_dip is a 3×8 array (3 rows of 8 bits)
+io_led[0] = io_dip    // INVALID
+```
+
+Here the problem is not just width but **structure**. You are trying to connect a 2-dimensional bus into a 1-dimensional bus. Lucid will reject this.
+
+You must explicitly select one *row*:
+
+```verilog
+io_led[0] = io_dip[0]
+```
+
+
+### The mental model that must not change
+
+Even though Lucid may auto-truncate or auto-extend for you, the physical reality is still this:
+
+* Every signal is a fixed number of **wires**
+* Every assignment is connecting **specific wires to specific wires**
+* Bits do not appear or disappear “magically”
+* Extra bits are either **discarded** or tied to **0**
+
+You should always be able to answer this before trusting an assignment:
+
+> Exactly which bits end up on which physical wires?
+
+If you cannot answer that, your design is already <span class="orange-bold">broken</span>, even if the simulator shows something “working”.
+
+### Other HDLs
+
+In Verilog (and by extension SystemVerilog) you *can* assign signals of mismatched widths, and the language defines rules for how the extra bits are handled.
+
+* If the right-hand side (RHS) has **more bits** than the left-hand side (LHS), the *extra* most-significant bits are **discarded (truncated)**.
+* If the RHS has **fewer bits** than the LHS, the assignment is **zero-extended** (for unsigned context) into the extra high bits. 
+* Because of this implicit behavior, width mismatches often do *not* cause synthesis errors  but they can cause **unintended** behavior. 
+* Good style and many lint tools flag width mismatches because they are a common source of bugs. 
+
+{:.important}
+You should treat mismatched-width assignments in Verilog as *dangerous* even though the language allows them. Even though Verilog/Lucid allows auto truncation/extension, WE must act *as if* it does not, and always explicitly match widths or slice/concatenate.
 
 
 ## Digging Deeper into the Always Block
@@ -961,8 +1050,8 @@ We have learned quite a few things:
 * Missing assignments create **undefined values** and imply **memory**, which you are not allowed to use yet.
 
 
-In the next lab, we will use the same ideas to build a **multi-bit combinational system**: a ripple-carry adder.
+In the next lab, we will use the same ideas to build a **multi-bit combinational system**: a ripple-carry adder, multiplexers, and decoders.
 
 {:.highlight}
-Head to eDimension to complete questionnaires related to this lab.
+Head to eDimension to complete questionnaires (3%) related to this lab.
 
