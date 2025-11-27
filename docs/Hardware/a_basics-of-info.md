@@ -38,14 +38,11 @@ Singapore University of Technology and Design
 > 5. **Explain the Significance of Bytes in Digital Storage:**
 >   - Explain why bytes are used as the standard unit of digital information and storage.
 >   - Explain how data storage capacities are measured and reported in terms of bytes.
-> 6. **Calculate Information Quantity Based on Probability:**
->   - Construct the relationship between the probability of an event and the amount of information it provides.
->   - Practice how to compute the information content of events using logarithmic measures.
-> 7. **Explain Basic Logic Gates and Their Role in Digital Circuits**:
+> 6. **Explain Basic Logic Gates and Their Role in Digital Circuits**:
 >   - Explain the functions and operations of basic logic gates: AND, OR, XOR, BUFFER and NOT.
 >   - Explain how these gates can be combined to perform simple digital operations.
 >   - Defend the importance of logic gates in translating theoretical binary operations into practical applications within computing hardware. 
-> 8. **Apply Knowledge to Practical Digital System Design:**
+> 7. **Apply Knowledge to Practical Digital System Design:**
 >   - Outline the historical context and evolution of digital devices from mechanical systems to modern electronic computers.
 >   - Outline the practical constraints in early computing, such as cost and size, and how they influenced design decisions.
 > 
@@ -454,63 +451,8 @@ This foundational hardware logic allows developers to abstract away from the phy
 
 In practical terms, this means that *instead* of manually constructing circuits in a lab for specific tasks, programmers can write flexible and sophisticated Python code that the computer interprets and executes using its underlying logic gate-driven architecture. Thus, the intricate arrangement of logic gates in a computer's hardware directly enables the high-level programming and software applications that drive modern technology. It bridges the gap between electronic design and software functionality.
 
-
-## [Information and uncertainty](https://www.youtube.com/watch?v=IicB30kA3pY&list=PLklpDKpv-EBj1agIq4vB1iB6ahMT8_2A_&index=1&t=1761s)
-
-After exploring the fundamental operations performed by logic gates, it's crucial to **understand** how these elements contribute to the <span class="orange-bold">broader</span> context of <span class="orange-bold">information processing</span> in computing systems. 
-
 {:.highlight}
-**Information theory** quantifies the amount of information in messages or events based on their probability. It provides a **mathematical** foundation for many aspects of computer science: data compression, error detection, and cryptography.
-
-The amount of information held by an **event** is **inversely proportional to** the probability $$p$$ of that event happening,
-
-$$\begin{aligned}
-\text{Information } \propto \text{ Uncertainty} \propto \text{ }\frac{1}{p}.\end{aligned}$$
-
-Equivalently, the amount of information given is **proportional to** the *uncertainty* of that event happening. More precisely, to the logarithm of the *uncertainty* of the event happening. However since $$\log$$ is an increasing function,  the  sense of *proportionality* remains the same. 
-
-
-{: .new-title}
-> In Layman Terms
-> 
-> If an event is bound to happen, then the fact that the event happens does not give any kind of information.
-
-
-For discrete events $$(x_1, x_2, ... , x_N)$$ with probability of occurence of $$(p_1, p_2, ..., p_N)$$, the basic measure of information for all of these events is the ***bit***. 
-
-The number of bits is needed to reveal that a random variable is $$x_i$$ is:
-
-$$\begin{aligned}
-I(X) =  \log_2 \frac{1}{p_i} \text{ bits},\end{aligned}$$
-
-where  $$I(X)$$ is the amount of information received in bits learning that the choice was $$x_i$$.   
-
-### [Equal Probability Events](https://www.youtube.com/watch?v=IicB30kA3pY&list=PLklpDKpv-EBj1agIq4vB1iB6ahMT8_2A_&index=1&t=1900s)   
-Let $$N = 8$$, and all 8 events are *equally probable.* The number of bits needed to encode all 8 events are: 
-
-$$\begin{aligned} I(X) &= \log_2 \frac{1}{1/8} = 3 \text{ bits}. \end{aligned}$$ 
- 
-We need to receive 3 bits of information to learn that one event $$x_i$$ out of the 8 events happens. In this case, it can be `000, 001, 010, 011, 100, 101, 110,` and `111`. 
-
-### [Narrowing Down Choices](https://www.youtube.com/watch?v=IicB30kA3pY&list=PLklpDKpv-EBj1agIq4vB1iB6ahMT8_2A_&index=1&t=1930s)
-With $$N$$ *equally probable choices,* if it is narrowed down to $$M$$ choices (where $$N>M$$), then we can say that we are given
-
-$$\begin{aligned}
-I_{N\rightarrow M}(X) = \log_2 \left( \frac{N}{M} \right) \text{ bits}\end{aligned}$$
- 
-
-Continuing from the example above, if our pool of possible events are narrowed down to 3 from 8, then intuitively we only need *2 bits* (instead of 3) to encode 3 different events, e.g: `00, 01,` and `10`. Therefore  we know we are given *at least* `1` bit of information.
-
-With the formula above, `N=8`, `M=3`, therefore: 
-
-$$\begin{aligned}
-I_{8\rightarrow 3}(X) = \log_2 \left( \frac{8}{3} \right) = 1.42 \text{ bits}
-\end{aligned}$$
-
-{:.important}
-It is important to consider how the certainty or predictability of an event (or data set) **influences** how we can encode, transmit, and store it. The concepts of entropy and the logarithmic measure of information provide the theoretical underpinnings for many practical applications in computer science. Head to [appendix](#practical-relevance-of-information-theory) for relevant practical examples if you're interested. 
-
-
+A short [appendix](#information-and-uncertainty) is provided for students interested in how probability and uncertainty relate to data representation and communication systems. This material is not required for the remainder of the course.
 
 ## [Summary](https://www.youtube.com/watch?v=IicB30kA3pY&list=PLklpDKpv-EBj1agIq4vB1iB6ahMT8_2A_&index=1&t=2094s)
 [You may want to watch the post lecture videos here.](https://youtu.be/UPIoYYLG718) 
@@ -522,12 +464,10 @@ Here are the key points from this notes:
 2. **Encoding Methods**: There exist **fixed** encoding and variable encoding methods, but we only touched on the former. Fixed encoding refers to a method of representing information, such as text, data, or signals, where a predefined, unchanging scheme is used to encode and decode the information (like ASCII and Unicode). This is useful so that we can consistently represent data across different systems. 
 3. **2's Complement**: A way to encode signed integers. Signed integers are represented using 2's complement (flip the bits then increment by 1), thus enabling the representation of negative numbers in binary form. 
 4. **Basic Logic Gates**: Get familiar with **basic** logic operations like XOR, AND, OR, and INV. These basic logic gates are the basic building blocks for a more complex combinational circuit. 
-5. **Information Theory**: Information can be quantified based on the probability of events. The amount of information held by an **event** is **inversely proportional to** the probability $$p$$ of that event happening. Information can be represented in terms of **bits** by taking $\log_2$ of its inverse probability. 
 6. Encoding data with $$X$$ bits:
    1. We can **represent** $$2^X$$ *distinct values* with $$X$$ bits
    2. If it represent **unsigned** integers, it ranges from 0 to $$2^X-1$$
    3. If it represents **signed** integers, it ranges from $$-2^{X-1}$$ to $$2^{X-1}-1$$ (the range is divided between positive and negative values)
-7. Given $$Y$$ choices with equal probability of outcome, we need to use at least $$\lceil\log_2\rceil(Y)$$ bits to encode all possible outcomes. It is rounded up to the nearest integer (since we cannot technically subdivide "bits" in real life).
 
 ## Next Steps
 
@@ -724,5 +664,61 @@ Choosing the right precision:
 - **Single Precision:** Used in graphics processing, gaming, and systems where moderate precision suffices.
 - **Double Precision:** Standard for scientific, engineering, and financial computations requiring high accuracy.
 - **Quadruple Precision:** Rarely used, but important for very high precision scientific simulations.
+
+
+## [Information and uncertainty](https://www.youtube.com/watch?v=IicB30kA3pY&list=PLklpDKpv-EBj1agIq4vB1iB6ahMT8_2A_&index=1&t=1761s)
+
+After exploring the fundamental operations performed by logic gates, it's crucial to **understand** how these elements contribute to the <span class="orange-bold">broader</span> context of <span class="orange-bold">information processing</span> in computing systems. 
+
+{:.highlight}
+**Information theory** quantifies the amount of information in messages or events based on their probability. It provides a **mathematical** foundation for many aspects of computer science: data compression, error detection, and cryptography.
+
+The amount of information held by an **event** is **inversely proportional to** the probability $$p$$ of that event happening,
+
+$$\begin{aligned}
+\text{Information } \propto \text{ Uncertainty} \propto \text{ }\frac{1}{p}.\end{aligned}$$
+
+Equivalently, the amount of information given is **proportional to** the *uncertainty* of that event happening. More precisely, to the logarithm of the *uncertainty* of the event happening. However since $$\log$$ is an increasing function,  the  sense of *proportionality* remains the same. 
+
+
+{: .new-title}
+> In Layman Terms
+> 
+> If an event is bound to happen, then the fact that the event happens does not give any kind of information.
+
+
+For discrete events $$(x_1, x_2, ... , x_N)$$ with probability of occurence of $$(p_1, p_2, ..., p_N)$$, the basic measure of information for all of these events is the ***bit***. 
+
+The number of bits is needed to reveal that a random variable is $$x_i$$ is:
+
+$$\begin{aligned}
+I(X) =  \log_2 \frac{1}{p_i} \text{ bits},\end{aligned}$$
+
+where  $$I(X)$$ is the amount of information received in bits learning that the choice was $$x_i$$.   
+
+### [Equal Probability Events](https://www.youtube.com/watch?v=IicB30kA3pY&list=PLklpDKpv-EBj1agIq4vB1iB6ahMT8_2A_&index=1&t=1900s)   
+Let $$N = 8$$, and all 8 events are *equally probable.* The number of bits needed to encode all 8 events are: 
+
+$$\begin{aligned} I(X) &= \log_2 \frac{1}{1/8} = 3 \text{ bits}. \end{aligned}$$ 
+ 
+We need to receive 3 bits of information to learn that one event $$x_i$$ out of the 8 events happens. In this case, it can be `000, 001, 010, 011, 100, 101, 110,` and `111`. 
+
+### [Narrowing Down Choices](https://www.youtube.com/watch?v=IicB30kA3pY&list=PLklpDKpv-EBj1agIq4vB1iB6ahMT8_2A_&index=1&t=1930s)
+With $$N$$ *equally probable choices,* if it is narrowed down to $$M$$ choices (where $$N>M$$), then we can say that we are given
+
+$$\begin{aligned}
+I_{N\rightarrow M}(X) = \log_2 \left( \frac{N}{M} \right) \text{ bits}\end{aligned}$$
+ 
+
+Continuing from the example above, if our pool of possible events are narrowed down to 3 from 8, then intuitively we only need *2 bits* (instead of 3) to encode 3 different events, e.g: `00, 01,` and `10`. Therefore  we know we are given *at least* `1` bit of information.
+
+With the formula above, `N=8`, `M=3`, therefore: 
+
+$$\begin{aligned}
+I_{8\rightarrow 3}(X) = \log_2 \left( \frac{8}{3} \right) = 1.42 \text{ bits}
+\end{aligned}$$
+
+{:.important}
+It is important to consider how the certainty or predictability of an event (or data set) **influences** how we can encode, transmit, and store it. The concepts of entropy and the logarithmic measure of information provide the theoretical underpinnings for many practical applications in computer science. Head to [appendix](#practical-relevance-of-information-theory) for relevant practical examples if you're interested. 
 
 

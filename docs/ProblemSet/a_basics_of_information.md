@@ -23,163 +23,67 @@ Singapore University of Technology and Design
 Each topic's questions are grouped into **three** categories: basic, intermediate, and challenging. You are recommended to do all basic problem set before advancing further. 
 
 
-
-## Warm Up (Basic)
-
-Suppose that you are to guess the value of a 16-bit number: 0x$$Z_1Z_2Z_3Z_4$$ You are told that the value of $$Z_1$$ is B. Thus you have been given [N] bits of information. **What is the value of [N]?**
-
+## Bit-width intuition (Basic)  
+You are designing a small digital device that needs to represent three different states: `IDLE`, `RUN`, and `ERROR`.
+**1.** What is the **minimum** number of bits required to represent these three states?
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-The variable **Zx** represents strings of  <strong> 4 binary digits (bits)</strong> since these are in hexadecimal number system (indicated with the prefix  <code>0x</code>.) 
+2 bits.
+</p></div><br>
+
+**2.** Write down **all** binary patterns available using that number of bits. 
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+`00, 01, 10, 11`.	
+</p></div><br>
+
+**3.** How many of those patterns are unused?
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+1 pattern unused.
+</p></div><br>
+
+**4.** Which binary pattern must be mapped to each of the states (`IDLE`, `RUN`, `ERROR`)?
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+The mapping is **arbitrary** because binary patterns are *symbolic* labels. Only **consistency** across the system gives the mapping meaning.
+</p></div><br>
+
+
+## Bit-width and misinterpretation (Basic)
+
+You observe the bit pattern:
+
+```
+1001
+```
+
+
+**(a)** Interpret the value in unsigned 4-bit representation.
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+9
+</p></div><br>
+
+**(b)** Interpret the value in signed 4-bit 2’s complement.
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+-7
+</p></div><br>
+
+**(c)** Now assume the same pattern is widened to 8 bits using **sign extension**, that is to keep the *value* mathematically consistent (as per what you wrote in part b) despite having wider bits. Write the full 8-bit pattern and give the decimal value.
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p> The original 4-bit pattern is <code>1001</code>. In 2’s complement, the most significant bit (MSB) indicates the sign. Since the MSB is <code>1</code>, this number is negative.
+To perform <strong>sign extension</strong>, we copy (extend) the sign bit into the new higher bits so that the value is preserved when increasing the bit-width:
 <br><br>
-We are literally <i>told</i> that the first hex digit is <code>B = 1011</code>. Hence we are given <strong>[N] = 4 bits of information</strong>.  There are still other 12 bits which values we do not know.</p></div><br>
-
-## Keyboard Presses (Basic)
-
-**(a).** Bob used an enhanced keyboard that was made up of 101 keys. He told Alice that he pressed one of the letter keys. **How much information did Bob give to Alice?** Hint: There are 26 letters in an alphabet.
-
-
-<div cursor="pointer" class="collapsible"> Show Answer</div><div class="content_answer"><p>
-Initially, there are 101 choices. The information that Bob gave Alice narrows down the choices into 26. The information given is therefore: $$\log_2(101) - \log_2(26) = 1.958$$ 
-</p></div><br>
-
-
-**(b).** Bob used an enhanced keyboard that was made up of 101 keys. He told Alice that he pressed two of the letter keys consecutively. Bob did not mention whether the two keys are the same or not. **How much information did Bob give to Alice?** 
-*Hint: There are 26 letters in an alphabet.*
-
-
-<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-Initially, there are `101x101` choices. Pressing two letter keys consecutively (might be repeated) narrows down the choices onto `26x26`. 
-<br>
-Hence the information given is: <br>
-$$\log_2(101\times101) - \log_2(26\times26) = 3.916$$
-</p></div><br>
-
-
-## ISTD Prize (Intermediate)
-  
-
-Your cohort in ISTD contains 100 students:
-- 51 of whom are male and 49 are female. 
-- There are 31 male students who are above 19 years old. 
-- On the other hand, there are 19 female students who are above 19 years old. 
-- There are one male student and three female students who like to have a final exam. 
-	> You can assume that students either *like* or *hate* a final exam and **no indifference**. 
-- Two students like exam and is above 19 years old.
-
-
-Now someone in your class won "the first to join ISTD" prize. Answer the following questions:
-
-[Video explanation here.](https://youtu.be/tZTnNwkhg88)
-
-**(a.)** If you are told the student ID of this winner, how much **information** did you receive in bits?
-
-  
-
-<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-If we are given the student ID, we effectively know who the winner is. We instantly narrow down our pool of winner candidates from 100 students into just 1 student, hence the bits of information given is: $$\log_2(100)$$
-</p></div><br>
-
-**(b.)** If you are told the student ID of the last 33 students who joined ISTD, how much **information** did you receive in bits?
-
-
-
-<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-If we know the last 33 students who joined ISTD, we know that <i>these students cannot be the winner.</i> Hence our pool of candidates are narrowed down into 67 students. We are then given the following bits of information: $$\log_2(100) - \log_2(67)$$ 
-</p></div><br>
-
-<strong>(c.)</strong> If you are told that the student who won the "first to join ISTD prize" is a male, how much **information** did you receive in bits?
-
-<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-Similarly, there are 51 males in ISTD. Hence, we are given the following bits of information: $$\log_2(100) - \log_2(51)$$
-</p></div><br>
-
-**(d.)** If you are told that the student who won the "first to join ISTD prize" is above 19 years old instead, how much **information** did you receive in bits?
-
-<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-Our candidates are narrowed down into: $$31 + 19 = 50$$ students instead since there are 50 students who are above 19 years old. The amount of information given in bits is: $$\log_2(100) - \log_2(50)$$
-</p></div><br>
-
-**(e.)** If you are told that the student who won the "first to join ISTD prize" hated a final exam and is below 19 years old, how much **information** did you receive in bits?
-
-<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-There are 51-31 = 20 male students that are below 19 years old. There are also 30 female students that are below 19 years old. Since there are only 4 people who like exam, and 2 of them are above 19 years old, there's only 2 students who are below 19 years old and like exam as well. 
+4-bit: <code>1001</code>
+8-bit: <code>1111 1001</code>
+The extended value is still <strong>−7</strong> in decimal.
 <br><br>
-Hence our candidates are further narrowed into 48 students after knowing that the person does not like exam. This gives us the following bits of information: $$\log_2(100 ) - \log_2(48)$$
+Sign extension keeps a number’s numeric value unchanged when increasing bit-width by repeating the MSB on the left.
 </p></div><br>
 
-
-## Bits of Information (Intermediate)
- 
-**(a.)** Someone picks a name out of a hat known to contain the names of 5 women and 3 men, and tells you a man has been selected. **How much information have they given you about the selection?**
-
-<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-Originally, we have 8 options: M=8. The option is narrowed down into 3, hence N = 3. In total, we have:
-$$\begin{aligned} I = \log_2 \left(\frac{1}{N/M}\right) = \log_2 \left(\frac{1}{3/8}\right) \text{ bits}
-\end{aligned}$$
-</p></div><br>
-  
-
-**(b.)** You're given a standard deck of 52 playing cards that you start to turn face up, card by card. So far as you know, they're in completely random order. How many **new bits of information** do you get when the **first** card is flipped over? The **fifth** card? The **last** card? Note that the goal is to know (and quantify in bits) what card(s) has/have been flipped. 
-
-<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-The first card has the following bits of information: $$\log_2 52$$ The fifth card has the following bits of information: $$\log_2 48$$The last card has 0 bits of information.
-</p></div><br>
-  
-
-**(c.)** X is an *unknown* N-bit binary number $$(N>3)$$. You are told that the first three bits of X are 011. How many bits of *information* have you been given?
-
-
-<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-3 bits of information have been given.
-</p></div><br>
-  
-
-**(d.)**. X is an *unknown* 8-bit binary number. You are given another 8-bit binary number, Y, and told that the *Hamming* distance (number of different bits) between X and Y is one. How many **bits of information** about X have you been given when Y is presented to you?
-
-<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-Originally, we have 8 unknown bits, that is: $$N=2^8$$ choices. We can obtain X by flipping any one bit in Y. Since there are 8 bits, there are 8 possibilities for X by flipping each bit in Y. Therefore after given Y, we are down to: $$M=8$$ choices, each having 1 bit that's different for X. We can say that we have been given:
-$$\begin{aligned} I &= \log_2 \left(\frac{1}{M/N}\right) \\ &= \log_2 \left(\frac{1}{8/2^8}\right) \\&= 5 \text{ bits}\end{aligned}$$
-</p></div><br>
-
-  
-
-## Measuring Information (Basic)
-
-  
-
-After spending the afternoon in the dentist's chair, Ben has invented a new language called `DDS` made up entirely of vowels (the only sounds he could make with someone's hand in his mouth). The `DDS` alphabet consists of the five letters: A, E, I, U, O, which occur with the following probabilities,
-
-|Letter|Probability|
-|--|--|
-|A |P(A) = 0.15|
-|E |P(E) = 0.4|
-|I |P(I) = 0.15|
-|O |P(O) = 0.15|
-|U |P(U) = 0.15|
-
-If you're told that the first letter of the message is "A", **give an expression for the number of bits of information you have received.**
-
-<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-Recall that the information received is inversely proportional to the probability of that choice occurring, and to quantify the information in terms of bits, we take: $$\log_2\left(\frac{1}{\text{probability of that choice occurring}}\right)$$
-Hence the expression is:
-$$I = \log_2 \frac{1}{p(A)}$$
-</p></div><br> 
-
-
-  
-  
 
 ## Modular arithmetic and 2's complement representation (Basic)
-
 
 Most computers choose a particular word length (measured in bits) for representing integers and provide hardware that performs various arithmetic operations on word-size operands. The current generation of processors have word lengths of 32 bits; restricting the size of the operands and the result to a single word means that the arithmetic operations are actually performing arithmetic modulo $$2^{32}$$.
 
 
 Almost all computers use a 2's complement representation for integers since the 2's complement addition operation is the same for both positive and negative numbers. In 2's complement notation, one negates a number by forming the 1's complement (i.e: for each bit, changing 0 to a 1 and vice versa) representation of the number and then adding 1. **By convention**, we write 2's complement integers with the most-significant bit (MSB) on the left and the least-significant bit (LSB) on the right. Also, **by convention**, if the MSB is 1, the number is negative, otherwise it's non-negative.
 
-  
-  
-  
 
 **(a.)** How many **different** values can be encoded in a 32-bit word?
 
@@ -240,54 +144,6 @@ The most positive value in decimal: 2147483647. The most negative value in decim
 <li> 18 is <code>010010</code>.<br>-18 is <code>101110</code>.<br>Hence, <code>001111 + 101110 = 111101</code>.</li>
 <li><code>011011 + 111010 = 010101</code></li></ol></p></div><br>
 
-
-
-## Dice Throwing Game (Intermediate)
-
-  
-
-A group of five friends are playing a game that requires them to generate random numbers using 10 fair dice in the beginning before proceeding with the game. They each will throw the 10 dice and sum up all the outcomes of the dice to get the random number. Answer the following questions:
-
-[Video explanation here.](https://youtu.be/aySDpsq8Vd8)
-
-**(a.)** How many bits at the **minimum** (so round up your answer to the nearest integer) are required to encode all distinct outcomes of the random number from the 10 dice throws? 
-
-  
-
-<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-The maximum number you can get from summing 10 dice throws is 60, and the minimum is 10. Therefore you have 51 possible combinations, which require: $$\log_2(51) \text{ bits}$$Rounding up, this results in <strong>6 bits</strong>.
-</p></div><br>
-
-  
-
-**(b.)** Someone in the group suggests that they can just use a die and throw it 10 times to get the random number required for the game. This way, they don't have to deal with carrying so many dice. The game began and then he proceeded with throwing the die. His first 3 throws are: 1, 3, and 4. **How many bits of information has been given so far?** Give your answer in 3 decimal places.
-
-
-<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-Each dice throw can result in any number between 1 to 6, which requires: $$\log_2(6)$$ bits to encode. Three dice throws give you: $$3 * \log_2(6) = 7.755 \text{ bits}$$
-</p></div><br>
-
-  
-
-**(c.)** Consider the scenario in (b), to use the same die repeatedly. After throwing the die 9 times in total, how many **new bits** of information did he get from making the last (the 10th) throw? Give your answer in 3 decimal places.
-
-
-<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-With the same idea as the previous part, the last dice throws solve the mystery on whether we will get number 1, 2, 3, 4, 5, or 6. Hence we are given: $$\log_2(6)=2.585 \text{ bits}$$ from the last throw. Note that this is significantly different from the bits of information that has been given to us so far. The nine dice throws have given us: $$9*\log_2(6) \text{ bits}$$The last dice throw give us another: $$\log_2(6) \text{ bits}$$Please pay close attention to the wording of the question.
-</p></div><br>
-
-
-  
-
-**(d.)**  Finally, he found that the number he got in total from all 10 throws is 53. **Express this number in 3-digit hex**, formatted as 0xZZZ where Z is your answer.
-
-
-<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-<code>0x035</code>
-</p></div><br>
-
-  
-  
   
 
 ## Another Base Conversion (Basic)
@@ -332,6 +188,74 @@ Which of the following signed numbers is **the representation** of number -32 fo
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 (2), (4), (6)
 </p></div><br>
+
+
+## Byte and Memory Intuition (Intermediate)
+
+A simple system has a memory of **256** *bytes*.
+
+(a.) How many bits is this in total?
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p> <code>256 × 8 = 2048</code> bits </p></div><br>
+
+(b.) If you want to uniquely refer to (or “label”) every byte in this memory using a binary number, what is the minimum number of bits required for these labels?
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p> To label 256 different locations, we need a binary number that can represent 256 distinct values. That requires <code>log₂(256) = 8</code> bits. </p></div><br>
+
+(c.) If each memory location stores a 16-bit value, how many different values can a single location represent?
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p> A 16-bit value can represent <code>2¹⁶ = 65,536</code> different values. </p></div><br>
+
+
+## Hex + 2’s Complement (Intermediate)
+
+Find the 8-bit **signed** decimal value of:
+```
+0xD6
+```
+
+Show your working in binary.
+
+
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p> 
+First, we convert the hex to binary: `0xD6 = 1101 0110`. Then negate it (invert, and + 1): `0010 1001 + 1 = 0010 1010 = 42`. Therefore, `0xD6` is `-42`.
+</p></div><br>
+
+
+## From logic to decision (Intermediate)
+
+Let two 2-bit numbers A and B be given:
+* A = `A1A0`
+* B = `B1B0`
+  
+You must determine if `A > B` using logic gates only. *We are only testing for `A > B`, not `B < A` or `B == A`*.
+
+
+**(a.)** Write the Boolean expression for the output `Z = 1` if `A > B` using any logic gate.
+
+<div cursor="pointer" class="collapsible">Show Answer</div>
+<div class="content_answer"><p>
+
+<code>
+Z = (A1 AND (NOT B1)) 
+    OR 
+    ((A1 XNOR B1) AND A0 AND (NOT B0))
+</code>
+
+</p></div><br>
+
+
+**(c.)** Identify *which* part of the expression corresponds to the **MSB** comparison and which to the **LSB** comparison.
+
+<div cursor="pointer" class="collapsible">Show Answer</div>
+<div class="content_answer"><p>
+
+<code>
+(A1 AND (NOT B1))                   // MSB comparison
+((A1 XNOR B1) AND A0 AND (NOT B0))  // LSB comparison
+</code>
+
+</p></div><br>
+
+
+
 
 
 ## Proof of 2's Complement (Challenging)
