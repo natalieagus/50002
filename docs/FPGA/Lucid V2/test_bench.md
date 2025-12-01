@@ -1,7 +1,7 @@
 ---
 layout: default
 permalink: /fpga/test_bench
-title: Test Bench 
+title: Testbench 
 description: How to use test bench modules
 parent: Lucid V2
 grand_parent: 1D&2D Project (FPGA)
@@ -20,7 +20,7 @@ Singapore University of Technology and Design
 <br>
 **Chua Wei Yang (Spring 2025)**
 
-## Test Bench 
+## Testbench 
 
 This document is written to guide you with debugging the FPGA using **Alchitry Labs V2 Test Bench**.  Using test bench is way faster than building and flashing into the FPGA, and is able to display more information than the simulation HUD.
 
