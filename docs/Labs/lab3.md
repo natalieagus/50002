@@ -43,7 +43,7 @@ Complete the Lab 3 **checkoff** (3%) with your Cohort TA before the next lab ses
 Complete **questionnaire** on eDimension as well (1%).
 
 ### Starter Code
-There's no starter code for this lab. You simply need to have [Alchitry Labs V2](https://alchitry.com/alchitry-labs/) and Vivado installed. One of the members in the team should have Vivado installed since you need to compile and run your code in hardware for your checkoff.
+There's no starter code for this lab. You simply need to have [Alchitry Labs V2](https://alchitry.com/alchitry-labs/). You would also need Vivado installed, but for checkoff, only **one** machine in your team needs Vivado to **flash** the final bitstream. You can debug everything else in simulation. 
 
 ## Related Class Materials
 The lecture notes on **[sequential logic](https://natalieagus.github.io/50002/notes/sequential_logic)** are closely related to this lab.
