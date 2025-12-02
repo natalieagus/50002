@@ -30,20 +30,20 @@ By the end of this lab, you should be able to:
 * Construct a **registered RCA** (ripple-carry adder) and describe why output registers are needed for stable, pipeline-friendly outputs.
 * Distinguish between **unregistered** combinational behaviour and **registered, periodic** behaviour when observing signals on LEDs.
 * Design a **button-controlled** sampling scheme that captures input values only when triggered.
-* Implement an **automated, self-checking adder tester** using:
-  - constant test vectors,
-  - an index register that steps through them over time,
-  - and a hardware comparison against expected sums.
+* Implement an automated, self-checking testbench for a registered adder using:
+    * constant test vectors,
+    * a systematic way to step through them over simulation time,
+    * and $assert checks against expected sums.
 * Account for **pipeline latency** by aligning expected outputs with the number of clock boundaries in the datapath.
-* Recognise that real systems require **control logic** (FSMs) to react to errors, and understand that this will be the focus of the next lab.
 
 ### Submission
-Complete the Lab 3 **checkoff** (3%) with your Cohort TA before the next lab session ends. You should demonstrate the required task under the [Checkoff](#checkoff) section below. The checkoff is assessed **AS A GROUP** as it requires the FPGA hardware.
+Complete the Lab 3 **checkoff** (2%) with your Cohort TA before the next lab session ends. The checkoff is assessed **individually**, but you should attend together with your **project team** so that everyone in the group understands the full workflow and expectations for the 1D project.
 
-Complete **questionnaire** on eDimension as well (1%).
+Complete **questionnaire** on eDimension as well (2%).
 
 ### Starter Code
-There's no starter code for this lab. You simply need to have [Alchitry Labs V2](https://alchitry.com/alchitry-labs/). You would also need Vivado installed, but for checkoff, only **one** machine in your team needs Vivado to **flash** the final bitstream. You can debug everything else in simulation. 
+There's no starter code for this lab. You simply need to have [Alchitry Labs V2](https://alchitry.com/alchitry-labs/) installed. You don't need Vivado for this lab, we are only going to run simulations. 
+
 
 ## Related Class Materials
 The lecture notes on **[sequential logic](https://natalieagus.github.io/50002/notes/sequential_logic)** are closely related to this lab.
@@ -121,7 +121,7 @@ Now this is a simplified diagram of a digital circuit. It is essentially a *fact
 In this way, incomplete or intermediate values are *NEVER* observed outside the stage. Only **fully settled** results are allowed to move forward in time.
 
 ### Preface
-In this lab, we will use dffs to construct registers and create our first clocked circuits. With this, we should begin to seee our design not as a collection of gates, but as a machine that moves *forward* one step at a time, **on each clock edge**.
+In this lab, we will use dffs to construct registers and create our first clocked circuits. With this, we should begin to see our design not as a collection of gates, but as a machine that moves *forward* one step at a time, **on each clock edge**.
 Although many signals may exist in parallel, **the system progresses in a sequence of moments**. 
 
 *Each clock edge represents ONE new state. *
@@ -150,11 +150,11 @@ module alchitry_top (
 
     always {
         // other setup
-        
-        io_led[1][0] = x.q // display x's output
+
+        io_led[1][0] = x.q // single LED
         x.d = x.q
 
-        io_led[0] = y.q // display y's output 
+        io_led[0] = y.q // whole row as an 8-bit value 
         y.d = y.q + 1
     }
 }
@@ -370,7 +370,7 @@ In the previous section, your registered RCA updated periodically using a slow c
 
 This lets you control exactly **when** the state of the dip switches is captured.
 
-### Reg with Enable signal
+### Register with Write Enable signal
 
 You can create an N bits reg module with `en` (enable) signal. We sample new input at the *nearest next edge* only when `en` is high, but maintain old value otherwise.
 
@@ -397,7 +397,7 @@ You can create an N bits reg module with `en` (enable) signal. We sample new inp
 ```
 
 {:.note}
-The `reg_en` module behaves like a regular `dff` if `en` is always set to `1`.
+The `reg_en` module behaves like a regular `dff` if `en` is always set to `1`. Formally, this is called a "register with write enable". You will see more of these in the later weeks when we learn about Datapath.
 
 ### Registered Adder with Enable
 
@@ -447,8 +447,7 @@ The following shows that the new button-triggered adder will be fed with new inp
 
 <img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-11-28 at 3.36.01 PM.gif"  class="center_seventy"/>
 
-## Testbench (Simulation)
-
+## Testbench 
 
 Before testing hardware on the FPGA, digital designs are almost always verified in **simulation**, *just like how software is tested before deployment*. A testbench plays the role of a small “driver program” that:
 
@@ -548,6 +547,9 @@ The waveform window will now report the two value set:
     }
 ```
 
+This fails because `$assert` checks the current **stable** state. Since we never call `$tick` between changes, the simulator <span class="orange-bold">never</span> propagates the new input into adder.s.
+
+
 ### Testbench with a `dff`
 
 You need to propagate `clk =0` and `clk=1` to allow a `dff` to latch. For example, `value.q` remains `0` here when we print:
@@ -591,7 +593,7 @@ The waveform clearly illustrates this: that the `.q` port of the `dff` "captures
 To make things neater, you can write a function with `fun` keyword that sets clk and tick accordingly. This makes it reusable:
 
 ```verilog
-    fun tick_clock_0_1(){
+    fun tick_clock_rising(){
         clk = 0
         $tick()
         clk=1
@@ -600,7 +602,7 @@ To make things neater, you can write a function with `fun` keyword that sets clk
     test value_propagate_v2{
         rst = 0
         value.d = 1
-        $tick_clock_0_1()
+        $tick_clock_rising()
         $print("value.q: %d", value.q)
     }
 ```
@@ -611,9 +613,18 @@ The given `$tick_clock` in the test template sets the `clk` to 1 and perform `$s
 
 ### `test` block is NOT `always` block
 
-You will need to define ALL signals to be run in the testbench, unlike in hardware.
+{:.important}
+> The `test` block works **sequentially**, UNLIKE the `always` block.
+>
+> In a test block, there is no always block running every cycle. The test body runs once, top to bottom, like a little program. If you want a signal to change over time, you must:
+> * Assign it a **new** value in the test code,
+> * Advance time with `$tick` or your clock helper,
+> * Then assign again and tick again.
+> 
+> A `repeat` loop is also sequential: on each iteration it executes the statements inside, then moves on.
 
-For instance, this will not set `.q` to be `2` after running:
+
+For instance, this will not set `.q` to be `2` after running because you didn't change the assignment to `.d` after the first `$tick_clock()`:
 
 ```verilog
     sig rst
@@ -653,10 +664,29 @@ If you'd like to increment the value of the `dff` and advance two clock cycles, 
 
 <img src="{{ site.baseurl }}//docs/Labs/images/lab3/2025-12-01-16-24-28.png"  class="center_seventy no-invert"/>
 
+The `repeat` loop also runs sequentially, just like a regular `for` loop. This example demonstrates it:
 
-### Checkoff: Testbench for Registered Adder
+```verilog
+    const TEST_VALUES = {
+        8h1,
+        8h2,
+        8h3, 
+        8h4
+    }
 
-Write a testbench to test the functionality of your **registered adder**. Your test case should have an automatic $assert as well as printouts for easy access. The waveform should clearly show what happens within the module. For instance, here's a demo. 
+    test myTest {
+        repeat(i, 16){
+            $print("Iteration: %d, TEST_VALUES: %d", i, TEST_VALUES[i[1:0]])
+        }
+    }
+```
+
+<img src="{{ site.baseurl }}//docs/Labs/images/lab3/2025-12-02-09-09-59.png"  class="center_seventy no-invert"/>
+
+
+## Checkoff: Testbench for Registered Adder (2%)
+
+Write a testbench to test the functionality of your **registered adder**. Your test case should have an automatic `$assert` as well as printouts for easy access. The waveform should clearly show what happens within the module. For instance, here's a demo. 
 
 Your must also be able to clearly explain the waveforms and notice the delays (2 clock cycles) between test case input and the corresponding sum output from the registered adder (see [section below](#matching-latency-in-the-tester)). 
 
@@ -703,105 +733,93 @@ Each test case is stored as **one record**, so alignment errors are impossible. 
 
 ### Matching Latency in the Tester
 
-Our **registered adder** has registers at both the **inputs** and the **sum output**.
+Our registered adder has **registers** at **both** the inputs and the sum output. From the testbench’s point of view, this means:
+* At clock **edge** `k`: the testbench presents (a, b) and they get sampled into the input registers.
+* **During** cycle `k` to `k+1`: the combinational adder computes the sum.
+* At clock **edge** `k+1`: the result is captured into the output register.
+* At clock **edge** `k+2`: that result is visible and stable at the module’s s port.
 
-From the tester’s perspective, this means:
+So the sum that you see at time `k+2` belongs to the inputs that were applied at time `k`. This diagram illustrates that:
 
-* The test inputs `(a, b)` enter the input registers at clock edge `k`.
-* The corresponding sum appears at the adder’s output register at clock edge `k+2`.
-
-Therefore, the tester must compare `registered_adder.s` against the **expected sum that has been delayed by TWO clock cycles**. The clean way to achieve this is to pass the *expected sum* through a **two-stage DFF pipeline** (`pipe_1` and `pipe_2`) clocked by the same  clock. After two cycles, `registered_adder.s` and `pipe_2.q` refer to the **same test case**, and can be safely compared.
+<img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-waveform-pipelinedrca.drawio.png"  class="center_seventy"/>
 
 {:.important}
-This reinforces a key principle in clocked design: You can only compare signals that have passed through the **same number of clock boundaries**.
+Your testbench must respect this 2-cycle latency. 
+
+There are two reasonable ways to do it.
+
+#### Sequential Way 
+ 
+This is the *simplest* way with least mental load.
+
+For each test case:
+* Set `a` and `b` to the next test vector.
+* Tick the clock twice using `tick_clock_rising` to let the value travel through the two register stages.
+  * If you use the default `tick_clock`, then call it **thrice**, as this is a *falling edge*
+* Then compare the registered sum with the expected value.
 
 
-
-## Automated Registered Adder Tester (Hardware)
-
-Up to this point, you have:
-* A registered adder that updates on a controlled clock or button.
-* A sense of how clocking produces **stable, periodic** outputs.
-* A testbench that confirms that your adder works *in theory*.
-
-Now, you shall turn the FPGA hardware into a small **self-checking tester** for your adder. This is related to 1D Checkoff 1, where you are required to build an automated tester for your ALU, a crucial part of your 1D project. 
-
-Instead of manually choosing `a` and `b` via DIP switches, we will *automatically*:
-
-1. Store a fixed list of test vectors in **constant arrays**.
-2. Use a small **index register** to step through them one by one.
-3. Drive your adder automatically with these vectors.
-4. Compare the adder’s output with the expected sum.
-5. Show `a`, `b`, and `s` on the LEDs, plus an “error” indicator.
-
-{:.highlight}
-This is the same idea as a [testbench](#testbench), but running on real hardware.
-
-### Suggested design
-
-You are to test the functionality of your **Registered** 8-bit RCA automatically here.
-
-You can create constants that stores the following:
-* `A_INPUTS[i]`: the i-th test value for operand `a`.
-* `B_INPUTS[i]`: the i-th test value for operand `b`.
-* `SUMS[i]`: the expected sum `A_INPUTS[i] + B_INPUTS[i]`.
-* `index`: a DFF that stores which test case we are currently applying.
-
-> Note that if you have `N` test cases, then `A_INPUTS`, `B_INPUTS`, and `SUMS` are all `N` by `8` array. `index` has the size of `log2(N)` bits.
-
-On each **slow** clock tick (for example 1 Hz):
-
-* `index` increments by 1 (wrapping around at the end).
-* The current `a` and `b` inputs to `registered_rca_en` are taken from `A_INPUTS[index.q]` and `B_INPUTS[index.q]`.
-* The adder computes `s`.
-* Hardware compares `s` with <span class="orange-bold">pipelined</span> `SUMS[index.q]`.
-* The LEDs display `a`, `b`, `s`, and an error flag.
-
-### `$is_sim()`
-
-The real FPGA hardware has 100Mhz onboard clock. As such, you need to set the `DIV` of the `slow_clock` into `28` or `29` to make the *hardware* human-readable.
-
-You can conditionally set the `DIV` of the `slow_clock` to `9` or `28` using inbuilt function `$is_sim()` depending on whether we are running simulation in software or hardware:
+Here's a template:
 
 ```verilog
- counter slow_clock(#DIV($is_sim()? 9 : 28), .clk(clk), .rst(rst), #SIZE(1))
+    // declare your device under test here (dut)
+
+    const NUM_TESTS = ...
+    const A_INPUTS = {8h00, 8h01, ...}
+    const B_INPUTS = {8h00, 8h01, ...}
+    const SUMS     = {8h00, 8h02, ...}
+
+    test registered_rca_basic {
+        clk = 0
+        rst = 1
+        $tick()          // reset
+        rst = 0
+
+
+        repeat(i, NUM_TESTS) {
+            // 1. Apply inputs for test i
+            dut.a = A_INPUTS[i]
+            dut.b = B_INPUTS[i]
+
+            // 2. Advance two clock cycles
+            $tick_clock_rising()
+            $tick_clock_rising()
+
+            // 3. Now the output corresponds to A_INPUTS[i], B_INPUTS[i]
+            $assert(dut.s == SUMS[i])
+            $print("Test %d OK --- s: %d, answer key s: %d",i, rr.s, test_values.s)
+        }
+    }
+
 ```
 
-### Test on Simulator First
+#### Pipelined Way
 
-Before building your project, you shall test your tester in the simulator first.
+If you want to mirror how a real hardware tester would behave, you can keep feeding new test vectors every cycle and maintain a small pipeline of expected sums inside the testbench. In each cycle we:
+- Apply a new (`a, b`) pair.
+- Push the corresponding expected_sum into a 2-cycle delay line in the testbench.
+- Tick the clock once.
+- After the first two “warm-up” cycles, the **oldest** value in this delay line lines up with the current `dut.s`.
 
-You can set the following interface: `io_led[0]`, `io_led[1]`, `io_led[2]` are 8-bit rows for `A_INPUTS[index.q]`, `B_INPUTS[index.q]`, `s` (your adder's sum), and `led[0]` is an error LED (lights up when the result is wrong).
+The diagram below illustates the arrangement:
 
-Here's a sample demo using the simulator. The usage of seven segment is optional. For now, it represents the current test index ID. 
-- In this demo, we have 16 test cases.
-- `io_dip[2][7]` will force bit-flip the adder's output and induce and error, to demonstrate that our tester can show error. This is a <span class="orange-bold">forced</span> error.
+<img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-pipelined-rca.drawio.png"  class="center_seventy"/>
 
 
-<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-12-01 at 10.08.50 AM.gif"  class="center_seventy"/>
+{:.important}
+> Basically, we pass the test value S through the **same** number of registers as test value A and B.
+> This reinforces a key principle in clocked design: You can only compare signals that have passed through the **same number of clock boundaries**.
 
 
-### Build and flash to FPGA
-
-Once your tester works in the simulator, you should **build** the project and **flash** it to the FPGA. To do this, you will need to have Vivado installed. Refer to the [installation](https://natalieagus.github.io/50002/fpga/installation) guideline if you have not read them. It explains:
-- How to install Vivado
-- How to **build** your project
-- How to **flash them** to your FPGA
-
-## Checkoff  Summary
+### Checkoff Summary
 
 You should show your registered adder testbench design to the TA and run it in Alchitry Labs.
-1. You should use `$assert` keywords
-2. You should have at least 8 different test cases. It can be the same as the hardware tester
-3. The TA will ask you questions about the waveforms
+1. (0.5%) You should use `$assert` keywords to automatically check if the adder's answer match the answer key
+2. (0.5%) You should have at least 8 different test cases: check all edge cases such as overflow, addition with zeros, etc 
+3. (1%) TAs will ask you two questions (same protocol as lab 2) about the waveforms, ensure that you understand how the waveform works
 
-Then, you should be able to demonstrate the following functionality of your automated tester in the **REAL** FPGA hardware (all or nothing):
-1. The adder is driven automatically by a sequence of test vectors (no manual DIP changes needed during the demo).
-2. `io_led[0]` shows the current test case value `a`, `io_led[1]` shows the current test case  `b`, and `io_led[2]` shows the computed sum `s`.
-3. The tester steps through at least 8 different `(a, b)` pairs at a slow, human-visible rate (about 1 Hz).
-4. The `error` indicator LED remains **off** for all test cases when the adder is implemented correctly.
-5. If you intentionally break the adder (for example, force one bit of the sum to 0), the `error` LED turns **on** for at least one test case.
-
+{:.highlight}
+**Schedule** a checkoff with your TA anytime before the end of next week's lab as a 1D group. The checkoff is graded **individually** but to aid logistics and to ensure everyone in the group is on the same page, you are required to attend the checkoff together as a 1D group.
 
 ## Summary
 
@@ -811,27 +829,12 @@ The **clock** and `dff`s define clear time **boundaries**: values are sampled on
 * Using these building blocks, you built a **registered RCA**, observed how its output becomes **periodic and synchronised**, and contrasted it with an unregistered adder that responds immediately (and unreliably) to input flicker.
 * You extended the idea with **registers that have enable signals**, allowing inputs to be captured only when a button is pressed.
 
-For checkoff, you then constructed an **automated adder tester**:
-- Store test vectors in constants,
-- Step through them with an index register on a slow clock,
-- Comparing the registered adder’s output against expected sums.
+For checkoff, you then constructed a testbench to test the functionality of your registered adder:
+* Store test vectors in constants,
+* Step through them sequentially in the testbench over multiple clock cycles,
+* Compare the registered adder output with expected sums using `$assert`.
 
 Although subtle, we also learned how to **match latency**: since the registered adder output is delayed by two clock boundaries from the tester’s point of view, the expected sum must be *delayed* by the same number of stages before comparison.
-
-
-### Error Detection
-In this lab, the automated tester runs continuously, even if an <span class="orange-bold">error</span> occurs. Real tester should **not** continue running blindly after detecting an error because real hardware would not do this.
-Instead, it should react immediately because downstream blocks depend on correct data. Examples include:
-
-* **Processors** triggering an exception or trap
-* **Memory controllers** halting on parity or ECC faults
-* **Communication systems** aborting a corrupted frame
-* **Safety-critical devices** entering a protected fail-safe mode
-
-In all of these cases, simply “continuing to run and checking the next input” would propagate corrupted state and violate correctness or safety. Real systems therefore incorporate explicit **control logic** that defines what to do when an error occurs: retry, reset, isolate the fault, or stop the pipeline entirely.
-
-That kind of behaviour requires a finite-state controller (FSM) that governs when registers **advance** and when they **halt**. We will learn about this next week.
-
 
 
 ## Appendix

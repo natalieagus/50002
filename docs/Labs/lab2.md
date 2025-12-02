@@ -930,7 +930,10 @@ During the checkoff, the TA will ask **at most two questions** about the code th
 * If you answer the first question correctly, no second question will be asked.
 * If you answer the first question incorrectly, you will be given exactly **one more question**.
 
-Grading is therefore **binary**: pass if you answer at least one correctly, fail if you answer both incorrectly.
+Grading is therefore **binary**: 1% if you answer at least one correctly, 0% if you answer both incorrectly.
+
+{:.highlight}
+**Schedule** a checkoff with your TA anytime before the end of next week's lab as a 1D group. The checkoff is graded **individually** but to aid logistics and to ensure everyone in the group is on the same page, you are required to attend the checkoff together as a 1D group.
 
 ## Summary
 
