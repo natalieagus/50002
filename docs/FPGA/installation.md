@@ -14,7 +14,7 @@ nav_order:  0
 {: .no_toc}
 
 Software to install: 
-1. **Vivado ML Edition - 2023.2** or any later version  
+1. **Vivado ML/Full Edition - 2023.2** or any later version
 2. [Alchitry Lab V2 IDE](https://alchitry.com/alchitry-labs),
 3. [**Latest** Java Development Kit](https://www.oracle.com/sg/java/technologies/downloads/)
 
@@ -44,11 +44,6 @@ Alchitry IDE can be installed and run on Windows, macOS (Apple Silicon), Linux, 
 
 ### Windows / Linux 
 Download Alchitry Lab 2 from [here](https://alchitry.com/alchitry-labs/). For windows users, it might be more reliable if you download it from [Microsoft Store](https://apps.microsoft.com/detail/9mvzrn9dbj3c?hl=en-GB&gl=SG). This is your IDE.
-
-{:.important-title}
-> Version
->
-> Updated 29 Jan 2025: Version 2.0.25 BETA is recommended. 
 
 Once installed, open the app and you can create a **new** project. Select the template for Alchitry Au board and choose one of the basic template project: 
 
