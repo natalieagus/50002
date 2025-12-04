@@ -20,6 +20,10 @@ Singapore University of Technology and Design
 # CMOS (JSIM)
 {: .no_toc}
 
+{:.note}
+This is a self-guided, supplementary lab, intended for revision. The lab is ungraded and you can check out the corresponding questionnaire on eDimension.
+
+
 ## Starter Code 
 The starter code required for this lab is inside `jsim-kit` repository you've cloned for Lab 0 last week. If you've lost it, clone it again:
 

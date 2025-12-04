@@ -20,7 +20,10 @@ Singapore University of Technology and Design
 # Beta Processor I/O 
 {: .no_toc}
 
-This is a self-guided practice post Lab 4. You can read this handout at your own time to supplement your knowledge about I/O Handling, specifically focusing on the sequence of **interrupt handling**, transitioning to kernel mode, executing **privileged** operations, and returning to **user** mode using a simple assembly code example. 
+{:.note}
+This is a self-guided, supplementary lab, intended for revision. The lab is ungraded and you can check out the corresponding questionnaire on eDimension.
+
+You can read this handout at your own time to supplement your knowledge about I/O Handling, specifically focusing on the sequence of **interrupt handling**, transitioning to kernel mode, executing **privileged** operations, and returning to **user** mode using a simple assembly code example. 
 
 Here we also learn how to connect I/O units to the CPU using **shared-memory** I/O:
 1. Reading from input buffer

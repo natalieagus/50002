@@ -20,6 +20,9 @@ Singapore University of Technology and Design
 # Beta Assembly 
 {: .no_toc}
 
+{:.note}
+This is a self-guided, supplementary lab, intended for revision. The lab is ungraded and you can check out the corresponding questionnaire on eDimension.
+
 ## Starter Code
 
 Clone the starter code from here:

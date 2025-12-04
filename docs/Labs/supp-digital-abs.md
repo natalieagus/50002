@@ -20,6 +20,10 @@ Singapore University of Technology and Design
 # Digital Abstraction (JSIM)
 {: .no_toc}
 
+{:.note}
+This is a self-guided, supplementary lab, intended for revision. The lab is ungraded and you can check out the corresponding questionnaire on eDimension.
+
+
 ## Starter Code and Tools 
 
 We are using MIT's JSim for this lab, a **circuit simulation program** useful to study the theoretical behaviour of various logic gates and digital circuits. 
