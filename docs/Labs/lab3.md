@@ -48,6 +48,19 @@ There's no starter code for this lab. You simply need to have [Alchitry Labs V2]
 ## Related Class Materials
 The lecture notes on **[sequential logic](https://natalieagus.github.io/50002/notes/sequential_logic)** are closely related to this lab.
 
+
+| Lecture notes topic                                                            | Lab 3 part                                                                                                                          |
+| ------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Combinational vs sequential logic, motivation for introducing a global clock   | Moving from “instantaneous” combinational behaviour to clock-driven circuits, assembly-line analogy, one state per rising edge      |
+| Edge triggered DFF, dynamic discipline, role of setup–hold and time boundaries | Using Lucid `dff`, observing sampling on rising edges, stable `q` between edges, global reset for deterministic starting state      |
+| DFF as a register (arrays of DFFs)                                             | Multi bit `dff` arrays forming registers, using registers as input and output stages in the registered RCA                          |
+| Pipelining: registers → combinational logic → registers                        | Structure of the registered RCA, periodic and synchronised output vs the unregistered immediate output, using counter as slow clock |
+| Timing through pipelines and multi cycle latency                               | Two cycle delay of the registered RCA, waveform interpretation, need to match latency in the testbench                              |
+| Sequential testbench reasoning (time advancing explicitly)                     | `$tick` to propagate combinational logic, explicit rising edge generation, sequential execution of `test` blocks, repeat loops      |
+| Structured test vectors and temporal alignment                                 | Separate or packed test vector arrays, stepping test cases across cycles, comparing outputs only after correct latency              |
+
+
+
 ## Sequential Logic
 
 In previous labs, you worked only with **combinational logic**. The moment an input changed, the output changed with it. There was no concept of "memory", before or after since everything happened continuously and simultaneously.  

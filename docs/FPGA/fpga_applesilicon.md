@@ -93,6 +93,11 @@ It will prompt you to create/open new project (first time) or open your last ope
 {:.note}
 The VM also comes with **legacy** Alchitry Labs 1.2.7 (using Lucid V1). You can use command `alchitry` to spawn it. See `~/.bashrc` for details.
 
+### Update Alchitry Labs V2
+
+Update the IDE to the latest version (whenever you download the VM). See [this](#updating-alchitry-labs-in-the-vm) section.
+
+
 
 ## Loading .bin from your mac to Alchitry Au FPGA
 

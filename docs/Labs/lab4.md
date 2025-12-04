@@ -20,10 +20,41 @@ Singapore University of Technology and Design
 # Lab 4: Control Sequencing
 {: .no_toc}
 
+## Objectives
+
+By the end of this lab, we should be able to:
+* Explain how an FSM acts as a **controller** that issues sequencing decisions to a datapath.
+* Separate a hardware design cleanly into **datapath** (storage, operations, comparison) and **controller** (state transitions and control signals).
+* Describe why a self-checking tester requires registered inputs, pipelined expected outputs, and synchronised control.
+* **Implement** a multi-state FSM in Lucid with correct state encoding, output logic and next-state logic.
+* Use a `slow clock`, `edge detector`, and `button conditioner` to **control** transitions cleanly on hardware.
+* Build an automated tester that increments test cases, samples inputs over multiple cycles, compares pipelined outputs, halts on mismatch, and restarts reliably via a button press.
+
 ### Submission
 Complete the Lab 4 **checkoff** (2%) with your Cohort TA before the next lab session ends. You should demonstrate the required task under the [Checkoff](#checkoff) section below. The checkoff is assessed **AS A GROUP** as it requires the FPGA hardware.
 
 Complete **questionnaire** on eDimension as well (2%).
+
+
+### Starter Code
+There's no starter code for this lab. You simply need to have [Alchitry Labs V2](https://alchitry.com/alchitry-labs/) installed. You will also need **Vivado** for this lab. Refer to the [installation](https://natalieagus.github.io/50002/fpga/installation) guideline if you have not read them.
+
+
+## Related Class Materials
+The lecture notes on **[FSM](https://natalieagus.github.io/50002/notes/fsm)** and [Turing Machine](https://natalieagus.github.io/50002/notes/turingmachine)  are closely related to this lab.
+
+| Lecture notes topic                                                                            | Lab 4 part                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| **FSM formal model**: states, transitions, Moore vs Mealy, state registers, next-state logic   | Implementing the tester FSM (`IDLE`, `INIT`, `WAIT_1`, `WAIT_2`, `CHECK`, `HALT`) with a `state` DFF and case-based transitions             |
+| **FSM as “control logic” separate from datapath**                                              | Using control signals (`index_load_zero`, `index_inc`, `sample_enable`, `running`) to drive datapath behaviour each slow-clock tick         |
+| **Deriving control outputs from state**                                                        | Writing deterministic control actions under each state bubble: initialise, feed, wait, compare, halt                                        |
+| **Recognising the need for timing boundaries**                                                 | Understanding why sampling `(a, b)` and capturing `s` require two distinct WAIT cycles, not one                                             |
+| **FSM responsiveness and clocking discipline**: synchronous inputs, metastability, debouncing  | Using `button_conditioner` and `edge_detector` so button presses become single clean events; ensuring transitions wait for slow-clock edges |
+| **Transition conditions from datapath signals** (`equal`, `last_index`, error flags)           | Wiring comparator output and index-boundary logic into the FSM to decide when to increment or halt                                          |
+| **Turing Machine conceptual link**: sequencing through symbolic steps with a simple controller | Mapping “control of a procedure” to the hardware tester sequence: initialise >> feed >> delay >> check >> branch (continue or halt)             |
+| **Finite programs encoded as state graphs**                                                    | Designing the 7-state “hardware program” that steps through test vectors and terminates on mismatch                                         |
+| **Modular design principles**: keep computation inside datapath, keep sequencing in controller | Datapath contains the RCA, pipeline registers, ROM arrays, comparator; the FSM never performs arithmetic, only drives control wires         |
+| **Hazards from asynchronous events**                                                           | Explaining why raw button signals break the FSM and why conditioning + edge detection is required                                           |
 
 ## Control Sequencing with Finite State Machines
 
@@ -58,7 +89,10 @@ We will separate the **datapath** (the hardware that carries data, which is your
 
 ### What are we actually controlling?
 
-At a high level, the FSM controller is in charge of **WHEN** the tester moves and **WHAT** it does on each slow clock tick. You can think of it as answering three questions:
+{:.highlight}
+We are controlling a tester module automatically with an FSM.
+
+At a high level, the FSM controller is in charge of **WHEN** the **tester** moves and **WHAT** it does on each slow clock tick. You can think of it as answering three questions:
 
 1. **Which test case are we on right now**?
    - Use an `index` register and the test vector arrays.
@@ -72,7 +106,7 @@ At a high level, the FSM controller is in charge of **WHEN** the tester moves an
 
 
 ## Datapath
-Before thinking about states, it helps to be very explicit about the **datapath** that the controller will drive. The datapath for this **automated tester** we are building should contain:
+Before thinking about states, it helps to be very explicit about the **datapath** (hardware) that the controller will drive. The datapath for this **automated tester** we are building should contain:
 
 1. **Registered Adder Block** (you can use either with or without write enable)
    * Your `registered_rca` that takes `a[7:0]`, `b[7:0]` and produces a registered sum `s[7:0]`.
@@ -107,14 +141,13 @@ Before thinking about states, it helps to be very explicit about the **datapath*
 
 6. You should also have a **forced error mask** driven by a DIP switch, which flips one bit of the adder output before comparison, so that you can demonstrate that the tester *is actually checking something*.
 
-7. **LED Outputs**
-   * `io_led[0]` shows the current `a` test value.
-   * `io_led[1]` shows the current `b` test value.
-   * `io_led[2]` shows the adder’s sum `s`.
-   * A dedicated LED shows `error_flag`.
+7. **LED Outputs** (optional, good for debugging)
+   * `io_led[0]` shows the current `s` test value.
+   * `io_led[1]` shows the current adder's sum `s` value.
+   * A dedicated LED shows `error_flag`, etc
 
 
-It should also receive a regular hardware clock (100Mhz) and *not* run on a human-visible slow clock. 
+The datapath should also receive a regular hardware clock (100Mhz) and *not* run on a human-visible slow clock. 
 
 {:.important}
 > Datapath big idea
@@ -128,31 +161,33 @@ You should be able to draw the datapath of the system above. Try it on your own.
 
 ## FSM controller
 
-Now we give this datapath a small **finite state controller**. This controller is the *brain* of the tester: it outputs <span class="orange-bold">control signals</span> that **decide** what each part of the datapath does on each clock. It should receive `slow_clock` signal as input to indicate when we should change state.
+Now we give this datapath a small **finite state controller**. 
 
-For example, which value to load, whether to increment the index, whether to halt.
+This controller is the *brain* of the tester: 
+- It outputs <span class="orange-bold">control signals</span> that **decide** what each part of the datapath does on each clock. 
+- It should receive `slow_clock` signal as input to indicate when we should change state, and button presses from user such as `start_button`, etc.
 
 From the FSM notes, recall that the controller itself can be implemented as a Moore-style machine:
 * It has a **state register** that stores the current state encoded in a few bits.
 * It looks at some input flags from the datapath and decide what to do.
 * It produces control outputs that **drive** the datapath.
 
-
 {:.note}
-**Actions** in each state happens in PARALLEL. The transition condition is written at the arrows, and the **output** signals at each state is written below the state bubble. The start state is `IDLE`.
+**Actions** in each state happens in **PARALLEL**. The transition condition is written at the arrows, and the **output** signals at each state is written below the state bubble. The start state is `IDLE`.
 
 A natural set of states for this automated tester is:
 
-<img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-fsm.drawio.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-fsm.drawio-2.png"  class="center_full"/>
 
-You can think of this as a tiny “hardware program” with seven instructions: `IDLE`, `INIT`, `FEED`, `WAIT_1`, `WAIT_2`, `CHECK`, and `HALT`.
+You can think of this as a tiny “hardware program” with 7 instructions: `IDLE`, `INIT`, `INC`, `WAIT_1`, `WAIT_2`, `CHECK`, and `HALT`.
 
+{:.note}
 The output signals written under each bubble is called control signals: they control and drive the datapath. Think of it like a *train conductor's action*. The datapath is the *railway system*, it's already built and all rails are already there. The conductor's brain (FSM) decide what to do and their action is translated into *control signals* that drive the **train** (data).
 
 ## Control Signals
 
 {:.highlight}
-These are the <span class="orange-bold">wires that cross the boundary</span> between the FSM controller and the datapath described earlier.
+These are the <span class="orange-bold">wires that cross the boundary</span> between the FSM controller and the datapath hardware described earlier.
 
 Each **control signal** answers a very concrete question like:
 
@@ -165,9 +200,10 @@ We group them by the datapath component they talk to as defined in the [datapath
 ### Control signals for the test index register
 
 From the datapath we have:
+
 > **Test Index Register**:
-> A `dff` called `index` that stores which test case we are currently running.
-> The controller can reset `index` to `0` and increment it with wraparound.
+> 
+> A `dff` called `index` that stores which test case we are currently running. The controller can reset `index` to `0` and increment it with wraparound.
 
 To do this, the FSM should output two control signals:
 
@@ -185,39 +221,32 @@ To do this, the FSM should output two control signals:
 
 From the datapath we have:
 > **Registered Adder Block**: `registered_rca` with internal input and output registers.
+> 
 > **Expected Sum Pipeline**: must advance in sync with the adder.
 
-Both should take a **NEW** test vector at the same time. The controller needs one key signal:
+Both should take a **NEW** test vector at the same time. The controller (fsm) needs to produce one:
 
-* `sample_enable`: *connects to the `enable` input of `registered_rca`, and you can also reuse it as the write enable for the first stage of the expected sum pipeline*
-  * When `1`, on the next slow clock edge:
-    * The adder registers sample new `a` and `b` from `A_INPUTS[index]` and `B_INPUTS[index]`.
-    * The expected sum pipeline samples `SUMS[index]`.
-  * When `0`, both keep their current values.
-
-Typical usage:
-* `INIT`: `sample_enable = 0` (or 1 if you want to flush)
-* `FEED`: `sample_enable = 1`
-* `CHECK`: `sample_enable = 0`
-* `HALT`: `sample_enable = 0`
-
-This matches the use case:
-
-> **FEED**: *take a test vector into the pipeline*
-> 
-> **CHECK**: *do not take new data, just inspect the result*
+* `sample_enable`: *connects to the `enable` input of `registered_rca`, and you can also use it as the write enable for the expected sum pipeline*
+  * When `1`, on the next `clk` edge:
+    * The adder registers produces *new* `a` and `b` from `A_INPUTS[index]` and `B_INPUTS[index]`.
+    * The expected sum pipeline produces *previous* `SUMS[index]`.
+  * When `0`, both keep their **current** values.
+  * It is important to keep `sample_enable` `1` for TWO cycles (which is what `WAIT_1` and `WAIT_2` states are doing)
+  * In `WAIT_1`, the `a` and `b` registers sample the test values
+  * In `WAIT_2`, the `s` registers sample the adder's sum output
 
 
 ### Control for “running” or “halt” status
 
-From the FSM diagram, it's obvious that:
-> `HALT` keeps the failing case frozen and ignores further slow clock ticks.
+From the FSM diagram:
 
-You can make this explicit with a simple flag:
+> `HALT` keeps the failing case frozen and ignores further clock ticks.
+
+You can make this explicit with a simple flag that can be routed to the LED so user knows whether the tester is *running* or not:
 
 * `running`: *can be used to gate some datapath activity or to drive a status LED.*
-  * `running = 1` in `INIT`, `FEED`, `CHECK`.
-  * `running = 0` in `HALT`.
+  * `running = 1` in `INC`, `WAIT_1/2`, `CHECK`.
+  * `running = 0` in `HALT`, `IDLE`, `INIT`.
 
 You are free to use `running` in different ways:
 * As a signal to a status LED so humans can see “tester is alive”.
@@ -247,29 +276,29 @@ These are self-explanatory. They are the inputs that trigger FSM transitions.
   * To transition states accordingly
   
 * `start_press`
-  * Conditioned + passed through rising edge detector signal to restart the tester
+  * Remember to have button presses conditioned + passed through rising edge detector before used as FSM transition (see later sections for more information)
 
 ### Summary 
 
 * The **datapath** has:
 
-  * Registers `index`, `a`, `b`, `s`, expected sum, `error_flag`.
+  * Registers: `index`, `a`, `b`, `s`, expected sum pipeline
   * Combinational logic: ROM-like arrays, RCA, comparator, small muxes.
 
 * The **FSM controller** has:
 
   * A state register that stores seven states: `IDLE`, `INIT`, `FEED`, `WAIT_1`, `WAIT_2`, `CHECK`, `HALT`.
-  * Next-state logic that uses `rst`, `equal`, `last_index`, and `slow_clock`
+  * Next-state logic that uses `rst`, `equal`, `last_index`, `slow_clock`, and `clk`
   * Output logic that produces the control signals:
-
-    * `index_load_zero`, `index_inc`
+    * `index_load_zero`
+    * `index_inc`
     * `sample_enable`
-    * `error_clr`, `error_set`
+    * `error`
     * `running`
 
 The control signals live exactly on those arrows from the FSM block to the datapath block in your diagram. They are the “verbs” that make the datapath “do something” every slow clock tick.
 
-## Implementing an FSM
+## Implementing an FSM in HDL
 
 Implementing an FSM in HDL is pretty straightforward: you use a `dff` that holds your states and depending on **status** flags, decide whether to go to the next state or not.
 
@@ -291,8 +320,12 @@ They will be auto computed as `b00, b01, b10, b11`.
 
 ### Create the state `dff`
 
-{:.note}
-The `$width` function can be used on the `enum` to get the **minimum** number of bits to store a value.
+{:.note-title}
+> The $width function and $clog2 function
+> 
+> The `$width` function can be used on an `enum` to get the **minimum** number of bits to store a state value. If you have 8 states, then `$width(States)` returns `3`. Alternatively, you can use `$clog2(NUM_STATES)` if you know `NUM_STATES` from the start.
+
+
 
 ```verilog
     dff states[$width(States)](#INIT(States.START), .clk(clk), .rst(rst))
@@ -381,9 +414,10 @@ If you utilise the FSM as such, with onboard clock:
 ```
 
 You will notice that the FSM runs so fast that it `HALT`s *immediately*:
+
 <img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-12-03 at 8.32.21 AM.gif"  class="center_seventy no-invert"/>
 
-This is because the `clk` supplied is at `1000Hz` in the simulator, which is way too fast for human eye to see. You need to **slow down** the fsm's clock considerably to be able to view the state transition manually.
+This is because the `clk` supplied is at `1000Hz` in the simulator, which is way TOO FAST for human eye to see. You need to **slow down** the fsm's clock considerably to be able to view the state transition manually.
 
 ### Slowing down the FSM clock
 
@@ -391,7 +425,7 @@ There are TWO ways to do this:
 1. Supply `slow_clock` signal (from `counter`) to the `.clk` port of `simple_fsm`, OR
 2. Add `slow_clock` signal as `input` to the `simple_fsm` and perform transition or modification of ANY `dff` ONLY if `slow_clock` is 1
 
-We will present BOTH ways to you and the pros and cons for each.
+We will present BOTH ways to you and the pros and cons of each.
 
 #### Method 1: use `slow_clock` as `.clk`
 
@@ -405,7 +439,8 @@ We will present BOTH ways to you and the pros and cons for each.
 
 ```
 
-**Pros**: You can see the state transitions well,
+**Pros**: You can see the state transitions well, with minimal mental load to implement.
+
 **Cons**: You lose the global reset [for this reason](https://natalieagus.github.io/50002/fpga/fpga_1_2024) and you basically make your FSM *unresponsive* by running on such a **SLOW** clock.
 
 <img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-12-03 at 8.37.21 AM.gif"  class="center_seventy no-invert"/>
@@ -448,12 +483,16 @@ You would have to <span class="orange-bold">press and hold</span> `io_button[0]`
 The `io_button[0]` manual reset signal should be valid across *rising edge* of `slow_clock` signal to be captured and propagated to `simple_fsm`. Otherwise, if it is only valid briefly in-between rising `slow_clock` edges, then it will be ignored. This is the behavior of sequential logic.
 
 
-#### Method 2: use `slow_clock` as `input`
+#### Method 2: use `slow_clock` as `input` with `edge_detector`
 
-In this method, we run `simple_fsm` with the original `clk` signal, but add conditional logic to **transition** within each case only when `slow_clock` <span class="orange-bold">edge</span> is `1`.
+{:.highlight}
+This method is your instructors' preferred way, but it has way higher mental load to master.
+
+In this method, we run `simple_fsm` with the original `clk` signal, but add conditional logic to **transition** within each case only when `slow_clock` <span class="orange-bold">edge</span> is `1`. This way our FSM remains *responsive* and only conditionally transition when `slow_clock` is `1`.
 
 {:.important}
 To do this, we need to pass `slow_clock` signal through an edge detector. Do you know *why*?
+
 
 {:.note-title}
 > Edge detector
@@ -482,7 +521,6 @@ module simple_fsm (
 }
 
 always {
-
         // other code
 
         case(states.q){
@@ -518,14 +556,18 @@ always {
     }
 
 }
+```
 
+Then use it as such:
+
+```verilog
 // alchitry_top
 simple_fsm simple_fsm(.clk(clk),.slow_clock(slow_clock.value),.rst(rst))
 ```
 
 This way, your global reset still works (and is responsive! No more press and hold to reset), but you end up with lots of **inevitable boilerplate**: repeatedly checking (`if rising_edge.out)` in each case where `dff` assignment happens.
 
-<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-12-03 at 9.06.30 AM.gif"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-12-03 at 9.06.30 AM.gif"  class="center_seventy no-invert"/>
 
 Conceptually, you allow the FSM to **REMAIN IN STATE**, until `rising_edge.out == 1`. For instance:
 - the FSM would stay at state `LOOP` and the `led_indicator` shows `8h0F`. It is actually "looping" at every `clk` cycle, that is the value of `dff` state is repeatedly written as `States.LOOP`
@@ -673,7 +715,10 @@ module simple_fsm (
         
     }
 }
+```
 
+Use it as such:
+```
 // alchitry_top
 simple_fsm simple_fsm(.clk(clk),.slow_clock(slow_clock.value),.rst(rst),.start(io_button[1]))
 ```
@@ -683,7 +728,7 @@ The logic might seem "right" but it won't even work. Towards the end of the gif 
 2. Global reset works as per normal
 3. This happens because we move back the `if` (slow clock edge rise detected) clause within each `case` and utilise a **button conditioner** (see [later](#button-conditioner) section)
 
-<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-12-03 at 9.38.52 AM.gif"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-12-03 at 9.38.52 AM.gif"  class="center_seventy no-invert"/>
 
 
 {:new-title}
@@ -769,7 +814,7 @@ module simple_fsm (
 
 ## Processing Button Presses
 
-This is the final piece of knowledge required to drive your FSM.
+This is the final piece of knowledge required to operate your FSM controller.
 
 {:.important-title}
 > Managing button presses 
@@ -902,10 +947,6 @@ module simple_fsm (
                     states.d = States.START
                 }
         }
-        
-        
-        
-        
     }
 }
 ```
@@ -920,17 +961,17 @@ The "conditioning" is typically done in the top module, as it is part of "input 
 
 Here's the result with button conditioning (reliable outcome):
 
-<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-12-03 at 10.44.06 AM.gif"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-12-03 at 10.44.06 AM.gif"  class="center_seventy no-invert"/>
 
 And here's the result *without* button conditioning (unreliable start button press detection):
-<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-12-03 at 10.45.02 AM.gif"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-12-03 at 10.45.02 AM.gif"  class="center_seventy no-invert"/>
 
 ## Building the Automated Register Adder Tester
 ### Suggested design
 
-You are to test the functionality of your **Registered** 8-bit RCA automatically here by using an fsm.
+You are to test the functionality of your **REGISTERED** 8-bit RCA (registers a, b, and s are required!) automatically here by using an fsm. You may choose to use **write-enabled register** or *not*. Your implementation should adapt accordingly.
 
-You can create constants that stores the following:
+Similar to the previous lab, you can create constants that stores the following:
 * `A_INPUTS[i]`: the i-th test value for operand `a`.
 * `B_INPUTS[i]`: the i-th test value for operand `b`.
 * `SUMS[i]`: the expected sum `A_INPUTS[i] + B_INPUTS[i]`.
@@ -939,7 +980,7 @@ You can create constants that stores the following:
 {:.note}
 If you have `N` test cases, then `A_INPUTS`, `B_INPUTS`, and `SUMS` are all `N` by `8` array. `index` has the size of `log2(N)` bits.
 
-On each **slow** clock tick (for example 1 Hz):
+On each **slow** clock tick (for example near 1 Hz):
 * `index` increments by 1 (wrapping around at the end).
 * The current `a` and `b` inputs to `registered_rca_en` are taken from `A_INPUTS[index.q]` and `B_INPUTS[index.q]`.
 * The adder computes `s`.
@@ -948,27 +989,40 @@ On each **slow** clock tick (for example 1 Hz):
 
 ### `$is_sim()`
 
-The real FPGA hardware has 100Mhz onboard clock. As such, you need to set the `DIV` of the `slow_clock` into `28` or `29` to make the *hardware* human-readable.
+The real FPGA hardware has 100Mhz onboard clock. As such, you need to set the `DIV` of the `slow_clock` into `28` or `29` to make the *hardware* output human-readable.
 
 You can conditionally set the `DIV` of the `slow_clock` to `9` or `28` using inbuilt function `$is_sim()` depending on whether we are running simulation in software or hardware:
 
 ```verilog
- button_conditioner start_button(.clk(clk), #CLK_FREQ($is_sim() ? 1000 : 100000000), .in(io_button[1]))
- counter slow_clock(#DIV($is_sim()? 9 : 28), .clk(clk), .rst(rst), #SIZE(1))
+    button_conditioner start_button(.clk(clk), #CLK_FREQ($is_sim() ? 1000 : 100000000), .in(io_button[1]))
+    counter slow_clock(#DIV($is_sim()? 9 : 28), .clk(clk), .rst(rst), #SIZE(1))
 ```
 
 ### Test on Simulator First
 
 Before building your project, you shall test your tester in the simulator first.
 
-You can set the following interface: `io_led[0]`, `io_led[1]`, `io_led[2]` are 8-bit rows for `A_INPUTS[index.q]`, `B_INPUTS[index.q]`, `s` (your adder's sum), and `led[0]` is an error LED (lights up when the result is wrong).
+You can set the following interface: 
+- `io_led[0]`: index register value
+- `io_led[1]`: registered adder `s` value
+- `io_led[2]`: expected `s` value from the sum pipeline
+- `led[5:0]`: indicates the states we are at (optional):
+  - `IDLE`: `00001`
+  - `CHECK`: `00010`
+  - `HALT_ERROR`: `00011`
+- `led[7]`: indicates the `error` bit
+
+<img src="{{ site.baseurl }}/docs/Labs/images/Screenshot 2025-12-04 at 10.27.16 AM.png"  class="center_seventy no-invert"/>
 
 Here's a sample demo using the simulator. The usage of seven segment is optional. For now, it represents the current test index ID. 
 - In this demo, we have 16 test cases.
+- `io_button[0]` is used to start/restart the tester
 - `io_dip[2][7]` will force bit-flip the adder's output and induce and error, to demonstrate that our tester can show error. This is a <span class="orange-bold">forced</span> error.
+- Once error is induced, the tester **stops** at the test-case index of that error
+- You can restart again by pressing `io_button[0]`
 
+<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-12-04 at 10.30.44 AM.gif"  class="center_seventy no-invert"/>
 
-<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-12-01 at 10.08.50 AM.gif"  class="center_seventy no-invert"/>
 
 
 ### Build and flash to FPGA
@@ -978,20 +1032,45 @@ Once your tester works in the simulator, you should **build** the project and **
 - How to **build** your project
 - How to **flash them** to your FPGA
 
-## Checkoff
+You should be able to demo using the hardware exactly what you see in the simulator:  
 
-You should be able to demonstrate the following functionality of your automated tester in the **REAL** FPGA hardware:
+<img src="{{ site.baseurl }}/docs/Labs/images/IMG_1395.gif"  class="center_seventy no-invert"/>
+
+## Checkoff (2%)
+
+This checkoff is done as a group.
+
+{:.note}
+For checkoff, your **group** must show the automated tester working on the FPGA: it steps through multiple test cases automatically, shows correct values for a working adder, turns on the error indicator and **freezes on the failing case** when you inject an error, and cleanly restarts with a button press once the fault is removed.
+
+Details:
 1. The adder is driven automatically by a sequence of test vectors (no manual DIP changes needed during the demo).
 2. `io_led[0]` shows the current test case value `a`, `io_led[1]` shows the current test case  `b`, and `io_led[2]` shows the computed sum `s`.
 3. The tester steps through at least 8 different `(a, b)` pairs at a slow, human-visible rate (about 1 Hz).
 4. The `error` indicator LED remains **off** for all test cases when the adder is implemented correctly.
 5. If you intentionally break the adder (for example, force one bit of the sum to 0), the `error` LED turns **on** for at least one test case
-   1. Then, the tester should `HALT`
+   1. Then, the tester should `HALT` and show the current test case id (it can either be in decimal or binary format)
+   2. User can restart the tester and it should run as per normal again once forced error is removed
+
+## Summary
+
+In this lab, we move from ad-hoc testbenches to a **self-checking hardware tester** built using the classic **controller–datapath** structure. The datapath becomes a fixed circuit containing registers, the registered RCA, constant test-vector arrays, a pipelined expected sum, and a comparator. The controller becomes a small FSM that decides *when* data moves. This is the same architectural pattern we will use next week when we introduce a simple ISA and build the datapath of a toy CPU.
+
+The datapath holds test vectors (`A_INPUTS`, `B_INPUTS`, `SUMS`) and steps through them with an index register. Each pair flows through the registered RCA, the expected sum is delayed to match the adder’s latency, and the outputs are compared. We can flip bits deliberately to prove that the tester detects errors, and we expose the key signals on LEDs or seven-segment displays for easy observation.
+
+The FSM runs on the fast clock but only performs meaningful transitions on slow-clock edges. To support clean interaction, we debounce and synchronise button inputs with a `button_conditioner` and convert presses into one-cycle pulses using an `edge_detector`.
+A few key control responsibilities:
+
+* Reset or increment the test index.
+* Enable sampling of new `(a, b)` values and expected sum.
+* Decide when to halt on mismatch, and when to restart on a button press.
+
+
 
 ## Appendix
 
 ### Proposed Datapath
-<img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-datapath-lab4.drawio-3.png"  class="center_full"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-datapath-lab4.drawio-4.png"  class="center_full"/>
 
 ### Alchitry Edge Detector
 
@@ -1074,7 +1153,7 @@ With this implementation:
 
 * Suppose `in` was `0` at the last clock edge, and in the **middle** of the cycle it flips to `1`.
 * `last.q` is still `0` until the **next** rising edge.
-* As soon as `in` flips to 1, the condition `in == 1 && last.q == 0` becomes true, so `out` becomes ``` **immediately**, and stays `1` **until** the next rising edge, where `last.q` updates to `1` and makes the condition false.
+* As soon as `in` flips to 1, the condition `in == 1 && last.q == 0` becomes true, so `out` becomes `1` **immediately**, and stays `1` **until** the next rising edge, where `last.q` updates to `1` and makes the condition false.
 
 So physically:
 
