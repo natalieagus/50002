@@ -20,18 +20,26 @@ Singapore University of Technology and Design
 # Lab 5: Arithmetic Logic Unit
 {: .no_toc}
 
-## Starter Code
+### Objectives
+
+### Submission
+
+Complete Lab 5 **Checkoff** (2%) with your Cohort TA during 1D Checkoff 1. You will **ALSO** complete 1D Checkoff 1 (3%) at the same time. 
+- You should demonstrate the required task under the [Checkoff](#checkoff) section below. 
+- The checkoff is assessed **AS A GROUP** as it requires the FPGA hardware.
+
+Complete **questionnaire** on eDimension as well (2%).
+
+### Starter Code
 Please clone the starter code from this repository, then **open** it with Alchitry Lab V2. 
 
 ```
 git clone https://github.com/natalieagus/50002-lab-alu.git
 ```
 
-{: .important}
-You will complete 1D Checkoff 1 by completing this Lab. Do not forget to do the regular lab questionnaire **individually** as well.
 
 
-## Related Class Materials
+### Related Class Materials
 The lecture notes on [Logic Synthesis](https://natalieagus.github.io/50002/notes/logicsynthesis) and [Designing an Instruction Set](https://natalieagus.github.io/50002/notes/instructionset) are closely related to this lab. 
 
 Design 5 combinational ALU components: adder/subtractor, compare, boolean, shifter, and multiplier
@@ -43,16 +51,10 @@ Design 5 combinational ALU components: adder/subtractor, compare, boolean, shift
 
 This lab will deepen your understanding of building circuits to achieve specific logic functions. For instance, an adder circuit performs binary addition on inputs A and B. You'll also make it **programmable** using the `ALUFN` control signal.
 
-{: .warning}
-> You are <span style="color:red; font-weight: bold;">NOT</span> allowed to use **any** of Lucid's **math** and **comparison** operators when implementing this lab's ALU 13 functionalities. This is the requirement of your 1D project because we would like you to learn the basics and not solely rely on Vivado's capability on creating components of the ALU. Please [give the 1D project handout a read](https://natalieagus.notion.site/1D-Project-Part-2-Electronic-Hardware-Prototype-EHP-30-d2b68e992aca4020ad84020e7df002cb) for further information. 
-> 
-> Please follow the implementation of the units **from the given schematics in this lab**. For instance, you shouldn't implement shifts (SHL, SHR, SRA) trivially using `>>` and `<<`, and you should't implement ADD and SUB using `+` or `-`, etc. Instead you should create a ripple carry adder unit to implement ADD/SUB functionality, and create the shifter unit using multiplexers as shown in this handout. 
-> 
-> **Failure to comply will result in -2% of your overall grades**. However, you can use them for array indexing or checking conditions in loops. 
 
-## Introduction 
+## The Arithmetic Logic Unit (ALU) 
 
-In this lab, we will build a 32-bit **arithmetic and logic unit (ALU)** for the Beta processor. You <span style="color:#ff791a; font-weight: bold;">will</span> need this for your 1D Project Checkoff 1 **and** Lab 4 (Building the Beta). 
+In this lab, we will build a 32-bit **arithmetic and logic unit (ALU)** for the Beta processor using logic gate primitives. You <span style="color:#ff791a; font-weight: bold;">will</span> need this for your 1D Project Checkoff 1 **and** the following Lab (Beta CPU).
 
 {: .new-title}
 > Arithmetic Logic Unit (ALU)
@@ -81,9 +83,17 @@ The ALU can perform the following 13 arithmetic operations based on `ALUFN` sign
 
 <img src="/50002/assets/contentimage/lab3/21.png"  class="center_thirty"/>
 
-## Task 1: Adder Unit 
+## Implementation Requirement
 
-You implemented a simple adder in lab 2 by using Lucid's arithmetic operator `+`. You are <span class="orange-bold">NOT allowed</span> to do that here and in your 1D project. You need to solely build the components of the ALU using logic units. 
+{: .warning}
+> You are <span style="color:red; font-weight: bold;">NOT</span> allowed to use **any** of Lucid's **math** and **comparison** operators when implementing this lab's ALU 13 functionalities. This is the requirement of your 1D project because we would like you to learn the basics and not solely rely on Vivado's capability on creating components of the ALU. Please [give the 1D project handout a read](https://natalieagus.notion.site/1D-Project-Part-2-Electronic-Hardware-Prototype-EHP-30-d2b68e992aca4020ad84020e7df002cb) for further information. 
+> 
+> Please follow the implementation of the units **from the given schematics in this lab**. For instance, you shouldn't implement shifts (SHL, SHR, SRA) trivially using `>>` and `<<`, and you should't implement ADD and SUB using `+` or `-`, etc. Instead you should create a ripple carry adder unit to implement ADD/SUB functionality, and create the shifter unit using multiplexers as shown in this handout. 
+> 
+> **Failure to comply will result in -2% of your overall grades**. However, you can use them for array indexing or checking conditions in loops. 
+
+
+## Task 1: Adder Unit 
 
 Implement an **adder/subtractor** unit that can add or subtract 32-bit two’s complement (**SIGNED**) inputs (`A[31:0]`, `B[31:0]`). It should generate a 35-bit output: (`S[31:0]`) **and**`Z`, `V`, `N` signals.  `A[31:0]` and `B[31:0]` are the 32-bit two’s complement (SIGNED) **input** operands and `S[31:0]` is the 32-bit signed **output**. `Z/V/N` are the three **other output** code bits described below: 
 * `Z` which is true when the S outputs are all zero (i.e., `NOR(S) == 1 ? Z = 1 : Z = 0`)

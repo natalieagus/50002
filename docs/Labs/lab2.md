@@ -20,7 +20,7 @@ Singapore University of Technology and Design
 # Lab 2: Combinational Logic
 {: .no_toc}
 
-## Objectives
+### Objectives
 
 By the end of this lab, you should be able to:
 
@@ -44,7 +44,7 @@ There's no starter code for this lab. You simply need to have [Alchitry Labs V2]
 {:.important}
 Consult FPGA resources [listed here](https://natalieagus.github.io/50002/fpga/intro) before coming to the lab or after the lab to enhance your knowledge on FPGA programming in general. This will greatly accelerate the quality of your 1D & 2D project. 
 
-## Related Class Materials
+### Related Class Materials
 The lecture notes on **[logic synthesis](https://natalieagus.github.io/50002/notes/logicsynthesis)** and **[CMOS technology](https://natalieagus.github.io/50002/notes/cmos)** are closely related to this lab.
 
 

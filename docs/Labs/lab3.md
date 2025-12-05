@@ -21,7 +21,7 @@ Singapore University of Technology and Design
 {: .no_toc}
 
 
-## Objectives
+### Objectives
 
 By the end of this lab, you should be able to:
 
@@ -45,7 +45,7 @@ Complete **questionnaire** on eDimension as well (2%).
 There's no starter code for this lab. You simply need to have [Alchitry Labs V2](https://alchitry.com/alchitry-labs/) installed. You don't need Vivado for this lab, we are only going to run simulations. 
 
 
-## Related Class Materials
+### Related Class Materials
 The lecture notes on **[sequential logic](https://natalieagus.github.io/50002/notes/sequential_logic)** are closely related to this lab.
 
 

@@ -20,7 +20,7 @@ Singapore University of Technology and Design
 # Lab 4: Control Sequencing
 {: .no_toc}
 
-## Objectives
+### Objectives
 
 By the end of this lab, we should be able to:
 * Explain how an FSM acts as a **controller** that issues sequencing decisions to a datapath.
@@ -40,7 +40,7 @@ Complete **questionnaire** on eDimension as well (2%).
 There's no starter code for this lab. You simply need to have [Alchitry Labs V2](https://alchitry.com/alchitry-labs/) installed. You will also need **Vivado** for this lab. Refer to the [installation](https://natalieagus.github.io/50002/fpga/installation) guideline if you have not read them.
 
 
-## Related Class Materials
+### Related Class Materials
 The lecture notes on **[FSM](https://natalieagus.github.io/50002/notes/fsm)** and [Turing Machine](https://natalieagus.github.io/50002/notes/turingmachine)  are closely related to this lab.
 
 | Lecture notes topic                                                                            | Lab 4 part                                                                                                                                  |
