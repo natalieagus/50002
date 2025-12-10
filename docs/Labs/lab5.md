@@ -807,7 +807,7 @@ Test the `shifter.luc` module by making appropriate connections in `alu.luc` bef
 The multiplier unit performs a multiplication between 32-bit inputs `A` and `B` each, and produce a 32-bit output. 
 
 {: .note}
-**Multiplying two 32-bit numbers produces a 64-bit product** in practice, but the result we’re looking for is **just the low-order 32-bits of the 64-bit product.**
+Multiplying **two** 32-bit numbers produces a **64**-bit product. However, the result we’re looking for is **just the low-order 32-bits of the 64-bit product** since our hardware is built to only supports 32-bit outputs.
 
 ### 4-bit Multiplication Logic
 It's hard to imagine a 32-bit multiplier straight up, so let's scale down to a 4-bit version. 
