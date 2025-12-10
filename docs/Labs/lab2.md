@@ -448,8 +448,6 @@ Actually, "indexing" better described as **bit selection** and **bit-range selec
 * `data[7:3]` is a **part-select** or **bit-range selector**.
 * `data[7:0]` is a **bus declaration / range declaration**.
 
-
-
 {:.note}
 Calling bit selection “array indexing” might import the wrong mental model from software and leads to confusion. 
 However, you will often hear people loosely say “indexing” a signal, for example `data[3]` or `data[7:0]`. Technically, in HDL this is better thought of as **bit selection** rather than array indexing in the software sense. The number refers to the **significance and weight of a bit**, not its position in a list in memory. For clarity, you should mentally treat it as a **selector**, even if people casually call it an index.

@@ -706,7 +706,7 @@ Your must also be able to clearly explain the waveforms and notice the delays (2
 <img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-12-01 at 4.31.12 PM.gif"  class="center_seventy"/>
 
 
-### Declaring Test Vectors (Separate Arrays vs Bitpacked)
+### Declaring Test Vectors (Separate *Arrays* vs Bitpacked)
 
 There are two acceptable ways to store the test cases for the adder:
 
@@ -743,6 +743,13 @@ expected = TEST_VALUES[index][7:0]
 Each test case is stored as **one record**, so alignment errors are impossible. It is more elegant since it matches how real datapaths often store multiple fields in a single word. Slightly harder to read, but more compact and structurally robust.
 
 > In this lab, **both formats are acceptable**. Use separate arrays if you want clarity; use packed 24-bit records if you want a single self-contained entry per test case.
+
+{:.important-title}
+> Recall: array indexing is just bit selection
+>
+> In HDL, if you do `TEST_VALUES[0]`, you are doing *bit selection*. This means select the lowest "bit" or "unit". In this case, you will not get the first element you wrote in the definition of `TEST_VALUES`, but the last instead.
+>
+> For example, if we have `const TEST_VALUES = {24hAB, 24hBC}`, then `TEST_VALUES[0]` gives `24hBC` instead.
 
 ### Matching Latency in the Tester
 

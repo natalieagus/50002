@@ -1,7 +1,7 @@
 ---
 layout: default
 permalink: /lab/lab6
-title: Lab 6 - Beta Processor with FPGA 
+title: Lab 6 - Beta Processor
 description: Lab 6 handout covering topics from Beta Datapath
 parent: Labs
 nav_order:  8
@@ -20,23 +20,24 @@ Singapore University of Technology and Design
 # Lab 6: Beta Processor with FPGA
 {: .no_toc}
 
+### Objectives
 
-## Starter Code 
+By the end of this lab, you should be able to:
+
+### Submission
+Complete the Lab 4 **checkoff** (2%) with your Cohort TA before the next lab session ends. You should demonstrate the required task under the [Checkoff](#checkoff) section below. The checkoff is assessed **AS A GROUP** as it requires the FPGA hardware.
+
+Complete **questionnaire** on eDimension as well (2%).
+
+### Starter Code 
 
 Please clone the starter code from this repository, then **open** it with Alchitry Lab. 
 ```
-git clone https://github.com/natalieagus/50002-lab4-beta.git
+git clone https://github.com/natalieagus/50002-lab-beta.git
 ```
 
-Then, you shall **paste** the implementation of your 32-bit ALU unit created in Lab 3: ALU. Be sure to include **all** files required by your `alu.luc`.
+Then, you shall **paste** the implementation of your 32-bit ALU unit created in the ALU lab. Be sure to include **all** files required by `alu.luc`.
 
-### Checkoff & Questionnaire
-{: .important}
-Since there's only 1 FPGA per group, you need to work through this lab as a 1D group during class and **obtain checkoff** by the stipulated due date (consult course handout). Each person must still submit the lab questionnaire **individually** (see eDimension for due date).
-
-**Contact** your cohort TAs and make appointment to meet them in-person (outside of class hour). You will obtain checkoff marks as a group, but only 1 rep per group will do for the checkoff. There will be QnA as part of your checkoff criteria. Hence, it is up to you if you want to send more people for the checkoff.  
-
-You are <span style="color:#ff791a; font-weight: bold;">not required</span> to submit your code for this lab, only to show your implementation to your TA during checkoff. 
 
 ## Related Class Materials
 The lecture notes on [Building the Beta CPU](https://natalieagus.github.io/50002/notes/betacpu), and [Designing an Instruction Set](https://natalieagus.github.io/50002/notes/instructionset) are closely related to this lab. 
