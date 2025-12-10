@@ -1141,6 +1141,13 @@ You can reuse the automated fsm and datapath tester you built in the previous la
 
 <img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-12-09 at 11.04.15 AM.gif"  class="center_seventy no-invert"/>
 
+
+{:note-title}
+> Simulation tips
+>
+> Your simulator will lag terribly with such a large scale multiplier module. You may TEMPORARILY disable your multiplier unit and replace it with `a*b` so that your simulator that tests the ALU functionalities runs faster. Of course this should be done only after extensively testing your multiplier module as a standalone so you already know that your design works!
+
+
 ### Manual Test (Hardware)
 
 Once it works in simulator, do not forget to test in hardware as well. It should work the same as the simulator. Here's a simple recording testing the same functionalities as above:
