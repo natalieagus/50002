@@ -31,7 +31,7 @@ By the end of this lab, we should be able to:
 * Build an automated tester that increments test cases, samples inputs over multiple cycles, compares pipelined outputs, halts on mismatch, and restarts reliably via a button press.
 
 ### Submission
-Complete the Lab 4 **checkoff** (2%) with your Cohort TA before the next lab session ends. You should demonstrate the required task under the [Checkoff](#checkoff) section below. The checkoff is assessed **AS A GROUP** as it requires the FPGA hardware.
+Complete the Lab 4 **checkoff** (2%) with your Cohort TA before the next lab session ends. You should demonstrate the required task under the [Checkoff](#checkoff) section below. Unlike the previous labs, from this lab onwards, the checkoff is assessed **AS A GROUP** as it requires the FPGA hardware. 
 
 Complete **questionnaire** on eDimension as well (2%).
 
@@ -1036,12 +1036,14 @@ You should be able to demo using the hardware exactly what you see in the simula
 
 <img src="{{ site.baseurl }}/docs/Labs/images/IMG_1395.gif"  class="center_seventy no-invert"/>
 
-## Checkoff (2%)
+## Checkoff 
 
-This checkoff is done as a group.
+This checkoff (2%) is done as a group. 
+- It consists of hardware FPGA demo (1%) and QnA (1%). 
+- **Contact** your cohort TAs and make appointment to meet them **in-person** (outside of class hour). 
 
 {:.note}
-For checkoff, your **group** must show the automated tester working on the FPGA: it steps through multiple test cases automatically, shows correct values for a working adder, turns on the error indicator and **freezes on the failing case** when you inject an error, and cleanly restarts with a button press once the fault is removed.
+For checkoff, your **group** must show the automated tester working on the FPGA : it steps through multiple test cases automatically, shows correct values for a working adder, turns on the error indicator and **freezes on the failing case** when you inject an error, and cleanly restarts with a button press once the fault is removed.
 
 Details:
 1. The adder is driven automatically by a sequence of test vectors (no manual DIP changes needed during the demo).
@@ -1051,6 +1053,8 @@ Details:
 5. If you intentionally break the adder (for example, force one bit of the sum to 0), the `error` LED turns **on** for at least one test case
    1. Then, the tester should `HALT` and show the current test case id (it can either be in decimal or binary format)
    2. User can restart the tester and it should run as per normal again once forced error is removed
+6. TAs will ask you two questions (same protocol as lab 2) about any code written in your project
+
 
 ## Summary
 

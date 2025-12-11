@@ -24,8 +24,15 @@ Singapore University of Technology and Design
 
 By the end of this lab, you should be able to:
 
+* **Explain** how the Beta CPU interacts with instruction and data memory on the FPGA (ia, id, ma, mrd, mwd, wr).
+* Implement a PC unit that supports **sequential** execution, branches, jumps, reset, exceptions (ILLOP) and interrupts, while preserving the supervisor bit semantics.
+* Implement a 32×32 register file with **special** handling for R31, RA2SEL and WASEL multiplexers, and Z flag generation.
+* Implement a **ROM based control unit** that maps Beta opcodes to control signals, including branch decision logic for BEQ/BNE and IRQ handling.
+* **Integrate** the PC, REGFILE, CONTROL, ALU and memory units into a fully working 32 bit Beta CPU in Lucid, and test it using both **simulation** and **on board FPGA** debug outputs.
+
+
 ### Submission
-Complete the Lab 4 **checkoff** (2%) with your Cohort TA before the next lab session ends. You should demonstrate the required task under the [Checkoff](#checkoff) section below. The checkoff is assessed **AS A GROUP** as it requires the FPGA hardware.
+Complete the lab 6 **checkoff** (2%) with your Cohort TA before the next lab session ends. You should demonstrate the required task under the [Checkoff](#checkoff) section below. The checkoff is assessed **AS A GROUP** as it requires the FPGA hardware.
 
 Complete **questionnaire** on eDimension as well (2%).
 
@@ -36,28 +43,26 @@ Please clone the starter code from this repository, then **open** it with Alchit
 git clone https://github.com/natalieagus/50002-lab-beta.git
 ```
 
-Then, you shall **paste** the implementation of your 32-bit ALU unit created in the ALU lab. Be sure to include **all** files required by `alu.luc`.
+Then, you shall **paste** the implementation of your 32-bit ALU unit created in the previous lab. Be sure to include **all** files required by `alu.luc`.
 
 
 ## Related Class Materials
-The lecture notes on [Building the Beta CPU](https://natalieagus.github.io/50002/notes/betacpu), and [Designing an Instruction Set](https://natalieagus.github.io/50002/notes/instructionset) are closely related to this lab. 
+The lecture notes on [Designing an Instruction Set](https://natalieagus.github.io/50002/notes/instructionset), [Building the Beta CPU](https://natalieagus.github.io/50002/notes/betacpu), and [Beta CPU Diagnostics: Interrupt Handling](https://natalieagus.github.io/50002/notes/betadiagnostics#interrupt-handling) are closely related to this lab.
 
-This lab will reinforce your understanding on how the Beta CPU works, and all data paths for OP, OPC, Control Transfer, and Memory Access operations. 
-
-Related sections in [Designing an Instruction Set](https://natalieagus.github.io/50002/notes/instructionset):	
-* [The Von Neumann model](https://natalieagus.github.io/50002/notes/instructionset#the-von-neumann-model): CPU, Memory, IO
-* [Programmability of a Von Neumann Machine](https://natalieagus.github.io/50002/notes/instructionset#programmability-of-a-von-neumann-machine): basics of programmable control systems (using control signals like `OPCODE` to activate different data paths in the Beta CPU). 
-* [Beta ISA Format](https://natalieagus.github.io/50002/notes/instructionset#beta-isa-format)
-* [Beta Instruction Encoding](https://natalieagus.github.io/50002/notes/instructionset#beta-instruction-encoding)
-
-
-Related sections in [Beta CPU](https://natalieagus.github.io/50002/notes/betacpu):	
-* [OP datapath](https://natalieagus.github.io/50002/notes/betacpu#op-datapath)
-* [OPC datapath](https://natalieagus.github.io/50002/notes/betacpu#opc-datapath)
-* [Memory Access datapath](https://natalieagus.github.io/50002/notes/betacpu#memory-access-datapath)
-* [Control transfer datapath](https://natalieagus.github.io/50002/notes/betacpu#control-transfer-datapath)
-* [Interrupt handling](https://natalieagus.github.io/50002/notes/betadiagnostics#interrupt-handling)
-* By the end of this lab, you should know how to build the schematic of the entire Beta CPU based on its [ISA](https://natalieagus.github.io/50002/notes/instructionset#the-beta-instruction-set-architecture) (blueprint). This lab will also help you to familiarise yourselves with core Beta instructions
+| Lecture notes topic | Lab 6 part |
+| --- | --- |
+| **The Von Neumann model: CPU, Memory, IO** (Designing an Instruction Set) | Motivates the separation of the **Beta CPU** and the **Memory Unit** in this lab, explains why the PC supplies `ia` and how `id`, `ma`, `mrd`, `mwd` and `wr` implement the CPU-memory interface. |
+| **Programmability of a Von Neumann Machine**:  control signals and OPCODE (Designing an Instruction Set) | Connects directly to the **CONTROL unit** ROM: decoding `OPCODE[31:26]` to generate control signals (`PCSEL`, `RA2SEL`, `ASEL`, `BSEL`, `WASEL`, `WDSEL`, `WERF`, `WR`) that re-program the datapath without changing hardware. |
+| **Beta ISA format & instruction encoding** (Designing an Instruction Set) | Used when wiring the **REGFILE** and **CONTROL unit** to the instruction word `id[31:0]`: extracting `Ra`, `Rb`, `Rc`, immediate fields, and ensuring your ROM entries and mux inputs line up with the ISA bit positions. |
+| **Program Counter and Physical Memory Unit** (Building the Beta CPU) | Mirrors **Part A: PC Unit** and **Memory Unit**: computing `PC+4`, branch targets, enforcing word-aligned addresses by forcing low 2 bits to `00`, and routing `ia` and `ma` to the instruction/data memories. |
+| **Register Files** (Building the Beta CPU) | Matches **Part B: REGFILE Unit**: 32×32 register file, three ports, special handling of `R31`, write-enable behaviour, and using `RA2SEL`/`WASEL` to steer read/write addresses, plus the Z flag logic from `reg_data_1`. |
+| **Control Logic Unit & control table** (Building the Beta CPU) | Underpins **Part C: CONTROL Unit**: implementing the ROM truth table, then post-processing `PCSEL`, `WERF`, `WDSEL`, `WR`, and `WASEL` for branches, stores, reset and interrupts based on `Z`, `ia31`, and `IRQ`. |
+| **OP and OPC datapaths** (Building the Beta CPU) | Corresponds to the **ALU + WDSEL unit** and part of **beta_cpu.luc**: wiring ALU inputs via `ASEL` and `BSEL`, handling register–register vs immediate operations, and making sure ALUFN selects the right ALU sub-unit. |
+| **Memory Access datapath (LD, LDR, ST)** (Building the Beta CPU) | Ties to the **Data Memory** behaviour and `ma`, `mrd`, `mwd`, `wr` connections: computing effective address in the ALU, using `WDSEL` to feed loads back into the REGFILE, and driving stores from `RD2` to memory. |
+| **Control transfer datapath (BEQ, BNE, JMP)** (Building the Beta CPU) | Matches **PCSEL logic** in both `pc_unit.luc` and `control_unit.luc`: branch target computation (`PC+4+4·SXT(C)`), branch decision using `Z`, and `JMP` behaviour including supervisor-bit rules on `JT`. |
+| **Supervisor / kernel address space (0x80000000, ILLOP, XAddr)** (Building the Beta CPU) | Directly related to **RESET and supervisor bit handling** in the PC unit: forcing PC to `0x80000000`, mapping ILLOP to `0x80000004` and IRQ to `0x80000008`, and preserving/clearing `PC31` as specified. |
+| **Sampling the IRQ signal** (Beta CPU Diagnostics: Interrupt Handling) | Explains the role of the **`irq_sampler` dff** and why interrupts are sampled with `clk`/`slowclk` at instruction boundaries, matching the lab’s requirement that interrupts only take effect at the start of an instruction cycle. |
+| **Async vs sync interrupts & control signals for interrupts** (Beta CPU Diagnostics: Interrupt Handling) | Lines up with **IRQ handling logic** in `control_unit.luc`: when `IRQ` is asserted in user mode, forcing `PCSEL=100`, `WASEL=1`, `WERF=1`, `WDSEL=00`, `WR=0`, and saving `PC+4` into `XP` so execution can resume after the handler. |
 
 ## Introduction
 The goal of this lab is to build a **fully** functional 32-bit Beta Processor on our FPGA so that it could simulate simple programs written in Beta Assembly Language. It is a huge device, and to make it more bearable we shall modularise it into four major components:
@@ -91,7 +96,7 @@ The schematic of the memory unit is as follows:
 ### Instruction Memory
 The instruction memory is implemented using the `simple_ram.v` component.
 - `read_data` port of the `simple_ram` will output the value of the entry pointed by `raddr` in the <span style="color:red; font-weight: bold;">previous</span> clock cycle. If you want to read address `EA`, you shall set `raddr = EA` and then wait for one FPGA clock cycle for `Mem[EA]` to show up. 
-- If you read and write to the **same** address, you will get the value of the old output at `read_data` in the second clock cycle, and on the third clock cycle, the newly updated value will be produced at `read_data`.  
+- If you read and write to the **same** address, you will get the value of the old output at `read_data` in the second clock cycle, and on the third clock cycle, the newly updated value will be produced at `read_data`.
 
 
 The input to the instruction memory supplied by the Beta is: **instruction address** (`ia[31:0]`). This contains the address of the next instruction to be executed. This will cause the instruction memory to output **instruction data** (`id[31:0]`) for the Beta CPU. Since we never need to **write** to this instruction memory *during program execution*, we implement it as a **single port ram** (only read *or* write can be done one at a time in one `clk` cycle)
@@ -152,6 +157,13 @@ Given memory capacity of `WORDS`, we need to take `log2` of it to find the minim
 {: .note}
 Note that we can declare our `simple_ram` with `#SIZE(4), #DEPTH(WORDS*4)` if we want it to strictly be byte addressable, but we will need additional logics to extract 4 bytes at a type. 
 
+### Simulation
+
+Note that the simulator is unable to simulate and create testbench `.v` (verilog)  files, only Lucid files. Since the Memory Unit utilises `simple_ram` implemented in Verilog, you will not be able to see the output of the simulation properly. The LEDs turn <span class="red-bold">red</span> because it doesn't know what values to display (neither of valid voltage values):
+
+<img src="{{ site.baseurl }}//docs/Labs/images/lab6/2025-12-11-15-38-32.png"  class="center_seventy no-invert"/>
+
+You can write test benches to test individual parts of your Beta CPU (except the memory unit), and test directly on hardware (build and flash). You can test using Vivado too but it is not recommended as it has a very steep learning curve.
 
 
 ## Part A: PC Unit
@@ -297,7 +309,11 @@ old PC31 (ia31) | JT31 (ra31) | new PC31
 {: .higlight}
 > You have implemented quite a fair bit of answers to complete `pc_unit.luc`. Which part(s) protects the supervisor bit?
 
+### Testbench
 
+Successful testbench run in `test_pc_unit` yields:
+
+ <img src="{{ site.baseurl }}//docs/Labs/images/lab6/2025-12-11-15-48-32.png"  class="center_seventy no-invert"/>
 
 ## Part B: REGFILE Unit
 ### REGFILE Unit Schematic
@@ -362,7 +378,11 @@ Finally, we need to connect the output of the `RD2` port of the register file me
 {: .highlight}
 Implement `Task 9` section inside `regfile_unit.luc` that connects `mwd` with `regfile.reg_data_2`.
 
+### Testbench
 
+Successful testbench run in `test_regfile_unit.luc` yields:
+
+<img src="{{ site.baseurl }}//docs/Labs/images/lab6/2025-12-11-16-40-09.png"  class="center_seventy"/>
 
 ## Part C: CONTROL Unit
 ### CONTROL Unit Schematic
@@ -453,6 +473,11 @@ Implement `IRQ handling` section inside `control_unit.luc`.
 
 Note that the snippet above is located near the end of the `always` block because it shall **overwrite** the current instructions' control signals defined earlier above. 
 
+### Testbench
+
+Successful testbench run in `test_control_unit.luc` yields:
+
+ <img src="{{ site.baseurl }}//docs/Labs/images/lab6/2025-12-11-15-49-55.png"  class="center_seventy no-invert"/>
 
 
 
@@ -539,6 +564,12 @@ Paste the debug code below under `debug signals` section in `beta_cpu.luc`.
 
 You may change it to suit your use case if you wish. 
 
+### Testbench
+
+Successful testbench run in `test_beta_cpu.luc` yields:
+
+<img src="{{ site.baseurl }}//docs/Labs/images/lab6/2025-12-11-16-41-22.png"  class="center_seventy no-invert"/>
+
 ## Compile and Run
 Congratulations! 🎉 
 
@@ -615,7 +646,8 @@ Finally, observe that the last 16 bits of `pcsel_out` (the next PC value) still 
 Now we need to test it by giving it a simple starter code (well, should've tested each and every component up above, but we don't have enough time in class). 
 
 {: .highlight}
-Paste the following simple driver code inside `instruction_rom.luc`, under `const INSTRUCTIONS`, replacing the existing instruction. You will <span className="orange-bold">need this for your Checkoff</span> for this lab.  
+You can use the following simple driver code inside `instruction_rom.luc`, under `const INSTRUCTIONS`, replacing the existing instruction. This is a good sanity check before you design your own test program for the checkoff.
+
 
 ```verilog
     32h7BE3FFFB, // 0x010 BNE(R3, main, R31) 
@@ -690,16 +722,30 @@ Create a new constraint file (you can name it anything) and paste the content of
 <span class="orange-bold">But remember: the onboard clock is still 100 MHz</span>. You must manually slow your logic (e.g., FSM or output updates in Beta Manual Tester) to match this by adding delay logic (like a clock divider). For example: delay each FSM state by 10 times using a counter, so your effective FSM cycle is 1 per microsecond instead of 1 per 10 ns. [Consult this handout for details](https://natalieagus.github.io/50002/fpga/fpga_8_2024#delay-your-fsm-transition). 
 
 
-## In-Person Checkoff
 
-As stated in the beginning of this document, you need to complete all the above tasks and demonstrate a working Beta CPU using **your own test instruction**. **Contact** your cohort TAs and make appointment to meet them **in-person** (outside of class hour). Only 1 rep per group will do for the checkoff, but there will be QnA. Hence, it is up to you if you want to send more people for the checkoff.  
+## Checkoff
 
-{: .new-title}
-> Checkoff 
->
-> You need to demonstrate that your Beta runs properly on the FPGA to our TA by the stipulated due date (consult course handout). To do this, you are to **design** a short test code in Beta Assembly (**max** 10 lines). Your code must contain at least a `BNE/BEQ`, `JMP`, `OP`, `OPC`, `LD/LDR` and `ST` instruction each. 
+This checkoff (2%) is done as a group. 
+- It consists of hardware FPGA demo (1%) and QnA (1%). 
+- **Contact** your cohort TAs and make appointment to meet them **in-person** (outside of class hour). 
 
-Neatly document your test instruction in `instruction_rom.luc` to facilitate a smoother checkoff process.
+{:.note}
+For checkoff, your **group** must show a working Beta CPU on the FPGA with your own test code (1%) and be able to answer QnA (1%)
+
+Details:
+1. **Design** a short test code in Beta Assembly (**max** 10 lines)
+2. Your code must contain at least:
+   - one branch instruction (`BNE` or `BEQ`),
+   - one `JMP`,
+   - one `OP`,
+   - one `OPC`,
+   - one load instruction (`LD` or `LDR`), and
+   - one `ST`
+3. Neatly document your test instruction in `instruction_rom.luc` to facilitate a smoother checkoff process.
+4. TAs will ask you two questions (same protocol as lab 2) about any code you write in the project
+
+
+
 
 
 

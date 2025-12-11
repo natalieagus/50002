@@ -34,7 +34,7 @@ By the end of this lab, you should be able to:
 8. Interpret `if` and `case` in Lucid as specifications of combinational selection logic, and relate them directly to muxes, decoders, and enable signals.
 
 ### Submission
-Complete the Lab 2 **checkoff** (1%) with your Cohort TA before the next lab session ends. The checkoff is assessed **individually**, but you should attend together with your **project team** so that everyone in the group understands the full workflow and expectations for the 1D project.
+Complete the Lab 2 [**checkoff**](#checkoff) (1%) with your Cohort TA before the next lab session ends. The checkoff is assessed **individually**, but you should attend together with your **project team** so that everyone in the group understands the full workflow and expectations for the 1D project.
 
 Complete **questionnaire** on eDimension as well (2%).
 
@@ -917,21 +917,25 @@ In **Lucid**, you index signals of a module array, so you must write `module_nam
 In **Verilog/SystemVerilog**, you index the module instances themselves, so you can write `module_name[index].port`.
 
 
-## Checkoff (1%)
+## Checkoff 
 
-Demonstrate to your TA that your 4-bit RCA, 4-to-1 MUX, and 2-to-4 Decoder works.
+### Demo on Simulator (1%)
+
+Demonstrate to your TA that your 4-bit RCA, 4-to-1 MUX, and 2-to-4 Decoder works on the simulator.
 
 You can choose to use any LEDs/switches on the IO Shield.
+
+### QnA Protocol
 
 During the checkoff, the TA will ask **at most two questions** about the code that you personally wrote. You have **one attempt per question**.
 
 * If you answer the first question correctly, no second question will be asked.
 * If you answer the first question incorrectly, you will be given exactly **one more question**.
 
-Grading is therefore **binary**: 1% if you answer at least one correctly, 0% if you answer both incorrectly.
+Grading is therefore **binary**: 1% if you answer at least one correctly, 0% if you answer both incorrectly. This applies to ALL checkoffs in the future labs as well.
 
 {:.highlight}
-**Schedule** a checkoff with your TA anytime before the end of next week's lab as a 1D group. The checkoff is graded **individually** but to aid logistics and to ensure everyone in the group is on the same page, you are required to attend the checkoff together as a 1D group.
+**Schedule** a checkoff with your TA anytime before the end of next week's lab as a 1D group. The checkoff is graded **individually** but to aid logistics and to ensure everyone in the group is on the same page, you are **required** to **attend** the checkoff together as a 1D group. It will take about 15 minutes in total for the whole group to clear a checkoff on average.
 
 ## Summary
 

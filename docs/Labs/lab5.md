@@ -49,7 +49,7 @@ Marks breakdown:
 - **1D Project Checkoff 1: ALU (3%): group**
   - Show a working **manual** and **automated** ALU tester on the **FPGA hardware**.
 
-Unless otherwise stated, ALU checkoff marks are awarded per 1D project group, not per individual. All team members should attend the checkoff slot.
+Unless otherwise stated, ALU checkoff marks are awarded per 1D project group, not per individual. ALL team members should attend the checkoff slot.
 
 ### Starter Code
 Please clone the starter code from this repository, then **open** it with Alchitry Lab V2. 
@@ -57,7 +57,6 @@ Please clone the starter code from this repository, then **open** it with Alchit
 ```
 git clone https://github.com/natalieagus/50002-lab-alu.git
 ```
-
 
 
 ### Related Class Materials
@@ -1172,25 +1171,30 @@ Carefully **consult Checkoff 1: ALU** schedule, requirements and rubrics given i
 
 ## Checkoff
 
-As a recap, to get full marks for this lab and **1D Project Checkoff 1: ALU** you must complete:
+### Checkoff Schedule
+Consult course handout for 1D Project Checkoff 1 schedule. We will also do Lab 5 checkoff at the same time
+
+### Details
+As a recap, to get full marks for this lab and **1D Project Checkoff 1: ALU** you must complete the following:
 
 - **Lab 5 implementation checkoff (2%)**
-  - Your ALU must pass a comprehensive **automated testbench** (you may use the provided testbenches or your own, but they must cover all 13 ALU operations).
-  - You must have a working **manual** and **automated** ALU tester in the **SIMULATOR**.
+  - (0.5%) Your ALU must pass a comprehensive **automated testbench** (you may use the provided testbenches or your own, but they must cover all 13 ALU operations).
+  - (0.5%) You must have a working **manual** and **automated** ALU tester in the **SIMULATOR**.
+  - (1%) Instructors/TAs will ask you two questions (same protocol as lab 2) about any code you write in the project
 
 - **Lab 5 questionnaire (2%)**
-  - Complete the short Lab 5 questionnaire on **eDimension**.
+  - Complete the Lab 5 questionnaire on **eDimension**.
 
 - **1D Project Checkoff 1: ALU (3%)**
   - The **same** ALU must have a working **manual** and **automated** tester on the **FPGA HARDWARE**.
 
-Unless otherwise specified, all ALU checkoff marks (2% lab implementation + 3% 1D ALU) are awarded **per 1D project group**. The eDimension questionnaire is graded per individual.
 
+Unless otherwise specified, all ALU checkoff marks (2% lab implementation + 3% 1D ALU) are awarded **per 1D project group**. The eDimension questionnaire is graded per individual.
 
 {:.important}
 [Give the 1D handout a read](https://natalieagus.notion.site/50-002-1D-Project-Electronic-Hardware-Prototype-EHP-30-d2b68e992aca4020ad84020e7df002cb) before Checkoffs to ensure that you don't miss any information or requirements. 
 
-**For your Checkoff 1**: ALU, you're also required to create **additional** functionalities. You **are allowed** to use Lucid math and comparison operator for this **NEW** functionality. For example, if your new operation involves `ROTATE_SHIFT` between A and B, you're allowed to implement it as follows:
+**For 1D Checkoff 1**: ALU, you're ALSO required to create **additional** functionalities. You **are allowed** to use Lucid math and comparison operator for this **NEW** functionality. For example, if your new operation involves `ROTATE_SHIFT` between A and B, you're allowed to implement it as follows:
 
 
 ```verilog

@@ -697,7 +697,9 @@ The `repeat` loop also runs sequentially, just like a regular `for` loop. This e
 <img src="{{ site.baseurl }}//docs/Labs/images/lab3/2025-12-02-09-09-59.png"  class="center_seventy no-invert"/>
 
 
-## Checkoff: Testbench for Registered Adder (2%)
+## Checkoff
+
+### Testbench for Registered Adder (2%)
 
 Write a testbench to test the functionality of your **registered adder**. Your test case should have an automatic `$assert` as well as printouts for easy access. The waveform should clearly show what happens within the module. For instance, here's a demo. 
 
@@ -839,7 +841,7 @@ You should show your registered adder testbench design to the TA and run it in A
 3. (1%) TAs will ask you two questions (same protocol as lab 2) about the waveforms, ensure that you understand how the waveform works
 
 {:.highlight}
-**Schedule** a checkoff with your TA anytime before the end of next week's lab as a 1D group. The checkoff is graded **individually** but to aid logistics and to ensure everyone in the group is on the same page, you are required to attend the checkoff together as a 1D group.
+**Schedule** a checkoff with your TA anytime before the end of next week's lab as a 1D group. The checkoff is graded **individually** but to aid logistics and to ensure everyone in the group is on the same page, you are required to attend the checkoff together as a 1D group. It will take about 15 minutes in total for the whole group to clear a checkoff on average.
 
 ## Summary
 
