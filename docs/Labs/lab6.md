@@ -566,6 +566,15 @@ You have made a working Beta CPU. Please take your time to understand how each c
 ## Observed Output
 
 ###  Initial State
+
+If you didn't change `instruction_rom.luc`, your beta is now running a single instruction, which is a branch to itself.
+
+```verilog
+    const INSTRUCTIONS = {
+        32h77FFFFFF // 0x000 BEQ(R31, 0, R31) 
+    }
+```
+
 Upon flash to the FPGA, with **ALL** switches down, you should see the following. 
 
 {: .highlight}
