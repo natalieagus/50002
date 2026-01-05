@@ -1,16 +1,17 @@
 ---
 layout: default
-permalink: /fpga/project-sample
-title: 50.002 Project Sample
-parent: 1D&2D Project (FPGA)
-nav_order:  3
+permalink: /project/1d/project-sample
+title: 50.002 Sample Project
+parent: 50.002 1D Project 
+grand_parent: 1D&2D Project (Details)
+nav_order:  8
 ---
 
 * TOC
 {:toc}
 
 
-# 50.002 Project Sample
+# 50.002 Sample 1D&2D Project
 {: .no_toc}
 
 {:.note}
