@@ -7,6 +7,10 @@ grand_parent: 1D&2D Project (Details)
 nav_order: 2
 ---
 
+* TOC
+{:toc}
+
+
 # Checkoff 2: Datapath (5%)
 {: .no_toc}
 
@@ -59,7 +63,7 @@ Missing your slot will result in **zero marks**, we will not provide a make-up s
 
 ## Rubric
 
-| Criteria | Weight | Not Present | Novice (20%) | Beginner (40%) | Intermediate (60%) | Proficient (80%) | Expert (100%) |
+| Criteria | Weight | Not Present | Minimal (20%) | Basic (40%) | Intermediate (60%) | Advanced (80%) | Exemplary (100%) |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | Electronic Design Datapath | 40%  | Diagram not present  | No structural design and not modular. No usage of ALU in the functionality | Able to show the rough design of the circuit and utilise the ALU, but datapath is not modular (e.g: ALU is used directly by FSM and treated as a substitute for arithmetic operation) | Datapath is modular: control signals are used to activate parts of the circuit, put a lot of thoughts in utilising the ALU for >80% arithmetic operations | Intermediate **and** there exist usage of addressable REGFILES, clear path for reset and loading of data from user input. | Proficient **and** able to show clear datapath to produce output signals to the interface. For instance: have a clear idea which `dff` (in the REGFILE) or `bram` used to which value /  signals.  |
 | User Interface | 10%  | Description not present | User interface is only verbally explained with no diagram provided, no sense of “how big” or “how small” the prototype is | User interface is functional, but with difficult access to input or output, e.g: it has a big 30x30cm enclosure but uses a small 4-digit 7 segment as main display | User interface is functional and suits the game design | Intermediate **and** there exist some thoughts of removing impediments (restart button present, buttons are big enough) | Elegant design of the user interface, e.g: simple input and output, very straightforward or suits the game design: **consistent**, visibility without clutter |

@@ -61,7 +61,7 @@ We will also justify your budget during this checkoff. We do not want any pay-to
 
 ## Rubric
 
-| Criteria | Weight | Not Present | Novice (20%) | Beginner (40%) | Intermediate (60%) | Proficient (80%) | Expert (100%) |
+| Criteria | Weight | Not Present | Minimal (20%) | Basic (40%) | Intermediate (60%) | Advanced (80%) | Exemplary (100%) |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | ALU Utilisation | 10% | ALU is not utilised in the game at all **This will trigger a 0% grade in the project**. 
    | Only 1 basic ALU function is used in the game,but with direct access to its output and not utilising proper datapath (treated like standard arithmetic operation).  | Novice **and** 2 basic  ALU functions are utilised | Beginner **and** majority of the operation is used in ALU, about 50-60%. Datapath uses some arithmetic when it could be used by ALU.  | ALU is utilised for at least 80% of arithmetic-related operations.  | Proficient & ALL operations that can be done using the ALU is utilised by the FSM. A*dditional **ALU functionality*** presented in Checkoff 1 are utilised in the game |
