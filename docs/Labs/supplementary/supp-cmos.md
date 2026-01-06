@@ -57,7 +57,7 @@ The lecture notes on [Digital Abstraction](https://natalieagus.github.io/50002/n
 
 
 ## Measuring Timing Specifications of a Gate
-In the last lab, we tried to vary the MOSFET's width and length to try to **center** the resulting logic gate (made of those MOSFETs) VTC and optimise the noise margin. Remember that VTC's steepness and graph characteristics (how centered it is, gradient, etc), does <span class="orange-bold">not directly</span> imply the **speed** of getting a particular output Vout.
+In Digital Abstraction supplementary lab, we tried to vary the MOSFET's width and length to try to **center** the resulting logic gate (made of those MOSFETs) VTC and optimise the noise margin. Remember that VTC's steepness and graph characteristics (how centered it is, gradient, etc), does <span class="orange-bold">not directly</span> imply the **speed** of getting a particular output Vout.
 
 {:.important}
 The **shape**, **steepness**, and **centeredness** of the VTC <span class="orange-bold">do not directly indicate the switching speed</span>, including propagation delay (tpd) and contamination delay (tcd), of the gate. These characteristics reflect the **static** response of the gate, while the speed of obtaining a valid output from a valid input is determined by **dynamic** factors such as capacitance, drive strength, load, and supply voltage.

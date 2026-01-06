@@ -3,7 +3,8 @@ layout: default
 permalink: /lab/supp-asm
 title: Assembly Language
 description: Lab handout covering topics from Stack and Procedure
-parent: Labs
+grand_parent: Labs
+parent: Supplementary
 nav_order: 12
 ---
 

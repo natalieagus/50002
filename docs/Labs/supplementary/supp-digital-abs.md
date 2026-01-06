@@ -3,7 +3,8 @@ layout: default
 permalink: /lab/supp-digital-abs
 title: Digital Abstraction (JSIM)
 description: Lab handout covering topics from Digital Abstraction,
-parent: Labs
+grand_parent: Labs
+parent: Supplementary
 nav_order:  9
 ---
 

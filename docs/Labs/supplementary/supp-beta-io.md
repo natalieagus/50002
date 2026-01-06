@@ -3,7 +3,8 @@ layout: default
 permalink: /lab/supp-beta-io
 title: Beta Processor IO 
 description: Lab handout covering topics from Beta Datapath
-parent: Labs
+grand_parent: Labs
+parent: Supplementary
 nav_order:  11
 ---
 
