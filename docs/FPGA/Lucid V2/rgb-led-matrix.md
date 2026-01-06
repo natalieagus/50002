@@ -1,6 +1,6 @@
 ---
 layout: default
-permalink: /fpga/fpga_7_2024
+permalink: /fpga/hub75
 title: RGB LED Matrix (HUB 75) 
 description: Tips on how to use instructor's drivers 
 parent: Lucid V2

@@ -520,7 +520,7 @@ It is likely that you have violated timing constraints if the code works on simu
 
 You need to first ensure that your game logic is solid on **both** hardware (io top) and simulation. Once you have done this, you might realise that your display matrix did not display what you wanted. The issue might either be in your hardware or your driver. 
 
-First, check that your matrix works using instructor's driver demo ([WS2812B](https://natalieagus.github.io/50002/fpga/fpga_6_2024) or [HUB75](https://natalieagus.github.io/50002/fpga/fpga_7_2024) style matrix). The code should work **as-is** without any modification. 
+First, check that your matrix works using instructor's driver demo ([WS2812B](https://natalieagus.github.io/50002/fpga/ws2812b) or [HUB75](https://natalieagus.github.io/50002/fpga/hub75) style matrix). The code should work **as-is** without any modification. 
 
 If it does not work, then **check your connection**, or it is likely that your hardware has spoiled. You might need to purchase a backup hardware. 
 

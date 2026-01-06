@@ -29,7 +29,7 @@ Consult the [rubric](#rubric) for more details.
 {:.note-title}
 > Instructor's Sample
 > 
-> You are strongly recommended to see Instructor sample game datapath and FSM [here](/project/1d/project-sample) before beginning this task. This instructor sample warrants 100% of Checkoff 2 marks.
+> You are strongly recommended to see Instructor sample game datapath and FSM [here]({{ site.baseurl }}/project/1d/project-sample) before beginning this task. This instructor sample warrants 100% of Checkoff 2 marks.
 
 
 ## Submission
