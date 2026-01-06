@@ -10,7 +10,6 @@ nav_order: 2
 * TOC
 {:toc}
 
-
 # Checkoff 2: Datapath (5%)
 {: .no_toc}
 

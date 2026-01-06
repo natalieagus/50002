@@ -22,13 +22,13 @@ Optimizing data structures within the realm of FPGA-based game development, part
 Here are some suggested  approaches to consider. You are free to come up with your own. 
 
 
-### **Custom Data Structures for Game Logic**
+### Custom Data Structures for Game Logic
 
 Tailor your data structures specifically for the game’s logic. For instance, if the game involves grid-based movements or operations, a well-optimized grid data structure can be more effective than a standard list or array.
 
 If your game uses large data sets (like maps or complex game states), consider **data encoding and compression** techniques to reduce the size of these data structures.
 
-### **Simplify Circuit Design**
+### Simplify Circuit Design
 
 Aim to simplify the circuit design without compromising functionality. This might involve **minimizing** the number of components, using **multi-function components**, or redesigning the circuit for more **efficient logic**.
 
@@ -64,7 +64,7 @@ out = |((A ^ B) | (B ^ C) | (A ^ C))
 ```
 
 
-### **State Machine Efficiency**
+### State Machine Efficiency
 
 You might utilise state machines for control logic. Ensure that state transitions are **efficient**, possibly by reducing the complexity of the data involved in each state. 
 

@@ -19,7 +19,7 @@ This is largely related to OBJECTIVE 2.
 
 To apply gameplay enhancement to the electronic game being implemented on an FPGA (Field-Programmable Gate Array) for the 1D project, you can consider several strategies that align with the constraints and capabilities of FPGA technology. They mainly revolve around how well you can integrate your prototype hardware with your game design, that is how well you present your game in such a way that is enjoyable to use and play. Note that this may be subjective, and can commonly be seen by how much audience enjoys the prototype
 
-### Upgrade **Game Complexity and Logic**
+### Upgrade Game Complexity and Logic
 
 One of the simpler steps to take is by enhancing your game with the addition of more sophisticated game rules or algorithms, with the purpose of making the game challenging and engaging (and not just to make it trivially different from existing game idea). For example, introduce new levels with increased difficulty, add puzzles or logic challenges that require players to think **critically**.
 
@@ -43,7 +43,7 @@ To enhance this basic "Whac-A-Mole" concept for implementation on an FPGA using 
 5. **Scoring System with Multipliers**: Develop a scoring system where consecutive successful hits increase a point multiplier, encouraging accuracy and consistency.
 6. **Random 'Bonus' LEDs**: Occasionally, light up a special LED that offers extra points or additional game time when hit correctly.
 
-### **Real-Time Response and Feedback**
+### Real-Time Response and Feedback
 
 You can also improve real-time interactions in the game. This can include **faster response** to user inputs, **smoother** animations, and **immediate** feedback to actions, making the game feel more interactive and lively.
 
@@ -55,7 +55,7 @@ In the case of a “Whack-A-Mole” example above:
 4. **Score and Time Display**: Implement a real-time scoring and timer system using LEDs and/or 7 segments.
 
 
-### **Multiplayer Features**
+### Multiplayer Features
 
 This can be in the form of **cooperative** play, where players work together to achieve a common goal, or **competitive** play, where players compete against each other. This can be a **significant enhancement**, as it adds a social aspect to the game. Think about the set of inputs that are required for each player: such as whether they need to take turn, or do you have another set of buttons for the other player(s). 
 
