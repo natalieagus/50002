@@ -7,6 +7,9 @@ grand_parent: 1D&2D Project (Details)
 nav_order: 1
 ---
 
+* TOC
+{:toc}
+
 # Checkoff 1: ALU (3%)
 {: .no_toc}
 

@@ -7,6 +7,9 @@ grand_parent: 1D&2D Project (Details)
 nav_order: 5
 ---
 
+* TOC
+{:toc}
+
 # Checkoff 5: Peer Review (8%)
 {: .no_toc}
 

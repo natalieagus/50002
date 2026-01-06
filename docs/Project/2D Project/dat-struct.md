@@ -7,6 +7,9 @@ grand_parent: 1D&2D Project (Details)
 nav_order: 1
 ---
 
+* TOC
+{:toc}
+
 # Data Structure and Hardware Optimisation
 {: .no_toc}
 

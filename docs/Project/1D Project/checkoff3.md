@@ -7,6 +7,10 @@ grand_parent: 1D&2D Project (Details)
 nav_order: 3
 ---
 
+
+* TOC
+{:toc}
+
 # Checkoff 3: Live Demo (12%)
 {: .no_toc}
 

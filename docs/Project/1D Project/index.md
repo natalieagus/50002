@@ -7,6 +7,9 @@ parent: 1D&2D Project (Details)
 nav_order: 1
 ---
 
+* TOC
+{:toc}
+
 # 50.002 1D Project
 {: .no_toc}
 

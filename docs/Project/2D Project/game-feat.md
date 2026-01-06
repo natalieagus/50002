@@ -7,6 +7,9 @@ grand_parent: 1D&2D Project (Details)
 nav_order: 2
 ---
 
+* TOC
+{:toc}
+
 # Enhanced Game Features 
 {: .no_toc}
 

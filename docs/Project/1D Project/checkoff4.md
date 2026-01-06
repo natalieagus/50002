@@ -7,6 +7,9 @@ grand_parent: 1D&2D Project (Details)
 nav_order: 4
 ---
 
+* TOC
+{:toc}
+
 # Checkoff 4: Writeup, Poster, Video, and Report (2%)
 {: .no_toc}
 

@@ -7,6 +7,9 @@ grand_parent: 1D&2D Project (Details)
 nav_order: 3
 ---
 
+* TOC
+{:toc}
+
 # UI/UX Enhancement
 {: .no_toc}
 

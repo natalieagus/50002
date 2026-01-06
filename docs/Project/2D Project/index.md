@@ -7,6 +7,10 @@ parent: 1D&2D Project (Details)
 nav_order: 2
 ---
 
+
+* TOC
+{:toc}
+
 # 50.002 2D Project: Efficient and Sustainable Design for Cost-Effective Prototyping (6%)
 {: .no_toc}
 

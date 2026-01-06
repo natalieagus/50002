@@ -7,6 +7,9 @@ grand_parent: 1D&2D Project (Details)
 nav_order: 4
 ---
 
+* TOC
+{:toc}
+
 # Sustainability  Efforts
 {: .no_toc}
 
