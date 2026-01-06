@@ -104,7 +104,7 @@ We recommend you to install [Vivado ML Edition - 2023.2](https://www.xilinx.com
 {:.highlight}
 Please just choose one and just install one version.
 
-This guide assumes you select Vivado ML Edition - 2023.2. 
+This guide assumes you select Vivado ML Edition - 2023.2. It works the same for other newer versions too.
 
 #### Vivado ML Edition - 2023.2 
 [Create an AMD account](https://www.amd.com/en/registration/create-account.html?custtarg=aHR0cHM6Ly9hY2NvdW50LmFtZC5jb20vZW4vcHJvZmlsZS5odG1s) first. 
@@ -132,7 +132,7 @@ Then select Vivado:
 
 <img src="{{ site.baseurl }}//docs/FPGA/images/installation/2024-10-16-09-59-57.png"  class="center_seventy no-invert"/>
 
-Choose Vivado ML Standard (this is the **free** version):
+Choose Vivado ML Standard (this is the **free** version). For other versions, ensure you select whichever is the free version. That's sufficient.
 
 <img src="{{ site.baseurl }}//docs/FPGA/images/installation/2024-10-16-10-00-26.png"  class="center_seventy no-invert"/>
 
