@@ -782,7 +782,7 @@ Now compare with this:
 {:.note-title}
 > Sig
 >
-> The `sig` type is short for signal. These are used as basic connections (wiring) between parts of your design.
+> The `sig` type is short for signal. These are used as basic connections (wiring) between parts of your design. More info about this below. 
 >
 > <img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-sig.drawio.png"  class="center_fifty"/>
 
@@ -791,6 +791,50 @@ This is a bad pattern because if `io_dip[0][0]` is `0`, then `x` will be *undefi
 <img src="{{ site.baseurl }}//docs/Labs/images/lab1/2025-11-24-09-54-37.png"  class="center_seventy"/>
 
 This code breaks static discipline because the output is no longer determined *solely* by the current inputs. In the later weeks, you will learn about sequential logic, which produces output based on *memory*. For now, you don't have to worry about it. We shall cross the bridge when we get there.
+
+### Logic Gates (AND / OR / XOR)
+
+In lecture, logic gates are introduced using truth tables.  
+In HDL, we usually do not build gates explicitly. Instead, we write Boolean expressions, and the synthesis tool maps them to hardware.
+
+The logic itself is the same.
+
+Single-bit logic gates in HDL use bitwise operators:
+
+| Gate | Operator | Description |
+|---|---|---|
+| AND | `&` | Output is 1 only if both inputs are 1 |
+| OR  | `\|` | Output is 1 if either input is 1 |
+| XOR | `^` | Output is 1 if the inputs are different |
+| NOT | `!` | Inverts a single bit |
+
+### Exploring gates using DIP switches
+
+Use two DIP switches as logic inputs:
+
+- `a = io_dip[0][0]`
+- `b = io_dip[0][1]`
+
+Drive three LEDs using different logic gates:
+
+```lucid
+always {
+    led[5] = io_dip[0][0] & io_dip[0][1];  // AND
+    led[6] = io_dip[0][0] | io_dip[0][1];  // OR
+    led[7] = io_dip[0][0] ^ io_dip[0][1];  // XOR
+}
+```
+
+Toggle the two switches through all four input combinations and verify the LED outputs:
+
+| a | b | AND | OR | XOR |
+|---|---|-----|----|-----|
+| 0 | 0 |  0  | 0  |  0  |
+| 0 | 1 |  0  | 1  |  1  |
+| 1 | 0 |  0  | 1  |  1  |
+| 1 | 1 |  1  | 1  |  0  |
+
+This is the HDL representation of the AND, OR, and XOR logic gates from lecture.
 
 ## Internal `sig` 
 
