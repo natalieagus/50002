@@ -85,6 +85,9 @@ code {
   font-family: $mono-font-family;
   font-size: 0.9em;
   line-height: $body-line-height;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 figure,
