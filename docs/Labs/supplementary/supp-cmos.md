@@ -3,7 +3,8 @@ layout: default
 permalink: /lab/supp-cmos
 title: CMOS (JSIM)
 description: Lab 1 handout covering topics from Digital Abstraction, CMOS Technology, and Logic Synthesis
-parent: Labs
+grand_parent: Labs
+parent: Supplementary
 nav_order:  10
 ---
 

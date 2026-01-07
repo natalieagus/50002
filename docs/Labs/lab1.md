@@ -61,9 +61,9 @@ The lecture notes on **[digital abstraction](https://natalieagus.github.io/50002
 
 ## Introduction to FPGA Development 
 
-In this lab, we'll explore basics of HDL for FPGA Development. This is crucial for your 1D project, where you're tasked to create an electronic hardware prototype from combinational and sequential logic components using FPGA. It is a culminating project that integrates and applies the knowledge and skills you learn in 50002 because you are not coding on a computer, y*ou are building the digital system that a computer is made of*.
+In this lab, we'll explore basics of HDL for FPGA Development. This is crucial for your 1D project, where you're tasked to create an electronic hardware prototype from combinational and sequential logic components using FPGA. It is a culminating project that integrates and applies the knowledge and skills you learn in 50002 because you are not coding on a computer, *you are building the digital system that a computer is made of*.
 
-### What are we doing here?
+### What are we doing here? (Long Version)
 
 Remember the purpose of learning 50.002? To understand *how computers work* from transistors into operating system. That is, to know how to **build** a computer, from literal scratch. A computer is not just our general purpose controller, it can be simple stuffs like microcontroller or logic boards inside your oven, washing machine, airconditioner, etc. When we understand how the general-purpose one works, it's pretty intuitive how other specific types work too.
 
@@ -80,7 +80,7 @@ Let's tie it back to the lecture materials. In lecture you saw **digital abstrac
 But in order to *test* whether it **works**, we need to physically wire things together, then connect some LEDs to see "output" and some buttons and/or switches to type "inputs", like so (image taken from [this](https://www.youtube.com/watch?v=mZ_2406nCrE) tutorial):
 <img src="{{ site.baseurl }}//docs/Labs/images/lab1/2025-11-21-14-59-31.png"  class="center_seventy no-invert"/>
 
-That approach is fine for a *a demo*, but it quickly becomes <span class="orange-bold">painful</span> when we bring it to production/testing level. 
+That approach is fine for  *a demo*, but it quickly becomes <span class="orange-bold">painful</span> when we bring it to production/testing level. 
 1. We need to test if our schematic works in real life (does it overheat? is it too slow?)
 2. Then we need to iteratively improve it: come up with new design, new connections
 
@@ -106,6 +106,16 @@ So this is where FPGA comes into play: it can be programmed to **behave** like c
 
 Without an FPGA, this would mean soldering MOSFETs and rewiring breadboards for every change. The FPGA removes that friction, so you can iterate on circuit design as *easily* as you iterate on code.
 
+### What we are doing here? (Short Version)
+
+In this lab you will:
+- Treat HDL as a *hardware wiring description*, not a step-by-step program.
+- Practice controlling **bit-width** and **base notation** when driving LEDs.
+- Add IO Shield ports via the constraint file and ensure **every output is driven**.
+- Use `always { ... }` to describe **combinational logic** that is always active.
+- Avoid incomplete assignments that create **undefined signals** and imply memory.
+- Build intuition for **bit flow**: inputs (buttons/switches) map to output patterns (LEDs).
+  
 ### What FPGA Offers
 Unlike software simulations, FPGAs let you <span class="orange-bold">directly program hardware</span>, giving you a real-world, hands-on understanding of how digital systems work. 
 
@@ -159,7 +169,7 @@ You are <span class="orange-bold">strongly</span> recommended to give the [offic
 
 [Install](https://alchitry.com/alchitry-labs/) the IDE (Alchitry Labs V2). If you're using macOS, you might need to manually override the security settings as indicated [here](https://support.apple.com/en-gb/guide/mac-help/mh40616/mac).
 
-You can write HDL program using Alchitry Labs using Lucid or Verilog and then run *simulations*. Once you're happy with the simulation result, you can **build** the binary and **load it** to the FPGA hardware. This step *requires* installation of Vivado. Read [this](http://127.0.0.1:4000/50002/fpga/installation) guide for more information. This is important for your 1D project but it is <span class="orange-bold">not</span> required in this lab.
+You can write HDL program using Alchitry Labs using Lucid or Verilog and then run *simulations*. Once you're happy with the simulation result, you can **build** the binary and **load it** to the FPGA hardware. This step *requires* installation of Vivado. Read [this](https://natalieagus.github.io/50002/fpga/installation) guide for more information. This is important for your 1D project but it is <span class="orange-bold">not</span> required in this lab.
 
 ### Create New Project
 
@@ -254,7 +264,7 @@ module alchitry_top (
 **Inputs**: 
 - `clk`: 1 bit clock signal, which drives the timing of the module.
  - By default, the FPGA supplies 100MHz clock (defined in the constraint file `alchitry.acf`)
- - You **can change** this value if your design fail to meet timings, e.g: 10MHz instead. The steps required are more involved, you can give [this guide](http://127.0.0.1:4000/50002/fpga/clocks) a read.
+ - You **can change** this value if your design fail to meet timings, e.g: 10MHz instead. The steps required are more involved, you can give [this guide](https://natalieagus.github.io/50002/fpga/clocks) a read.
 - `rst_n`: 1 bit reset signal connected to the reset button of the FPGA
 - `usb_rx`: serial input port of the FPGA (USBC)
 
@@ -297,14 +307,14 @@ The syntax for instantiation and input connection can vary, depending on your pr
     // block instantiation, any modules described inside the clause will receive 1-bit SIGNAL from this module connected to its `INP_PORT`
     // useful if you have a bunch of modules with similar input ports
     .INP_PORT(SIGNAL) {
-        module module_name
+        <module_type> <instance_name>
     }
 
     // regular instantiation with port setting
-    module module_name(.INP_PORT(SIGNAL),...)
+    <module_type> <instance_name>(.INP_PORT(SIGNAL),...)
 
     // regular instantiation without port setting
-    module module_name
+    <module_type> <instance_name>
 ```
 
 `.INP_PORT` is the input port name of the module you are about to instantiate. `SIGNAL` is the signal name in *this* module that serves as an *input* to the module you're instantiating.
@@ -418,7 +428,7 @@ Now click the "bug" (simulation) button and you will see the Alchitry Au interfa
 
 <img src="{{ site.baseurl }}/docs/Labs/images/Screenshot 2025-11-21 at 5.43.51 PM.png"  class="center_seventy"/>
 
-Right now the `led` does not light up because we set its value into `8h00`. This means all 8 bits are `0`. Each bit controls one LED from `LED[0]` to `LED[7`]. A `0` means off (low voltage), so all LEDs are off.
+Right now the `led` does not light up because we set its value into `8h00`. This means all 8 bits are `0`. Each bit controls one LED from `LED[0]` to `LED[7]`. A `0` means off (low voltage), so all LEDs are off.
 
 ### Change LED value
 
@@ -556,7 +566,9 @@ For example:
     }
 ```
 
-Here `led` is first set to all zeros, then bit `0` is set to `1`. The final result is `00000001`. The second line does not “run later in time”. It just <span class="orange-bold">overrides</span> the previous assignment for that bit.
+Here `led` is first set to all zeros, then bit `0` is set to `1`. The final result is `00000001`. The second line does not “run later in time”. It just <span class="orange-bold">overrides</span> the previous assignment for that bit. 
+
+This pattern is common: set a default bus value first, then <span class="orange-bold">override</span> bits.
 
 {:.important}
 Order in an always block is <span class="orange-bold">not</span> time. It is <span class="orange-bold">priority</span> for conflicting assignments.
@@ -700,7 +712,7 @@ This is a well-behaved combinational mapping because **every input pattern** has
         reset_cond.in = ~rst_n  // input raw inverted reset signal
         rst = reset_cond.out    // conditioned reset
         
-        led = 8b00             // turn LEDs off
+        led = 8b00000000             // turn LEDs off
         
         usb_tx = usb_rx         // echo the serial data
         
@@ -727,7 +739,7 @@ We can also implement a simple logic gate using two switches as input and one LE
     }
 ```
 
-This is called the *bitwise* operator. More about this later.
+This is called the *bitwise* operator. More about this on later labs.
 
 Each of the operation above has a *truth table*, which you already learned in lecture. Every valid combination of inputs has a <span class="orange-bold">single</span>, well-defined output.
 
@@ -742,7 +754,7 @@ Each of the operation above has a *truth table*, which you already learned in le
 
 Now compare with this:
 
-```
+```verilog
   sig x
     
     always {
@@ -767,12 +779,12 @@ Now compare with this:
     }
 ```
 
-{:note-title}
+{:.note-title}
 > Sig
 >
 > The `sig` type is short for signal. These are used as basic connections (wiring) between parts of your design.
 >
-> <img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-sig.drawio.png"  class="center_seventy"/>
+> <img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-sig.drawio.png"  class="center_fifty"/>
 
 This is a bad pattern because if `io_dip[0][0]` is `0`, then `x` will be *undefined*. Alchitry Labs will detect this (any good HDL editor would) and issue an error:
 
@@ -858,7 +870,7 @@ io_led[0] = hF      // hF is 4 bits: 1111
 Lucid interprets this as:
 
 ```text
-0000 1111  →  8b00001111
+0000 1111 ->    8b00001111
 ```
 
 No new “value” was created. Four new wires were simply tied to `0` to make the widths match. This is convenient, but dangerous if you are not tracking the widths mentally (see next Lab's pitfalls).
@@ -906,7 +918,7 @@ io_led[0] = io_dip[0]
 ```
 
 
-### The mental model that must not change
+### The understanding that must NOT change
 
 Even though Lucid may auto-truncate or auto-extend for you, the physical reality is still this:
 
@@ -936,7 +948,7 @@ You should treat mismatched-width assignments in Verilog as *dangerous* even tho
 
 ## Digging Deeper into the Always Block
 
-These examples all use the same pattern and are created to serve as a mental model to remind you that everything inside is **continuous hardware**, not a step-by-step program.
+These examples all use the same pattern and are created to serve as examples to remind you that everything inside is **continuous hardware**, not a step-by-step program.
 
 ```verilog
 always {

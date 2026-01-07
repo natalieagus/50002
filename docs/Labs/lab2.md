@@ -303,6 +303,9 @@ As in Lab 1, **always** simulate your design before thinking about the FPGA:
 
 If needed, refer back to **Lab 1** for the detailed steps on how to run the Alchitry simulator and connect signals to IO.
 
+### Important Lucid Operators
+
+We assume that you have done your due diligence to scan through the [Lucid reference guide](https://alchitry.com/tutorials/lucid-reference) and understand how basic boolean operators (bitwise, reduction, etc) works. If not, read this [Appendix](#essential-lucid-operators) first.
 
 ### Full Adder
 
@@ -949,3 +952,196 @@ In the next lab, we will extend our knowledge and build **clocked circuits**.
 
 {:.highlight}
 Head to eDimension to complete questionnaires (2%) related to this lab.
+
+## Appendix
+
+### Essential Lucid Operators
+
+
+#### Invert
+
+Invert operators flip bits (bitwise) or flip truthiness (logical).
+
+| Operator | Meaning                         | Result width   |
+| -------- | ------------------------------- | -------------- |
+| `~expr`  | bitwise invert (flip every bit) | same as `expr` |
+| `!expr`  | logical invert (is it zero?)    | 1 bit          |
+
+```verilog
+// Bitwise invert: keep width, flip bits
+~4b0101   // -> 4b1010
+
+// Logical invert: 1 if expr == 0 else 0
+!4b0000   // -> 1b1
+!4b0010   // -> 1b0
+```
+
+#### Negate
+
+`-expr` negates the 2’s complement interpretation of a 1-D array or bit.
+Result width is **expr width + 1** (to handle overflow).
+Important: this does **not** automatically make the value “signed” for later ops.
+
+```verilog
+-4b0001   // -> 5b11111   (i.e., -1 in 5-bit two's complement)
+-4b0011   // -> 5b11101   (i.e., -3 in 5-bit two's complement)
+```
+
+If you want later arithmetic to treat something as signed, explicitly cast:
+
+```verilog
+$signed(4b1100)   // interpret as signed (-4 in 4-bit)
+```
+
+#### Multiply and Divide
+
+`*` and `/` work on 1-D arrays or bits.
+
+| Operator | Meaning  | Notes                                              |
+| -------- | -------- | -------------------------------------------------- |
+| `a * b`  | multiply | result auto-sizes to fit max possible value        |
+| `a / b`  | divide   | division is expensive unless divisor is power of 2 |
+
+Signed behavior: **signed only if both operands are signed**.
+
+```verilog
+4b0011 * 4b0100   // 3 * 4 = 12 -> needs 4 bits: 4b1100
+
+8b11110000 / 4b0010  // 240 / 2 = 120 -> 7 bits enough: 7b1111000
+```
+
+**Cheap** divide by power of 2 (often synthesizes as shifts):
+
+```verilog
+x / 8  // typically like x >> 3 (for unsigned)
+```
+
+Approximation trick (example idea):
+
+```verilog
+// approximate n/3 ≈ (n * 85) / 256
+(n * 8d85) / 8d256
+```
+
+#### Addition and Subtraction
+
+`+` and `-` (binary) work on 1-D arrays or bits. Result width = **max(width(a), width(b)) + 1**.
+
+Signed behavior: **signed only if both operands are signed**.
+
+```lucid
+4b1111 + 4b0001   // 15 + 1 = 16 -> 5b10000
+4b0010 - 4b0101   // 2 - 5 = wraps in unsigned math unless cast signed
+```
+
+#### Shifting
+
+Shift a 1-D array/bit by `amount` (also 1-D array/bit). Four forms:
+
+| Operator | Meaning          | Shift-in bits              |
+| -------- | ---------------- | -------------------------- |
+| `<<`     | logical left     | 0                          |
+| `>>`     | logical right    | 0                          |
+| `<<<`    | arithmetic left  | 0 (same as logical left)   |
+| `>>>`    | arithmetic right | sign bit if signed, else 0 |
+
+Result width:
+
+* Right shifts: **same width as `expr`**
+* Left shifts: **width(expr) + amount**
+
+```lucid
+4b0110 << 1    // -> 5b01100
+4b0110 <<< 1   // -> 5b01100
+
+4b1100 >> 1    // -> 4b0110
+4b1100 >>> 1   // -> 4b0110   (unsigned, shifts in 0)
+
+$signed(4b1100) >>> 1  // 4b1100 is -4 signed; -> 4b1110 (-2)
+```
+
+#### Bitwise
+
+Bitwise ops apply per-bit across two expressions of **exactly matching width**.
+
+| Operator | Meaning | Result width     | 
+| -------- | ------- | ---------------- | 
+| `&`      | AND     | same as operands |               
+| `\|`      | OR      | same as operands |
+| `^`      | XOR     | same as operands |                  
+
+```lucid
+4b1100 & 4b1010   // -> 4b1000
+4b1100 | 4b1010   // -> 4b1110
+4b1100 ^ 4b1010   // -> 4b0110
+```
+
+#### Reduction
+
+Reduction ops collapse all bits of one expression into **one bit**.
+
+| Operator | Meaning    | When result is 1 |   
+| -------- | ---------- | ---------------- | 
+| `&expr`  | reduce AND | all bits are 1   |              
+| `\| expr` | reduce OR        | any bit is 1 |
+| `^expr`  | reduce XOR | odd number of 1s |              
+
+```lucid
+&4b1111   // -> 1b1
+&4b1101   // -> 1b0
+
+|4b0000   // -> 1b0
+|4b0100   // -> 1b1
+
+^4b0110   // two 1s -> 1b0
+^4b0111   // three 1s -> 1b1
+```
+
+#### Comparison
+
+Compare two 1-D arrays/bits; result is **1 bit**.
+
+| Operator       | Meaning  |
+| -------------- | -------- |
+| `<, >, <=, >=` | ordering |
+| `==, !=`       | equality |
+
+Signed behavior: **signed only if both operands are signed**.
+
+```lucid
+4b0011 < 4b0100    // -> 1b1
+4b0111 == 4b0111   // -> 1b1
+4b0111 != 4b0001   // -> 1b1
+```
+
+#### Logical
+
+Logical ops treat any non-zero value as true. Result is **1 bit**.
+
+| Operator | Meaning     |  
+| -------- | ----------- | 
+| `&&`     | logical AND |   
+| `\|\|` | logical OR |
+
+```lucid
+(4b0001 && 4b0010)  // -> 1b1  (both non-zero)
+(4b0000 || 4b0100)  // -> 1b1  (one non-zero)
+(4b0000 && 4b0100)  // -> 1b0
+```
+
+### Ternary
+
+Select between two **same-width** expressions based on a selector (non-zero is true).
+
+```lucid
+sel ? a : b
+```
+
+```lucid
+4b0010 ? 8hAA : 8h55   // sel is non-zero -> 8hAA
+4b0000 ? 8hAA : 8h55   // sel is zero    -> 8h55
+```
+
+
+
+

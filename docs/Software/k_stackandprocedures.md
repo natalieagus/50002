@@ -920,7 +920,7 @@ There's one subtle point to realise: when the `PC` is currently pointing to an a
 {: .note-title}
 > Dynamic Discipline of the REGFILE
 > 
-> Remember that memory write is synchronized with the clock. See [this](http://127.0.0.1:4000/50002/notes/betacpu#the-static-and-dynamic-discipline-of-the-regfile) section if you forgot. 
+> Remember that memory write is synchronized with the clock. See [this](/50002/notes/betacpu#the-static-and-dynamic-discipline-of-the-regfile) section if you forgot. 
 
 Take for example this particular execution state in the  $$\beta$$ CPU:
 
