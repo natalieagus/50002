@@ -442,6 +442,9 @@ end
 
 This means whenever any input used inside **changes**, **recompute** outputs. The block describes a <span class="orange-bold">pure mapping from inputs to outputs</span>, like how you solder wires together. If written correctly, it implies no storage.
 
+{:.note}
+@* means *re-evaluate this block whenever any signal that the block reads changes*.
+
 #### Example: a 1-bit AND/OR/XOR block
 
 ```verilog
@@ -1529,7 +1532,130 @@ So `y` becomes **0** even when `SIGNAL=1`, because `&in` is only 1 when **all** 
 This is a classic HDL bug as the code compiles, but the hardware does not behave the way you wanted it to. If you mean “copy this bit into a whole bus”, you must write replication explicitly: `{N{bit}}`.
 
 
-## How are Modules Realised?
+
+
+
+## Other `always` forms (preview)
+
+`always @*` is not the only pattern of the always block. In Verilog there are many different types. Here are some for your knowledge. 
+
+
+### Old-style combinational sensitivity list (manual)
+
+**Example**
+
+```verilog
+// Combinational (manual list): re-evaluates when any listed signal changes
+always @(a or b or sel) begin
+  if (sel) y = a;
+  else     y = b;
+end
+```
+
+**Explanation**
+
+This is the older style of writing combinational logic: you must manually list every signal that affects the result. If you forget one, simulation can miss updates. That is why modern code uses `always @*` instead.
+
+
+
+### Clocked sequential logic (a register)
+
+**Example**
+
+```verilog
+// Sequential: updates only on rising clock edges
+always @(posedge clk) begin
+  q <= d;
+end
+```
+
+**Explanation**
+
+This models a flip-flop. The block runs only on `posedge clk`. Use `<=` (nonblocking) for registers so multiple registers update together at the clock edge.
+
+
+
+### Clocked logic with asynchronous reset
+
+**Example**
+
+```verilog
+// Async reset: reset can take effect immediately, not waiting for the clock
+always @(posedge clk or posedge rst) begin
+  if (rst) q <= 1'b0;
+  else     q <= d;
+end
+```
+
+**Explanation**
+
+The event control says: run the block on either a clock edge or a reset edge. This is a standard pattern you will see later when we add reset behavior.
+
+
+### Testbench-only periodic `always` (clock generator)
+
+**Example**
+
+```verilog
+// Testbench clock generator (not meant for synthesis)
+always #5 clk = ~clk;   // toggles every 5 time units
+```
+
+**Explanation**
+
+This is procedural simulation stimulus. It schedules events with delays (`#5`). It is great for testbenches, but it is not describing combinational logic or “real hardware wiring” the way `assign` or `always @*` does.
+
+### Plain `always begin ... end` (avoid in this course)
+
+**Example**
+
+```verilog
+// Usually a bad idea unless you REALLY know what you are doing
+always begin
+  // no event control or delay -> infinite zero-time loop
+end
+```
+
+**Explanation**
+
+Without an event control (`@(...)`, `@*`) or a delay (`#...`), this can become an infinite zero-time loop and effectively hang the simulator. In our course style, you should always see `always @*` for combinational or `always @(posedge clk ...)` for sequential.
+
+
+
+### Note: SystemVerilog variants (FYI)
+
+**Example**
+
+```verilog
+// SystemVerilog (not Verilog-2005):
+// always_comb, always_ff, always_latch
+```
+
+**Explanation**
+
+If you later move to SystemVerilog, these forms add extra safety checks. For this lab we stick to Verilog-2005 (`iverilog -g2005`), so we use `always @*` and `always @(posedge clk ...)`.
+
+
+
+## Summary
+
+This optional Verilog Lab 1 mirrors the Lucid version but runs in simulation only using Icarus Verilog (`iverilog` + `vvp`) plus a testbench (prints via `$display` and waveforms via `.vcd`). 
+
+It introduces Verilog modules (ports, instances, basic parameters), the `wire` vs `reg` split (nets driven by `assign` or module outputs, variables assigned in `always`/`initial`), and the core combinational style `always @*` with the static discipline (every output assigned on all paths, “default then override” to avoid latches).
+
+It also covers practical bus handling (constants with explicit widths, concatenation/replication, flattening 3×8 into 24 bits, slicing with `[15:8]` and `base +: width`), plus common pitfalls like multiple drivers on a net (multiple `assign`), undriven outputs showing `x`, `always @*` depending on what signals are read, and silent truncation/extension bugs from width mismatches.
+
+
+Here's what we have covered so far:
+* **Tooling**: write DUT + testbench, compile with `iverilog -g2005`, run with `vvp`, inspect `.vcd`.
+* **Core HDL concepts**: modules, named port connections, `wire` vs `reg`, `assign` vs `always @*`, blocking `=` for combinational.
+* **Correctness rules**: one driver per signal, drive every output, complete assignments to avoid latches.
+* **Buses**: sized literals, concatenation `{}`, replication `{N{}}`, flatten/slice/pack 24-bit “3×8”.
+* **Pitfalls**: multiple `assign` conflicts, missing drivers -> `x`, width mismatch truncation/extension, forgetting replication for 1-bit to N-bit.
+
+
+
+## Epilogue: How are Modules Realised?
 
 A Verilog `module` is not “run” like a program. It is a circuit blueprint. When you **instantiate** a module, the tool creates the corresponding hardware structure inside the FPGA fabric.
 
