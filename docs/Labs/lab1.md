@@ -845,7 +845,7 @@ The FPGA fabric already implements logic gates internally. Therefore, writing Bo
 
 For example, this is how an AND gate might look *as a module*:
 
-```lucid
+```verilog
 module and2 (
     input a,
     input b,
