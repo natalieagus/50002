@@ -421,4 +421,16 @@ strong {
   font-weight: bold;
 }
 
+/* Prevent KaTeX display math from expanding page width on mobile */
+.katex-display {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
 
+.MathJax_Display {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
