@@ -836,6 +836,55 @@ Toggle the two switches through all four input combinations and verify the LED o
 
 This is the HDL representation of the AND, OR, and XOR logic gates from lecture.
 
+
+### Logic gates are *not* written as modules
+
+In FPGA designs, we **do not** create separate AND, OR, or XOR gate modules.
+
+The FPGA fabric already implements logic gates internally. Therefore, writing Boolean expressions is clearer and more efficient. Gate-level modules also do NOT scale and quickly become unreadable.
+
+For example, this is how an AND gate might look *as a module*:
+
+```lucid
+module and2 (
+    input a,
+    input b,
+    output y
+) {
+    always {
+        y = a & b
+    }
+}
+```
+
+And you can use it like so:
+
+```verilog 
+and2 g_and
+
+always {
+    g_and.a = io_dip[0][0]
+    g_and.b = io_dip[0][1]
+    led[0]  = g_and.y
+}
+```
+
+This is functionally correct, but it is awkward and not how real designs are written.
+
+Instead, we shall write the logic directly:
+
+```verilog
+always {
+    led[0] = io_dip[0][0] & io_dip[0][1]
+}
+```
+Both describe the same boolean function.
+
+{:.note}
+In later labs, you will build larger modules such as adders, multiplexers, and state machines, not individual logic gates.
+
+
+
 ## Internal `sig` 
 
 So far, we used ports (input / output) to communicate with the outside world. Inside a module, you often need **internal** wires (like jumper wires used in breadboarding to connect internal components only) to connect pieces together. In Lucid, these are declared using the `sig` keyword, placed above the `always` block:
