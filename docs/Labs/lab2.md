@@ -843,7 +843,7 @@ Similarly, pick the switch and LEDs to test your mux and decoder logic. You can 
 
 Here's the test in action. We began by testing the multiplexer, then the decoder.
 
-<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-11-26 at 11.01.56 AM.gif/"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-11-26 at 11.01.56 AM.gif"  class="center_seventy"/>
 
 ## First Principles Before Generalisation 
 
