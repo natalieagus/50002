@@ -775,9 +775,9 @@ An `initial` block runs **once** at time `t=0` when the simulator starts. It wor
 * `$finish;` ends the simulation
 
 {:.important-title}
-> Add a tiny delay with #1 or #0
+> Add a tiny delay with #1
 > 
-> After changing inputs in the testbench, we <span class="orange-bold">should</span> insert a tiny delay (e.g., `#1` or `#0`) before checking outputs. This gives the simulator one step to re-evaluate the DUT so the outputs have “settled”. Use `#1` for a simple real-time wait (1 ns here), or `#0` for a delta-cycle wait (no real time) when testing purely combinational logic.
+> After changing inputs in the testbench, we <span class="orange-bold">should</span> insert a tiny delay (e.g., `#1`) before checking outputs. This gives the simulator one step to re-evaluate the DUT so the outputs have “settled”. Use `#1` for a simple real-time wait (1 ns here).
 >
 > When testing sequential logic in the later weeks, there's some subtle tweaks. We will explain to you later on.
 
@@ -1336,7 +1336,7 @@ module tb_lab1_gates;
         // Try all 4 combinations: 00, 01, 10, 11
         for (i = 0; i < 4; i = i + 1) begin
             dip = i[1:0];
-            #0; // allow combinational logic to re-evaluate (delta cycle)
+            #1; // allow combinational logic to re-evaluate (delta cycle)
 
             // Expected results (a = dip[0], b = dip[1])
             if (led[5] !== (dip[0] & dip[1])) begin
