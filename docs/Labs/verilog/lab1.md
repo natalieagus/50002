@@ -73,8 +73,6 @@ If both print version information, your setup is done.
 You can see the installation step-by-step in the [appendix](#iverilog-installation).
 
 
-
-
 ## Module (Verilog)
 
 Modules are the core building blocks of any HDL project. They encapsulate specific **functionality**, allowing you to design complex circuits by breaking them into smaller, manageable components. Each module can have **parameters** and **ports** that define how it interacts with other parts of the design.
@@ -776,6 +774,14 @@ An `initial` block runs **once** at time `t=0` when the simulator starts. It wor
 * `show();` prints the current input/output values
 * `$finish;` ends the simulation
 
+{:.important-title}
+> Add a tiny delay with #1 or #0
+> 
+> After changing inputs in the testbench, we <span class="orange-bold">should</span> insert a tiny delay (e.g., `#1` or `#0`) before checking outputs. This gives the simulator one step to re-evaluate the DUT so the outputs have “settled”. Use `#1` for a simple real-time wait (1 ns here), or `#0` for a delta-cycle wait (no real time) when testing purely combinational logic.
+>
+> When testing sequential logic in the later weeks, there's some subtle tweaks. We will explain to you later on.
+
+
 Refer to the [appendix](#writing-stimulus) section if you'd like to know more about how to write a testbench. We will also cover this in the next lab. 
 
 ### Simulation Duration
@@ -960,14 +966,6 @@ end
 
 Final value of `led` (8 bits) is set to be `00000001`. Assignments in `always` block in HDL is NOT about time passing. It is how <span class="orange-bold">priority</span> is expressed when multiple statements drive the same signal in the same combinational block.
 
-{:.note-title}
-> Essential Verilog Operators 
-> 
-> This lab uses a small subset of Verilog operators like boolean, bitwise, reduction, and some arithmetic. The key idea is that many operators work on **1-bit signals** *or* on **buses**, and some operators produce a **1-bit true/false** result. Most of them are self-explanatory, but you can view the [appendix](#verilog-operators) section if needed.
-
-
-
-
 
 ## Inputs, interactivity, and bit-flow in Simulation
 
@@ -1124,6 +1122,8 @@ A vector like `wire [7:0] led` is literally eight wires bundled together, and a 
 
 Nothing stretches or shrinks at runtime. If widths do not match, Verilog will apply its truncation/extension rules (see below), which may compile but can silently change which wires are actually connected.
 
+{:.note}
+The following sections about array manipulation is actually the materials of later labs, but it is essential to introduce it now for the Verilog version since we are working with flattened arrays due to reasons listed [below](#2d-arrays).
 
 ### Array duplication and concatenation 
 
@@ -1250,6 +1250,176 @@ assign io_led = {led2, led1, led0};
 
 This preserves the “3×8 rows” idea while avoiding 2D-port tool issues.
 
+
+
+### Logic Gates (AND / OR / XOR) in Verilog
+
+{:.note-title}
+> Essential Verilog Operators 
+> 
+> This section uses a small subset of Verilog operators like boolean, bitwise, reduction, and some arithmetic. The key idea is that many operators work on **1-bit signals** *or* on **buses**, and some operators produce a **1-bit true/false** result. Most of them are self-explanatory, but you can view the [appendix](#verilog-operators) section if needed.
+
+
+In lecture, logic gates are introduced using truth tables. In Verilog, we usually do not build gates explicitly. Instead, we write Boolean expressions, and the synthesis tool maps them to FPGA hardware. The logic itself is the same.
+
+Single-bit logic gates in Verilog use **bitwise** operators:
+
+| Gate | Operator | Description                                 |
+| ---- | -------- | ------------------------------------------- |
+| AND  | `&`      | Output is 1 only if both inputs are 1       |
+| OR   | `\|`     | Output is 1 if either input is 1            |
+| XOR  | `^`      | Output is 1 if the inputs are different     |
+| NOT  | `~`      | Bitwise invert (recommended for “gate NOT”) |
+
+
+{:.note}
+You are probably familiar with `!`, which is a **logical** NOT (it reduces to 1-bit true/false), and not *bitwise*. For 1-bit signals, `!a` and `~a` often behave the same, but for “gate thinking”, use `~`.
+
+
+### Exploring gates using DIP switches
+
+Use two DIP switches as logic inputs, then drive three LEDs using different logic gates like so.
+
+Example module (maps `dip[0]` and `dip[1]` to `led[5..7]`):
+
+```verilog
+// lab1_gates.v
+module lab1_gates (
+    input  wire [1:0] dip,   // dip[0] = a, dip[1] = b
+    output reg  [7:0] led
+);
+    always @* begin
+        led = 8'b0000_0000;         // default all LEDs off
+        led[5] = dip[0] & dip[1];   // AND
+        led[6] = dip[0] | dip[1];   // OR
+        led[7] = dip[0] ^ dip[1];   // XOR
+    end
+endmodule
+```
+
+We can toggle the `dip` values using a testbench through all four input combinations and verify the `led` outputs match the truth table.
+
+| a | b | AND | OR | XOR |
+| - | - | --- | -- | --- |
+| 0 | 0 | 0   | 0  | 0   |
+| 0 | 1 | 0   | 1  | 1   |
+| 1 | 0 | 0   | 1  | 1   |
+| 1 | 1 | 1   | 1  | 0   |
+
+
+This testbench runs all 4 input cases and checks `led[5]`, `led[6]`, `led[7]`.
+
+```verilog
+// tb_lab1_gates.v
+`timescale 1ns/1ps
+
+module tb_lab1_gates;
+    reg  [1:0] dip;
+    wire [7:0] led;
+
+    integer i;
+    integer errors;
+
+    // Device Under Test
+    lab1_gates dut (
+        .dip(dip),
+        .led(led)
+    );
+
+    initial begin
+        errors = 0;
+
+        // Optional waveform dump
+        $dumpfile("lab1_gates.vcd");
+        $dumpvars(0, tb_lab1_gates);
+
+        // Try all 4 combinations: 00, 01, 10, 11
+        for (i = 0; i < 4; i = i + 1) begin
+            dip = i[1:0];
+            #0; // allow combinational logic to re-evaluate (delta cycle)
+
+            // Expected results (a = dip[0], b = dip[1])
+            if (led[5] !== (dip[0] & dip[1])) begin
+                $display("FAIL AND: a=%0d b=%0d led[5]=%0d expected=%0d",
+                         dip[0], dip[1], led[5], (dip[0] & dip[1]));
+                errors = errors + 1;
+            end
+
+            if (led[6] !== (dip[0] | dip[1])) begin
+                $display("FAIL OR : a=%0d b=%0d led[6]=%0d expected=%0d",
+                         dip[0], dip[1], led[6], (dip[0] | dip[1]));
+                errors = errors + 1;
+            end
+
+            if (led[7] !== (dip[0] ^ dip[1])) begin
+                $display("FAIL XOR: a=%0d b=%0d led[7]=%0d expected=%0d",
+                         dip[0], dip[1], led[7], (dip[0] ^ dip[1]));
+                errors = errors + 1;
+            end
+
+            $display("a=%0d b=%0d | AND=%0d OR=%0d XOR=%0d",
+                     dip[0], dip[1], led[5], led[6], led[7]);
+        end
+
+        if (errors == 0) begin
+            $display("PASS: all gate checks passed.");
+        end else begin
+            $display("FAIL: %0d errors.", errors);
+        end
+
+        $finish;
+    end
+endmodule
+```
+
+Run with Icarus Verilog (Verilog-2005) as usual:
+
+```bash
+iverilog -g2005 -o lab1_gates_tb.vvp src/lab1_gates.v test/tb_lab1_gates.v
+vvp lab1_gates_tb.vvp
+```
+
+<img src="{{ site.baseurl }}//docs/Labs/verilog/images/lab1/2026-01-08-09-04-12.png"  class="center_full no-invert"/>
+
+### Logic gates are not written as modules
+
+In FPGA designs, you typically do **not** create separate AND/OR/XOR “gate modules”. The FPGA fabric already implements logic internally, and writing Boolean expressions directly is clearer and scales better.
+
+For example, an AND gate as a standalone module is functionally correct, but awkward:
+
+```verilog
+module and2 (
+    input  wire a,
+    input  wire b,
+    output wire y
+);
+    assign y = a & b;
+endmodule
+```
+
+Using it adds noise:
+
+```verilog
+wire y_and;
+
+and2 g_and (
+    .a(dip[0]),
+    .b(dip[1]),
+    .y(y_and)
+);
+
+// then later: led[5] = y_and (via assign/always)
+```
+
+Instead, write the logic directly where you need it:
+
+```verilog
+// direct expression (recommended)
+led[5] = dip[0] & dip[1];
+```
+
+{:.note}
+In later labs, you will build larger modules such as adders, multiplexers, and state machines, not individual logic gates.
 
 
 ## Putting it all together

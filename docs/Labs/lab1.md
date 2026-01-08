@@ -160,7 +160,38 @@ Prior to 2025, we were using Alchitry Labs 1.2.7 and Lucid V1. It worked well, b
 
 ## Basic FPGA Development using Alchitry Labs V2 
 
-This section briefly explains basic Lucid V2 syntax. Lucid V2 is a great language to program **simple** behavior on the FPGA which is sufficient for 50.002. 
+This section briefly explains basic Lucid V2 syntax. Lucid V2 is a great language to program **simple** behavior on the FPGA which is sufficienGood. Add a small amount of both to soften the crumb.
+
+Adjusted yoghurt cheese bread rolls (softer)
+
+Ingredients
+	•	Plain flour: 200 g
+	•	Baking powder: 6 g (about 1½ tsp)
+	•	Salt: 1 g
+	•	Greek yoghurt: 170 g
+	•	Milk: 30 g (2 tbsp)
+	•	Oil: 15 g (1 tbsp)
+	•	Grated cheese: 50–70 g
+
+Method
+	1.	Mix flour, baking powder, salt.
+	2.	Add yoghurt, milk, oil, and cheese. Mix until just combined.
+	3.	Knead very lightly, 30–45 seconds.
+	4.	Shape into 6–8 rolls.
+	5.	Brush tops with milk.
+	6.	Bake at 190 °C for 18–22 min.
+
+Why this works
+	•	Milk adds moisture and tenderness.
+	•	Oil coats gluten, reducing toughness.
+	•	Light kneading keeps the rolls soft, not bready.
+
+Quick fixes
+	•	Dough sticky: dust with 1 tbsp flour, no more.
+	•	Rolls pale: bake 2–3 min longer or raise to 200 °C for last 5 min.
+	•	Inside gummy: split and return to oven 3–5 min.
+
+If this is for a toddler, tell me and I will adjust salt and cheese levels.t for 50.002. 
 
 {:.important}
 You are <span class="orange-bold">strongly</span> recommended to give the [official reference guide a read](https://alchitry.com/tutorials/lucid-reference/). Bookmark it.
@@ -729,27 +760,6 @@ This is a well-behaved combinational mapping because **every input pattern** has
 That is, no matter which button and switch combination is being pressed, we know exactly the state of the LEDs (output bits). *There's no "memory" or state dependence.*
 
 
-We can also implement a simple logic gate using two switches as input and one LED each to display the output. 
-
-```verilog
-    always {
-        led[5] = io_dip[0][0] & io_dip[0][1]   // 1-bit AND gate
-        led[6] = io_dip[0][0] | io_dip[0][1]   // 1-bit OR gate
-        led[7] = io_dip[0][0] ^ io_dip[0][1]   // 1-bit XOR gate
-    }
-```
-
-This is called the *bitwise* operator. More about this on later labs.
-
-Each of the operation above has a *truth table*, which you already learned in lecture. Every valid combination of inputs has a <span class="orange-bold">single</span>, well-defined output.
-
-| A (io_dip[0][0]) | B (io_dip[0][1]) | A AND B (LED[5]) | A OR B (LED[6]) | A XOR B (LED[7]) |
-| - | - | :-----: | :----: | :-----: |
-| 0 | 0 |    0    |    0   |    0    |
-| 0 | 1 |    0    |    1   |    1    |
-| 1 | 0 |    0    |    1   |    1    |
-| 1 | 1 |    1    |    1   |    0    |
-
 ### Bad Pattern
 
 Now compare with this:
@@ -795,27 +805,26 @@ This code breaks static discipline because the output is no longer determined *s
 ### Logic Gates (AND / OR / XOR)
 
 In lecture, logic gates are introduced using truth tables.  
-In HDL, we usually do not build gates explicitly. Instead, we write Boolean expressions, and the synthesis tool maps them to hardware.
 
-The logic itself is the same.
+In HDL, we usually do not build gates explicitly. Instead, we write Boolean expressions, and the synthesis tool maps them to hardware. The logic itself is the same.
 
-Single-bit logic gates in HDL use bitwise operators:
+Single-bit logic gates in HDL use <span class="orange-bold">bitwise</span> operators:
 
 | Gate | Operator | Description |
 |---|---|---|
 | AND | `&` | Output is 1 only if both inputs are 1 |
 | OR  | `\|` | Output is 1 if either input is 1 |
 | XOR | `^` | Output is 1 if the inputs are different |
-| NOT | `!` | Inverts a single bit |
+| NOT | `~` | Inverts a single bit |
+
+{:.note}
+You are probably familiar with `!`, which is a **logical** NOT (it reduces to 1-bit true/false), and not *bitwise*. For 1-bit signals, `!a` and `~a` often behave the same, but for “gate thinking”, use `~`.
+
+
 
 ### Exploring gates using DIP switches
 
-Use two DIP switches as logic inputs:
-
-- `a = io_dip[0][0]`
-- `b = io_dip[0][1]`
-
-Drive three LEDs using different logic gates:
+Use two DIP switches as logic inputs then drive three LEDs using different logic gates like so:
 
 ```lucid
 always {
@@ -825,7 +834,7 @@ always {
 }
 ```
 
-Toggle the two switches through all four input combinations and verify the LED outputs:
+Toggle the two switches through all four input combinations and verify the LED outputs matches the truth table.
 
 | a | b | AND | OR | XOR |
 |---|---|-----|----|-----|
@@ -833,6 +842,8 @@ Toggle the two switches through all four input combinations and verify the LED o
 | 0 | 1 |  0  | 1  |  1  |
 | 1 | 0 |  0  | 1  |  1  |
 | 1 | 1 |  1  | 1  |  0  |
+
+<img src="{{ site.baseurl }}//docs/Labs/images/lab1/2026-01-08-08-35-29.png"  class="center_seventy"/>
 
 This is the HDL representation of the AND, OR, and XOR logic gates from lecture.
 
