@@ -23,13 +23,17 @@ Singapore University of Technology and Design
 
 This is a Verilog parallel of the Lucid + Alchitry Labs Lab 1. It is not part of the syllabus, and it is written for interested students only.
 
+We are using Verilog-2005 and not SystemVerilog for simplification and educational purposes. Verilog-2005 is a subset of SystemVerilog so it would still be compatible with SystemVerilog. Another major motivation is that Alchitry Labs also support [Verilog interopability](https://alchitry.com/news/alchitry-labs-v2-0-13-verilog/). 
+
+You add Verilog modules and instantiate them from Lucid, hence allowing you to easily integrate them into Lucid projects should some of your group members still prefer to work in Lucid.
+
 {:.important}
 If you are reading this document, we assume that you have already read Lab 1 Lucid version, as some generic details are not repeated (e.g: FPGA Toolchain used in 50.002, what FPGA is for, etc). This lab has the same objectives and related class materials so we will not paste them again here. For submission criteria, refer to [the original lab 1]({{ site.baseurl }}/lab/lab1) handout.
 
 
 ## Using Verilog with Alchitry Labs
 
-This *optional* Verilog version exists for students who already have some prior exposure to HDL, or who want a closer look at what Lucid is ultimately translated into.
+This *alternate* Verilog-track version exists for students who already have some prior exposure to HDL, or who want a closer look at what Lucid is ultimately translated into.
 
 Alchitry Labs can <span class="orange-bold">create and edit Verilog modules</span>, and Verilog can be part of an FPGA project. However, the convenient Alchitry Labs <span class="orange-bold">IO simulation panel</span> (buttons, switches, LEDs, etc.) is intended for **Lucid simulations**, so your Verilog modules will <span class="orange-bold">not</span> “show up” in that same interactive simulator view.
 
@@ -40,7 +44,7 @@ Alchitry Labs can <span class="orange-bold">create and edit Verilog modules</spa
 > * compile with `iverilog`
 > * run with `vvp`
 
-Later, once you are comfortable reading and writing basic Verilog, we can return to Alchitry Labs and show how Verilog modules fit into the <span class="orange-bold">full FPGA toolchain</span> (constraints, build, and hardware programming).
+Later, once you are comfortable reading and writing basic Verilog, we can return to Alchitry Labs and show how Verilog modules fit into the <span class="orange-bold">full FPGA toolchain</span> (constraints, build, and hardware programming). **We will only do this in Lab 4.**
 
 ### Analogy 
 A good analogy is learning programming with Python before C. Python helps you focus on core computational ideas without fighting low-level details on day one. C forces you to be *explicit* about more details and gives you more control, but also more ways to make mistakes. In the same way, Lucid is the “high-level on-ramp” for 50.002, while Verilog is a “closer-to-the-metal” view for those who are curious. 
@@ -1810,7 +1814,7 @@ If you later move to SystemVerilog, these forms add extra safety checks. For thi
 
 ## Summary
 
-This optional Verilog Lab 1 mirrors the Lucid version but runs in simulation only using Icarus Verilog (`iverilog` + `vvp`) plus a testbench (prints via `$display` and waveforms via `.vcd`). 
+This Verilog-track Lab 1 mirrors the Lucid version but runs in simulation only using Icarus Verilog (`iverilog` + `vvp`) plus a testbench (prints via `$display` and waveforms via `.vcd`). 
 
 It introduces Verilog modules (ports, instances, basic parameters), the `wire` vs `reg` split (nets driven by `assign` or module outputs, variables assigned in `always`/`initial`), and the core combinational style `always @*` with the static discipline (every output assigned on all paths, “default then override” to avoid latches).
 
