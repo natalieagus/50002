@@ -61,7 +61,7 @@ The lecture notes on **[logic synthesis](https://natalieagus.github.io/50002/not
 
 Before touching the FPGA, we will translate several logic requirements into Boolean expressions and circuits. Afterwards, we will describe that hardware in HDL and run it on the Alchitry lab simulator. If all works well, we shall build and flash it to the FPGA.
 
-In this lab, we will build three core combinational logic devices: the **full adder**, the **multiplexer**, and the **decoder**. 
+In this lab, we will build three core combinational logic devices: the **full adder**, the **multiplexer** (both 2 to 1 and 4 to 1), and the **decoder** (both 1 to 2 and 2 to 4). 
 
 <img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-combilogic.drawio.png"  class="center_seventy"/>
 
@@ -285,7 +285,7 @@ Now lets implement each of the combinational logic module above. Create a new pr
 Remember to always select the base project with **pulldowns**. This is to ensure that the board receives a **valid low** when input buttons are not pressed (which maps to invalid input if a pulldown internal resistor is not present). If you're interested to know more, [read this](https://natalieagus.github.io/50002/fpga/fpga_4_2024#version-1-pulldownioacf).
 
 Then we will build the modules in the following order
-* Full adder
+* 1-bit full adder
 * N-bit adder using full adder
 * Mux
 * Mux4 using Mux
@@ -307,7 +307,7 @@ If needed, refer back to **Lab 1** for the detailed steps on how to run the Alch
 
 We assume that you have done your due diligence to scan through the [Lucid reference guide](https://alchitry.com/tutorials/lucid-reference) and understand how basic boolean operators (bitwise, reduction, etc) works. If not, read this [Appendix](#essential-lucid-operators) first.
 
-### Full Adder
+### 1-bit Full Adder
 
 {:.important}
 > You are NOT allowed to use the built-in '+' operator in Lucid for this lab and for your 1D project. In fact, you are not allowed to use many arithmetic operators for your project (see later labs). High-level arithmetic operators are **intentionally restricted**. You must construct functionality from Boolean logic and primitive modules, since the objective of this course is to understand the internal structure and behaviour of digital systems, *not* to abstract it away.

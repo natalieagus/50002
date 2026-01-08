@@ -3,7 +3,7 @@ layout: default
 permalink: /lab/lab1-verilog
 title: Lab 1 - Digital Abstraction 
 description: Lab 1 handout covering topics from binary counting and digital abstraction
-nav_order:  3
+nav_order:  2
 grand_parent: Labs
 parent: Verilog
 ---
@@ -71,6 +71,31 @@ If both print version information, your setup is done.
 <img src="{{ site.baseurl }}//docs/Labs/verilog/images/lab1/2026-01-07-09-47-46.png"  class="center_seventy no-invert"/>
 
 You can see the installation step-by-step in the [appendix](#iverilog-installation).
+
+### Files and folder layout
+
+Create this structure:
+
+```
+lab1_verilog/
+  src/
+  test/
+```
+
+### How to compile and run
+
+From inside `lab1_verilog/`, compile the corresponding source file and testbench:
+
+```bash
+iverilog -g2005 -o lab1.vvp src/<FILENAME>.v test/<FILENAME>.v
+vvp lab1.vvp
+```
+
+If compilation and run succeed, you should see **printed** output from the testbench.
+
+{:.note}
+`-g2005` option enable syntax/features aligned with IEEE Verilog-2005 (often also labeled “Verilog 2005”).
+
 
 
 ## Module (Verilog)
@@ -545,31 +570,6 @@ Instead of seeing an interactive LED panel like we did in Alchitry Labs Simulato
 1. **Console output** using `$display`
 2. A **waveform dump file** (`.vcd`) that we will view later using VSCode extensions like [VaporView](https://marketplace.visualstudio.com/items?itemName=lramseyer.vaporview).
 
-### Files and folder layout
-
-Create this structure:
-
-```
-lab1_verilog/
-  src/
-    lab1_demo.v
-  test/
-    tb_lab1_demo.v
-```
-
-### How to compile and run
-
-From inside `lab1_verilog/`:
-
-```bash
-iverilog -g2005 -o lab1.vvp src/lab1_demo.v test/tb_lab1_demo.v
-vvp lab1.vvp
-```
-
-If compilation succeeds, you should see **printed** output from the testbench.
-
-{:.note}
-`-g2005` option enable syntax/features aligned with IEEE Verilog-2005 (often also labeled “Verilog 2005”).
 
 
 ### A simple “LED output” module for this lab
@@ -1283,7 +1283,7 @@ Use two DIP switches as logic inputs, then drive three LEDs using different logi
 Example module (maps `dip[0]` and `dip[1]` to `led[5..7]`):
 
 ```verilog
-// lab1_gates.v
+// src/lab1_gates.v
 module lab1_gates (
     input  wire [1:0] dip,   // dip[0] = a, dip[1] = b
     output reg  [7:0] led
@@ -1310,7 +1310,7 @@ We can toggle the `dip` values using a testbench through all four input combinat
 This testbench runs all 4 input cases and checks `led[5]`, `led[6]`, `led[7]`.
 
 ```verilog
-// tb_lab1_gates.v
+// test/tb_lab1_gates.v
 `timescale 1ns/1ps
 
 module tb_lab1_gates;
