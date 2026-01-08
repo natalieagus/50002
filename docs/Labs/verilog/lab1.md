@@ -777,7 +777,7 @@ An `initial` block runs **once** at time `t=0` when the simulator starts. It wor
 {:.important-title}
 > Add a tiny delay with #1
 > 
-> After changing inputs in the testbench, we <span class="orange-bold">should</span> insert a tiny delay (e.g., `#1`) before checking outputs. This gives the simulator one step to re-evaluate the DUT so the outputs have “settled”. Use `#1` for a simple real-time wait (1 ns here).
+> After changing inputs to DUTs in the testbench, we <span class="orange-bold">should</span> insert a tiny delay (e.g., `#1`) before checking outputs. This gives the simulator one step to re-evaluate the DUT so the outputs have “settled”. Use `#1` for a simple real-time wait (1 ns here).
 >
 > When testing sequential logic in the later weeks, there's some subtle tweaks. We will explain to you later on.
 
