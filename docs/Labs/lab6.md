@@ -711,17 +711,13 @@ Finally, when you reach the fifth instruction at address `0x10` (`BNE`), confirm
 Basically, if your project fails timing, that means your design logic is too slow to keep up with the 100 MHz clock (i.e., 10 ns per cycle). Even if Vivado compiles it, the actual hardware may behave unpredictably. You should lower the clock frequency in the constraint file (e.g., set to 10 MHz) so Vivado **checks** for more relaxed timing.
 
 
-<img src="{{ site.baseurl }}//docs/Labs/images/lab3/2025-01-23-14-12-12.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}//docs/Labs/images/lab3/2025-01-23-14-12-12.png"  class="center_seventy no-invert"/>
 
-To address this, you can modify the constraint file to **let  Vivado analyze with a slower clock**, e.g 10MHz. 
+To address this, you can ask Vivado to synthesize a slower clock for you. [Read this guide for more details.](/50002/fpga/clocks). Then edit the `.acf` file accordingly to reflect the new clock frequency.
 
-Create a new constraint file (you can name it anything) and paste the content of `alchitry.acf` to it, and modify the clock signal. Don't forget to <span class="orange-bold">delete</span> the default `alchitry.acf`.  
+An easier way to do this is to manually slow your logic (e.g., FSM or output updates in Beta Manual Tester) to match this by adding delay logic (like a clock divider). 
 
-<img src="{{ site.baseurl }}//docs/Labs/images/lab3/2025-02-24-17-23-16.png"  class="center_thirty"/>
-
-<span class="orange-bold">But remember: the onboard clock is still 100 MHz</span>. You must manually slow your logic (e.g., FSM or output updates in Beta Manual Tester) to match this by adding delay logic (like a clock divider). For example: delay each FSM state by 10 times using a counter, so your effective FSM cycle is 1 per microsecond instead of 1 per 10 ns. [Consult this handout for details](https://natalieagus.github.io/50002/fpga/fpga_8_2024#delay-your-fsm-transition). 
-
-
+**For example**: delay each FSM state by 10 times using a counter, so your effective FSM cycle is 1 per microsecond instead of 1 per 10 ns. [Consult this handout for details](https://natalieagus.github.io/50002/fpga/fpga_8_2024#delay-your-fsm-transition). 
 
 ## Checkoff
 

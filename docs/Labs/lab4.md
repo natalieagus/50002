@@ -201,7 +201,8 @@ We group them by the datapath component they talk to as defined in the [datapath
 
 From the datapath we have:
 
-> **Test Index Register**:
+{:.new-title}
+> **Test Index Register**
 > 
 > A `dff` called `index` that stores which test case we are currently running. The controller can reset `index` to `0` and increment it with wraparound.
 
@@ -220,6 +221,8 @@ To do this, the FSM should output two control signals:
 ### Control signals for the registered adder and expected sum pipeline
 
 From the datapath we have:
+
+{:.highlight}
 > **Registered Adder Block**: `registered_rca` with internal input and output registers.
 > 
 > **Expected Sum Pipeline**: must advance in sync with the adder.
@@ -240,6 +243,7 @@ Both should take a **NEW** test vector at the same time. The controller (fsm) ne
 
 From the FSM diagram:
 
+{:.highlight}
 > `HALT` keeps the failing case frozen and ignores further clock ticks.
 
 You can make this explicit with a simple flag that can be routed to the LED so user knows whether the tester is *running* or not:
@@ -731,7 +735,7 @@ The logic might seem "right" but it won't even work. Towards the end of the gif 
 <img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-12-03 at 9.38.52 AM.gif"  class="center_seventy no-invert"/>
 
 
-{:new-title}
+{:.new-title}
 > Checkoff
 >
 > Why is this so? Figure it out as a team. This might be one of the checkoff questions asked by your TA. 

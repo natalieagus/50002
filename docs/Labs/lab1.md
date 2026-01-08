@@ -206,9 +206,9 @@ You can write HDL program using Alchitry Labs using Lucid or Verilog and then ru
 
 Create a new project with **Base Project** as a template. Choose <span class="orange-bold">Alchitry Au</span> (<span class="orange-bold">not</span> Alchitry Au V2). This is our FPGA development board.
 
-<img src="{{ site.baseurl }}//docs/Labs/images/lab1/2025-11-20-17-18-56.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}//docs/Labs/images/lab1/2025-11-20-17-18-56.png"  class="center_seventy no-invert"/>
 
-<img src="{{ site.baseurl }}//docs/Labs/images/lab1/2025-11-20-17-19-07.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}//docs/Labs/images/lab1/2025-11-20-17-19-07.png"  class="center_seventy no-invert"/>
 
 There a few Lucid (`.luc`) source files created: 
 1. `alchitry_top.luc`: This is the **top-level** file, like a "main" file. It connects all submodules and interfaces with <span class="orange-bold">external</span> I/O. The ports are defined in this top-level file, while the constraint file (.acf) **maps** them to physical FPGA pins. 
@@ -457,7 +457,7 @@ The hardware representation of the connections described in this `always` block 
 
 Now click the "bug" (simulation) button and you will see the Alchitry Au interface:
 
-<img src="{{ site.baseurl }}/docs/Labs/images/Screenshot 2025-11-21 at 5.43.51 PM.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/Screenshot 2025-11-21 at 5.43.51 PM.png"  class="center_seventy no-invert"/>
 
 Right now the `led` does not light up because we set its value into `8h00`. This means all 8 bits are `0`. Each bit controls one LED from `LED[0]` to `LED[7]`. A `0` means off (low voltage), so all LEDs are off.
 
@@ -481,7 +481,7 @@ You can experiment further with output setting by changing the `led` setting val
 If you click the simulation button again, you will see that the corresponding LED lights changes. This example uses `led = 8h84` assignment.
 
 
-<img src="{{ site.baseurl }}//docs/Labs/images/lab1/2025-11-21-17-47-22.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}//docs/Labs/images/lab1/2025-11-21-17-47-22.png"  class="center_seventy no-invert"/>
 
 Note that we didn’t “turn on a light”. We sent a pattern of bits to the FPGA, and each bit **controlled** one LED. That’s digital logic in its simplest form.
 
@@ -614,11 +614,11 @@ You will be given something called the **IO-Shield**, which is a pre-packaged se
 
 Click the "add component" button and select **Component Library**:
 
-<img src="{{ site.baseurl }}/docs/Labs/images/Screenshot 2025-11-24 at 8.47.03 AM.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/Screenshot 2025-11-24 at 8.47.03 AM.png"  class="center_seventy no-invert"/>
 
 Then expand "Constraints" and select "Io V1 Pulldown":
 
-<img src="{{ site.baseurl }}//docs/Labs/images/lab1/2025-11-24-08-48-29.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}//docs/Labs/images/lab1/2025-11-24-08-48-29.png"  class="center_seventy no-invert"/>
 
 This gives you a new file called `io_v1_pulldown.acf` that maps pins in the `B`, `A`, and `C` banks into logical names like `io_button` or `io_led`.
 
@@ -667,7 +667,7 @@ Then you need to link these new ports into `alchitry_top.luc`, which is your mai
 
 When you paste the above, you will be met with error as follows:
 
-<img src="{{ site.baseurl }}//docs/Labs/images/lab1/2025-11-24-09-08-11.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}//docs/Labs/images/lab1/2025-11-24-09-08-11.png"  class="center_seventy no-invert"/>
 
 That is because from the tool’s point of view, that output is a wire with <span class="orange-bold">no</span> driver, which is illegal/useless hardware.
 
@@ -686,7 +686,7 @@ To fix this, you can assign some arbitrary value first in the `always` block:
 
 You can change these value later. Now click **simulate** and you should be able to see the IO Shield now. We label them based on the logical names defined in the constraint files:
 
-<img src="{{ site.baseurl }}/docs/Labs/images/Screenshot 2025-11-24 at 9.19.22 AM.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/Screenshot 2025-11-24 at 9.19.22 AM.png"  class="center_seventy no-invert"/>
 
 Two-dimensional buses:
 - `io_led` is a 3 by 8 bus (24 wires in total)
@@ -721,7 +721,7 @@ You can connect `input` to `output` port directly to observe its behavior:
 
 ```
 
-<img src="{{ site.baseurl }}/docs/Labs/images/lab1/set-input-output.gif"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/lab1/set-input-output.gif"  class="center_seventy no-invert"/>
 
 Now we can use the input switches to feed "patterns of information" into the FPGA. 
 
@@ -798,7 +798,7 @@ Now compare with this:
 
 This is a bad pattern because if `io_dip[0][0]` is `0`, then `x` will be *undefined*. Alchitry Labs will detect this (any good HDL editor would) and issue an error:
 
-<img src="{{ site.baseurl }}//docs/Labs/images/lab1/2025-11-24-09-54-37.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}//docs/Labs/images/lab1/2025-11-24-09-54-37.png"  class="center_seventy no-invert"/>
 
 This code breaks static discipline because the output is no longer determined *solely* by the current inputs. In the later weeks, you will learn about sequential logic, which produces output based on *memory*. For now, you don't have to worry about it. We shall cross the bridge when we get there.
 
@@ -843,7 +843,7 @@ Toggle the two switches through all four input combinations and verify the LED o
 | 1 | 0 |  0  | 1  |  1  |
 | 1 | 1 |  1  | 1  |  0  |
 
-<img src="{{ site.baseurl }}//docs/Labs/images/lab1/2026-01-08-08-35-29.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}//docs/Labs/images/lab1/2026-01-08-08-35-29.png"  class="center_seventy no-invert"/>
 
 This is the HDL representation of the AND, OR, and XOR logic gates from lecture.
 

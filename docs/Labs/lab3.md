@@ -176,7 +176,7 @@ module alchitry_top (
 
 Run the simulation and you should observe this:
 
-<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-11-28 at 8.58.44 AM.gif"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-11-28 at 8.58.44 AM.gif"  class="center_seventy no-invert"/>
 
 The schematic of an 8-bit dff is none other than 8 dffs instantiated in parallel like so:
 
@@ -458,7 +458,7 @@ When instantiating this module, you can connect one of the `io_button` to the `e
 
 The following shows that the new button-triggered adder will be fed with new input only when `io_button[0]` is pressed:
 
-<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-11-28 at 3.36.01 PM.gif"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-11-28 at 3.36.01 PM.gif"  class="center_seventy no-invert"/>
 
 ## Testbench 
 
@@ -517,7 +517,7 @@ This waveform window prints out the states of all ports declared in that test bl
 
 If you wish, you can `print` the signals as well as shown above. You should see the following output in  the console:
 
-<img src="{{ site.baseurl }}//docs/Labs/images/lab3/2025-12-01-15-23-16.png"  class="center_seventy no-invert"/>
+<img src="{{ site.baseurl }}//docs/Labs/images/lab3/2025-12-01-15-23-16.png"  class="center_fifty no-invert"/>
 
 ### Advancing the Clock
 
@@ -542,7 +542,7 @@ What if you want to make another test case? While you can write another `test` b
 
 The waveform window will now report the two value set:
 
-<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-12-01 at 3.39.46 PM.gif"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-12-01 at 3.39.46 PM.gif"  class="center_seventy no-invert"/>
 
 ### `tick` Propagates Signals
 
@@ -703,9 +703,9 @@ The `repeat` loop also runs sequentially, just like a regular `for` loop. This e
 
 Write a testbench to test the functionality of your **registered adder**. Your test case should have an automatic `$assert` as well as printouts for easy access. The waveform should clearly show what happens within the module. For instance, here's a demo. 
 
-Your must also be able to clearly explain the waveforms and notice the delays (2 clock cycles) between test case input and the corresponding sum output from the registered adder (see [section below](#matching-latency-in-the-tester)). 
+You must also be able to clearly explain the waveforms and notice the delays (2 clock cycles) between test case input and the corresponding sum output from the registered adder (see [section below](#matching-latency-in-the-tester)). 
 
-<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-12-01 at 4.31.12 PM.gif"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-12-01 at 4.31.12 PM.gif"  class="center_seventy no-invert"/>
 
 
 ### Declaring Test Vectors (Separate *Arrays* vs Bitpacked)

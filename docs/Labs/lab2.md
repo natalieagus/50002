@@ -280,7 +280,7 @@ With the **full adder**, **muxes**, and **decoders**, we now have the core combi
 
 Now lets implement each of the combinational logic module above. Create a new project in Alchitry Labs using this template:
 
-<img src="{{ site.baseurl }}/docs/Labs/images/Screenshot 2025-11-25 at 9.28.09 AM.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/Screenshot 2025-11-25 at 9.28.09 AM.png"  class="center_seventy no-invert"/>
 
 Remember to always select the base project with **pulldowns**. This is to ensure that the board receives a **valid low** when input buttons are not pressed (which maps to invalid input if a pulldown internal resistor is not present). If you're interested to know more, [read this](https://natalieagus.github.io/50002/fpga/fpga_4_2024#version-1-pulldownioacf).
 
@@ -349,11 +349,11 @@ In the simulator:
 
 
 For example, we use `io_led[1:0]` to show `cout, s` and `io_dip[2:0]` to enter `cin, b, a`.
-<img src="{{ site.baseurl }}/docs/Labs/images/Screenshot 2025-11-26 at 9.05.56 AM.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/Screenshot 2025-11-26 at 9.05.56 AM.png"  class="center_seventy no-invert"/>
 
 Then, test all combinations:
 
-<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-11-26 at 9.16.12 AM.gif"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-11-26 at 9.16.12 AM.gif"  class="center_seventy no-invert"/>
 
 ### Ripple Carry Adder
 
@@ -538,7 +538,7 @@ Hence, the `repeat` statement makes it ideal for building regular, repeated hard
 
 The following "theoretically identical" code will result in an error:
 
-<img src="{{ site.baseurl }}//docs/Labs/images/lab2/2025-11-26-08-39-26.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}//docs/Labs/images/lab2/2025-11-26-08-39-26.png"  class="center_seventy no-invert"/>
 
 The IDE is not “smart” enough to see that the `if` protects the out-of-bounds access. The static checker only sees `in[i-1`] with `i` ranging from `0` to `SIZE-1`.
 
@@ -639,11 +639,11 @@ You may test your RCA by instantiating it with a small `SIZE`, such as `SIZE = 4
 
 We connect some dips and leds to the rca's ports:
 
-<img src="{{ site.baseurl }}/docs/Labs/images/Screenshot 2025-11-26 at 10.03.23 AM.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/Screenshot 2025-11-26 at 10.03.23 AM.png"  class="center_seventy no-invert"/>
 
 And test the addition logic:
 
-<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-11-26 at 10.05.10 AM.gif"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-11-26 at 10.05.10 AM.gif"  class="center_seventy no-invert"/>
 
 
 ### 2-to-1 MUX 
@@ -806,7 +806,7 @@ module decoder2to4 (
 
 Similarly, pick the switch and LEDs to test your mux and decoder logic. You can be fancy and implement a "mode". Here we use `io_dip[2][7:6]` as output enable, to route whether to display 4-to-1 mux's output or 2-to-4 decoder's output:
 
-<img src="{{ site.baseurl }}/docs/Labs/images/Screenshot 2025-11-26 at 10.55.49 AM.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/Screenshot 2025-11-26 at 10.55.49 AM.png"  class="center_seventy no-invert"/>
 
 ```verilog
     // in alchitry_top
@@ -843,7 +843,7 @@ Similarly, pick the switch and LEDs to test your mux and decoder logic. You can 
 
 Here's the test in action. We began by testing the multiplexer, then the decoder.
 
-<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-11-26 at 11.01.56 AM.gif"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-11-26 at 11.01.56 AM.gif"  class="center_seventy no-invert"/>
 
 ## First Principles Before Generalisation 
 
@@ -866,7 +866,7 @@ Similarly, using AI tools to generate clever abstractions before you understand 
 
 In practice, most "common" hardware designs typically already exist as a library. In Alchitry labs, a generalised Decoder is provided for you.
 
-<img src="{{ site.baseurl }}//docs/Labs/images/lab2/2025-11-26-08-55-53.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}//docs/Labs/images/lab2/2025-11-26-08-55-53.png"  class="center_seventy no-invert"/>
 
 There's also an Encoder (not a mux), which is a conceptual opposite of a decoder:
 * A decoder takes a binary code and produces a one-hot output.

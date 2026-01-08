@@ -1380,6 +1380,7 @@ vvp lab1_gates_tb.vvp
 ```
 
 <img src="{{ site.baseurl }}//docs/Labs/verilog/images/lab1/2026-01-08-09-04-12.png"  class="center_full no-invert"/>
+<img src="{{ site.baseurl }}//docs/Labs/verilog/images/lab1/2026-01-08-14-03-09.png"  class="center_full no-invert"/>
 
 ### Logic gates are not written as modules
 
