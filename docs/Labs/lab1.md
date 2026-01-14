@@ -763,7 +763,7 @@ Now compare with this:
 >
 > The `sig` type is short for signal. These are used as basic connections (wiring) between parts of your design. More info about this below. 
 >
-> <img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-sig.drawio.png"  class="center_fifty"/>
+> <img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-sig.drawio.png"  class="center_thirty"/>
 
 This is a bad pattern because if `io_dip[0][0]` is `0`, then `x` will be *undefined*. Alchitry Labs will detect this (any good HDL editor would) and issue an error:
 
