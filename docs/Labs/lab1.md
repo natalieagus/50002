@@ -665,7 +665,7 @@ Two-dimensional buses:
 
 To switch on only the rightmost `io_led`, you can do *either* of the following: 
 
-```
+```verilog
     io_led[0][0] = 1
     io_led[0] = 8h1
     io_led[0] = 8b00000001
@@ -685,11 +685,10 @@ There are two input sources: button or switches. So far, we only drove led with 
 
 You can connect `input` to `output` port directly to observe its behavior:
 
-```
+```verilog
     // alchitry_top.luc
     led[4:0] = io_button
     io_led = io_dip
-
 ```
 
 <img src="{{ site.baseurl }}/docs/Labs/images/lab1/set-input-output.gif"  class="center_seventy no-invert"/>
@@ -709,7 +708,6 @@ We will not discuss how Seven Segment works in this lab. You can read [this guid
 This is a well-behaved combinational mapping because **every input pattern** has a well-defined **output pattern**:
 
 ```verilog
-
     always {
         reset_cond.in = ~rst_n  // input raw inverted reset signal
         rst = reset_cond.out    // conditioned reset
