@@ -795,7 +795,7 @@ You are probably familiar with `!`, which is a **logical** NOT (it reduces to 1-
 
 Use two DIP switches as logic inputs then drive three LEDs using different logic gates like so:
 
-```lucid
+```verilog
 always {
     led[5] = io_dip[0][0] & io_dip[0][1];  // AND
     led[6] = io_dip[0][0] | io_dip[0][1];  // OR
