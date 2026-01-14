@@ -886,10 +886,9 @@ Each sig must have exactly one driver, either:
 
 If there's conflicting assignments, the tool will take the *latest* one (written later in the code).
 
-It is important to understand that `sig` is NOT EQUAL to variables in regular programming language. 
 
 {:.important}
-`sig` does <span class="orange-bold">not</span> store values. It does not remember anything. It simply carries its current value.
+It is **important** to understand that `sig` is NOT equal to variables in regular programming language. `sig` does <span class="orange-bold">not</span> store values. It does not remember anything. It simply carries its current value.
 
 ## Array Replication and Concatenation
 We used this earlier:
