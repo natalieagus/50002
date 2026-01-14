@@ -21,7 +21,7 @@ Singapore University of Technology and Design
 # (Verilog) Lab 2: Combinational Logic
 {: .no_toc}
 
-This is a Verilog parallel of the Lucid + Alchitry Labs Lab 2. It is not part of the syllabus, and it is written for interested students only. You still need to complete all necessary checkoffs in Lucid, as stated in the original lab handout.
+This is a Verilog parallel (Verilog-2005 used) of the Lucid + Alchitry Labs Lab 2. It is not part of the syllabus, and it is written for interested students only. You still need to complete all necessary checkoffs in Lucid, as stated in the original lab handout.
 
 {:.important}
 If you are reading this document, we assume that you have already read Lab 2 Lucid version, as some generic details are not repeated. This lab has the same objectives and related class materials so we will not paste them again here. For submission criteria, refer to [the original lab 1]({{ site.baseurl }}/lab/lab2) handout.

@@ -772,7 +772,7 @@ There are two reasonable ways to do it.
 
 #### Sequential Way 
  
-This is the *simplest* way with least mental load.
+This is the *simplest* way.
 
 For each test case:
 * Set `a` and `b` to the next test vector.

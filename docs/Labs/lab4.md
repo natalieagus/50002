@@ -443,7 +443,7 @@ We will present BOTH ways to you and the pros and cons of each.
 
 ```
 
-**Pros**: You can see the state transitions well, with minimal mental load to implement.
+**Pros**: You can see the state transitions well, with minimal mental gymnastics to implement.
 
 **Cons**: You lose the global reset [for this reason](https://natalieagus.github.io/50002/fpga/fpga_1_2024) and you basically make your FSM *unresponsive* by running on such a **SLOW** clock.
 
@@ -490,7 +490,7 @@ The `io_button[0]` manual reset signal should be valid across *rising edge* of `
 #### Method 2: use `slow_clock` as `input` with `edge_detector`
 
 {:.highlight}
-This method is your instructors' preferred way, but it has way higher mental load to master.
+This method is your instructors' preferred way, but it has way higher learning curve to master.
 
 In this method, we run `simple_fsm` with the original `clk` signal, but add conditional logic to **transition** within each case only when `slow_clock` <span class="orange-bold">edge</span> is `1`. This way our FSM remains *responsive* and only conditionally transition when `slow_clock` is `1`.
 
