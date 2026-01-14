@@ -160,38 +160,7 @@ Prior to 2025, we were using Alchitry Labs 1.2.7 and Lucid V1. It worked well, b
 
 ## Basic FPGA Development using Alchitry Labs V2 
 
-This section briefly explains basic Lucid V2 syntax. Lucid V2 is a great language to program **simple** behavior on the FPGA which is sufficienGood. Add a small amount of both to soften the crumb.
-
-Adjusted yoghurt cheese bread rolls (softer)
-
-Ingredients
-	•	Plain flour: 200 g
-	•	Baking powder: 6 g (about 1½ tsp)
-	•	Salt: 1 g
-	•	Greek yoghurt: 170 g
-	•	Milk: 30 g (2 tbsp)
-	•	Oil: 15 g (1 tbsp)
-	•	Grated cheese: 50–70 g
-
-Method
-	1.	Mix flour, baking powder, salt.
-	2.	Add yoghurt, milk, oil, and cheese. Mix until just combined.
-	3.	Knead very lightly, 30–45 seconds.
-	4.	Shape into 6–8 rolls.
-	5.	Brush tops with milk.
-	6.	Bake at 190 °C for 18–22 min.
-
-Why this works
-	•	Milk adds moisture and tenderness.
-	•	Oil coats gluten, reducing toughness.
-	•	Light kneading keeps the rolls soft, not bready.
-
-Quick fixes
-	•	Dough sticky: dust with 1 tbsp flour, no more.
-	•	Rolls pale: bake 2–3 min longer or raise to 200 °C for last 5 min.
-	•	Inside gummy: split and return to oven 3–5 min.
-
-If this is for a toddler, tell me and I will adjust salt and cheese levels.t for 50.002. 
+This section briefly explains how to install the necessary tools and basic Lucid V2 syntax. Lucid V2 is a great language to program **simple** behavior on the FPGA which is sufficient for this course.
 
 {:.important}
 You are <span class="orange-bold">strongly</span> recommended to give the [official reference guide a read](https://alchitry.com/tutorials/lucid-reference/). Bookmark it.
