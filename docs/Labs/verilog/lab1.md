@@ -1271,7 +1271,7 @@ Single-bit logic gates in Verilog use **bitwise** operators:
 | Gate | Operator | Description                                 |
 | ---- | -------- | ------------------------------------------- |
 | AND  | `&`      | Output is 1 only if both inputs are 1       |
-| OR   | `\|`     | Output is 1 if either input is 1            |
+| OR   | <code>&#124;</code>     | Output is 1 if either input is 1            |
 | XOR  | `^`      | Output is 1 if the inputs are different     |
 | NOT  | `~`      | Bitwise invert (recommended for “gate NOT”) |
 

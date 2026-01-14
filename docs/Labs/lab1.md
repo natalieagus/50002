@@ -782,7 +782,7 @@ Single-bit logic gates in HDL use <span class="orange-bold">bitwise</span> opera
 | Gate | Operator | Description |
 |---|---|---|
 | AND | `&` | Output is 1 only if both inputs are 1 |
-| OR  | `\|` | Output is 1 if either input is 1 |
+| OR  | <code>&#124;</code> | Output is 1 if either input is 1 |
 | XOR | `^` | Output is 1 if the inputs are different |
 | NOT | `~` | Inverts a single bit |
 
