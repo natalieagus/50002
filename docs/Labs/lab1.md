@@ -761,7 +761,7 @@ Now compare with this:
 {:.note-title}
 > Sig
 >
-> The `sig` type is short for signal. These are used as basic connections (wiring) between parts of your design. More info about this below. 
+> The `sig` type is short for signal. These are used as basic connections (wiring) between parts of your design. More info about [this](#internal-sig) below. 
 >
 > <img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-sig.drawio.png"  class="center_thirty"/>
 
