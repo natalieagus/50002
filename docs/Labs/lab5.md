@@ -110,7 +110,7 @@ The ALU can perform the following 13 arithmetic operations based on `ALUFN` sign
 ### ALU Implementation Requirement
 
 {: .warning}
-> You are <span style="color:red; font-weight: bold;">NOT</span> allowed to use **any** of Lucid's **math** and **comparison** operators when implementing this lab's ALU 13 functionalities. This is the requirement of your 1D project because we would like you to learn the basics and not solely rely on Vivado's capability on creating components of the ALU. Please [give the 1D project handout a read](https://natalieagus.notion.site/1D-Project-Part-2-Electronic-Hardware-Prototype-EHP-30-d2b68e992aca4020ad84020e7df002cb) for further information. 
+> You are <span style="color:red; font-weight: bold;">NOT</span> allowed to use **any** of Lucid's **math** and **comparison** operators when implementing this lab's ALU 13 functionalities. This is the requirement of your 1D project because we would like you to learn the basics and not solely rely on Vivado's capability on creating components of the ALU. Please [give the 1D project handout a read](https://natalieagus.github.io/50002/project/1d/checkoff-1) for further information. 
 > 
 > Please follow the implementation of the units **from the given schematics in this lab**. For instance, you shouldn't implement shifts (SHL, SHR, SRA) trivially using `>>` and `<<`, and you should't implement ADD and SUB using `+` or `-`, etc. Instead you should create a ripple carry adder unit to implement ADD/SUB functionality, and create the shifter unit using multiplexers as shown in this handout. 
 > 
@@ -1134,14 +1134,16 @@ Ensure your ALU works as expected in the simulator using automated tester.
 - It has a forced-error switch that will <span class="orange-bold">STOP</span> the automated tester immediately, and you can restart it
 - It should be able to report the index/any indication of the test case id at **human-readable rate**
 - You may use the `io_buttons` to display the alu/test output, 8-16 bits at a time (optional)
-- Ensure you fulfill the requirement as stated in [1D Checkoff 1: ALU](https://natalieagus.notion.site/50-002-1D-Project-Electronic-Hardware-Prototype-EHP-30-d2b68e992aca4020ad84020e7df002cb#5d4ea4251fa142dfafc9fb27725ae5c1) handout
-
+- You should be able to <span class="orange-bold">simulate error cases</span> like you did in the previous lab when you build the automated adder tester
+  - Use a dip switch to induce an error, like bit-flipping the ALU output before feeding it to the automated tester
+  - Your tester should stop immediately or report the error index id later
+  
 You can reuse the automated fsm and datapath tester you built in the previous lab to make the automated ALU tester. Simply change the interface (to support 32 bits) and create alu test cases instead. Here we use `io_dip[2][6]` to switch between **manual** mode and **automated mode**. 
 
 <img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-12-09 at 11.04.15 AM.gif"  class="center_seventy no-invert"/>
 
 
-{:note-title}
+{:.note-title}
 > Simulation tips
 >
 > Your simulator will lag terribly with such a large scale multiplier module. You may TEMPORARILY disable your multiplier unit and replace it with `a*b` so that your simulator that tests the ALU functionalities runs faster. Of course this should be done only after extensively testing your multiplier module as a standalone so you already know that your design works!
@@ -1165,7 +1167,7 @@ Ensure your automated tester works as intended on hardware too:
 
 Congratulations 🎉🎉! You have successfully built a 32-bit ALU in this lab and familiarse yourself with programming FPGA with Lucid. You will be required to **utilise it** in Lab 4 (Beta CPU), so **please keep a copy of your answer**. 
 
-**For your 1D project, you need to demonstrate a working ALU in your Alchitry Au FPGA hardware (not simulator!)**. Both your manual and automated simulator must work on hardware. Read the FPGA tutorials linked in our course handout for further information, and don't forget to polish your knowledge on Sequential Logic before proceeding. 
+**For your 1D project, you need to demonstrate a working ALU in your Alchitry Au FPGA hardware (not simulator!)**. **Both** your manual and automated simulator must work on hardware. Read the FPGA tutorials linked in our course handout for further information, and don't forget to polish your knowledge on Sequential Logic before proceeding. 
 
 Carefully **consult Checkoff 1: ALU** schedule, requirements and rubrics given in the course handout. <span class="orange-bold">Do not miss your checkoff slot</span>. 
 
@@ -1187,12 +1189,13 @@ As a recap, to get full marks for this lab and **1D Project Checkoff 1: ALU** yo
 
 - **1D Project Checkoff 1: ALU (3%)**
   - The **same** ALU must have a working **manual** and **automated** tester on the **FPGA HARDWARE**.
+  - Don't forget the error case requirement, read the [1D checkoff 1 handout and rubrics](https://natalieagus.github.io/50002/project/1d/checkoff-1) for more details
 
 
 Unless otherwise specified, all ALU checkoff marks (2% lab implementation + 3% 1D ALU) are awarded **per 1D project group**. The eDimension questionnaire is graded per individual.
 
 {:.important}
-[Give the 1D handout a read](https://natalieagus.notion.site/50-002-1D-Project-Electronic-Hardware-Prototype-EHP-30-d2b68e992aca4020ad84020e7df002cb) before Checkoffs to ensure that you don't miss any information or requirements. 
+[Give the 1D handout a read](https://natalieagus.github.io/50002/project/1d/checkoff-1) before Checkoffs to ensure that you don't miss any information or requirements. 
 
 **For 1D Checkoff 1**: ALU, you're ALSO required to create **additional** functionalities. You **are allowed** to use Lucid math and comparison operator for this **NEW** functionality. For example, if your new operation involves `ROTATE_SHIFT` between A and B, you're allowed to implement it as follows:
 
