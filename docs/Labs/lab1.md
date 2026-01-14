@@ -272,6 +272,8 @@ module alchitry_top (
 - `led[8]`: 8 bit output signal mapped to each of the 8 LED on the FPGA
 - `usb_tx`: serial output port of the FPGA (USBC)
 
+<img src="{{ site.baseurl }}/docs/Labs/images/Screenshot 2026-01-14 at 2.05.50 PM.png"  class="center_seventy no-invert"/>
+
 In the `reset_conditioner` module, we have 3 ports (2 inputs and 1 output)
 
 ```verilog
