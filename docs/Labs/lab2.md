@@ -34,7 +34,7 @@ By the end of this lab, you should be able to:
 8. Interpret `if` and `case` in Lucid as specifications of combinational selection logic, and relate them directly to muxes, decoders, and enable signals.
 
 ### Submission
-Complete the Lab 2 [**checkoff**](#checkoff) (1%) with your Cohort TA before the next lab session ends. The checkoff is assessed **individually**, but you should attend together with your **project team** so that everyone in the group understands the full workflow and expectations for the 1D project.
+Complete the Lab 2 [**checkoff**](#checkoff) (1%) with your Cohort TA before the end of next Friday, 6PM (unless otherwise stated). The checkoff is assessed **individually**, but you should attend together with your **project team** so that everyone in the group understands the full workflow and expectations for the 1D project.
 
 Complete **questionnaire** on eDimension as well (2%).
 

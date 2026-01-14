@@ -31,7 +31,7 @@ By the end of this lab, we should be able to:
 * Build an automated tester that increments test cases, samples inputs over multiple cycles, compares pipelined outputs, halts on mismatch, and restarts reliably via a button press.
 
 ### Submission
-Complete the Lab 4 **checkoff** (2%) with your Cohort TA before the next lab session ends. You should demonstrate the required task under the [Checkoff](#checkoff) section below. Unlike the previous labs, from this lab onwards, the checkoff is assessed **AS A GROUP** as it requires the FPGA hardware. 
+Complete the Lab 4 **checkoff** (2%) with your Cohort TA before the end of next Friday, 6PM (unless otherwise stated). You should demonstrate the required task under the [Checkoff](#checkoff) section below. Unlike the previous labs, from this lab onwards, the checkoff is assessed **AS A GROUP** as it requires the FPGA hardware. 
 
 Complete **questionnaire** on eDimension as well (2%).
 

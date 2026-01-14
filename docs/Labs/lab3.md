@@ -37,7 +37,7 @@ By the end of this lab, you should be able to:
 * Account for **pipeline latency** by aligning expected outputs with the number of clock boundaries in the datapath.
 
 ### Submission
-Complete the Lab 3 **checkoff** (2%) with your Cohort TA before the next lab session ends. The checkoff is assessed **individually**, but you should attend together with your **project team** so that everyone in the group understands the full workflow and expectations for the 1D project.
+Complete the Lab 3 **checkoff** (2%) with your Cohort TA before the end of next Friday, 6PM (unless otherwise stated). The checkoff is assessed **individually**, but you should attend together with your **project team** so that everyone in the group understands the full workflow and expectations for the 1D project.
 
 Complete **questionnaire** on eDimension as well (2%).
 

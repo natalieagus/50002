@@ -32,7 +32,7 @@ By the end of this lab, you should be able to:
 
 
 ### Submission
-Complete the lab 6 **checkoff** (2%) with your Cohort TA before the next lab session ends. You should demonstrate the required task under the [Checkoff](#checkoff) section below. The checkoff is assessed **AS A GROUP** as it requires the FPGA hardware.
+Complete the lab 6 **checkoff** (2%) with your Cohort TA before the end of next Friday, 6PM (unless otherwise stated). You should demonstrate the required task under the [Checkoff](#checkoff) section below. The checkoff is assessed **AS A GROUP** as it requires the FPGA hardware.
 
 Complete **questionnaire** on eDimension as well (2%).
 
