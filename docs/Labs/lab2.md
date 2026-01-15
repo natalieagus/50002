@@ -34,7 +34,7 @@ By the end of this lab, you should be able to:
 8. Interpret `if` and `case` in Lucid as specifications of combinational selection logic, and relate them directly to muxes, decoders, and enable signals.
 
 ### Submission
-Complete the Lab 2 [**checkoff**](#checkoff) (1%) with your Cohort TA before the end of next Friday, 6PM (unless otherwise stated). The checkoff is assessed **individually**, but you should attend together with your **project team** so that everyone in the group understands the full workflow and expectations for the 1D project.
+Complete the Lab 2 [**checkoff**](#checkoff) (2%) with your Cohort TA before the end of next Friday, 6PM (unless otherwise stated). The checkoff is assessed **individually**, but you should attend together with your **project team** so that everyone in the group understands the full workflow and expectations for the 1D project.
 
 Complete **questionnaire** on eDimension as well (2%).
 
@@ -177,7 +177,7 @@ But for the lab, it is more important that you see how to **construct** a 4:1 MU
 * **Second stage**: a final 2:1 MUX selects between those two intermediate results using `S1`
 
 
-<img src="{{ site.baseurl }}/docs/Labs/images/lab2/cs-2026-50002-4-to-1 mux.drawio-2.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/lab2/cs-2026-50002-4-to-1 mux.drawio.png"  class="center_fifty"/>
 
 
 {:.note-title}
@@ -926,14 +926,14 @@ Demonstrate to your TA that your 4-bit RCA, 4-to-1 MUX, and 2-to-4 Decoder works
 
 You can choose to use any LEDs/switches on the IO Shield.
 
-### QnA Protocol
+### QnA Protocol (1%)
 
 During the checkoff, the TA will ask **at most two questions** about the code that you personally wrote. You have **one attempt per question**.
 
 * If you answer the first question correctly, no second question will be asked.
 * If you answer the first question incorrectly, you will be given exactly **one more question**.
 
-Grading is therefore **binary**: 1% if you answer at least one correctly, 0% if you answer both incorrectly. This applies to ALL checkoffs in the future labs as well.
+Grading for QnA is therefore **binary**: 1% if you answer at least one correctly, 0% if you answer both incorrectly. This applies to ALL checkoffs in the future labs as well.
 
 {:.highlight}
 **Schedule** a checkoff with your TA anytime before the end of next week's lab as a 1D group. The checkoff is graded **individually** but to aid logistics and to ensure everyone in the group is on the same page, you are **required** to **attend** the checkoff together as a 1D group. It will take about 15 minutes in total for the whole group to clear a checkoff on average.

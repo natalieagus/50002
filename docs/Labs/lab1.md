@@ -37,7 +37,7 @@ By the end of this lab, you should be able to:
 * Build intuition for **bit flow** from inputs through logic to outputs
 
 ### Submission
-There's no code submission/checkoffs for this lab. Simply complete the Lab Questionnaire (3%) on eDimension.
+There's no code submission/checkoffs for this lab. Simply complete the Lab Questionnaire (2%) on eDimension.
 
 ### Starter Code
 There's no starter code for this lab. You simply need to have [Alchitry Labs V2](https://alchitry.com/alchitry-labs/) installed. You don't need Vivado for this lab, we are only going to run simulations. 
@@ -1197,5 +1197,5 @@ We have learned quite a few things:
 In the next lab, we will use the same ideas to build a **multi-bit combinational system**: a ripple-carry adder, multiplexers, and decoders.
 
 {:.highlight}
-Head to eDimension to complete questionnaires (3%) related to this lab.
+Head to eDimension to complete questionnaires (2%) related to this lab.
 
