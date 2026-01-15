@@ -981,9 +981,9 @@ Automatic fixing does **not** apply to dimension mismatches.
 io_led[0] = io_dip    // INVALID
 ```
 
-Here the problem is not just width but **structure**. You are trying to connect a 2-dimensional bus into a 1-dimensional bus. Lucid will reject this.
+Here the problem is not just width but **structure**. You are trying to connect a 2-dimensional bus into a 1-dimensional bus. Alchitry Labs V2 will show an error with this.
 
-You must explicitly select one *row*:
+Instead, you must explicitly select one *row*:
 
 ```verilog
 io_led[0] = io_dip[0]
@@ -992,7 +992,7 @@ io_led[0] = io_dip[0]
 
 ### The understanding that must NOT change
 
-Even though Lucid may auto-truncate or auto-extend for you, the physical reality is still this:
+Even though Lucid may auto-truncate or auto-extend for you, the physical reality (once you compile and build for the FPGA) is still this:
 
 * Every signal is a fixed number of **wires**
 * Every assignment is connecting **specific wires to specific wires**
