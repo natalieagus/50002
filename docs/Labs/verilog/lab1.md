@@ -304,7 +304,11 @@ module parent (
 endmodule
 ```
 
+The syntax is simple:
 
+```verilog
+  <module_type> <instance_name>(.<port_name>(<value>),...)
+```
 In HDL, *instantiation* is like placing a component on a circuit: like when you want to build a computer and you "instantiate" (buy) a CPU, few RAM sticks, and GPU.
 
 The port connections (the `.a(a)` and `.y(y_internal)`) are literally “wiring it up”
@@ -1810,6 +1814,54 @@ Without an event control (`@(...)`, `@*`) or a delay (`#...`), this can become a
 
 If you later move to SystemVerilog, these forms add extra safety checks. For this lab we stick to Verilog-2005 (`iverilog -g2005`), so we use `always @*` and `always @(posedge clk ...)`.
 
+
+## A Caveat: Evaluation Order
+
+{:.note}
+Combinational `always` is parallel hardware, but **blocking** (`=`) assignments are resolved in order. 
+
+In Verilog, the hardware you build is still just wires and gates operating in parallel. There is no “line 1 runs, then line 2 runs” at runtime. However, inside a combinational `always @*` block, **blocking assignments (`=`) are evaluated in order**.
+
+{:.highlight}
+That ordering affects what value is used when you read a signal in the middle of the block, even though the final result is still a purely combinational circuit.
+
+Consider this tricky example:
+
+```verilog
+module foo (
+    input  wire a,
+    output reg  out,
+    output reg  cval
+);
+
+    wire c_value;
+    counter c (.clk(1'b0), .rst(1'b0), .value(c_value));
+
+    reg x;
+
+    always @* begin
+        x    = a;
+        out  = x;
+
+        x    = c_value;
+        cval = c_value;
+    end
+endmodule
+```
+
+Even though `out` is assigned from `x`, it does not “follow” the later change to `x` the way pointer does in software. When the simulator and synthesis tool *EVALUATE* `out = x;`, the current value of `x` is the one from `x = a;`, so `out` becomes a function of `a`. 
+
+The later line `x = c_value;` overwrites `x`, but it does <span class="orange-bold">not</span> retroactively change what `out` was computed from earlier in the same block.
+
+After synthesis, the circuit is effectively equivalent to:
+
+```verilog
+assign out  = a;
+assign x    = c_value;
+assign cval = c_value;
+```
+
+This is why the common best practice is “defaults first, overrides later.” If you want `out` to depend on `c_value`, you must assign `x = c_value` before `out = x`, or drive `out` directly from `c_value`.
 
 
 ## Summary

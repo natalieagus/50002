@@ -1113,6 +1113,67 @@ All these assignments are **in effect at the same time**.
 * There is <span class="orange-bold">no</span> “first do io_led, then compute AND, then compute OR.”
 * The hardware is just a bunch of **parallel** wires and gates.
 
+## A Caveat: Evaluation Order
+
+{:.note}
+`always` describes parallel hardware, but Lucid/Verilog/other HDL compilers resolves assignments in order.
+
+A common confusion is thinking that if you write `out = x` and *later* you change `x`, then `out` should automatically “follow” the new `x`. That would be true if `x` were a normal programming variable (like a **pointer**). 
+
+In Lucid/HDL, `sig` or equivalent is <span class="orange-bold">NOT</span> a stored variable, it is a named wire driven by logic, and an `always` block is not a sequence of runtime steps. The FPGA hardware is always **parallel**. However, the  compiler still has to decide **what** each signal is connected to, and it does that by processing the `always` block from <span class="orange-bold">top to bottom</span>, using the pattern “set defaults first, then override later.”
+
+Consider this tricky example:
+
+```verilog
+module foo (
+    input clk, 
+    input rst,
+    input  a,
+    output out,
+    output cval
+) {
+    sig x
+
+    counter c(.clk(clk), .rst(rst))
+
+    always {
+        x = a
+        out = x
+
+        x = c.value
+        cval = c.value
+    }
+}
+```
+
+{:.highlight}
+Would `out` be the same as `c.value` since they both refer to `x`?
+
+After synthesis, there is no notion of “line 1 runs, then line 2 runs" and everything becomes fixed connections. 
+
+The key is that the line `out = x` connects `out` to whatever `x` means AT THAT POINT in the `always` block. At that moment, the most recent definition of `x` is `x = a`, so `out` *becomes* connected to `a`. 
+
+When the compiler later sees `x = c.value`, it updates the driver of `x` (the wire `x` now comes from `c.value`), but it does *not* go back in time and rewrite the already-constructed connection for `out`.
+
+So the **final hardware connections** are effectively:
+
+```verilog
+out  = a
+x    = c.value
+cval = c.value
+```
+
+This is why it is best practice to write `always` blocks in a “defaults then overrides” style. If you want `out` to use the counter value, you must place that assignment before `out = x`, or just drive `out` directly:
+
+```verilog
+always {
+    x = c.value
+    out = x
+    cval = c.value
+}
+```
+
+It is important to undertand that** the hardware is parallel**, but the `always` block is an <span class="orange-bold">ordered description</span> that the <span class="orange-bold">compiler</span> uses to construct those parallel connections.
 
 
 ## Summary
