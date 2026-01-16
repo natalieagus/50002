@@ -471,7 +471,7 @@ The [`repeat` statement](https://alchitry.com/tutorials/lucid-reference/#repeat)
 
 They take the following form:
 
-```
+```verilog
 repeat(i, count, start = 0, step = 1) {
     statements
 }
@@ -524,7 +524,6 @@ This is equivalent to writing:
 ```verilog
    always {
       out[0] = 0
-      
       out[1] = in[0]
       out[2] = in[1]
       out[3] = in[2]
@@ -899,7 +898,7 @@ The first one assigned `s0` to BOTH `s` ports. The second one is trying to drive
 
 This is why you need to always **MATCH** signal width assignments. Otherwise, try not to be fancy and write each assignment out without selectors:
 
-```
+```verilog
 mux2to1.s[0] = s0
 mux2to1.s[1] = s0
 ```
