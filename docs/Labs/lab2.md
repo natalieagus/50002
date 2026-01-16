@@ -287,9 +287,9 @@ Remember to always select the base project with **pulldowns**. This is to ensure
 Then we will build the modules in the following order
 * 1-bit full adder
 * N-bit adder using full adder
-* Mux
-* Mux4 using Mux
-* Decoder1to
+* Mux2
+* Mux4 using Mux2
+* Decoder1to2
 * Decoder2to4 using Decoder1to2
 
 ### Testing reminder

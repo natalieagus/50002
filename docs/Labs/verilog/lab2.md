@@ -70,8 +70,8 @@ $$
 We will build the modules in the following order:
 * Full adder
 * N-bit adder using full adder
-* Mux
-* Mux4 using Mux
+* Mux2
+* Mux4 using Mux2
 * Decoder1to
 * Decoder2to4 using Decoder1to2
 
