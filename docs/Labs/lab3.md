@@ -129,7 +129,7 @@ Now this is a simplified diagram of a digital circuit. It is essentially a *fact
 {:.note-title}
 > Dynamic discipline
 >
-> A well designed dff is a time boundary between stages, allowing data to advance only on a clock edge.
+> A well designed dff is a <span class="orange-bold">time boundary</span> between *stages*, allowing data to advance only on a clock edge.
 
 In this way, incomplete or intermediate values are *NEVER* observed outside the stage. Only **fully settled** results are allowed to move forward in time.
 
@@ -137,7 +137,8 @@ In this way, incomplete or intermediate values are *NEVER* observed outside the 
 In this lab, we will use dffs to construct registers and create our first clocked circuits. With this, we should begin to see our design not as a collection of gates, but as a machine that moves *forward* one step at a time, **on each clock edge**.
 Although many signals may exist in parallel, **the system progresses in a sequence of moments**. 
 
-*Each clock edge represents ONE new state. *
+
+> *Each clock edge represents ONE new state.*
 
 This way of thinking will form the basis of state machines in the next lab.
 
@@ -147,8 +148,7 @@ In this lab we will use the Lucid `dff` object as our basic building block for c
 
 Create a new base IO v1 project with pull down, then let's test its behavior right away. Here we instantiate 8 dffs (8-bit dff) and initialise its value into 0:
 
-```
-
+```verilog
 module alchitry_top (
     // regular ports 
 ) {
@@ -180,12 +180,15 @@ Run the simulation and you should observe this:
 
 The schematic of an 8-bit dff is none other than 8 dffs instantiated in parallel like so:
 
-<img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-Page-11.drawio.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-Page-11.drawio.png"  class="center_full"/>
 
 However Lucid simplifies this and make it 1-dimensional output instead of 8 by 1 array.
 
 ### Adjust simulation clock rate and observe `dff` behavior
-From the get-go, `io_led[0]` is flickering very rapidly because it displays the value of `dff y` that's changing *every* clock cycle (of 1000Hz). You can press pause as shown above and change the simulation clock rate to observe more visible changes on `io_led[0]`, that is to increment the value in `dff y` slowly. On the contrary, `dff x` is set to always maintain its value by connecting it's `d` port to `q` port.
+
+From the get-go, `io_led[0]` is flickering very rapidly because it displays the value of `dff y` that's changing *every* clock cycle (of 1000Hz from the simulator). You can press **pause** as shown in the gif above and change the simulation clock rate to observe more visible changes on `io_led[0]`, that is to increment the value in `dff y` slowly. 
+
+On the contrary, `dff x` is set to always maintain its value by connecting it's `d` port to `q` port.
 
 `dff` behavior you should observe:
 * A `dff` holds a value across clock cycles.
@@ -199,7 +202,7 @@ From the get-go, `io_led[0]` is flickering very rapidly because it displays the 
 
 A common use case is to capture certain input state into a `dff`. For example, to store the state of current `io_dip[0]` when `io_button[0]` is pressed.
 
-```
+```verilog
     io_led[0] = y.q // display y's output 
     y.d = y.q // loop under normal circumstances
     if (io_button[0]){
@@ -219,7 +222,7 @@ When an FPGA powers up, internal registers may contain undefined values. Even th
 This ensures that:
 
 1. ALL state elements start from a consistent baseline.
-2. The system behaves IDENTICALLY on every power-up.
+2. The system behaves **IDENTICALLY** on every power-up.
 3. Debugging becomes reproducible, since your circuit does not depend on random startup states.
 4. Multi-register designs do not enter illegal or unintended states.
 
@@ -230,7 +233,7 @@ Therefore, connecting the `rst` input of each `dff` to the global `rst` signal i
 
 If you'd like to set `dff` value to some initial value within your project, that's simply *writing* a deterministic value to the `dff` and NOT a reset, as such:
 
-```
+```verilog
     sig game_restart
 
     always {
@@ -242,7 +245,6 @@ If you'd like to set `dff` value to some initial value within your project, that
             y.d = 0
         }
     }
-
 ```
 
 {:.note}
@@ -262,16 +264,18 @@ In real systems, inputs are not provided manually, and outputs are not inspected
 
 Instead, data arrives as a **time-ordered sequence**, one set of values per clock cycle. Each set is **sampled** at a clock edge, processed, and then passed forward on the next edge. Remember, just like an assembly line. Real digital systems behave like a highly automated **factory**.
 
+{:.highlight}
 > In other words, although the signals are parallel in space, they are *serial* in time.
 >
-> At any *one* instant in time, the system is handling **N** bits in parallel. *That is spatial parallelism*. Over successive clock cycles, those N-bit values arrive one after another. *That is temporal serialism*.
+> At any *one* instant in time, the system is handling **N** bits in parallel. *That is spatial parallelism*. 
+> Over successive clock cycles, those N-bit values arrive one after another. *That is temporal serialism*.
 
 To support this behaviour, combinational logic is placed **between** registers (a block of dffs). 
-- The registers define pipeline stages. 
+- The registers define pipeline **stages**. 
 - At each clock edge, a new input set enters the pipeline, and the result of the previous set moves to the next stage. 
 - Values are captured, held, and transferred forward only on clock edges.
   
-This structure is known as a **pipeline**.
+This structure is known as a **pipeline**. 
 
 ### Simple Registered Adder
 
