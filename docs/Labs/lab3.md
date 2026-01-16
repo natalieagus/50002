@@ -118,8 +118,8 @@ A clocked circuit can be viewed like an assembly line.
 Now this is a simplified diagram of a digital circuit. It is essentially a *factory assembly line*, where each station contains combinational logic and each DFF acts a **gatekeeper** of time.
 
 ```
-        clk            clk            clk
-         |              |              |
+   clk                       clk                        clk
+    |                         |                          |                  
 [ DFF ] ---> [ COMB ] ---> [ DFF ] ---> [ COMB ] ---> [ DFF ]
   Stage 0      Logic       Stage 1      Logic       Stage 2
     (Input)     (RCA)       (Result)     (...)        (Output)
