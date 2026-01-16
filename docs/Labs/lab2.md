@@ -402,7 +402,13 @@ module rca #(
 In hardware description languages, bit ranges are written in **big:small** order:
 
 ```verilog
-data[7:0]   // 8-bit bus, from bit 7 (MSB) down to bit 0 (LSB)
+sig data[8] // declaration
+
+// usage options
+// assume out is an 8-bit port
+out = data  // without bit selector 
+out = data[7:0]   // with bit selector, to select from bit 7 (MSB) down to bit 0 (LSB)
+out = c{3b0, data[4:0]} // with bit selector and array concatenation
 ```
 
 This is **NOT** the same mentality as Java, C, or Python arrays. In software:
@@ -449,7 +455,7 @@ You should read the [selector documentation](https://alchitry.com/tutorials/luci
 Actually, "indexing" better described as **bit selection** and **bit-range selection**, *not array indexing in the software sense*.
 * `data[3]` is a **bit selector**. You are selecting a single bit.
 * `data[7:3]` is a **part-select** or **bit-range selector**.
-* `data[7:0]` is a **bus declaration / range declaration**.
+* `sig data[8]` is a **bus declaration / range declaration**.
 
 {:.note}
 Calling bit selection “array indexing” might import the wrong mental model from software and leads to confusion. 
