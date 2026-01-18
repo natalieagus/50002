@@ -15,18 +15,27 @@ code {
   // }
 }
 
-p code {
-  white-space: normal; /* Allows wrapping */
-  word-break: break-word; /* Optional: breaks long words if needed */
+/* Inline code (NOT fenced blocks) */
+:not(pre) > code {
+  white-space: normal;          /* wrap with surrounding text */
+  overflow-wrap: anywhere;      /* break long tokens if needed */
+  word-break: break-word;       /* fallback */
 }
 
+/* Fenced code blocks (``` ... ```) */
+pre {
+  white-space: pre;             /* do not wrap */
+  overflow-x: auto;             /* horizontal scroll */
+  -webkit-overflow-scrolling: touch;
+}
 
-pre, code {
-   white-space: pre-wrap;       /* Allow wrapping */
-   word-wrap: break-word;
-   overflow-x: auto;            /* Scroll if needed */
-   word-break: break-word;
- }
+/* Make sure the <code> inside <pre> doesn't override the <pre> */
+pre code {
+  white-space: inherit;
+  overflow-wrap: normal;
+  word-break: normal;
+  display: block;
+}
 
 
 // Avoid appearance of dark border around visited code links in Safari
