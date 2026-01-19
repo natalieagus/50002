@@ -372,7 +372,7 @@ The registered adder produces an output that is:
 
 This kind of output is essential when the result is used by another clocked block, which expects it to be stable, for example: a comparator block after the registered adder block.
 
-<img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-Page-12.drawio-2.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-Page-12.drawio-2.png"  class="center_full"/>
 
 In contrast, the unregistered adder reacts immediately to every flicker of the input. That makes it appear “responsive” but it is actually unreliable and unsynchronised. Its output *cannot* be reliably consumed by other logic without additional timing control.
 
@@ -451,7 +451,6 @@ When instantiating this module, you can connect one of the `io_button` to the `e
 ```verilog
     // alchitry_top
     registered_rca_en rr_en(.a(io_dip[0]), .b(io_dip[1]), .clk(clk), .rst(rst),.enable(io_button[0]))
-
 
     always {
 
