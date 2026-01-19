@@ -878,9 +878,15 @@ In digital systems, this is commonly implemented using a counter (a bank of D fl
 * Bit `2` toggles at $$\frac{f}{8}$$
 * Bit `n` toggles at $$\frac{f}{2^{n+1}}$$
 
-By selecting one of these bits as a new clock signal, the original frequency is effectively divided. The figure below illustrates how frequency division works. You can connect these flip flops in series to further divide the frequency by powers of 2.
+By selecting one of these bits as a new clock signal, the original frequency is effectively divided. The figure below illustrates how frequency division works. 
 
-<img src="{{ site.baseurl }}/docs/Labs/images/counter-cou1.gif"  class="center_seventy no-invert"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/counter-cou1.gif"  class="center_seventy"/>
+
+You can connect these flip flops in series to further divide the frequency by powers of 2.
+
+<img src="{{ site.baseurl }}/docs/Labs/images/cascadeclockdivider.png"  class="center_seventy"/>
+
+> Image credits: [1](https://www[.electronics-tutorials.ws/counter/count_1.html), 2](https://digilent.com/reference/learn/programmable-logic/tutorials/use-flip-flops-to-build-a-clock-divider/start?srsltid=AfmBOoqKwrVsI9_gpBQugcQTmjmEzI9H0TWfU5db6Yw6-Kat1cF0KiQa)
 
 In this lab, the `counter` component acts as a **black-box frequency divider** whose only purpose is to slow the FPGA’s clock down to a rate that is observable to the human eye.
 
