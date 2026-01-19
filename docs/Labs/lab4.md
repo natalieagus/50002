@@ -327,7 +327,7 @@ They will be auto computed as `b00, b01, b10, b11`.
 ### Create the state `dff`
 
 {:.note-title}
-> The $width function and $clog2 function
+> The `$width` function and `$clog2` function
 > 
 > The `$width` function can be used on an `enum` to get the **minimum** number of bits to store a state value. If you have 8 states, then `$width(States)` returns `3`. Alternatively, you can use `$clog2(NUM_STATES)` if you know `NUM_STATES` from the start.
 
