@@ -343,7 +343,7 @@ In the `always` body, all you need to do is to use the `case` statement to set t
 
 You can implement any logic you want in each state, but best if you stick to if-else or boolean logic so as not to blow up your design. Here's an example of a simple FSM with 4 states, that increment some `index` register 3 times before going to `HALT`.
 
-It has two outputs: 8-bit `led_indicator` and 2-bit `index_value` that's set at each state
+It has two outputs: 8-bit `led_indicator` and 2-bit `index_value` that determines the transition logic (whether to continue `LOOP` or `HALT`):
 
 
 ```verilog
@@ -400,7 +400,11 @@ module simple_fsm (
 For more examples, you're encouraged to read this [Alchitry official tutorial](https://alchitry.com/tutorials/roms-and-fsms/).
 
 {:.note}
-Curb the urge to overcomplicate things. An FSM is **super simple**: you only need a `state dff` and a whole bunch of `case` statements. Within the `case` statement, you should specify ALL output signals. Ideally, you should have minimal logic within the FSM `cases`, that is: <span class="orange-bold">avoid</span> the urge to perform complex arithmetic operations like addition and multiplication there. This should be done in the datapath. You will learn more about this in the following weeks.
+> Curb the urge to overcomplicate things. 
+> 
+> An FSM is **super simple**: you only need a `state dff` and a whole bunch of `case` statements. Within the `case` statement, you should specify ALL output signals. 
+> 
+> Ideally, you should have minimal logic within the FSM `cases`, that is: <span class="orange-bold">avoid</span> the urge to perform complex arithmetic operations like addition and multiplication there. This should be done in the datapath. You will learn more about this in the following weeks.
 
 ### Test the FSM in Simulator
 
