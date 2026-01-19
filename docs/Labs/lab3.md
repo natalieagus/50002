@@ -448,7 +448,7 @@ module registered_rca_en#(
 
 When instantiating this module, you can connect one of the `io_button` to the `enable` signal.
 
-```
+```verilog
     // alchitry_top
     registered_rca_en rr_en(.a(io_dip[0]), .b(io_dip[1]), .clk(clk), .rst(rst),.enable(io_button[0]))
 
@@ -523,7 +523,7 @@ If you wish, you can `print` the signals as well as shown above. You should see 
 
 <img src="{{ site.baseurl }}//docs/Labs/images/lab3/2025-12-01-15-23-16.png"  class="center_fifty no-invert"/>
 
-### Advancing the Clock
+### Creating other test cases
 
 What if you want to make another test case? While you can write another `test` block with differing values, you can also change `a` and `b` values after each `tick`. Here's an example to illustrate that:
 
@@ -569,7 +569,7 @@ This fails because `$assert` checks the current **stable** state. Since we never
 
 ### Testbench with a `dff`
 
-You need to propagate `clk =0` and `clk=1` to allow a `dff` to latch. For example, `value.q` remains `0` here when we print:
+You need to propagate `clk =0` and `clk=1` to allow a `dff` to latch. For example, `value.q` remains `0` here when we print it out and run the test case:
 
 ```verilog
     sig rst
@@ -583,7 +583,7 @@ You need to propagate `clk =0` and `clk=1` to allow a `dff` to latch. For exampl
     }
 ```
 
-You need to propagate a *rising* edge so that we have a `1` outputted at `value.q`:
+You need to <span class="orange-bold">propagate</span> a *rising* edge so that we have a `1` outputted at `value.q`:
 
 
 ```verilog
@@ -616,6 +616,7 @@ To make things neater, you can write a function with `fun` keyword that sets clk
         clk=1
         $tick()
     }
+
     test value_propagate_v2{
         rst = 0
         value.d = 1
@@ -631,7 +632,7 @@ The given `$tick_clock` in the test template sets the `clk` to 1 and perform `$s
 ### `test` block is NOT `always` block
 
 {:.important}
-> The `test` block works **sequentially**, UNLIKE the `always` block.
+> The `test` block works **sequentially**, <span class="orange-bold">UNLIKE</span> the `always` block.
 >
 > In a test block, there is no always block running every cycle. The test body runs once, top to bottom, like a little program. If you want a signal to change over time, you must:
 > * Assign it a **new** value in the test code,
@@ -661,7 +662,7 @@ For instance, this will not set `.q` to be `2` after running because you didn't 
 
 <img src="{{ site.baseurl }}//docs/Labs/images/lab3/2025-12-01-16-22-42.png"  class="center_seventy no-invert"/>
 
-If you'd like to increment the value of the `dff` and advance two clock cycles, you need to write a loop:
+If you'd like to increment the value of the `dff` and advance two clock cycles, you need to write a loop so that we call `$tick_clock` each time we change `value.d`:
 
 ```verilog
     sig rst
@@ -833,7 +834,7 @@ The diagram below illustates the arrangement:
 
 
 {:.important}
-> Basically, we pass the test value S through the **same** number of registers as test value A and B.
+> We pass the test value S through the **same** number of registers as test value A and B.
 > This reinforces a key principle in clocked design: You can only compare signals that have passed through the **same number of clock boundaries**.
 
 
