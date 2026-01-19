@@ -93,7 +93,7 @@ We will separate the **datapath** (the hardware that carries data, which is your
 {:.highlight}
 We are controlling a tester module automatically with an FSM.
 
-At a high level, the FSM controller is in charge of **WHEN** the **tester** moves and **WHAT** it does on each slow clock tick. You can think of it as answering three questions:
+At a high level, the FSM controller is in charge of **WHEN** the **tester** moves and **WHAT** it does on each slow clock tick. You can think of it as answering **three** questions:
 
 1. **Which test case are we on right now**?
    - Use an `index` register and the test vector arrays.
@@ -102,12 +102,13 @@ At a high level, the FSM controller is in charge of **WHEN** the **tester** move
 3. **When do we stop and report failure**?
    - Use an `error_flag` and the decision to enter the `HALT` state.
 
-*Everything else is plumbing to support these 3 decisions.*
 
+There are two components to a controller: the *datapath* and the *control unit* (FSM, containing the *states*). Here's the big picture:
 
+<img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-datapath-fsm.drawio.png"  class="center_seventy"/>
 
 ## Datapath
-Before thinking about states, it helps to be very explicit about the **datapath** (hardware) that the controller will drive. The datapath for this **automated tester** we are building should contain:
+Before thinking about the controller and how many states it should have + logic, it helps to be very explicit about the **datapath** (hardware) that the controller (FSM) will drive. The datapath for this **automated tester** we are building should contain:
 
 1. **Registered Adder Block** (you can use either with or without write enable)
    * Your `registered_rca` that takes `a[7:0]`, `b[7:0]` and produces a registered sum `s[7:0]`.
