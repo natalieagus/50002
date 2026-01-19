@@ -332,7 +332,7 @@ To observe the orderly-fashion output, you will need to simulate it with slower 
 In `alchitry_top`, we instantiate this registered rca, and also the combinational logic rca. We use a component called `counter` (you can import it from the **component** library, under miscellaneous category). Then connect the display to the two LED rows:
 
 {:.note}
-The `counter` component is used here simply as a [**frequency divider**](#frequency-divider) to **slow** the system clock down to a **human-observable** rate. It is roughly slowed down to 1Hz (as opposed to 1000Hz).
+The `counter` component is used here simply as a [**frequency divider**](#frequency-divider) to **slow** the system clock down to a **human-observable** rate. It is roughly slowed down to 1Hz (as opposed to 1000Hz). Give the [appendix](#frequency-divider) a read if you're not familiar with the concept of frequency divider.
 
 
 ```verilog
@@ -377,7 +377,7 @@ This kind of output is essential when the result is used by another clocked bloc
 In contrast, the unregistered adder reacts immediately to every flicker of the input. That makes it appear “responsive” but it is actually unreliable and unsynchronised. Its output *cannot* be reliably consumed by other logic without additional timing control.
 
 ### Using Faster Clock
-You can make the registered adder MORE responsive by connecting it to a FASTER clock, provided that it obeys the <span class="orange-bold">dynamic discipline</span>.
+You can make the registered adder MORE responsive by connecting it to a FASTER clock, provided that it obeys the <span class="orange-bold">dynamic discipline</span>. You can change the `DIV` value of the `counter slow_clock` to do this.
 
 <img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-11-28 at 11.57.45 AM.gif"  class="center_seventy no-invert"/>
 
@@ -878,7 +878,9 @@ In digital systems, this is commonly implemented using a counter (a bank of D fl
 * Bit `2` toggles at $$\frac{f}{8}$$
 * Bit `n` toggles at $$\frac{f}{2^{n+1}}$$
 
-By selecting one of these bits as a new clock signal, the original frequency is effectively divided.
+By selecting one of these bits as a new clock signal, the original frequency is effectively divided. The figure below illustrates how frequency division works:
+
+<img src="{{ site.baseurl }}/docs/Labs/images/counter-cou1.gif"  class="center_seventy no-invert"/>
 
 In this lab, the `counter` component acts as a **black-box frequency divider** whose only purpose is to slow the FPGA’s clock down to a rate that is observable to the human eye.
 
