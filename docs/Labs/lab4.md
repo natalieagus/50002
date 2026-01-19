@@ -312,7 +312,7 @@ Here's a simple implementation.
 
 ### List out the states
 
-You can use [`enum](https://alchitry.com/tutorials/lucid-reference/#enum)` in Lucid to encode each state. 
+You can use [`enum`](https://alchitry.com/tutorials/lucid-reference/#enum) in Lucid to encode each state. 
 ```verilog
     enum States {
         START,
