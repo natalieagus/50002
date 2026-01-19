@@ -382,7 +382,7 @@ module simple_fsm (
             
             States.CHECK_RESULT:
                 led_indicator = 8hF0
-                if (~&(index.q ^ b10)){
+                if (~|(index.q ^ b10)){
                     states.d = States.HALT
                 }
                 else{
@@ -400,7 +400,7 @@ module simple_fsm (
 For more examples, you're encouraged to read this [Alchitry official tutorial](https://alchitry.com/tutorials/roms-and-fsms/).
 
 {:.note}
-Curb the urge to overcomplicate things. An FSM is super simple: you only need a `state dff` and a whole bunch of `case` statements. Within the `case` statement, you should specify ALL output signals. Ideally, you should have minimal logic within the FSM `cases`, that is: <span class="orange-bold">avoid</span> the urge to perform complex arithmetic operations like addition and multiplication there. This should be done in the datapath. You will learn more about this in the following weeks.
+Curb the urge to overcomplicate things. An FSM is **super simple**: you only need a `state dff` and a whole bunch of `case` statements. Within the `case` statement, you should specify ALL output signals. Ideally, you should have minimal logic within the FSM `cases`, that is: <span class="orange-bold">avoid</span> the urge to perform complex arithmetic operations like addition and multiplication there. This should be done in the datapath. You will learn more about this in the following weeks.
 
 ### Test the FSM in Simulator
 
@@ -547,7 +547,7 @@ always {
         
         States.CHECK_RESULT:
             led_indicator = 8hF0
-            if (~&(index.q ^ b10)){
+            if (~|(index.q ^ b10)){
                 if (rising_edge.out)
                     states.d = States.HALT
             }
@@ -630,7 +630,7 @@ module simple_fsm (
                     
                 States.CHECK_RESULT:
                     led_indicator = 8hF0
-                    if (~&(index.q ^ b10)){
+                    if (~|(index.q ^ b10)){
                         states.d = States.HALT
                     }
                     else{
@@ -701,7 +701,7 @@ module simple_fsm (
                     
                 States.CHECK_RESULT:
                     led_indicator = 8hF0
-                    if (~&(index.q ^ b10)){
+                    if (~|(index.q ^ b10)){
                         states.d = States.HALT
                     }
                     else{
@@ -791,7 +791,7 @@ module simple_fsm (
             
             States.CHECK_RESULT:
                 led_indicator = 8hF0
-                if (~&(index.q ^ b10)){
+                if (~|(index.q ^ b10)){
                     if (slow_clock)
                         states.d = States.HALT
                 }
@@ -933,7 +933,7 @@ module simple_fsm (
                 
             States.CHECK_RESULT:
                 led_indicator = 8hF0
-                if (~&(index.q ^ b10)){
+                if (~|(index.q ^ b10)){
                     if(rising_edge.out){
                         
                         states.d = States.HALT
