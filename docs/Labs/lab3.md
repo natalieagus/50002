@@ -878,7 +878,7 @@ In digital systems, this is commonly implemented using a counter (a bank of D fl
 * Bit `2` toggles at $$\frac{f}{8}$$
 * Bit `n` toggles at $$\frac{f}{2^{n+1}}$$
 
-By selecting one of these bits as a new clock signal, the original frequency is effectively divided. The figure below illustrates how frequency division works:
+By selecting one of these bits as a new clock signal, the original frequency is effectively divided. The figure below illustrates how frequency division works. You can connect these flip flops in series to further divide the frequency by powers of 2.
 
 <img src="{{ site.baseurl }}/docs/Labs/images/counter-cou1.gif"  class="center_seventy no-invert"/>
 
