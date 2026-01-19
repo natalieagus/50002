@@ -65,6 +65,7 @@ Up to Lab 3, most of the circuits you built were data driven:
 
 In this lab, you will add a small controller whose job is to decide: *“What should the circuit do on this clock tick?”*
 
+{:.highlight}
 > This kind of controller is none other than a **Finite State Machine (FSM)**.
 
 ### Automated Registered Adder Tester (Hardware)
@@ -173,7 +174,7 @@ From the FSM notes, recall that the controller itself can be implemented as a Mo
 * It produces control outputs that **drive** the datapath.
 
 {:.note}
-**Actions** in each state happens in **PARALLEL**. The transition condition is written at the arrows, and the **output** signals at each state is written below the state bubble. The start state is `IDLE`.
+Transition condition is written at the arrows (**inputs**), and the **output** signals at each state is written below the state bubble. The start state in the diagram below is `IDLE`.
 
 A natural set of states for this automated tester is:
 
@@ -182,7 +183,7 @@ A natural set of states for this automated tester is:
 You can think of this as a tiny “hardware program” with 7 instructions: `IDLE`, `INIT`, `INC`, `WAIT_1`, `WAIT_2`, `CHECK`, and `HALT`.
 
 {:.note}
-The output signals written under each bubble is called control signals: they control and drive the datapath. Think of it like a *train conductor's action*. The datapath is the *railway system*, it's already built and all rails are already there. The conductor's brain (FSM) decide what to do and their action is translated into *control signals* that drive the **train** (data).
+The output signals written under each bubble is called **control** signals: they control and drive the datapath. Think of it like a *train conductor's action*. The datapath is the *railway system*, it's already built and all rails are already there. The conductor's brain (FSM) decide what to do and their action is translated into *control signals* that drive the **train** (data).
 
 ## Control Signals
 
@@ -300,7 +301,7 @@ These are self-explanatory. They are the inputs that trigger FSM transitions.
     * `error`
     * `running`
 
-The control signals live exactly on those arrows from the FSM block to the datapath block in your diagram. They are the “verbs” that make the datapath “do something” every slow clock tick.
+The control signals live exactly *on those arrows* from the FSM block to the datapath block in the [diagram](#fsm-controller). They are the “verbs” that make the datapath “do something” every slow clock tick.
 
 ## Implementing an FSM in HDL
 
