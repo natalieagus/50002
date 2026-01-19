@@ -311,7 +311,7 @@ We can build this easily in Lucid, following this arrangement:
         dff value_b[SIZE](.clk(clk), .rst(rst), #INIT(0))
         dff value_s[SIZE](.clk(clk), .rst(rst), #INIT(0))
         
-        rca rca(.a(value_a.q), .b(value_b.q))
+        rca rca(#SIZE(8), .a(value_a.q), .b(value_b.q))
 
         always {
             s = value_s.q
@@ -338,7 +338,7 @@ The `counter` component is used here simply as a [**frequency divider**](#freque
 ```verilog
     counter slow_clock(#DIV(9), .clk(clk), .rst(rst), #SIZE(1))
 
-    registered_rca rr(.a(io_dip[0]), .b(io_dip[1]), .clk(slow_clock.value), .rst(rst))
+    registered_rca rr(#SIZE(8), .a(io_dip[0]), .b(io_dip[1]), .clk(slow_clock.value), .rst(rst))
     rca rca(.a(io_dip[0]), .b(io_dip[1]))
 
     always {
@@ -366,7 +366,7 @@ Similarly, a `dff` only captures what is present **at the edge** of the clock. E
 ### Periodic and Synchronized Output
 
 The registered adder produces an output that is:
-* Time **aligned** to a known reference. The clock
+* Time **aligned** to a known reference: the clock
 * **Stable** for a **full period**
 * *Independent* of how noisy or irregular the input activity is in between edges
 
