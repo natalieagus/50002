@@ -882,7 +882,79 @@ By selecting one of these bits as a new clock signal, the original frequency is 
 
 <img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-freq-divider.drawio.png"  class="center_seventy no-invert"/>
 
-> Image credits: [1](https://www[.electronics-tutorials.ws/counter/count_1.html), 2](https://digilent.com/reference/learn/programmable-logic/tutorials/use-flip-flops-to-build-a-clock-divider/start?srsltid=AfmBOoqKwrVsI9_gpBQugcQTmjmEzI9H0TWfU5db6Yw6-Kat1cF0KiQa)
+ 
+The Lucid equivalent code for the above arrangement is:
 
-In this lab, the `counter` component acts as a **black-box frequency divider** whose only purpose is to slow the FPGA’s clock down to a rate that is observable to the human eye.
+```verilog
+
+    .rst(rst){
+         dff f_2(.clk(clk))
+         dff f_4(.clk(~f_2.q))
+         dff f_8(.clk(~f_4.q))
+         // define more as needed   
+    }
+
+    always {
+
+        f_2.d = ~f_2.q
+        f_4.d = ~f_4.q
+        f_8.d = ~f_8.q
+
+        // use f_x.q as needed
+    }
+```
+
+Unfortunately, you cannot use the `repeat` loop to automatically instantiate the `dff` since Lucid requires its `clk` connection to be defined outside of the always block, and `repeat` procedure is only valid *inside* `always` block.
+
+Therefore this lab, we simply use `counter` library component to act as a **black-box frequency divider** whose only purpose is to slow the FPGA’s clock down to a rate that is observable to the human eye.
+
+#### Frequency Divider via a Binary Counter Bit Tap
+
+If you don't like to use the counter like a `black` box, we also create our own simple frequency divider  by building a `DIV`-bit synchronous binary counter out of D flip-flops and then using one counter bit as the output clock.
+
+
+```verilog
+module frequency_divider#(
+    DIV = 1: DIV > 0
+) (
+    input clk,  // clock
+    input rst,  // reset
+    output out
+) {
+    dff counter[DIV](.clk(clk), .rst(rst))
+    always {
+        counter.d = counter.q + 1
+        out = counter.q[DIV-1]
+    }
+}
+```
+
+It does the following:
+* `dff counter[DIV]` is a **register bank**: `DIV` DFFs storing a `DIV`-bit value `counter.q`.
+* `counter.d = counter.q + 1` means the register **increments by 1 every clock edge** (synchronous counter).
+* `out = counter.q[DIV-1]` is just a **wire tap** to one bit of the counter register. No extra timing logic is created for `out` beyond the flip-flops already in the counter.
+
+
+
+A binary counter like this has this toggling pattern:
+* `counter.q[0]` (LSB) **toggles** every clock tick → output frequency = **clk / 2**
+* `counter.q[1]` **toggles** every 2 ticks → **clk / 4**
+* `counter.q[2]` **toggles** every 4 ticks → **clk / 8**
+* In general, `counter.q[k]` toggles at **clk / 2^(k+1)**
+
+So when we set `out = counter.q[DIV-1]`, we get **out frequency = clk / 2^DIV**.
+
+Example: `DIV = 3` taps `q[2]`, so `out = clk / 8`.
+
+{:.note}
+> This method naturally gives a **50% duty cycle** for divides by powers of two.
+>
+> The counter width must be at least `DIV` bits so that `counter.q[DIV-1]` exists; using exactly `DIV` bits is the minimal, clean implementation.
+> 
+> If you need a non power-of-two divide (÷3, ÷10, etc.), you typically use a **mod-N counter** and explicit toggle/compare logic instead of a single bit tap.
+
+
+This counter-bit method is just a neat way to produce a frequency divider: instead of thinking “chain DIV flip-flops,” we think “make a DIV-bit counter and tap bit DIV−1,” and that <span class="orange-bold">tapped</span> bit has the same divided frequency.
+
+
 
