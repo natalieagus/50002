@@ -151,7 +151,7 @@ Before thinking about the controller and how many states it should have + logic,
 
 The datapath should also receive a regular hardware clock (100Mhz) and *not* run on a human-visible slow clock. 
 
-{:.important}
+{:.important-title}
 > Datapath big idea
 > 
 > If you change the control strategy, the datapath can stay exactly the same. **That is the point of this lab.**
@@ -288,7 +288,7 @@ These are self-explanatory. They are the inputs that trigger FSM transitions.
 
 * The **datapath** has:
 
-  * Registers: `index`, `a`, `b`, `s`, expected sum pipeline
+  * Registers: `index`, `a`, `b`, `s`, and expected sum pipeline
   * Combinational logic: ROM-like arrays, RCA, comparator, small muxes.
 
 * The **FSM controller** has:
