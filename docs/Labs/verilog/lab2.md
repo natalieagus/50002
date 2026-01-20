@@ -24,7 +24,7 @@ Singapore University of Technology and Design
 This is a Verilog parallel (Verilog-2005 used) of the Lucid + Alchitry Labs Lab 2. It is not part of the syllabus, and it is written for interested students only. You still need to complete all necessary checkoffs in Lucid, as stated in the original lab handout.
 
 {:.important}
-If you are reading this document, we assume that you have already read Lab 2 Lucid version, as some generic details are not repeated. This lab has the same objectives and related class materials so we will not paste them again here. For submission criteria, refer to [the original lab 1]({{ site.baseurl }}/lab/lab2) handout.
+If you are reading this document, we assume that you have already read Lab 2 Lucid version, as some generic details are not repeated. This lab has the same objectives and related class materials so we will not paste them again here. For submission criteria, refer to [the original lab 2]({{ site.baseurl }}/lab/lab2) handout.
 
 
 ## Combinational Logic Foundations
@@ -1248,6 +1248,60 @@ endgenerate
 
 {:.note}
 In Verilog, the “array-ness” comes from having many instances, each with its own scalar ports. You index the instances created by the generate block, rather than indexing a port on one vectorised module.
+
+
+## Do NOT use `instance.output_port` (hierarchical references) in Verilog
+
+All of the Verilog examples mentioned above always uses intermediary variable like `wire` or `reg` when referencing the *output* port of any module instances if you use it within another module. <span class="orange-bold">This is unlike Lucid</span> where you can casually use stuffs like this:
+
+```verilog
+  rca adder
+  sig x
+  always {
+    x = ~|adder.s // hierarchical references
+    // other code
+  }
+```
+
+In synthesizable **RTL** (Register Transfer Language, which is a particular way of using HDL like verilog), you should treat module ports like “pins on a chip”: 
+* Connect them to named signals, 
+* Then use those signals in the rest of your design. 
+
+{:.note-title}
+> RTL
+>
+> HDL code written to model hardware as registers + combinational logic between them, in a synthesizable, synchronous style.
+
+For example, writing `adder.s` is a **hierarchical reference** (reaching into an instance). Some simulators allow it, but many synthesis tools and linters reject it, and it makes your design <span class="orange-bold">fragile</span> because renaming the instance or restructuring modules can silently break code (fragile).
+
+```verilog
+rca adder (
+  .a(a),
+  .b(b),
+  .s()          // left unconnected
+);
+
+// Later:
+assign y = adder.s; // hierarchical reference (do NOT do this)
+```
+
+The above *might work* in some simulators but you should not treat it as valid for real RTL design because it is fragile and therefore NOT a good design.
+
+Instead, this is a **good** practice:
+```verilog
+wire [31:0] s;
+
+rca adder (
+  .a(a),
+  .b(b),
+  .s(s)          // connected to wire s
+);
+
+assign y = s;
+```
+
+Sometimes `instance.port` is acceptable but only in **testbenches/debug** (peeking at internal signals) or in tool-specific assertion flows. For this course, **always** connect ports to explicit signals and **use those signals instead**.
+
 
 ## Summary
 This lab mirrors the Lucid Lab 2 flow in plain Verilog: implement a 1-bit full adder from Boolean logic, cascade it into a parameterised ripple-carry adder using genvar + generate, then build muxes and decoders as core combinational blocks with small, readable modules plus testbenches.

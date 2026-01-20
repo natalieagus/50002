@@ -430,12 +430,13 @@ module registered_rca_en#(
     input enable,
     input clk, 
     input rst
+    // optionally, you can have output cout port here
 ) {
     
     reg_en value_a(.d(a),.clk(clk), .rst(rst), #INIT(0), #SIZE(SIZE), .en(enable))
     reg_en value_b(.d(b),.clk(clk), .rst(rst), #INIT(0), #SIZE(SIZE), .en(enable))
-    reg_en value_s(.clk(clk), .rst(rst), #INIT(0), #SIZE(SIZE), .en(enable))
-    
+    reg_en value_s(.clk(clk), .rst(rst), #INIT(0), #SIZE(SIZE), .en(enable)) // optionally you can set value_s as SIZE+1 to consider cout too
+
     rca rca(.a(value_a.q), .b(value_b.q))
     
     always {
@@ -445,6 +446,9 @@ module registered_rca_en#(
     }
 }
 ```
+
+{:.note}
+For this lab, we simplify and omit `cout` in `registered_adder_en` module. You can choose to include it if you wish. It will not affect your checkoff. 
 
 When instantiating this module, you can connect one of the `io_button` to the `enable` signal.
 
