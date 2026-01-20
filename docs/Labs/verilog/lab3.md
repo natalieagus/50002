@@ -544,6 +544,226 @@ endmodule
 Note how we never use `instance.output_port` here and always use intermediary `wire` instead.
 
 
-### Testbench
+## Testbench Design
+
+{:.highlight}
+In this section, we outline some tips and learning points so that you can write your own testbench to ensure the correctness of your `pipelined_rca`. 
+
+A registered (pipelined) adder like the above does not produce the sum in the same cycle the inputs are applied. If the DUT has 2 pipeline stages, then:
+* Inputs applied in cycle `i` should appear at outputs in cycle `i+2`
+* The testbench must **delay** the expected answer by 2 clocks before comparing
+
+The testbench for the registered adder is not a trivial one, and although it is tempting to just ask an AI to create one for you, it is important to keep a few steps in mind. Below are the general approaches for testbench design.
+
+
+#### Decide what is “procedural state” vs “driven by hardware”
+
+At the beginning of your testbench, you should decide signal types based on *who drives it*:
+* **Driven by the testbench in procedural blocks (`initial`, `always`)**
+  Use `reg` (Verilog)
+  Examples: `clk`, `rst`, `en`, `a`, `b`, `ci`, plus internal testbench holding variables.
+* **Driven by the DUT (module outputs)**
+  Use `wire`
+  Examples: `s`, `co`.
+
+{:.note-title}
+> Recap
+> 
+> Arrays of vectors in plain Verilog are typically **`reg [W-1:0] name [0:N-1]`**.
+
+
+#### Parameterize the testbench so it matches multiple DUT sizes
+
+You should define stuffs like:
+
+* `lcalparam SIZE = ...;` (bit width)
+* `localparam N = ...;` (number of test vectors)
+
+Then apply it consistently throughout your testbench like so to make a bulk of your code reusable.
+
+* `reg [SIZE-1:0] a, b;`
+* `wire [SIZE-1:0] s;`
+* arrays sized by `N`
+
+
+####  Precompute vectors as an answer key
+
+You would need to be very conscious about the values you are testing. You need to ensure that they are correct and are comprehensive:
+* Create input tables: `a_vec[i]`, `b_vec[i]`, `ci_vec[i]`
+* Create output tables: `s_exp[i]`, `co_exp[i]`
+
+
+In Verilog, this is often done in an `initial begin ... end` that assigns each entry explicitly, because standard Verilog does not have fancy literals or dynamic array helpers like you saw in Lucid `const`.
+
+#### Create pipelined delay registers for the answer values
+
+This is useful for any DUT with pipelined system. Since there are two registers in the pipelined adder, you need to pass the answer key through the same number registers as well. In this particualr case, you can make a tiny shift register system:
+* stage 1: `s_exp_q1`, `co_exp_q1`
+* stage 2: `s_exp_q2`, `co_exp_q2`
+* `q2` gets its input from the output of `q1`
+
+Then the comparison of the pipelined adder's output is against `*_q2`.
+
+To be clear, you need to do the following:
+* at cycle *i* you load `*_now` from table entry *i*
+* on posedge, `*_now` is captured into q1, and q1 into q2 (when enabled)
+* at cycle *i*, you compare DUT output against q2, which corresponds to input from *i-2*
+
+#### Pay attention to any `en` signals and async `reset` used in DUT
+
+If DUT pipeline registers update only when `en==1`, then the expected pipeline must also shift *only* when `en==1`. If DUT has async reset, expected pipeline should reset the same way.
+
+We need to build an `always @(posedge clk or posedge rst)` for the pipelined answer key that mirrors DUT control:
+* on reset: clear q1/q2
+* else if enabled: shift q1/q2
+
+{:.note-title}
+> Recap
+>
+> Nonblocking assignments (`<=`) should be used to build these 2-stage shift register. Note that the order of nonblocking assignments does <span class="orange-bold">not</span> create sequential dependency (it models parallel FF updates)
+
+#### Clock generation and `negedge` 
+
+You should be very clear that:
+
+* DUT captures inputs on **`posedge`**
+* Therefore testbench should change inputs on **`negedge`** (half-cycle earlier) so they are <span class="orange-bold">stable</span> before the capture edge
+
+For each test value:
+1. wait for `@(negedge clk)`
+2. drive `a`, `b`, `ci`, and `*_now`
+3. wait for `@(posedge clk)` to let DUT capture
+4. then (after sufficient fill cycles) compare outputs
+
+{:.important}
+While it is tempting to use `#1` delays for “stability” before checking the result like you have tried before during the making of combinational-logic test benches, event control on clock edges is the clean approach.
+
+#### Pipeline fill and drain
+
+Because latency is 2 cycles:
+* the first 2 cycles after you start streaming vectors do <span class="orange-bold">not</span> have valid DUT outputs for comparison
+* after feeding the last real vector, you still need **2 extra cycles** (“flush”) to observe the final results
+
+So the main testbench typically runs `N + latency` iterations.
+
+You are recommended to express latency as a parameter too, even though you know its value is 2 for this lab:
+
+* `localparam LAT = 2;`
+* loop to `N + LAT`
+
+
+#### Compare with case inequality and count errors
+
+When comparing DUT's output (s and cout) against the `*.q2` (output of the answer key's 2-stage pipeline register), you should:
+* Use `!==` (case inequality), not `!=`
+  Because if the DUT outputs X due to uninitialized regs, `!=` can behave in <span class="orange-bold">surprising</span> ways. `!==` treats X as a real value and will flag mismatch.
+* Maintain an `errors` counter and print details on failure:
+  * cycle index
+  * got vs expected
+  * maybe also print the corresponding input vector (useful for debugging)
+
+Use proper formatted strings during prints:
+* `%0d` for integers
+* `%02h` for 8-bit hex with leading zero
+
+
+#### Reset sequencing and enabling
+
+Any DUT should be reset in the beginning, before you feed the first test vector.
+
+If you use async reset (which is the case here), you can pulse `rst` **without** the clock, but still you must ensure you release reset cleanly before starting comparisons.
+* Keep `en` asserted at all times if the goal is basic functionality, and that you're already sure that your `dff_en` unit used in `pipelined_rca` is already heavily tested and corect
+* If you want a stronger test, include a few cycles where `en=0` and confirm outputs “stall” and your expected pipeline also stalls. 
+
+
+
+### Sample Waveform Output
+
+You should create sufficient test cases, e.g: 16 at least and confirm on the waveform that your adder is giving the expected output:
+
+<img src="{{ site.baseurl }}//docs/Labs/verilog/images/lab3/2026-01-20-16-03-14.png"  class="center_full no-invert"/>
+
+
+### Summary Approach
+ 
+When writing any testbench, consider these important steps:
+1. Identify which signals TB drives (`reg`) vs DUT drives (`wire`).
+2. Decide widths and counts with `localparam`.
+3. Build vector tables for inputs and expected outputs.
+4. Introduce `*_now` as “expected for the vector I am currently applying.”
+5. Implement an expected shift register of depth equal to DUT latency, gated by `en`, reset by `rst`.
+6. Drive inputs and `*_now` on negedge.
+7. On posedge, after the fill period, compare DUT outputs to the delayed expected (`q2`).
+8. Run `N + latency` cycles so the last vectors have time to emerge.
+9. Count errors, print concise failure lines, then print pass/fail summary.
+
+Refer to the [appendix](#useful-verilog-syntax) for useful Verilog syntaxes to build this testbench.
+
+## Appendix
+
+
+### Useful Verilog Syntax
+Below contains a list of useful Verilog syntaxes to write this registered adder testbench.
+
+**`timescale 1ns/1ps`**:
+* Defines the simulation time unit and time precision.
+* Example: `#5` means 5 ns when the time unit is 1 ns.
+* Precision (1 ps) affects rounding of delays, not functional logic.
+* You do not need to memorize this, but you must know it affects all `#` delays.
+
+**Module instantiation with parameters**:
+* Syntax:
+  * `dut #(.SIZE(SIZE)) (...)`
+* The left `SIZE` is the DUT’s parameter name.
+* The right `SIZE` is a constant defined in the testbench.
+* This allows the same DUT to be tested at different bit widths.
+
+**Arrays of vectors (memory-like tables)**:
+* Syntax:
+  * `reg [SIZE-1:0] a_vec [0:N-1];`
+* Rightmost index is the array index.
+* Each entry is a `SIZE`-bit vector.
+* Commonly used for precomputed input vectors and expected outputs.
+
+**Event controls**:
+* Syntax:
+  * `@(negedge clk)`
+  * `@(posedge clk)`
+* These are synchronization points, not delays.
+* Used to align testbench actions with clock edges.
+* Typical pattern:
+  * Drive inputs on `negedge`.
+  * Let DUT capture on `posedge`.
+
+**Nonblocking assignments in sequential blocks**:
+* Use `<=` inside clocked `always` blocks.
+* Models flip-flop behavior correctly.
+* All right-hand sides are evaluated before any left-hand side updates.
+* Order of `<=` statements does not imply execution order.
+
+**Blocking vs nonblocking in the testbench**:
+* Blocking assignment `=`:
+
+  * Suitable in `initial` blocks that describe procedural flow.
+  * Executes in order, top to bottom.
+* Nonblocking assignment `<=`:
+
+  * Required in clocked logic, including golden pipeline registers.
+  * Matches hardware timing behavior.
+
+**Waveform dumping (Icarus / GTKWave)**:
+* Common system tasks:
+  * `$dumpfile("wave.vcd");`
+  * `$dumpvars(0, tb_name);`
+* Enables viewing internal signals in a waveform viewer.
+* Simulator-specific but extremely useful for debugging.
+
+**Loop index declaration**:
+* Syntax:
+  * `integer i;`
+* Commonly used for `for` loops in testbenches.
+* Automatically treated as a signed integer.
+* Suitable for indexing vector tables and counting cycles.
+
 
 
