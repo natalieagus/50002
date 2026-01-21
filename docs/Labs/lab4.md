@@ -870,7 +870,7 @@ When you connect a **physical** pushbutton directly to your FPGA, the signal you
 
 Here's a simplified illustration:
 
-<img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-button-cond.drawio-2.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-button-cond.drawio.png"  class="center_seventy"/>
 
 The raw signal typically has:
 * Long low level (0)
