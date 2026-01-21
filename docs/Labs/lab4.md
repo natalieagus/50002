@@ -515,6 +515,15 @@ This diagram illustrates the concept:
 
 <img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-edge detector.drawio-3.png"  class="center_seventy"/>
 
+{:.important-title}
+> Race Condition
+>
+> Notice how in the diagram above, for illustration purposes, we show that the slow clock produces a `1` in clk cycle `t` and edge detector produces a `1` in the **same** cycle `t`. This behavior might differ depending on the simulator use and might behave differently in hardware as well. This is called a **race condition**.
+> 
+> A synchronous FF samples its input at the clock edge. If you also change the input at the exact same edge in simulation, you are modeling an impossible or undefined physical situation (setup/hold violation). In real hardware this is not a clean “either-or”, it can produce metastability. In simulation it shows up as nondeterminism based on event ordering.
+>
+> In short, the edge detector might produce a `1` in this clock cycle `t` or at cycle `t+1`. However, since the onboard clk runs really fast, it won't affect the usability of your hardware. It's a minor difference of whether the button press is detected in *this* cycle or the next.        
+
 Add this component to your project:
 <img src="{{ site.baseurl }}//docs/Labs/images/lab4/2025-12-03-08-47-49.png"  class="center_seventy no-invert"/>
 
