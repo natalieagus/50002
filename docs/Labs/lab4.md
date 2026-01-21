@@ -629,7 +629,8 @@ module simple_fsm (
         states.d = states.q
         index.d = index.q
         led_indicator = 0
-        if(rising_edge.out){
+
+        if(rising_edge.out){    // this can be disastrous
             case(states.q){
                 States.START:
                     led_indicator = 8h01
