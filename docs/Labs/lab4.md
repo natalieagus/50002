@@ -752,7 +752,7 @@ The logic might seem "right" but it won't even work. Towards the end of the gif 
 <img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-12-03 at 9.38.52 AM.gif"  class="center_seventy no-invert"/>
 
 
-{:.new-title}
+{:.note-title}
 > Checkoff
 >
 > Why is this so? Figure it out as a team. This might be one of the checkoff questions asked by your TA. 
