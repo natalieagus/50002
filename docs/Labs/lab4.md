@@ -451,7 +451,7 @@ We will present BOTH ways to you and the pros and cons of each.
 
 **Pros**: You can see the state transitions well, with minimal mental gymnastics to implement.
 
-**Cons**: You lose the global reset [for this reason](https://natalieagus.github.io/50002/fpga/fpga_1_2024) and you basically make your FSM *unresponsive* by running on such a **SLOW** clock.
+**<span class="orange-bold">Cons</span>**: You lose the global reset [for this reason](https://natalieagus.github.io/50002/fpga/fpga_1_2024) and you basically make your FSM *unresponsive* by running on such a **SLOW** clock.
 
 <img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-12-03 at 8.37.21 AM.gif"  class="center_seventy no-invert"/>
 
@@ -500,7 +500,7 @@ This method is your instructors' preferred way, but it has way higher learning c
 
 In this method, we run `simple_fsm` with the original `clk` signal, but add conditional logic to **transition** within each case only when `slow_clock` <span class="orange-bold">edge</span> is `1`. This way our FSM remains *responsive* and only conditionally transition when `slow_clock` is `1`.
 
-{:.important}
+{:.highlight}
 To do this, we need to pass `slow_clock` signal through an edge detector. Do you know *why*?
 
 
@@ -593,7 +593,7 @@ Conceptually, you allow the FSM to **REMAIN IN STATE**, until `rising_edge.out =
 - When `rising_edge.out == 1`, we woudl finally write a different value into `states` dff and `index` dff, allowing the fsm to "advance" at that exact moment
 - the FSM is actually still "**responsive**", running at `clk` frequency
 
-This is inherently <span class="orange-bold">different</span> from method 1, where you slow down the entire FSM with `slow_clock`, rendering it responsive as it will only be able to *detect* input (like the `manual_reset` button) if its held long enough, roughly covering one period of `slow_clock`.
+This is inherently <span class="orange-bold">different</span> from method 1, where you slow down the entire FSM with `slow_clock`, rendering it  rather *unresponsive* as it will only be able to *detect* input (like the `manual_reset` button) if its held long enough, roughly covering one period of `slow_clock`.
 
 ### Common mistakes when dealing with FSM clock
 
@@ -752,7 +752,7 @@ The logic might seem "right" but it won't even work. Towards the end of the gif 
 <img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-12-03 at 9.38.52 AM.gif"  class="center_seventy no-invert"/>
 
 
-{:.note-title}
+{:.new-title}
 > Checkoff
 >
 > Why is this so? Figure it out as a team. This might be one of the checkoff questions asked by your TA. 
@@ -828,7 +828,7 @@ module simple_fsm (
 <img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-12-03 at 9.16.44 AM.gif"  class="center_seventy no-invert"/>
 
 
-{:new-title}
+{:.new-title}
 > Checkoff
 >
 > Why is this so? Figure it out as a team. This might be one of the checkoff questions asked by your TA.
@@ -870,7 +870,7 @@ When you connect a **physical** pushbutton directly to your FPGA, the signal you
 
 Here's a simplified illustration:
 
-<img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-button-cond.drawio.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-button-cond-ori.drawio.png"  class="center_seventy"/>
 
 The raw signal typically has:
 * Long low level (0)
@@ -890,10 +890,10 @@ As mentioned before, the conditioner also used with **edge detector** that conve
 
 With this setup, a button conditioner turns a noisy, asynchronous, human controlled signal into a clean, clock aligned signal where one press is equal to one event signal that your digital logic can safely use.
 
-<img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-button-cond.drawio-4.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-button-cond.drawio-3.png"  class="center_seventy"/>
 
 {:.important}
-> You must run the button through the synchronizer/debouncer before feeding it into the default Alchitry edge detector.
+> You must run the button through the synchronizer/debouncer <span class="orange-bold">before</span> feeding it into the default Alchitry edge detector.
 >
 > Based on its implementation, the Alchitry default `edge_detector` outputs a `1` in *this* clock cycle since its output is *combinational*. That means it should receive an `in` signal that's synchronized with the `clk`, otherwise the output will be asynchronous.
 > 
@@ -1192,7 +1192,8 @@ From the point of view of any **synchronous** logic that samples `out` on clock 
 ### Summary
 If **button conditioner** is used with an **edge detector**, button conditioner's output is **synchronized** to the clock.
 
-> The edge detector raises `out` (produce a `1`) for exactly **one** clock cycle when the debounced button changes from `0` to `1` (or `1` to `0`). **Downstream** logic that is clocked by the same `clk` will see a single-cycle pulse for each press.
+{:.note}
+The edge detector raises `out` (produce a `1`) for exactly **one** clock cycle when the debounced button changes from `0` to `1` (or `1` to `0`). **Downstream** logic that is clocked by the same `clk` will see a single-cycle pulse for each press.
 
 For asynchronous inputs, the pulse width is “from the edge until the next clock” and you should not rely on it.
 
