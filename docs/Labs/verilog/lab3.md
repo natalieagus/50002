@@ -947,11 +947,9 @@ Below contains a list of useful Verilog syntaxes to write this registered adder 
 
 **Blocking vs nonblocking in the testbench**:
 * Blocking assignment `=`:
-
   * Suitable in `initial` blocks that describe procedural flow.
   * Executes in order, top to bottom.
 * Nonblocking assignment `<=`:
-
   * Required in clocked logic, including golden pipeline registers.
   * Matches hardware timing behavior.
 
