@@ -699,6 +699,197 @@ When writing any testbench, consider these important steps:
 
 Refer to the [appendix](#useful-verilog-syntax) for useful Verilog syntaxes to build this testbench.
 
+## Frequency Divider
+
+
+In simulation testbenches, you normally do not need a frequency divider because you can directly choose a slower `clk` period (or insert `#delay` in stimulus). On FPGA hardware, the board clock is very fast (100 MHz clk on our Alchitry board), so “human-speed” behaviors like LED blinking, button-driven stepping, or visibly slow FSM progress require generating a slower tick.
+
+There are two common divider styles.
+
+### Bit-tap counter divider (recommended)
+
+Here's the general steps:
+* Implement a free-running counter clocked by the main `clk`.
+* Use one counter bit as `slow_clk`, e.g. `slow_clk = cnt[STAGES-1]`.
+* This keeps the design in a single clock domain (everything is synchronous to the original `clk`).
+* Best practice is often to use the slow signal as a **clock-enable pulse** (tick) rather than as a real clock, so the whole design still uses only the main `clk`.
+
+The suggested implementation is as follows:
+
+{:.note}
+When `STAGES = N`, we are producing a clock with `1/2^n` the frequency of the original `clk`.
+
+
+```verilog
+module slowclock_tap #(
+    parameter integer STAGES = 27
+)(
+    input  wire clk,
+    input  wire rst,      // async active-high reset
+    output wire slow_clk
+);
+
+  localparam integer STAGES_I = (STAGES < 1) ? 1 : STAGES;
+
+  reg [STAGES_I-1:0] cnt;
+
+  always @(posedge clk or posedge rst) begin
+    if (rst) cnt <= {STAGES_I{1'b0}};
+    else     cnt <= cnt + 1'b1;
+  end
+
+  // Bit tap: divides clock by 2^STAGES (full period in clk cycles)
+  // Toggles every 2^(STAGES-1) cycles.
+  assign slow_clk = cnt[STAGES_I-1];
+
+endmodule
+
+```
+
+You can use it with the following testbench:
+
+```verilog
+`timescale 1ns/1ps
+
+module tb_slowclock_tap;
+
+  // Make it small so you can see toggles quickly
+  localparam integer STAGES = 4;
+
+  reg  clk;
+  reg  rst;
+  wire slow_clk;
+
+  // DUT
+  slowclock_tap #(.STAGES(STAGES)) dut (
+    .clk(clk),
+    .rst(rst),
+    .slow_clk(slow_clk)
+  );
+
+  // 10 ns period clock
+  initial begin
+    clk = 1'b0;
+    forever #5 clk = ~clk;
+  end
+
+  // Dump waves
+  initial begin
+    $dumpfile("tb_slowclock_tap.vcd");
+    $dumpvars(0, tb_slowclock_tap);
+    $dumpvars(0, dut);
+  end
+
+  initial begin
+    rst = 1'b1;
+    #17;          // deassert off-edge to make it obvious in waveform
+    rst = 1'b0;
+
+    // Run long enough to see several slow_clk transitions
+    #500;
+    $finish;
+  end
+
+endmodule
+
+```
+
+
+### Ripple divider 
+
+This method generates a slow clock using a chain of dffs:
+* Each flip-flop is clocked by the output of the previous stage.
+* Functionally, it also divides frequency, and the last stage toggles slowly.
+
+However, it creates multiple derived clocks (many clock domains) and the transitions are not aligned to the main clock, so it is generally not preferred for larger designs on FPGA.
+
+
+Here's a suggested implementation for educational purposes:
+
+{:.note}
+When `STAGES = N`, we are producing a clock with `1/2^n` the frequency of the original `clk`.
+
+```verilog
+module clk_divider #(
+    parameter integer STAGES = 27
+)(
+    input  wire clk,
+    input  wire rst,
+    output wire slow_clk
+);
+
+localparam integer STAGES_I = (STAGES < 1) ? 1 : STAGES;
+
+wire [STAGES_I-1:0] din;
+wire [STAGES_I-1:0] clkdiv;
+
+dff d0 (.clk(clk), .rst(rst), .D(din[0]), .Q(clkdiv[0]));
+
+genvar i;
+generate
+  for (i = 1; i < STAGES_I; i = i + 1) begin : dff_gen
+    dff di (.clk(clkdiv[i-1]), .rst(rst), .D(din[i]), .Q(clkdiv[i]));
+  end
+endgenerate
+
+assign din = ~clkdiv;
+assign slow_clk = clkdiv[STAGES_I-1];
+
+endmodule
+```
+
+You can use the following testbench:
+
+```verilog
+`timescale 1ns / 1ps
+
+module tb;
+
+  localparam integer STAGES = 3;
+
+  reg  clk;
+  reg  rst;
+  wire slow_clk;
+
+  clk_divider #(.STAGES(STAGES)) uut (
+    .clk(clk),
+    .rst(rst),
+    .slow_clk(slow_clk)
+  );
+
+  always #5 clk = ~clk; // 100 MHz clock
+
+  initial begin
+    // VCD waveform dump
+    $dumpfile("tb_clk_divider.vcd");
+    $dumpvars(0, tb);   // dump everything under tb (includes uut)
+
+    clk = 0;
+    rst = 1;
+
+    #10 rst = 0;
+
+    #500;
+    $finish;
+  end
+
+endmodule
+
+```
+
+### Are they functionally the same?
+
+At a high level, yes: both produce a slower square wave by repeatedly dividing by 2 per stage. The waveform will look similar, something like this for `STAGES = 3`:
+
+<img src="{{ site.baseurl }}//docs/Labs/verilog/images/lab3/2026-01-23-15-29-27.png"  class="center_seventy no-invert"/>
+
+But electrically and for “clean synchronous design,” they are not equivalent:
+
+* The **bit-tap counter** produces a slow signal derived from logic clocked by `clk` only.
+* The **ripple divider** uses intermediate signals as clocks, which can introduce clock skew and domain-crossing issues if you use those clocks to drive other logic.
+
+For 50.002 projects, either can be used to slow down visible hardware behavior, but the counter bit-tap approach is the safer default in Verilog FPGA work.
+
 
 ## Conclusion
 In this lab, we moved from thinking about logic as static wiring to thinking about systems that evolve one clock **edge** at a time. We saw how memory is introduced deliberately through edge-triggered flip-flops, why missing assignments mean very *different* things in combinational versus clocked blocks, and how enable and reset signals interact with flip-flops.
