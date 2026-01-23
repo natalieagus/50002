@@ -21,6 +21,7 @@ code {
   overflow-wrap: anywhere;      /* break long tokens if needed */
   word-break: break-word;       /* fallback */
   overflow-x: auto;
+  word-wrap: break-word;
 }
 
 /* Fenced code blocks (``` ... ```) */
