@@ -60,10 +60,10 @@ Each of these devices requires a *different* approach to interfacing with an FPG
 You can refer to these repositories for demos of following drivers in LucidV2 & its guide: 
 1. [WS2812B](https://github.com/natalieagus/ws2812b-v2), [guide](https://natalieagus.github.io/50002/fpga/ws2812b)
 2. [HUB75 RGB LED Matrix](https://github.com/natalieagus/rgb-led-matrix-driver-demo/blob/main/source/rgb_led_matrix_driver.luc) , [guide](https://natalieagus.github.io/50002/fpga/hub75)
-3. 75HC595 Shift Register (TBC)
-4. MAX7219(TBC)
+3. [75HC595 Shift Register](https://github.com/natalieagus/sn74hc595-v2.git)
+4. [MAX7219](https://github.com/natalieagus/max7219-v2)
 
-These are the same drivers but implemented in LucidV1. Please adapt it to LucidV2 on your own if you visit this page and the above is still TBC. 
+These are the same drivers but implemented in LucidV1. 
 1. [WS2812B](https://github.com/natalieagus/ws2812b)
 2. [HUB75 RGB LED Matrix](https://github.com/natalieagus/rgbledmatrix)
 3. [75HC595 Shift Register](https://github.com/natalieagus/74hc595)

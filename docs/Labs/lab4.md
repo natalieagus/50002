@@ -437,7 +437,7 @@ There are TWO ways to do this:
 
 We will present BOTH ways to you and the pros and cons of each.
 
-#### Method 1: use `slow_clock` as `.clk`
+#### Method 1: use `slow_clock` as `.clk` that drives the FSM
 
 ```verilog
     counter slow_clock(
@@ -493,10 +493,10 @@ You would have to <span class="orange-bold">press and hold</span> `io_button[0]`
 The `io_button[0]` manual reset signal should be valid across *rising edge* of `slow_clock` signal to be captured and propagated to `simple_fsm`. Otherwise, if it is only valid briefly in-between rising `slow_clock` edges, then it will be ignored. This is the behavior of sequential logic.
 
 
-#### Method 2: use `slow_clock` as `input` with `edge_detector`
+#### Method 2: use `slow_clock` with `edge_detector` as `input` to the FSM
 
 {:.highlight}
-This method is your instructors' preferred way, but it has way higher learning curve to master.
+This method is your instructors' **preferred** way, but it has way higher learning curve to master.
 
 In this method, we run `simple_fsm` with the original `clk` signal, but add conditional logic to **transition** within each case only when `slow_clock` <span class="orange-bold">edge</span> is `1`. This way our FSM remains *responsive* and only conditionally transition when `slow_clock` is `1`.
 
