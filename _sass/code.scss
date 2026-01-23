@@ -24,6 +24,22 @@ code {
   word-wrap: break-word;
 }
 
+blockquote pre {
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: pre;        /* keep formatting */
+  box-sizing: border-box;  /* include padding in width calc */
+}
+
+.callout pre,
+.warning pre,
+.important pre,
+.note pre {
+  max-width: 100%;
+  overflow-x: auto;
+  box-sizing: border-box;
+}
+
 /* Fenced code blocks (``` ... ```) */
 pre {
   white-space: pre;             /* do not wrap */
