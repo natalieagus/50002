@@ -17,11 +17,10 @@ code {
 
 /* Inline code (NOT fenced blocks) */
 :not(pre) > code {
-  white-space: pre-wrap;          /* wrap with surrounding text */
+  white-space: normal;          /* wrap with surrounding text */
   overflow-wrap: anywhere;      /* break long tokens if needed */
   word-break: break-word;       /* fallback */
   overflow-x: auto;
-  word-wrap: break-word;
 }
 
 blockquote pre {
