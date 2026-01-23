@@ -1646,17 +1646,8 @@ assign led = 8'h80;
 > Good value assignment habits
 > 
 > * Always write widths on constants that drive buses: `8'h84`, `24'h0`, `5'b10101`.
-> * When combining signals, make the width obvious with concatenation:
->
-> ```verilog
-> assign led = {3'b000, io_button};   // exactly 8 bits
-> ```
->
-> * When selecting bits from a wider bus, slice explicitly:
->
-> ```verilog
-> assign io_led[7:0] = io_dip[7:0];
-> ```
+> * When combining signals, make the width obvious with concatenation: `assign led = {3'b000, io_button}`
+> * When selecting bits from a wider bus, slice explicitly: `assign io_led[7:0] = io_dip[7:0]`
 
 {:.important}
 If you cannot clearly state which bits on the RHS end up on which wires on the LHS, treat the assignment as suspect even if it compiles.
@@ -2118,7 +2109,7 @@ That is where “blocking” vs “nonblocking” matters.
 
 #### What “blocking” means (`=`)
 
-{.note}
+{:.note}
 **Blocking assignment (`=`)** updates the left-hand side **immediately** within the procedural flow of that block. That means the **next line** in the **same** block will <span class="orange-bold">see</span> the updated value.
 
 This does not mean hardware is “running sequentially”. It means: *“when the simulator evaluates this block, treat later statements as using the latest values computed earlier in the same block.”*
