@@ -17,9 +17,10 @@ code {
 
 /* Inline code (NOT fenced blocks) */
 :not(pre) > code {
-  white-space: normal;          /* wrap with surrounding text */
+  white-space: pre-wrap;          /* wrap with surrounding text */
   overflow-wrap: anywhere;      /* break long tokens if needed */
   word-break: break-word;       /* fallback */
+  overflow-x: auto;
 }
 
 /* Fenced code blocks (``` ... ```) */
