@@ -54,7 +54,7 @@ The diagram below shows the variation with reset (clear) and with enable + reset
 
 <img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-dff.drawio-2.png"  class="center_seventy"/>
 
-The implementation in Verilog is straightforward:
+The implementation in Verilog is straightforward. Note that in here, we use the non-blocking assignment (`<=`) and always `@posedge clk` now, to synthesize sequential logic. This is different from the usual blocking assignment and always `@*` we previously used to implement combinational logic. 
 
 ```verilog
 module dff(
@@ -74,6 +74,7 @@ end
  
 endmodule
 ```
+
 
 If you'd like an `en` signal, you may explicitly use a procedural variable to hold the `old_Q` and choose assignment:
 
@@ -129,7 +130,143 @@ endmodule
 
 There’s no need for `else Q <= Q;` because the `always @(posedge clk or posedge rst)` block is edge-triggered, so `Q` only changes on those edges. If `en` is low at a clock edge, no assignment happens and the flip-flop simply retains its previous `Q` value, with *no latch* involved.
 
-### What it means by "no latch involved"
+## A Deeper Dive into Verilog's Blocking and Nonblocking Assignments 
+
+{:.note}
+This is a very distilled but sufficient introduction to blocking and nonblocking assignments in Verilog, and its effect on specific event control sensitivity. If you'd like to go into a super deep dive, checkout this article. (TBC). 
+
+### Nonblocking assignment (<=)
+
+A nonblocking assignment schedules a state update rather than performing it immediately. When the simulator encounters <=:
+1. The right-hand side expression is evaluated using the current values of signals.
+2. The update to the left-hand side is deferred until the end of the current simulation time step.
+
+Consider the following generic example:
+
+```verilog
+always @(posedge clk) begin
+  a <= b;
+  b <= a;
+end
+```
+
+Both right-hand sides are evaluated at the **rising** edge of the clock using the **old** values of a and b. The assignments then commit **simultaneously**. This models the behavior of synchronous storage elements, where all registers sample their inputs at the clock edge and update together.
+
+### Blocking assignment (=)
+
+As a recap, a blocking assignment updates the left-hand side immediately and sequentially. Statements execute in textual order, and later statements observe the effects of earlier ones.
+
+```verilog
+always @(posedge clk) begin
+  a = b;
+  b = a;
+end
+```
+
+
+Here, `a` is updated first. When `b = a` executes, it observes the updated value of `a`, not its previous value. As a result, both `a` and `b` take on the old value of `b`. This behavior reflects sequential execution (not sequential logic!) rather than simultaneous state updates. This is not a swap, and it does not reflect how two physical registers update at a clock edge.
+
+Blocking assignments are therefore sensitive to statement ordering and are best suited for modeling combinational logic, where such ordering is intentional.
+
+### Synthesis note 
+
+{:.note}
+Sequential ordering is a semantic device, not a circuit feature
+
+In synthesized hardware, there is NO notion of “statement 1 happens before statement 2” like it is the blocked statements. All combinational devices are always connected and all flip-flops triggered by the same clock edge update in parallel. Therefore, the sequential ordering you observe with blocking assignments is **NOT** describing a physical sequencing mechanism in the circuit.
+
+Blocking (=) versus nonblocking (<=) primarily matters as a language semantics and simulation scheduling choice:
+* Blocking (=) imposes an explicit intra-block order during simulation. Later statements can observe earlier updates, which is useful for representing intermediate values in a procedural description.
+* Nonblocking (<=) avoids intra-block ordering for state updates by deferring commits, which better matches parallel register updates.
+
+Synthesis using Vivado uses the structure of the process (for example, always @(posedge clk) for registers, always @(*) for combinational logic) to *infer* hardware (recall how if we don't obey static discipline in our combinational module then it infers a latch). 
+
+**The circuit produced is still parallel**. The assignment operator does not create “ordered hardware”, but rather, it affects whether the written code’s simulated behavior aligns with the parallel behavior the circuit will implement.
+
+### Relationship of nonblocking statements to always @(posedge clk)
+
+An `always @(posedge clk)` block describes logic that is triggered only on the rising edge of a clock. This construct is used to model edge-triggered sequential logic, such as registers and flip-flops.
+
+{:.note-title}
+> recap: event control
+>
+> In Verilog, the `@( … )` part is called the **event control**. The whole always `@( … )` construct is commonly referred to as an always block with a sensitivity list (or event sensitivity list).
+> 
+> Common names by pattern that you will see in this course frequently: 
+> * `always @(*)`: Combinational always block (implicit sensitivity list, “all inputs”). Often also called an always-comb style block.
+> * `always @(posedge clk) / always @(negedge clk)`: Clocked (sequential) always block, also called an edge-triggered always block.
+
+When nonblocking assignments are used inside `always @(posedge clk)`:
+* All right-hand sides are sampled at the clock edge.
+* All left-hand sides update together AFTER the block completes.
+
+This closely matches the physical behavior of synchronous digital circuits, where registers update in parallel on a clock edge. 
+
+### Nonblocking assignments in always @(*)
+
+Using nonblocking assignments inside an `always @(*)` block is legal in Verilog but conceptually _inappropriate_.
+
+An `always @(*)` block represents pure combinational logic. Its intent is that outputs change immediately in response to input changes. 
+
+Nonblocking assignments, however, DEFER updates, which introduces artificial scheduling delays in simulation. This can break the combinational nature of your module and result in a simulation behavior that does not reflect true combinational hardware, not to mention that it makes debugging and reasoning about the logic more difficult.
+
+For this reason, nonblocking assignments should not be used in combinational `always @(*)` blocks.
+
+
+{:.highlight}
+A dff samples its input on the rising edge of a clock and holds the value until the next edge. In Verilog, this behavior is expressed naturally using `always @(posedge clk`) with nonblocking assignments. 
+
+### Reiterating how dff is simulated and synthesized in Verilog
+
+For a DFF written as:
+
+```verilog
+always @(posedge clk) begin
+  q <= d;
+end
+```
+
+What happens on a rising edge is:
+1.	The event control triggers: at the instant the simulator detects posedge clk, it starts **executing** this `always` block.
+2. `d` is sampled: the right-hand side is evaluated immediately at that clock edge, using whatever value d has at that moment in simulation.
+3.	`q` is scheduled to update: because it is nonblocking (<=), the assignment does not update it immediately. Instead, it schedules `q` to take that sampled value. If you read `q` value anywhere within this block, it still takes the OLD value. 
+4. `q` updates after the block finishes (end of the time step): once all statements that were triggered at that same clock edge have executed, the simulator commits the scheduled nonblocking updates. At that point, `q` changes.
+
+
+
+{:.important} 
+> We sample D at the rising edge, and Q is updated as part of the nonblocking assignment commit at the end of the current simulation time step (after all posedge-triggered blocks have run).
+> 
+> In hardware, the “sample” and “update” are conceptually the same clock edge. Nonblocking just models the parallel nature of many registers updating together, rather than line-by-line updates.
+
+Note that if you had mistakenly used blocking (`q = d;`) in that clocked block, q would update immediately within that block, meaning later statements in the same block (or other blocks depending on scheduling) could see the updated q in the same time step. That is the ordering artifact nonblocking avoids.
+
+For clarity, the following is still inferred as a dff and you probably won't notice any difference because the block is properly clocked and q is not assigned in conflicting ways elsewhere.
+
+```verilog
+module dff_blocking (
+    input  wire clk,
+    input  wire rst,
+    input  wire d,
+    output reg  q
+);
+  always @(posedge clk) begin
+    if (rst)
+      q = 1'b0;
+    else
+      q = d;
+  end
+endmodule
+```
+
+However this latent bug is very dangerous because it questions what you know or don't know, and reflects knowledge debt. 
+
+{:.note}
+Blocking assignment in a trivial register may appear correct, but it encodes an ordering-based simulation semantics that does not represent parallel register updates. The issue often remains invisible until the code is extended to include dependent state updates, at which point it becomes a subtle and difficult-to-diagnose bug.
+
+## What Verilog "implies" to tool
+
+### Implying a "latch" 
 
 Recall in the earlier labs that static discpline must be obeyed in combinational blocks (`always @*`), otherwise we will *implied a latch* (memory).
 
@@ -140,7 +277,7 @@ Recall in the earlier labs that static discpline must be obeyed in combinational
 
 In Verilog, latches are most commonly inferred accidentally in **combinational** blocks (`always @*`) when you forget to assign an output on every possible path. The tool must then <span class="orange-bold">create memory</span> during synthesis to preserve the old value, and that memory is a **latch**.
 
-#### Recap of accidental latch creation in combinational modules
+### Recap of accidental latch creation in combinational modules
 
 The following code results in an accidental latch creation: 
 
@@ -180,7 +317,7 @@ always @* begin
 end
 ```
 
-#### Synthesis process
+### Synthesis process
 In Verilog, `reg` is just a *variable type* for simulation. The “flip-flop” is not a literal object in the source code. It is inferred by the synthesis tool from this pattern:
 
 ```verilog
@@ -194,7 +331,7 @@ An edge-triggered `always` block tells the synthesize the following: “*this si
 When `en==0`, the tool typically implements that as a mux feeding the D input of the flip-flop (select `D` vs select old `Q`) as provided in the diagram above, or equivalent clock-enable circuitry. Either way, it is still a flip-flop, not a latch.
 
 
-#### DFF is not a latch
+### DFF is not a latch
 Now compare how latch behaves with a D **flip-flop** (edge-triggered). As taught in lectures, a flip-flop only <span class="orange-bold">updates</span> at a clock **edge**, and it naturally *holds its value* <span class="orange-bold">between</span> edges (so this is unlike latch which is transparent and susceptible to noise *half the time*). 
 
 {:.highlight}
@@ -219,9 +356,9 @@ end
 > Missing assignments in `always @*` can force **latch** inference (because combinational logic cannot remember).
 > Missing assignments in `always @(posedge clk ...)` do **not** infer a latch; the **flip-flop** already provides the memory and simply does not load a new value when `en==0`.
 
-### Testbench
+## Testbench
 
-#### `dff` with reset
+### `dff` with reset
 To test if our `dff` works as intended, we need a testbench that does the following:
 1. Create a clock signal with fixed period
 2. Vary `D` in between clock edges to observe the "capture" moments
@@ -307,7 +444,7 @@ Things to observe:
 2. Changes in `D`  values in-between rising clock edges are ignored
 3. Reset happens **asynchronously** and takes **precedence**. At around 33000 ps mark, `Q` changes to `0` immediately as soon as reset is `1`, regardless of the `clk`.
 
-#### `dff` with reset and `en`
+### `dff` with reset and `en`
 
 When you add an `en` to the `dff`, we have one more case to test: whether `Q` changes with `D` at rising clock edges if `en` is 0. Everything else remains the same.
 
@@ -452,7 +589,7 @@ Things to lookout for:
 2. `Q`'s changes is synchronised to the rising edge of the clock except when reset is `1`
 3. At around 49000 ps, `Q` becomes `0` because reset is `1`, even though `en` is 0 and it's in-between rising clock edges
 
-#### Using AI to produce testbenches for you
+### Using AI to produce testbenches for you
 
 Writing a long testbench can be quite taxing, and repetitive. It is very tempting to just ask AI to spit out some for you, and in fact, that is the right move especially with well known language like Verilog. However, it is <span class="orange-bold">very</span> important that you are **specific** when prompting AI to generate a testbench for you.
 
