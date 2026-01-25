@@ -266,6 +266,44 @@ Blocking assignment in a trivial register may appear correct, but it encodes an 
 
 ## What Verilog "implies" to tool
 
+In RTL Verilog, you do not explicitly instantiate transistors or flip-flop primitives. Instead, you write **behavioral code** that _implies_ a certain kind of hardware. The synthesis tool then infers the corresponding circuit structure.
+
+{:.note}
+Recall that "RTL Verilog” usually means code that is intended to be synthesizable into hardware. 
+
+### What determines what is inferred
+
+The dominant cues are the event control and the completeness of assignment, not the assignment operator alone.
+1.	Edge-triggered event control implies a flip-flop (register)
+  * Pattern: `always @(posedge/negedge clk)`
+  * If a signal is assigned in such a block, the tool infers a clocked storage element for that signal.
+2.	Combinational sensitivity implies pure combinational logic
+  * Pattern: `always @(*)`
+  * If outputs are assigned for all input conditions, the tool infers combinational logic.
+3.	Incomplete assignment in a combinational block implies a latch
+  * Pattern: `always @(*)` but the output is not assigned on some paths.
+  * The only way to “remember” a previous value in pure level-sensitive logic is a latch, so the tool infers one.
+
+Examples as recap: 
+
+```verilog
+// implies a dff
+always @(posedge clk) q <= d;
+
+// implies a combinational logic 
+always @(*) y = a & b;
+
+// implies a latch
+always @(*) begin
+  if (en) q = d;
+  // else: q holds its previous value -> latch is inferred
+end
+```
+
+{:.highlight}
+This "formula" is why we stress above that we shall use nonblocking `<=` for clocked state to match parallel hardware updates or use blocking `=` for combinational logic to keep evaluation semantics transparent.
+
+
 ### Implying a "latch" 
 
 Recall in the earlier labs that static discpline must be obeyed in combinational blocks (`always @*`), otherwise we will *implied a latch* (memory).
