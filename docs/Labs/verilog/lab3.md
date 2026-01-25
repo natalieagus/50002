@@ -142,7 +142,7 @@ In Verilog, latches are most commonly inferred accidentally in **combinational**
 
 #### Recap of accidental latch creation in combinational modules
 
-**Accidental latch (violates the static discipline) recap:**
+The following code results in an accidental latch creation: 
 
 ```verilog
 reg Y;
