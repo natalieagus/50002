@@ -718,6 +718,151 @@ endmodule
 {:.note}
 Note how we never use `instance.output_port` here and always use intermediary `wire` instead.
 
+### The Benefit of Utilising the `dff` Module
+
+{:.highlight}
+At this point, it is **important** to be explicit about **where sequential behavior lives** in this design.
+
+In the registered adder above, **ALL state and all clocked behavior are fully encapsulated inside the `dff_en` or `dff` modules**. Each `dff` instance is a concrete D flip-flop with an enable and reset. As a result the parent module `pipelined_rca` contains <span class="orange-bold">no clocked `always` blocks</span>
+  * There are **no `always @(posedge clk)` blocks**
+  * There are **no nonblocking assignments (`<=`) anywhere in this module**
+
+This is **intentional** and **correct**.
+
+{:.important}
+Once a design instantiates explicit flip-flops like the `dff`/`dff_end` modules, the surrounding logic must be treated as **purely combinational datapath wiring**. The timing semantics are already defined by the flip-flop boundaries.
+
+We handle clocking discipline structurally, with clear separation on where the sequential behavior lives, which is only within the `dff` modules. The bigger modules that utilises these `dff`s describes a datapath composed of these arrays of `dff`s (registers) and combinational logic between them (the `rca`).
+
+{:.important}
+This mirrors how real hardware is reasoned about at the block-diagram level, and is <span class="orange-bold">intentionally taught to you</span> this way to be more closely aligned with the lecture materials and basic understanding of circuitry. In LucidV2, this is the approach as well.
+
+#### Why no nonblocking assignments are needed when you use `dff` module
+
+Nonblocking assignments exist to correctly describe **edge-triggered state updates** inside a clocked procedural block. Their role is to ensure that ALL registers sample old values and update simultaneously at a clock edge.
+
+In this design:
+
+* The `dff_en` module already implements that behavior <span class="orange-bold">internally</span>
+* Each `dff_en` has its own `always @(posedge clk)` with nonblocking assignment
+* The parent module *never* updates state directly
+
+Therefore, adding another `always @(posedge clk)` in `pipelined_rca` would be both **redundant** and conceptually **incorrect**. It would blur the separation between **state elements** (the `dff`s holding a series of `a`, `b`, `s` and `cout` values over time) and **combinational datapath** (the RCA), which is precisely what this lab aims to make clear.
+
+
+#### What if we did not use a `dff` module and let Verilog infer registers?
+
+An alternative implementation would be to remove the `dff_en` modules entirely and write something like this to create a pipelined/registered adder:
+
+{:.note}
+> This is the style most AI tools (and many experienced RTL designers) will produce if you ask for a “clocked/pipelined/registered adder” directly. It is functionally correct, but it is not beginner-friendly because it *collapses* several concepts into one place. 
+> To understand why it works, you already need to know:
+> * **How registers are inferred** from `always @(posedge clk ...)` blocks (and what makes something a flip-flop vs “just logic”)
+> * **Why nonblocking (`<=`) is required** in clocked sequential logic, and what can break if you use blocking (`=`)
+> * **How pipelining is expressed** as “stage 0 regs” feeding combinational logic feeding “stage 1 regs”
+> * **Why enables must hold state** (and what a stall means across multiple pipeline stages)
+> * **Why separating sequential vs combinational logic matters** for readable control-datapath design
+>
+> For beginners, this style hides the **central** lesson, which is that: *a *pipeline* is registers PLUS combinational logic between them*. When you use an explicit `dff`/`dff_en` module, the pipeline boundaries become **visually obvious**, and you can focus on timing and data movement without simultaneously learning register inference rules and assignment semantics.
+
+
+```verilog
+// Pipelined Ripple-Carry Adder (inferred registers version)
+// Registers inferred: a_q, b_q, ci_q, s_q, co_q
+// Latency: 2 cycles
+//   - cycle N:     input regs capture a,b,ci
+//   - cycle N+1:   output regs capture sum/co computed from registered inputs
+//
+// Notes:
+// - Uses nonblocking assignments in clocked blocks (required for correct sequential semantics).
+// - en stalls the entire pipeline when 0 (all regs hold their values).
+module pipelined_rca_inferred #(
+    parameter integer SIZE = 8
+)(
+    input  wire                 clk,
+    input  wire                 rst,     // async active-high reset
+    input  wire                 en,      // pipeline enable (stall when 0)
+    input  wire [SIZE-1:0]       a,
+    input  wire [SIZE-1:0]       b,
+    input  wire                 ci,
+    output wire [SIZE-1:0]       s,
+    output wire                 co
+);
+
+    // Stage 0 registers (registered inputs)
+    reg  [SIZE-1:0] a_q;
+    reg  [SIZE-1:0] b_q;
+    reg             ci_q;
+
+    // Combinational adder between stages (driven by stage-0 regs)
+    wire [SIZE-1:0] sum_comb;
+    wire            co_comb;
+
+    rca #(.SIZE(SIZE)) u_rca (
+        .a (a_q),
+        .b (b_q),
+        .ci(ci_q),
+        .s (sum_comb),
+        .co(co_comb)
+    );
+
+    // Stage 1 registers (registered outputs)
+    reg  [SIZE-1:0] s_q;
+    reg             co_q;
+
+    // Stage 0: capture inputs
+    always @(posedge clk or posedge rst) begin
+        if (rst) begin
+            a_q  <= {SIZE{1'b0}};
+            b_q  <= {SIZE{1'b0}};
+            ci_q <= 1'b0;
+        end else if (en) begin
+            a_q  <= a;
+            b_q  <= b;
+            ci_q <= ci;
+        end
+        // else: hold state (stall)
+    end
+
+    // Stage 1: capture adder outputs
+    always @(posedge clk or posedge rst) begin
+        if (rst) begin
+            s_q  <= {SIZE{1'b0}};
+            co_q <= 1'b0;
+        end else if (en) begin
+            s_q  <= sum_comb;
+            co_q <= co_comb;
+        end
+        // else: hold state (stall)
+    end
+
+    assign s  = s_q;
+    assign co = co_q;
+
+endmodule
+```
+
+In the implementation above, inference happens:
+* Verilog **infers** registers based on the clocked `always` block
+* The registers still exist in hardware, just like the approach that utilises `dff` modules separately
+
+Therefore, the synthesis result can be functionally equivalent, but it is definitely harder to visually identify pipeline stages for beginners, and obscures where registers conceptually sit in the datapath. It mixes state, control, and datapath logic which is probably okay for experts to use and save time with concise code, but is definitely *not recommended* for absolute beginners in RTL.
+
+
+#### Connection to control, datapath, and FSMs
+
+This registered adder is a minimal example of a **datapath**, which is the **main** topic of the next lab:
+* Registers hold values across cycles
+* Combinational logic transforms those values
+* Data <span class="orange-bold">moves</span> forward on clock edges
+
+In the upcoming control-datapath and FSM lab:
+* The datapath will contain registers similar to `a_q`, `b_q`, and `s_q`
+* An FSM will generate **control** signals such as enables, selects, and resets
+* The FSM itself will be implemented using registers to store *states*, often via the same `dff` abstraction
+
+{:.note}
+We hope that by separating flip-flops into explicit modules now, you build the correct habit and realise that: datapath logic is combinational, state lives in registers (array of `dff`), control decides WHEN registers update, clocking is never implicit or scattered.
 
 ## Testbench Design
 
