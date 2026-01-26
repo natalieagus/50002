@@ -198,6 +198,9 @@ A **one-hot** encoding means that **exactly one signal line is HIGH (1) at any g
 
 #### 1 to 2 Decoder (with Enable)
 
+{:.important}
+A decoder with enable is also called a demultiplexer in some other texts.
+
 The simplest form of a decoder is the **1-to-2 decoder**. It takes a single binary input and activates exactly one of two outputs.
 
 
