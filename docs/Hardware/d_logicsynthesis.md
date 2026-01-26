@@ -452,8 +452,24 @@ From the comparison of different implementations of a 1-bit full adder, we can o
 
 ### [Demultiplexer](https://www.youtube.com/watch?v=yXBAy432vT8&t=3938s)
 
-A demultiplexer (demux) is a combinational circuit that **routes** a single input signal to one of multiple outputs based on a select signal. The demux has $$k$$ select inputs and $$2^k$$ possible output combinations. The gate-level schematic of a 1-select input demux and its corresponding symbol is:
+A demultiplexer (demux) is a **combinational routing circuit** that takes **one input channel** (where channel can be more than 1-bit wide) and directs it to **exactly one of N output channels**, selected by `k` select lines (typically `N = 2^k`). 
 
+{:.note}
+**Channel** is the key word: the demux does not have to route only a single wire. The input can be **1 bit** or a **w-bit bus**. 
+
+There are two common formal definitions of a demultiplexer:
+1. **1-to-N, 1-bit demux** (common in this course)
+  * Input: `D`
+  * Outputs: `Y0..Y(N-1)`
+  * `Yi = D · decode_i(S)`
+2. **1-to-N, w-bit demux** (less common)
+  * Input: `D[w-1:0]`
+  * Outputs: `Y0[w-1:0] .. Y(N-1)[w-1:0]`
+  * `Yi[b] = D[b] · decode_i(S)` for each bit `b`
+
+
+
+The gate-level schematic of a 1-select input 1-bit demux and its corresponding symbol is:
 <img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-20-17-25-20.png"  class="center_seventy"/>
 
 {: .note-title}
@@ -461,8 +477,8 @@ A demultiplexer (demux) is a combinational circuit that **routes** a single inpu
 > 
 > Draw out the truth table of the demultiplexer above.
 
+#### Decoder
 A common subset of a demux is a **decoder**, as both circuits use select inputs to determine which output is activated. However, while a decoder simply **activates** one of its outputs based on the input combination, a demux not only selects an output but also **forwards** the input data to the selected output.
-
 
 The schematic of a 2-select inputs **decoder**: $$S_0$$ and $$S_1$$ is:
 
@@ -475,7 +491,8 @@ The schematic of a 2-select inputs **decoder**: $$S_0$$ and $$S_1$$ is:
 <img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-04-11-08-04.png"  class="center_fifty"/>
 
 1. The symbol of a decoder/demux is shown as above
-2. A demux is the *opposite* of a multiplexer. It has $$k$$ select inputs, and $$2^k$$  **possible data outputs**, and only 1 bit of input to forward. A decoder does not "forward" any input, but instead only activates one of the output lanes.32. **At any given time** only 1 bit of the $$2^k$$ output bits can be  `1` (high). This is apparent when we try to draw the truth table for a $$k$$ input decoder.
+2. A demux is technically the *opposite* of a multiplexer. It has $$k$$ select inputs, and $$2^k$$  **possible data outputs**, and only 1 bit of input to forward.
+3. A decoder does not "forward" any input, but instead only activates one of the output lanes.32. **At any given time** only 1 bit of the $$2^k$$ output bits can be  `1` (high). This is apparent when we try to draw the truth table for a $$k$$ input decoder.
 
 For example, the truth table for a 1-selector bit decoder is:
 
