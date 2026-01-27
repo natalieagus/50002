@@ -92,7 +92,7 @@ The clock hardware is literally like a conductor in an orchestra.
 - This ensures  that ALL parts of the system **progress together** and <span class="orange-bold">remain synchronised</span>.
 
 
-### DFF
+### `dff` 
 
 A clock by itself does nothing. It is just a signal that oscillates. The element that gives the clock meaning is the D flip-flop (**DFF**) which we learned in class.
 

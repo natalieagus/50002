@@ -130,6 +130,9 @@ endmodule
 
 There’s no need for `else Q <= Q;` because the `always @(posedge clk or posedge rst)` block is edge-triggered, so `Q` only changes on those edges. If `en` is low at a clock edge, no assignment happens and the flip-flop simply retains its previous `Q` value, with *no latch* involved.
 
+{:.important}
+Note that since each `dff` only holds 1 bit, you need to create an "bus" of these `dff` modules if you're trying to implement an N-bit register using it. In the next lab, we have another variation that creates variable-sized register.
+
 ## A Deeper Dive into Verilog's Blocking and Nonblocking Assignments 
 
 {:.note}

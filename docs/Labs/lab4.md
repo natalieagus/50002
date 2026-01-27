@@ -68,9 +68,28 @@ In this lab, you will add a small controller whose job is to decide: *“What sh
 {:.highlight}
 > This kind of controller is none other than a **Finite State Machine (FSM)**.
 
+### Motivation
+
+**Recap**: digital systems that do more than “pure combinational logic” usually have two different kinds of logic living together:
+
+1. **Sequencing**: deciding what happens first, next, and last.
+2. **Computation and storage**: holding values in registers and running arithmetic or comparisons on them.
+
+{:.highlight}
+A clean RTL structure (description of hardware in HDL like Verilog or Lucid) **separates** these two roles.
+
+The **controller** is none other than an FSM. It decides the sequence of steps. It outputs control signals such as `ld_x`, `clr_x`, `sel_x`, `we`, `done`, and so on.
+
+The **datapath** contains the registers and the combinational logic between them. It performs the computation when the controller tells it to. It also produces **status signals** (flags) such as `zero`, `lt`, `eq`, `carry`, `busy`, `ready`, which feed back into the controller so the FSM can branch or wait.
+
+This separation matters in the code because it <span class="orange-bold">matches</span> the real hardware structure. **Registers update only on a clock edge.** Between clock edges, the combinational logic and the control signals may change, but they do not change the stored state until the next sampling edge. 
+
+{:.note}
+When sequencing and computation are *mixed* into one large clocked block, it becomes easy to accidentally depend on simulation ordering details (old vs new values in the same timestep). With controller–datapath separation, timing intent is explicit and simulation aligns closely with hardware behavior.
+
 ### Automated Registered Adder Tester (Hardware)
 
-We shall turn the FPGA hardware into a small **self-checking tester** for your adder. **This is related to 1D Checkoff 1**, where you are required to build an automated tester for your ALU, a crucial part of your 1D project. 
+To apply this idea, we shall create an automated registered adder tester. In this lab, we turn the FPGA hardware into a small **self-checking tester** for your adder. **This is related to 1D Checkoff 1**, where you are required to build an automated tester for your ALU, a crucial part of your 1D project. 
 
 Instead of manually choosing `a` and `b` via DIP switches, we will *automatically*:
 
@@ -107,6 +126,11 @@ There are two components to a controller: the *datapath* and the *control unit* 
 
 <img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-datapath-fsm.drawio.png"  class="center_seventy"/>
 
+The interface is between the two intentionally simple:
+
+* Controller to datapath: **control** signals
+* Datapath to controller: **status**/**feedback** signals
+  
 ## Datapath
 Before thinking about the controller and how many states it should have + logic, it helps to be very explicit about the **datapath** (hardware) that the controller (FSM) will drive. The datapath for this **automated tester** we are building should contain:
 
@@ -160,7 +184,6 @@ The datapath should also receive a regular hardware clock (100Mhz) and *not* run
 You should be able to draw the datapath of the system above. Try it on your own. Alternatively, you can see the proposed datapath in the [appendix](#proposed-datapath). 
 
 
-
 ## FSM controller
 
 Now we give this datapath a small **finite state controller**. 
@@ -168,6 +191,7 @@ Now we give this datapath a small **finite state controller**.
 This controller is the *brain* of the tester: 
 - It outputs <span class="orange-bold">control signals</span> that **decide** what each part of the datapath does on each clock. 
 - It should receive `slow_clock` signal as input to indicate when we should change state, and button presses from user such as `start_button`, etc.
+- It should also receive **status/feedback signals** from the Datapath to decide "what to do"
 
 From the FSM notes, recall that the controller itself can be implemented as a Moore-style machine:
 * It has a **state register** that stores the current state encoded in a few bits.
@@ -186,10 +210,14 @@ You can think of this as a tiny “hardware program” with 7 instructions: `IDL
 {:.note}
 The output signals written under each bubble is called **control** signals: they control and drive the datapath. Think of it like a *train conductor's action*. The datapath is the *railway system*, it's already built and all rails are already there. The conductor's brain (FSM) decide what to do and their action is translated into *control signals* that drive the **train** (data).
 
+## Feedback Signals
+
+Also known as status signals, these signals are produced by the datapath and fed to the FSM to typically trigger state transitions. The design is entirely up to you. For instance, you can have status/feedback signals like `last_index` to indicate whether we have reached the end of the test list and `equal` to indicate whether the adder's output matches the answer key's output.
+
 ## Control Signals
 
 {:.highlight}
-These are the <span class="orange-bold">wires that cross the boundary</span> between the FSM controller and the datapath hardware described earlier.
+These are the <span class="orange-bold">wires that cross the boundary</span> between the FSM controller and the datapath hardware described earlier. The direction of these control signals is from controller *to* datapath.
 
 Each **control signal** answers a very concrete question like:
 
