@@ -99,7 +99,7 @@ Once enabled, the shared folder appears as a **mounted** **drive** or network lo
 When possible, configure your virtual machine to **access a USB device** so you can load the binary to the FPGA after compilation. Search on Google (or other search engines) for the most updated guides. 
 
 #### x86: Installing Natively 
-We recommend you to install [Vivado ML Edition - 2023.2](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2023-2.html). You are free to install the [latest](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2024-2.html) version too: Vivado 2024.2. 
+We recommend you to install [Vivado ML Edition - 2023.2](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/archive.html). You are free to install the [latest](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2025-2.html) version too: Vivado 2024.2. 
 
 {:.highlight}
 Please just choose one and just install one version.
