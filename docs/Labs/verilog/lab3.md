@@ -133,7 +133,7 @@ There’s no need for `else Q <= Q;` because the `always @(posedge clk or posedg
 ## A Deeper Dive into Verilog's Blocking and Nonblocking Assignments 
 
 {:.note}
-This is a very distilled but sufficient introduction to blocking and nonblocking assignments in Verilog, and its effect on specific event control sensitivity. If you'd like to go into a super deep dive, checkout this article. (TBC). 
+This is a very distilled but sufficient introduction to blocking and nonblocking assignments in Verilog, and its effect on specific event control sensitivity. If you'd like to go into a super deep dive, checkout [this](https://natalieagus.github.io/50002/lab/supp-1-verilog) article. 
 
 ### Nonblocking assignment (<=)
 

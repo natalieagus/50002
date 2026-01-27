@@ -197,7 +197,7 @@ endmodule
 
 ```
 
-You use `always @*` when the logic needs **procedural** structure or when you want a “default then override” pattern. For simple combinational expressions, `assign` is preferred and clearer.
+You use `always @*` when the *combinational* logic needs **procedural** structure or when you want a “default then override” pattern. For simple combinational expressions, `assign` is preferred and clearer.
 
 ```verilog
 module clamp1 (
@@ -213,6 +213,46 @@ endmodule
 ```
 
 This is still purely combinational, but `if` needs an `always @*` block.
+
+### `always` Construct and Sensitivity Lists
+
+{:.note-title}
+> The `always` block
+> 
+In Verilog, an `always` block is a procedural region that <span class="orange-bold">re-evaluates</span> whenever its event control triggers. For *combinational* modules, the intent is that the block re-runs whenever any input it depends on changes, so the output continuously reflects the current inputs (no state).
+
+With an explicit sensitivity list, the designer enumerates which signals **trigger** re-evaluation. This is correct only if the list is complete.
+
+```verilog
+// 2:1 mux with an explicit sensitivity list (must be complete)
+always @(a or b or sel) begin
+  if (sel) y = b;
+  else     y = a;
+end
+```
+
+A common beginner error is *omitting* a read signal from the list. The code may still synthesize to the intended hardware, but simulation can become misleading because the block simply does <span class="orange-bold">not</span> run when the omitted signal changes.
+
+```verilog
+// Buggy for simulation: sel is read but not in the sensitivity list
+always @(a or b) begin
+  if (sel) y = b;
+  else     y = a;
+end
+```
+
+To avoid this class of errors, combinational logic is typically written with `always @*`, which instructs the simulator to make the block sensitive to all signals read within it.
+
+```verilog
+// Recommended combinational style
+always @* begin
+  if (sel) y = b;
+  else     y = a;
+end
+```
+
+If you'd like to go into a deep dive about sensitivity lists, read [this](https://natalieagus.github.io/50002/lab/supp-2-verilog) article.
+
 
 ### Internal Signals (`wire` and `reg`)
 
