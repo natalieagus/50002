@@ -109,7 +109,7 @@ This guide assumes you select Vivado ML Edition - 2023.2. It works the same for 
 #### Vivado ML Edition - 2023.2 
 [Create an AMD account](https://www.amd.com/en/registration/create-account.html?custtarg=aHR0cHM6Ly9hY2NvdW50LmFtZC5jb20vZW4vcHJvZmlsZS5odG1s) first. 
 
-Then, download [Vivado ML Edition - 2023.2 self-extracting web installer](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2023-2.html) (Windows / Linux)
+Then, download [Vivado ML Edition - 2023.2 self-extracting web installer](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/archive.html), select version from the left tab (Windows / Linux only). 
 
 <img src="{{ site.baseurl }}//docs/FPGA/images/installation/2024-10-16-09-54-29.png"  class="center_seventy no-invert"/>
 
