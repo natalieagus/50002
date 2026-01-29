@@ -457,7 +457,7 @@ Thus, we assume that the mux used in a latch is a **lenient** mux. A lenient mux
 In particular, a lenient mux fulfils either of 3 conditions below:
 1. When G has just turned 1 (from read to write mode), once D is valid for as long as *half* of $$T_{setup}$$, we guarantee that Q will be stable and valid (reflecting D) **independently** of Q' value. This allows Q to be unaffected by overwriting of Q' when new values from D has just arrived.
 2. When G is 1 (write mode), once D is valid for as long as $$T_{setup}$$, we guarantee that Q will be stable and valid (reflecting D) **regardless** of subsequent **transition** of G. This ensures that a 1-to-0 transition on G doesn’t affect the Q output
-3. When G is 0 (memory mode)a and Q has been stable for at least $$T_{hold}$$ (thanks to D being valid for at least $$T_{hold}$$), then Q will not be affected by subsequent transitions on D input. 
+3. When G has just turn 0 (memory mode) and D has been stable for at least $$T_{hold}$$, then Q would be stable for as long as $$T_{hold}$$ as well and its value is latched properly at Q'. As a result, Q will not be affected by subsequent transitions on D input. 
 
 
 ## DFF Timing Constraint 
