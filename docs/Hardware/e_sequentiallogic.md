@@ -103,6 +103,13 @@ The term "**pass through**" is used from this point onwards in this chapter to e
    -  Lets call this the **`memory` mode** (or `read` mode in some textbooks).
 
 
+Before we progress, let's ensure we understand one thing first:
+* The theory of a working D latch is that when G transitions from HIGH to LOW, Q should hold the value present on D at that moment. 
+* However, a combinational device (the Mux) makes NO output guarantees until tpd after an input change and may behave unpredictably between tcd and tpd. 
+* This is time gap between "remembering old stable value" to "producing new stable value" as input transitions. 
+
+So if the falling edge of G briefly invalidates Q, the memory fails because Q is exactly what we are trying to preserve. Therefore, we must ensure that a HIGH-to-LOW transition on G does not disturb Q at all. This is done by the hardware, which is to build a lenient mux. You can read the appendix section if you're interested, but as long as you can take at face value that HIGH TO LOW transition on G does not disturb Q at all, as long as some prerequisites about D holds (will be explained below), then you're good to continue. 
+
 ### Using a D-Latch
 
 A D-latch operates by capturing the input voltage (valid low or high) at the D wire when a valid high voltage is applied to the G wire (also shown as the **Clock** port in the diagram below). After the voltage at G switches to low, the D-latch retains the value from D at the time G was high, without needing to maintain D's initial values.
@@ -452,13 +459,25 @@ For $$T_{hold}$$, you can figure this out by realising that CLK is an **input** 
 Notice that Q is *also* an input to the mux. We will meet a <span style="color:red; font-weight: bold;">problem</span> if 1-to-0 transition on G causes the Q output to become invalid at a brief interval (even when D is held stable obeying $$T_{setup}$$ and $$T_{hold}$$). 
 
 {: .highlight}
-Thus, we assume that the mux used in a latch is a **lenient** mux. A lenient mux is a mux where a 1-to-0 transition on G doesn’t affect the validity of Q output. 
+Thus, we assume that the mux used in a latch is a **lenient** mux. A lenient mux is a mux where a 1-to-0 transition on G doesn’t affect the validity of Q output if certain prerequisite holds. 
 
-In particular, a lenient mux fulfils either of 3 conditions below:
-1. When G has just turned 1 (from read to write mode), once D is valid for as long as *half* of $$T_{setup}$$, we guarantee that Q will be stable and valid (reflecting D) **independently** of Q' value. This allows Q to be unaffected by overwriting of Q' when new values from D has just arrived.
-2. When G is 1 (write mode), once D is valid for as long as $$T_{setup}$$, we guarantee that Q will be stable and valid (reflecting D) **regardless** of subsequent **transition** of G. This ensures that a 1-to-0 transition on G doesn’t affect the Q output
-3. When G has just turn 0 (memory mode) and D has been stable for at least $$T_{hold}$$, then Q would be stable for as long as $$T_{hold}$$ as well and its value is latched properly at Q'. As a result, Q will not be affected by subsequent transitions on D input. 
+In particular, a lenient mux WILL produce a stable and valid Q as long as either of 3 conditions below is fulfilled:
+1. When G is 1 (we are loading the latch), once D is valid for as long as *half* of $$T_{setup}$$ (1 tpd), we guarantee that Q will be stable and valid (reflecting D) **independently** of Q' initial value. This allows Q to be unaffected by Q' as it is overwriting Q' when new values from D has just arrived.
+2. When D is valid for as long as $$T_{setup}$$, we guarantee that Q will be stable and valid (reflecting D) **independently** of G. This ensures that a 1-to-0 transition on G doesn’t contaminate Q output
+3. When G is 0 (memory mode) and Q has been stable for at least $$T_{hold}$$, then Q will no longer be affected by subsequent transitions on D input. Note that the only way for Q to be stable for this long when G has just turned to valid 0 is fulfilled by D, it should be held stable for at least $$T_{hold}$$ for this effect to happen. 
 
+The truth table for the lenient mux is as follows:
+
+| G | D | Q' | Q |
+|---|---|----|---|
+| 1 | 0 | X  | 0 |
+| 1 | 1 | X  | 1 |
+| 0 | X | 0  | 0 |
+| 0 | X | 1  | 1 |
+| X | 0 | 0  | 0 |
+| X | 1 | 1  | 1 |
+| X | 0 | 1  | X |
+| X | 1 | 0  | X |
 
 ## DFF Timing Constraint 
 
