@@ -289,9 +289,14 @@ A | B|  Z
 **Practical application in programming**:  in a while loop, an `AND` gate can be used to ensure that the loop continues to iterate only as long as all specified conditions remain true,
 
 ```cpp
+// C 
 while (conditionA && conditionB) {
-    // execute code
+    // logic
 }
+
+// Python
+while (conditionA and conditionB):
+   // logic
 ```
 
 #### OR Gate
