@@ -1022,13 +1022,6 @@ The outer and inner `generate` blocks form a clear <span class="orange-bold">hie
 
 By separating instantiation from wiring, the code reads like a static schematic: first you declare all the components, then you describe how they are connected. This style scales well when the number of primitives grows large, because the structure stays regular and debuggable.
 
-{:.note}
-> Note the stylistic separation between:
-> * a single generate block that instantiates *all* primitive modules, and
-> * multiple generate blocks that assign signals into those primitives.
-
-This separation emphasizes that Verilog is describing a static wiring diagram. Instantiation creates components while **continuous** assignments <span class="orange-bold">connect</span> them. Thinking in these two phases makes it easier to scale designs without losing track of correctness.
-
 
 ### Test
 
@@ -1080,7 +1073,7 @@ module tb_multiplier;
     end
   endtask
 
-  // Pack like your TEST_CASES_MUL: [95:64]=a, [63:32]=b, [31:0]=expected
+  // [95:64]=a, [63:32]=b, [31:0]=expected
   reg [95:0] VEC [0:7];
   integer i;
 
