@@ -615,7 +615,7 @@ Afterwards, we can use a 4-way 32-bit multiplexer to select the appropriate answ
 
 ### Implementation Tips 
 
-You might want to create a `mux_2.luc` module here to help your implementation:
+You might want to use the `mux_2.luc` module here to help your implementation:
 
 ```cpp
 module mux_2 (
