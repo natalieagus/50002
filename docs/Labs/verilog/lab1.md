@@ -1173,12 +1173,12 @@ Nothing stretches or shrinks at runtime. If widths do not match, Verilog will ap
 {:.note}
 The following sections about array manipulation is actually the materials of later labs, but it is essential to introduce it now for the Verilog version since we are working with flattened arrays due to reasons listed [below](#2d-arrays).
 
-### Array duplication and concatenation 
+### Array replication (duplication) and concatenation 
 
 Verilog uses the following syntax for:
 
 * concatenation: `{a, b, c}`
-* replication: `{N{a}}`
+* replication: `{N{a}}` (note the braces around replication)
 
 Example (24-bit “3×8 all zeros”):
 
