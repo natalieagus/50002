@@ -110,7 +110,8 @@ This section contains a collection of Verilog syntax that might help you impleme
 
 In Verilog, there are **two different “for loops”** depending on what you’re trying to do:
 
-1. **Generate `for` loop** (builds repeated hardware instances): Use this when you want to **instantiate many copies** of a module (like chaining full adders).
+* **Generate `for` loop** (builds repeated hardware instances): Use this when you want to **instantiate many copies** of a module (like chaining full adders).
+
 ```verilog
 genvar i;
 generate
@@ -127,7 +128,8 @@ endgenerate
 ```
 This `for` is **elaboration-time**. It “unrolls” into 32 physical `fa` instances.
 
-2. **Procedural `for` loop** (runs inside `always` blocks): Use this for **combinational/sequential logic** (often for building buses, priority encoders, etc.). It does **not** create module instances.
+* **Procedural `for` loop** (runs inside `always` blocks): Use this for **combinational/sequential logic** (often for building buses, priority encoders, etc.). It does **not** create module instances.
+
 ```verilog
 integer k;
 always @* begin
@@ -136,6 +138,7 @@ always @* begin
   end
 end
 ```
+
 This `for` loop is still hardware, but it describes **logic equations** (connections between instances), not instantiation.
 
 {:.highlight}
