@@ -1239,7 +1239,7 @@ always @* begin
 end
 ```
 
-### Array of vectors (the common Verilog 2D pattern)
+### Array of vectors 
 
 In Verilog-2001, the most common way to model a 2D structure is an **array of 1D vectors** (often used for *memories*, but it also works for small row arrays). We can define such 2D internal signals:
 
