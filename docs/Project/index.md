@@ -31,14 +31,14 @@ Each group's contact person will need to collect your group’s 1D Kit (containi
 
 ## Assessment weightage & Rubric 
 
-[1D Project (30%)](/project/1d/intro):
+[1D Project (30%)]({{ site.baseurl }}/project/1d/intro):
 * Checkoff 1: ALU 3% (Week 8)
 * Checkoff 2: Datapath 5% (Week 9) 
 * Checkoff 3: Live Demo & Exhibition 12% (Week 12)
 * Checkoff 4: Report + Poster + Video 2% (Week 12)
 * Checkoff 5: Peer Review 8% (Week 13) 
 
-[2D Project (6%)](/project/2d/intro): 
+[2D Project (6%)]({{ site.baseurl }}/project/2d/intro): 
 * Optimisation 4% (Week 12)
 * Sustainability & Inclusivity 2% (Week 12)
 

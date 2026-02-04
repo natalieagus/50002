@@ -1165,7 +1165,7 @@ Ensure your automated tester works as intended on hardware too:
 ## Summary 
 
 
-Congratulations 🎉🎉! You have successfully built a 32-bit ALU in this lab and familiarse yourself with programming FPGA with Lucid. You will be required to **utilise it** in Lab 4 (Beta CPU), so **please keep a copy of your answer**. 
+Congratulations 🎉🎉! You have successfully built a 32-bit ALU in this lab and familiarse yourself with programming FPGA with Lucid. You will be required to **utilise it** in Lab 6 (Beta CPU), so **please keep a copy of your answer**. 
 
 **For your 1D project, you need to demonstrate a working ALU in your Alchitry Au FPGA hardware (not simulator!)**. **Both** your manual and automated simulator must work on hardware. Read the FPGA tutorials linked in our course handout for further information, and don't forget to polish your knowledge on Sequential Logic before proceeding. 
 

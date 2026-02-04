@@ -66,10 +66,10 @@ You won’t be able to start on this 2D project without completing at least 60% 
 
 
 In these sections, we outline a few basic approaches that you can start with, grouped by categories: 
-1. [Data Structure and Hardware Optimisation (OBJECTIVE 1)](/project/2d/dat-struct)
-2. [Enhanced Game Features (OBJECTIVE 2)](/project/2d/game-feat)
-3. [UI/UX Enhancement (OBJECTIVE 2)](/project/2d/ui-ux)
-4. [Sustainability (OBJECTIVE 3)](/project/2d/sus)
+1. [Data Structure and Hardware Optimisation (OBJECTIVE 1)]({{ site.baseurl }}/project/2d/dat-struct)
+2. [Enhanced Game Features (OBJECTIVE 2)]({{ site.baseurl }}/project/2d/game-feat)
+3. [UI/UX Enhancement (OBJECTIVE 2)]({{ site.baseurl }}/project/2d/ui-ux)
+4. [Sustainability (OBJECTIVE 3)]({{ site.baseurl }}/project/2d/sus)
 
 We suggest that you focus on **one specific solution for each objectives**. Please do **NOT** implement everything. However, please **keep in mind the sustainability aspect of your solution**. We do not encourage electronic waste or wasteful power consumption.
 

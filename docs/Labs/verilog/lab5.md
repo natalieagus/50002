@@ -1263,7 +1263,7 @@ endmodule
 
 ### Automated ALU Tester
 
-You can create pipelined ALU like you did for your pipelined RCA, and reused 90% of the code created for your automated RCA tester to create the equivalent one for your ALU.
+You can create **pipelined** ALU (put `dff`s / regs at the A, B, and ALUFN ports, and also output ports: alu out, z, v, and n) like you did for your pipelined RCA, and reused 90% of the code created for your automated RCA tester to create the equivalent one for your ALU.
 
 Similar to what you did for the RCA in the previous lab, we can create a datapath + control unit (FSM) for the automated ALU tester. This is a ROM that you can use:
 
@@ -1596,11 +1596,355 @@ endmodule
 
 ### Manual ALU Tester
 
-For this part, you should assume that you will receive inputs of `a`, `b`, and `alufn`, and some button presses (conditioned) to latch the values and move forward/display the result. You can implement it using a simple FSM, something like this:
+For this part, you should assume that you will receive inputs of `a`, `b`, and `alufn`, and some button presses (conditioned) to latch the values and move forward/display the result. You can implement it using a simple FSM to achieve something like this:
 
 <img src="{{ site.baseurl }}/docs/Labs/images/IMG_1532.gif"  class="center_seventy no-invert"/>
 
 
-#### Test
+Assuming you have **pipelined** ALU to begin with, you can use the following template:
 
+{:.note}
+We use the `register` and `edge_detector` module from the previous labs.
+
+```verilog
+
+// ============================================================
+// Manual ALU Tester 
+// Fill the ____ / TODO blocks only.
+// Do not change the interface.
+// ============================================================
+
+module manual_tester_alu (
+    input         clk,
+    input         rst,
+    input  [24:0] io_dip, // flattened io_dip from alchitry_top
+    input  [4:0]  io_button, // assume signal is conditioned
+    output [34:0] alu_out,
+    output [7:0]  state_indicator
+);
+
+  // ----------------------------
+  // Registers / wires (given)
+  // ----------------------------
+  wire [31:0] a_q;
+  wire [31:0] b_q;
+  wire [5:0]  alufn_q;
+  wire [34:0] alu_out_q;
+
+  wire [31:0] u_alu_out;
+  wire        u_z_out;
+  wire        u_v_out;
+  wire        u_n_out;
+
+  // ----------------------------
+  // Enable 
+  // ----------------------------
+  wire en;
+  assign en = 1'b1;   
+
+  // ----------------------------
+  // Instantiate pipelined_alu (fill)
+  // ----------------------------
+  pipelined_alu u_alu (
+      .clk  (_____________),
+      .rst  (_____________),
+      .en   (_____________),
+      .a    (_____________),
+      .b    (_____________),
+      .alufn(_____________),
+      .out  (_____________),
+      .z    (_____________),
+      .v    (_____________),
+      .n    (_____________)
+  );
+
+  // ----------------------------
+  // Next-state regs (given)
+  // ----------------------------
+  reg [31:0] a_d;
+  reg [31:0] b_d;
+  reg [5:0]  alufn_d;
+  reg [34:0] alu_out_d;
+
+  // ----------------------------
+  // Register instances (fill)
+  // ----------------------------
+  register #(.W(32)) u_reg_a (
+      .clk(______), .rst(______), .en(______), .d(______), .q(______)
+  );
+
+  register #(.W(32)) u_reg_b (
+      .clk(______), .rst(______), .en(______), .d(______), .q(______)
+  );
+
+  register #(.W(6)) u_reg_alufn (
+      .clk(______), .rst(______), .en(______), .d(______), .q(______)
+  );
+
+  register #(.W(35)) u_reg_alu_out (
+      .clk(______), .rst(______), .en(______), .d(______), .q(______)
+  );
+
+  // ----------------------------
+  // FSM constants (fill)
+  // ----------------------------
+  localparam NUM_STATES   = ______;                // TODO: how many states?
+  localparam STATES_WIDTH = $clog2(NUM_STATES);
+
+  localparam S_STORE_LOWER_A  = ______;
+  localparam S_STORE_HIGHER_A = ______;
+  localparam S_STORE_LOWER_B  = ______;
+  localparam S_STORE_HIGHER_B = ______;
+  localparam S_STORE_ALUFN    = ______;
+  localparam S_COMPUTE        = ______;
+  localparam S_RESET          = ______;
+
+  // ----------------------------
+  // State register (fill W and connections)
+  // ----------------------------
+  reg  [STATES_WIDTH-1:0] state_d;
+  wire [STATES_WIDTH-1:0] state_q;
+
+  register #(.W(______)) u_reg_state (
+      .clk(______), .rst(______), .en(______), .d(______), .q(______)
+  );
+
+  // ----------------------------
+  // Edge detector (fill)
+  // ----------------------------
+  wire next_edge_rise;
+
+  edge_detector u_edge_detector (
+      .clk  (______),                 // TODO
+      .rst  (______),                 // TODO
+      .sig  (______),                 // TODO: which button bit?
+      .pulse(______)                  // TODO
+  );
+
+  // ----------------------------
+  // FSM combinational logic (fill the TODO lines)
+  // ----------------------------
+  always @(*) begin
+    // defaults (fill)
+    state_d   = _______________________;
+    alu_out_d = _______________________;
+    a_d       = _______________________;
+    b_d       = _______________________;
+    alufn_d   = _______________________;
+
+    case (state_q)
+
+      S_STORE_LOWER_A: begin
+        // TODO: load lower 16 bits of A from io_dip[15:0]
+        a_d = _______________________________________________;
+        if (next_edge_rise) state_d = _______________________;
+      end
+
+      S_STORE_HIGHER_A: begin
+        // TODO: load upper 16 bits of A from io_dip[15:0]
+        a_d = _______________________________________________;
+        if (next_edge_rise) state_d = _______________________;
+      end
+
+      S_STORE_LOWER_B: begin
+        // TODO: load lower 16 bits of B from io_dip[15:0]
+        b_d = _______________________________________________;
+        if (next_edge_rise) state_d = _______________________;
+      end
+
+      S_STORE_HIGHER_B: begin
+        // TODO: load upper 16 bits of B from io_dip[15:0]
+        b_d = _______________________________________________;
+        if (next_edge_rise) state_d = _______________________;
+      end
+
+      S_STORE_ALUFN: begin
+        // TODO: load ALUFN (6 bits) from switches (suggested: io_dip[21:16])
+        alufn_d = ____________________________________________;
+        if (next_edge_rise) state_d = _______________________;
+      end
+
+      S_COMPUTE: begin
+        // TODO: pack flags + result into alu_out_d
+        // format: {z, v, n, out[31:0]} => 35 bits
+        alu_out_d = __________________________________________;
+        if (next_edge_rise) state_d = _______________________;
+      end
+
+      S_RESET: begin
+        // TODO: clear output register
+        alu_out_d = __________________________________________;
+        if (next_edge_rise) state_d = _______________________;
+      end
+
+      default: begin
+        state_d = _______________________; // TODO: safe default
+      end
+    endcase
+  end
+
+  // ----------------------------
+  // Outputs (fill if needed)
+  // ----------------------------
+  assign alu_out = ___________________________________;       // TODO: map to alu_out_q
+  assign state_indicator = ____________________________;       // TODO: map to state_q (zero-extend if needed)
+
+endmodule
+
+```
+
+
+Then you can use the following testbench:
+
+```verilog
+`timescale 1ns / 1ps
+
+// Minimal Verilog-2005 TB: drive DIP + button pulses, dump waveforms.
+// No self-checks. Just step through: store A low/high, store B low/high, store alufn, compute, reset.
+
+module tb_manual_tester_alu;
+
+  reg         clk;
+  reg         rst;
+  reg  [24:0] io_dip;
+  reg  [ 4:0] io_button;
+  wire [34:0] alu_out;
+  wire [ 7:0] state_indicator;
+
+  manual_tester_alu dut (
+      .clk(clk),
+      .rst(rst),
+      .io_dip(io_dip),
+      .io_button(io_button),
+      .alu_out(alu_out),
+      .state_indicator(state_indicator)
+  );
+
+  // clock
+  initial begin
+    clk = 1'b0;
+    forever #5 clk = ~clk;  // 10ns period
+  end
+
+  // waveform dump
+  initial begin
+    $dumpfile("tb_manual_tester_alu.vcd");
+    $dumpvars(0, tb_manual_tester_alu);
+  end
+
+  task wait_cycles;
+    input integer n;
+    integer i;
+    begin
+      for (i = 0; i < n; i = i + 1) @(posedge clk);
+    end
+  endtask
+
+  // pulse io_button[0] to advance state (edge_detector sees rising edge)
+  task next;
+    begin
+      io_button[0] = 1'b0;
+      @(posedge clk);
+      io_button[0] = 1'b1;
+      @(posedge clk);
+      io_button[0] = 1'b0;
+      @(posedge clk);
+    end
+  endtask
+
+  // set DIP lower 16 bits
+  task dip16;
+    input [15:0] v;
+    begin
+      io_dip[15:0] = v;
+    end
+  endtask
+
+  // set DIP alufn field [21:16]
+  task dip_alufn;
+    input [5:0] fn;
+    begin
+      io_dip[21:16] = fn;
+    end
+  endtask
+
+  initial begin
+    // init
+    rst = 1'b1;
+    io_dip = 25'b0;
+    io_button = 5'b0;
+
+    wait_cycles(2);
+    rst = 1'b0;
+    wait_cycles(2);
+
+    // Example transaction:
+    // A = 0x12345678
+    // B = 0x9ABCDEF0
+    // alufn = 0x08 (pick whatever your ALU expects)
+    //
+    // Sequence should be:
+    //   STORE_LOWER_A  (dip16 = A[15:0])  -> next
+    //   STORE_HIGHER_A (dip16 = A[31:16]) -> next
+    //   STORE_LOWER_B  (dip16 = B[15:0])  -> next
+    //   STORE_HIGHER_B (dip16 = B[31:16]) -> next
+    //   STORE_ALUFN    (dip_alufn)        -> next
+    //   COMPUTE        (watch alu_out)    -> next
+    //   RESET          (alu_out clears)   -> next back to start
+
+    // Store A lower 16
+    dip16(16'h5678);
+    next;
+
+    // Store A upper 16
+    dip16(16'h1234);
+    next;
+
+    // Store B lower 16
+    dip16(16'hDEF0);
+    next;
+
+    // Store B upper 16
+    dip16(16'h9ABC);
+    next;
+
+    // Store ALUFN (in io_dip[21:16])
+    dip_alufn(6'h08);
+    next;
+
+    // Compute: give a few cycles for pipelined_alu to produce output (adjust if your latency differs)
+    wait_cycles(6);
+
+    // Advance to RESET (DUT may latch alu_out and then clear on reset state)
+    next;
+    wait_cycles(2);
+
+    // Back to start
+    next;
+    wait_cycles(2);
+
+    $finish;
+  end
+
+endmodule
+
+```
+
+You should see state transition clearly labeled and a, b, alufn value latched, as well as alu output with each `io_button[0]` press:
+
+<img src="{{ site.baseurl }}//docs/Labs/verilog/images/lab5/2026-02-04-16-58-12.png"  class="center_seventy no-invert"/>
+
+## Compile and test on Hardware
+
+Once you have both manual and automated ALU tester, you can instantiate both of them in a Lucid project (`alchitry_top`), and use the dip switches etc to "activate" manual or automated mode.
+
+
+## Summary 
+
+Congratulations 🎉🎉! You have successfully built a 32-bit ALU in this lab and familiarse yourself with programming FPGA with Lucid. You will be required to **utilise it** in Lab 6 (Beta CPU), so **please keep a copy of your answer**.
+
+{:.note-title}
+> Checkoff
+>
+> Consult the 1D project handout for checkoff procedure. This lab is basically your 1D Checkoff 1.
 

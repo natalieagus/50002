@@ -39,11 +39,11 @@ They have approximately a couple of months before they bring their prototype for
 
 The 1D project is separated into 5 checkoffs. Click each section to view the rubrics and details for each checkoff:
 
-- [Checkoff 1: ALU, 3% (Week 9)](/project/1d/checkoff-1)
-- [Checkoff 2: Datapath, 5% (Week 10)](/project/1d/checkoff-2)
-- [Checkoff 3: Live Demo and Exhibition, 12% (Week 13)](/project/1d/checkoff-3) 
-- [Checkoff 4: Writeup, Poster & Video, 2% (Week 13)](/project/1d/checkoff-4)
-- [Checkoff 5: Peer Review, 8% (Week 13, via **TEAMMATES**)](/project/1d/checkoff-5)
+- [Checkoff 1: ALU, 3% (Week 9)]({{ site.baseurl }}/project/1d/checkoff-1)
+- [Checkoff 2: Datapath, 5% (Week 10)]({{ site.baseurl }}/project/1d/checkoff-2)
+- [Checkoff 3: Live Demo and Exhibition, 12% (Week 13)]({{ site.baseurl }}/project/1d/checkoff-3) 
+- [Checkoff 4: Writeup, Poster & Video, 2% (Week 13)]({{ site.baseurl }}/project/1d/checkoff-4)
+- [Checkoff 5: Peer Review, 8% (Week 13, via **TEAMMATES**)]({{ site.baseurl }}/project/1d/checkoff-5)
 
 ## Constraints
 
