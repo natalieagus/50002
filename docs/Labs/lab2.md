@@ -794,7 +794,7 @@ Afterwards, instantiate 3 of them to implement 2-to-4 decoder module:
 
 ```verilog
 module decoder2to4 (
-    input a0, 
+    input v,
     input a1,
     output y0,
     output y1, 
@@ -837,6 +837,7 @@ Similarly, pick the switch and LEDs to test your mux and decoder logic. You can 
         
         d.a1 = io_dip[2][1]
         d.a0 = io_dip[2][0]
+        d.v = 1b1
 
         // enable display accordingly
         if(io_dip[1][7]){ 
