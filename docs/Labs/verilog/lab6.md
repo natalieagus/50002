@@ -47,7 +47,7 @@ Please study each section **carefully** as this will be beneficial not only for 
 
 ## Memory Unit
 
-We strongly suggest that the memory Unit should is physically *separated* into two sections for ease of explanation and implementation:
+We strongly suggest that the memory Unit is made physically *separated* into two sections for ease of explanation and implementation:
 
 * the **instruction** memory and
 * the **data** memory
