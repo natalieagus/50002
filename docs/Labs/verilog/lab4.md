@@ -125,11 +125,56 @@ end
 
 ```
 
-### Option 2 (recommended for beginners): A `dff` submodule for the state register
+### Option 2 (recommended for beginners): A `register` submodule. 
 
-This style makes the state storage explicit and reusable. The `dff` module is the only place that contains the flip-flop update. The controller computes `next_state` in combinational logic exactly the same way.
+This style makes the state storage explicit and reusable. The `register` module is the only place that contains the flip-flop update. The controller computes `next_state` in combinational logic exactly the same way.
 
-You can choose to use 1-bit `dff` like in the previous lab, and then generate an array of these later:
+```verilog
+module register #(
+  parameter W = 1,
+  parameter RESET_VALUE = 0 
+)(
+  input  wire         clk,
+  input  wire         rst,   // async active-high reset
+  input  wire         en,    // synchronous enable
+  input  wire [W-1:0] d,
+  output reg  [W-1:0] q
+);
+  always @(posedge clk or posedge rst) begin
+    if (rst) begin
+      q <= RESET_VALUE;
+    end else if (en) begin
+      q <= d;
+    end else begin
+      q <= q; // hold
+    end
+  end
+endmodule
+```
+
+Use them like so:
+```
+// sample usage, instantiate 16-bit register
+  wire        clk, rst, en;
+  wire [15:0] d;
+  wire [15:0] q;
+
+  register #(
+    .W(16),
+    .RESET_VALUE(16'h0000)
+  ) u_reg (
+    .clk(clk),
+    .rst(rst),
+    .en(en),
+    .d(d),
+    .q(q)
+  );
+
+
+```
+
+
+You can also choose to use 1-bit `dff` like in the previous lab, and then generate an array of these later:
 
 ```verilog
 module dff(
@@ -155,7 +200,11 @@ always @(posedge clk or posedge rst) begin
 end
 
 endmodule
+```
 
+And use them with `genvar` like so to make it an N bit register: 
+
+```
 // sample usage, generate 16-bit register
   genvar i;
   generate
@@ -171,49 +220,8 @@ endmodule
   endgenerate
 
 ```
-
-Or, variable-sized register:
-
-```verilog
-module register #(
-  parameter W = 1,
-  parameter RESET_VALUE = 0 
-)(
-  input  wire         clk,
-  input  wire         rst,   // async active-high reset
-  input  wire         en,    // synchronous enable
-  input  wire [W-1:0] d,
-  output reg  [W-1:0] q
-);
-  always @(posedge clk or posedge rst) begin
-    if (rst) begin
-      q <= RESET_VALUE;
-    end else if (en) begin
-      q <= d;
-    end else begin
-      q <= q; // hold
-    end
-  end
-endmodule
-
-// sample usage, instantiate 16-bit register
-  wire        clk, rst, en;
-  wire [15:0] d;
-  wire [15:0] q;
-
-  register #(
-    .W(16),
-    .RESET_VALUE(16'h0000)
-  ) u_reg (
-    .clk(clk),
-    .rst(rst),
-    .en(en),
-    .d(d),
-    .q(q)
-  );
-
-
-```
+{:.note}
+Choose either style that works for you. Practice and consistency makes perfect. 
 
 ### Example Task: Compute `out = a + b` Once on `start`
 
