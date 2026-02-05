@@ -55,7 +55,8 @@ We strongly suggest that the memory Unit is made physically *separated* into two
 {: .note}
 In practice, the *data* segment and the *instruction* segment are only **logically** segregated, so it would need to support two reads in a single cycle (for both data and instruction). They still share the same physical device we call **RAM**, but we implement them as two RAM blocks here to keep the Beta CPU wiring simple. For more details regarding 2R1W type of RAM and possible implementation in FPGA, see the [appendix](#unified-memory-model).
 
-Below is a sample implementation of the memory unit that can be used to alongside your Beta CPU.
+Below is a sample implementation of the memory unit that can be used to alongside your Beta CPU. It utilises `simple_ram` and `simple_dual_port_ram` (see sections below) provided by Alchitry Labs' component library, which will utilise the BRAMs of the FPGA to implement the memory unit instead of using the limited LUTs. 
+
 
 ```verilog
 // Byte-addressed inputs, word-aligned internally (addr >> 2)
