@@ -315,12 +315,9 @@ These are self-explanatory. They are the inputs that trigger FSM transitions.
 ### Summary 
 
 * The **datapath** has:
-
   * Registers: `index`, `a`, `b`, `s`, and expected sum pipeline
   * Combinational logic: ROM-like arrays, RCA, comparator, small muxes.
-
 * The **FSM controller** has:
-
   * A state register that stores seven states: `IDLE`, `INIT`, `FEED`, `WAIT_1`, `WAIT_2`, `CHECK`, `HALT`.
   * Next-state logic that uses `rst`, `equal`, `last_index`, `slow_clock`, and `clk`
   * Output logic that produces the control signals:
