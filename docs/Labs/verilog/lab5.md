@@ -1,7 +1,7 @@
 ---
 layout: default
 permalink: /lab/lab5-verilog
-title: Lab 5 - ALU
+title: Lab 5 - Arithmetic Logic Unit (ALU)
 description: Lab 5 handout covering topics from Beta ISA
 nav_order:  5
 grand_parent: Labs
