@@ -1222,7 +1222,7 @@ By building and testing a pipelined adder, we also encountered a key systems con
 Here are the key learning points from this lab that reinforces understanding of lecture materials:
 1. **Clock edges define truth.**
    * Anything that happens *between* edges is transient and intentionally <span class="orange-bold">ignored</span> by synchronous systems. Changes exactly at the edge are not reliable, in simulation or in real hardware.
-2. Good testbenches mirror hardware thinking.
+2. **Good testbenches mirror hardware thinking.**
    * We shall not “check immediately.” We need to align stimulus to edges, delay expectations by pipeline latency, and compare only when the design promises valid data.
   
 These ideas form the foundation for finite state machines, pipelines, and eventually CPUs which we will discover in the later weeks. If combinational logic answers the question “what should the output be,” clocked design answers the more important one: *when should that answer be trusted*.
