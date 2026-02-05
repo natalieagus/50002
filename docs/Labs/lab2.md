@@ -322,7 +322,7 @@ We assume that you have done your due diligence to scan through the [Lucid refer
 > The purpose of this lab is to expose the actual hardware structure of addition, not to hide it behind a high-level operator.
 
 
-Below is a proposed skeleton code, complete its implementation accordingly using boolean operator `(&,` `|`, `^`).
+Below is a proposed skeleton code:
 
 
 ```verilog
