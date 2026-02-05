@@ -245,8 +245,6 @@ This results in exactly one output being asserted for every possible input combi
 
 <img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-2-to-4 decoder.drawio-2.png"  class="center_seventy"/>
 
-Here is a clean, academically tight note you can drop in without confusion:
-
 {: .note}
 When building a larger decoder from smaller modules, do not confuse **port names** with **signal identity**. For example, a 1-to-2 decoder module may have output ports named `Y0` and `Y1`, but when that module is instantiated inside a 2-to-4 decoder, those ports can be connected to signals such as `Y2` and `Y3`. The *module’s internal port names do not define the meaning of the signal* in the larger design. Only the **actual wire it is connected to** determines its role in the system.
 
