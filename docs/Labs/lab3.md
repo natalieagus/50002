@@ -733,7 +733,7 @@ b = B_INPUTS[index]
 expected = SUMS[index]
 ```
 
-This is *easy* to read. Each array has a clear meaning but you mustkeep all three arrays aligned by index. It may seem tedious but pretty simple to do if you ask an AI to generate one for you.
+This is *easy* to read. Each array has a clear meaning but you must keep all three arrays aligned by index. It may seem tedious but pretty simple to do if you ask an AI to generate one for you.
 
 #### Bitpacked 24-bit Records
 

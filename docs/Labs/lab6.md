@@ -246,7 +246,7 @@ We will use the RESET signal to force the PC to zero during the **first** clock 
         }
 
          MotherboardStates.RUN:
-            // only load output and update input at the the beginning of each "next" instruction cycle 
+            // only load output and update input at the beginning of each "next" instruction cycle 
             // LOAD_OUTPUT will hijack EA for 2 cycles. At this point, the CPU is not receiving a legitimate Mem[EA] if it is doing a LD/LDR 
             // However since "next" is more than 2 cycles, it will be fixed by the third cycle (actual EA coming out from beta is plugged into memory unit
             if (slowclk){
@@ -352,7 +352,7 @@ Implement the `RA2SEL MUX` and `WASEL MUX` sections inside `regfile_unit.luc`.
 The register file is a 3-port memory. It should be implemented in `regfile_memory.luc`, which is then utilised by `regfile_unit.luc`. 
 
 {: .highlight}
-Implement the workings of the REFGILE unit inside the `always` block in `regfile_memory.luc`.
+Implement the workings of the REGFILE unit inside the `always` block in `regfile_memory.luc`.
 
 ```verilog
     // implement two output read ports   
@@ -369,7 +369,7 @@ The `RD1` port output producing `reg_data_1[31:0]` is also wired directly as the
 Z logic can be added to the output of the RD1 port of the register file memory above. The value of Z must be `1` if and only if `reg_data_1[31:0]` is `0x00000000`. Z must be `0` otherwise. This is exactly a `NOR` logic. You can create a reduction `NOR` logic gate very easily in Lucid and [Verilog](https://class.ece.uw.edu/cadta/verilog/reduction.html)), but you're welcome to follow the schematic above. 
 
 {: .highlight}
-Implement the `commpute Z` section inside `regfile_unit.luc`. You can use reduction NOR for this. 
+Implement the `compute Z` section inside `regfile_unit.luc`. You can use reduction NOR for this. 
 
 
 ### Task 9: mwd[31:0] Output

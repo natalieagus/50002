@@ -770,3 +770,69 @@ The 32-bit 5-to-1 PC MUX **selects** the value to be loaded into the `PC` regist
 However, later on we might want to only advance the pc when some `slowclk` signal is `1` for manual debugging. You should take into account this aspect when building the PCSEL MUX.
 
 
+#### `XAddr` and `ILLOP`
+`XAddr` and `ILLOP` in the Beta diagram in our lecture notes represents **constant** addresses used when the Beta services an interrupt (triggered by IRQ) or executes an instruction with an illegal or unimplemented opcode.  For this assignment assume that `XAddr = 0x80000008` and `ILLOP = 0x80000004` and we will make sure the first three locations of main memory contain BR instructions that branch to code which handle reset, illegal instruction traps and interrupts respectively. In other words, the first three locations of main memory contain:
+
+```cpp
+Mem[0x80000000] = BR(reset_handler)
+Mem[0x80000004] = BR(illop_handler)
+Mem[0x80000008] = BR(interrupt_handler)
+```
+
+
+#### Lower Two Bits of `PC`
+You also have to **force** the lower two bits of inputs going into the PC+4, PC+4+4*SXTC, and JT port of the MUX to be `b00` because the memory is byte addressable but the Beta obtains one word of data/instructions at each clock cycle. You can do this with appropriate wiring using simple concatenation:
+
+Example: 
+
+```verilog
+pc_d = {pcsel_out[31:2], 2'b00};
+```
+
+### Task 2: RESET Multiplexer
+
+
+Remember that we need to add a way to set the PC to zero on `RESET`.  We use a two-input 32-bit MUX that selects `0x80000000` when the RESET signal is asserted, and the output of the PCSEL MUX when RESET is not asserted. 
+
+We shall use the RESET signal to force the PC to zero during the Beta CPU "startup" later on.
+
+### Task 3: 32-bit PC Reg
+The PC is a separate **32-bit register** that can be built using the `register` component mentioned in the previous lab.
+
+### Task 4: Increment-by-4
+Conceptually, the increment-by-4 circuit is just a 32-bit adder with one input wired to the constant 4. It is possible to build a much **smaller** circuit if you design an adder **optimized** knowing that one of its inputs is `0x00000004` constant. In Verilog, you can directly concatenate the MSB of `pc_q` and add the remaining bits by 4 using the `+` operator.
+
+
+### Task 4: Shift-and-add
+The branch-offset adder **adds** PC+4 to the 16-bit offset encoded in the instruction data `id[15:0]`. The offset is **sign-extended** to 32-bits and multiplied by 4 in preparation for the addition.  Both the sign extension and shift operations can be done with appropriate wiring—no gates required!
+
+
+### Task 5: Supervisor Bit
+The highest-order bit of the PC (`PC31`/`ia31`) is dedicated as the **supervisor** bit (see section 6.3 of the [**Beta Documentation**](https://drive.google.com/file/d/1L4TXMEDgD5gTN2JSd4ea_APpwNKUpzqK/view?usp=share_link)). 
+* The `LDR` instruction **ignores** this bit, treating it as if it were *zero*. 
+* The `JMP` instruction is allowed to clear the Supervisor bit or leave it unchanged, but <span style="color:red; font-weight: bold;">cannot set</span> it, 
+* **No other instructions may have any effect on `PC31`**
+
+{: .note-title}
+> Setting the Supervisor Bit
+>  
+> Only `RESET`, `exceptions` (`ILLOP`) and `interrupts` (`XAddr`) cause the Supervisor bit of the Beta `PC` to become **set**.
+
+This has the following three implications for your PC unit design:
+
+1. `0x80000000`, `0x80000004` and `0x80000008` are loaded into the PC during `reset`, `ILLOP` and `IRQ` respectively.   This is the only way that the supervisor bit gets set.  Note that after `reset` the Beta starts execution in supervisor mode. This is equivalent to when a regular computer is starting up.
+
+2. **Bit 31** of the `PC+4` and **branch-offset** inputs to the **PCSEL** MUX should be connected to the highest bit of the PC Reg output, `ia31`; i.e., the value of the supervisor bit doesn’t change when executing most instructions. 
+
+3. You need to add additional logic to **bit 31** of the `JT` input to the **PCSEL** MUX to ensure that JMP instruction can only **clear** or **leave the supervisor bit unchanged**. Here’s a table showing the new value of the supervisor bit after a `JMP` as function of JT31 and the current value of the supervisor bit (PC31):
+
+old PC31 (ia31) | JT31 (ra31) | new PC31
+---------|----------|---------
+0 | -- | 0
+1 | 0 | 0
+1 | 1 | 1
+
+
+
+### Testbench
+

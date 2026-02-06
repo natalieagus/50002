@@ -615,7 +615,7 @@ This way, your global reset still works (and is responsive! No more press and ho
 
 Conceptually, you allow the FSM to **REMAIN IN STATE**, until `rising_edge.out == 1`. For instance:
 - the FSM would stay at state `LOOP` and the `led_indicator` shows `8h0F`. It is actually "looping" at every `clk` cycle, that is the value of `dff` state is repeatedly written as `States.LOOP`
-- When `rising_edge.out == 1`, we woudl finally write a different value into `states` dff and `index` dff, allowing the fsm to "advance" at that exact moment
+- When `rising_edge.out == 1`, we would finally write a different value into `states` dff and `index` dff, allowing the fsm to "advance" at that exact moment
 - the FSM is actually still "**responsive**", running at `clk` frequency
 
 This is inherently <span class="orange-bold">different</span> from method 1, where you slow down the entire FSM with `slow_clock`, rendering it  rather *unresponsive* as it will only be able to *detect* input (like the `manual_reset` button) if its held long enough, roughly covering one period of `slow_clock`.
