@@ -762,6 +762,22 @@ Here is the suggested PC Unit schematic that you can implement. Take note of the
 <img src="/50002/assets/contentimage/lab4/pcunit.png"  class="center_seventy"/>
 
 
+Here's a suggested interface:
+
+```verilog
+module pc_unit (
+    input clk,
+    input rst,
+    input slowclk,
+    input [15:0] id,
+    input [2:0] pcsel,
+    input [31:0] reg_data_1,
+    output [31:0] pc_4,
+    output [31:0] pc_4_sxtc,
+    output [31:0] pcsel_out,
+    output [31:0] ia
+);
+```
 
 ### Task 1: PCSEL Multiplexers
 
@@ -804,7 +820,12 @@ Conceptually, the increment-by-4 circuit is just a 32-bit adder with one input w
 
 
 ### Task 4: Shift-and-add
-The branch-offset adder **adds** PC+4 to the 16-bit offset encoded in the instruction data `id[15:0]`. The offset is **sign-extended** to 32-bits and multiplied by 4 in preparation for the addition.  Both the sign extension and shift operations can be done with appropriate wiring—no gates required!
+The branch-offset adder **adds** PC+4 to the 16-bit offset encoded in the instruction data `id[15:0]`. The offset is **sign-extended** to 32-bits and multiplied by 4 in preparation for the addition.  Both the sign extension and shift operations can be done with appropriate wiring—no gates required. 
+
+```verilog
+  // compute sign extended C then multiply by 4, add this to PC + 4 later on
+  wire [31:0] sxtc_x4 = ({ {16{id[15]} }, id[15:0]}) << 2;
+```
 
 
 ### Task 5: Supervisor Bit
@@ -836,3 +857,342 @@ old PC31 (ia31) | JT31 (ra31) | new PC31
 
 ### Testbench
 
+Assuming you used the interface above, you can use this tb:
+
+```verilog
+`timescale 1ns / 1ps
+
+module tb_pc_unit;
+
+  // -----------------------
+  // DUT inputs
+  // -----------------------
+  reg         clk;
+  reg         rst;
+  reg         slowclk;
+  reg  [15:0] id;
+  reg  [ 2:0] pcsel;
+  reg  [31:0] reg_data_1;
+
+  // -----------------------
+  // DUT outputs
+  // -----------------------
+  wire [31:0] pc_4;
+  wire [31:0] pc_4_sxtc;
+  wire [31:0] pcsel_out;
+  wire [31:0] ia;
+
+  // -----------------------
+  // Instantiate DUT
+  // -----------------------
+  pc_unit dut (
+      .clk(clk),
+      .rst(rst),
+      .slowclk(slowclk),
+      .id(id),
+      .pcsel(pcsel),
+      .reg_data_1(reg_data_1),
+      .pc_4(pc_4),
+      .pc_4_sxtc(pc_4_sxtc),
+      .pcsel_out(pcsel_out),
+      .ia(ia)
+  );
+
+  // -----------------------
+  // Clock gen: 100 MHz (10ns period)
+  // -----------------------
+  initial clk = 1'b0;
+  always #5 clk = ~clk;
+
+  // -----------------------
+  // Helpers
+  // -----------------------
+  function [31:0] sxtc_x4;
+    input [15:0] imm;
+    begin
+      sxtc_x4 = { {16{imm[15]} }, imm} << 2;
+    end
+  endfunction
+
+  function [31:0] protect_msb;
+    input [31:0] old_pc;
+    input [31:0] candidate;
+    begin
+      protect_msb = {old_pc[31], candidate[30:0]};
+    end
+  endfunction
+
+  task expect32;
+    input [1023:0] tag;
+    input [31:0] got;
+    input [31:0] exp;
+    begin
+      if (got !== exp) begin
+        $display("FAIL: %s got=%h exp=%h @ t=%0t", tag, got, exp, $time);
+        $fatal(1);
+      end else begin
+        $display("PASS: %s = %h @ t=%0t", tag, got, $time);
+      end
+    end
+  endtask
+
+  task expect_align00;
+    input [1023:0] tag;
+    input [31:0] val;
+    begin
+      if (val[1:0] !== 2'b00) begin
+        $display("FAIL: %s alignment violated val=%h @ t=%0t", tag, val, $time);
+        $fatal(1);
+      end else begin
+        $display("PASS: %s aligned val=%h @ t=%0t", tag, val, $time);
+      end
+    end
+  endtask
+
+  // Pulse slowclk high across a rising edge so the PC register loads the mux output.
+  task pc_load_once;
+    begin
+      @(negedge clk);
+      slowclk = 1'b1;
+      @(posedge clk);
+      #1;
+      slowclk = 1'b0;
+    end
+  endtask
+
+  task wait_cycles(input integer n);
+    integer k;
+    begin
+      for (k = 0; k < n; k = k + 1) @(posedge clk);
+      #1;
+    end
+  endtask
+
+  // Convenience: force a JMP load to a given reg_data_1 value
+  task do_jmp_to(input [31:0] target);
+    begin
+      pcsel = 3'b010;
+      reg_data_1 = target;
+      #1;
+      pc_load_once();
+    end
+  endtask
+
+  // Convenience: do a branch load with a given immediate
+  task do_branch(input [15:0] imm);
+    begin
+      pcsel = 3'b001;
+      id = imm;
+      #1;
+      pc_load_once();
+    end
+  endtask
+
+  // -----------------------
+  // Wave dump
+  // -----------------------
+  initial begin
+    $dumpfile("tb_pc_unit.vcd");
+    $dumpvars(0, tb_pc_unit);
+  end
+
+  // -----------------------
+  // Main test
+  // -----------------------
+  initial begin
+    // defaults
+    rst        = 1'b0;
+    slowclk    = 1'b0;
+    id         = 16'h0000;
+    pcsel      = 3'b000;
+    reg_data_1 = 32'h0000_0000;
+
+    // -----------------------
+    // Reset: PC reg reset value is 0x8000_0000 per register instantiation
+    // -----------------------
+    @(negedge clk);
+    rst = 1'b1;
+    wait_cycles(2);
+    rst = 1'b0;
+    wait_cycles(1);
+
+    expect32("After reset, ia", ia, 32'h8000_0000);
+
+    // -----------------------
+    // PC+4 increment a bit
+    // -----------------------
+    pcsel = 3'b000;
+    pc_load_once();
+    expect32("PC+4 #1 ia", ia, 32'h8000_0004);
+
+    pc_load_once();
+    expect32("PC+4 #2 ia", ia, 32'h8000_0008);
+
+    // -----------------------
+    // IRQ vector: pcsel=100 then load => 0x8000_0008
+    // -----------------------
+    pcsel = 3'b100;
+    pc_load_once();
+    expect32("IRQ load ia", ia, 32'h8000_0008);
+
+    // =========================================================================
+    // BRANCH: bigger address, then branch back to lower address
+    // =========================================================================
+
+    // Put PC at 0x8000_0010
+    pcsel = 3'b000;
+    pc_load_once();  // 0x8000_000C
+    pc_load_once();  // 0x8000_0010
+    expect32("Setup PC=0x80000010", ia, 32'h8000_0010);
+
+    // Branch forward by +100 (id=0x0064) => +400 bytes
+    // target = protect(old_pc, (old_pc+4) + (sxtc<<2))
+    begin : branch_forward_big
+      reg [31:0] old_pc, exp_pc4, exp_raw, exp_prot, exp_aligned;
+      old_pc = ia;
+      exp_pc4 = old_pc + 32'd4;
+      exp_raw = exp_pc4 + sxtc_x4(16'h0064);
+      exp_prot = protect_msb(old_pc, exp_raw);
+      exp_aligned = {exp_prot[31:2], 2'b00};
+
+      pcsel = 3'b001;
+      id = 16'h0064;
+      #1;
+      expect32("branch(+100): pc_4_sxtc combinational", pc_4_sxtc, exp_prot);
+      pc_load_once();
+      expect32("branch(+100): ia after load", ia, exp_aligned);
+      expect_align00("branch(+100): ia alignment", ia);
+    end
+
+    // Branch back by -60 (id=0xFFC4) => -240 bytes
+    begin : branch_back_lower
+      reg [31:0] old_pc, exp_pc4, exp_raw, exp_prot, exp_aligned;
+      old_pc = ia;
+      exp_pc4 = old_pc + 32'd4;
+      exp_raw = exp_pc4 + sxtc_x4(16'hFFC4);  // -60 * 4
+      exp_prot = protect_msb(old_pc, exp_raw);
+      exp_aligned = {exp_prot[31:2], 2'b00};
+
+      pcsel = 3'b001;
+      id = 16'hFFC4;
+      #1;
+      expect32("branch(-60): pc_4_sxtc combinational", pc_4_sxtc, exp_prot);
+      pc_load_once();
+      expect32("branch(-60): ia after load", ia, exp_aligned);
+      expect_align00("branch(-60): ia alignment", ia);
+    end
+
+    // =========================================================================
+    // BRANCH that would flip MSB if NOT protected (crossing 0x7FFF_FFFF -> 0x8000_0000)
+    // We do:
+    //   1) JMP to 0x7FFF_FFF0 while old PC MSB is 1 so JMP clears MSB to 0
+    //   2) Branch forward with small positive offset that would raw-cross to 0x8000_0xxx
+    //      but protection must keep MSB=0, so it becomes 0x0000_0xxx
+    // =========================================================================
+
+    // Step 1: make PC MSB become 0 by JMP to 0x7FFF_FFF0.
+    // old_pc[31]=1, reg_data_1[31]=0 => AND => 0, so MSB cleared.
+    do_jmp_to(32'h7FFF_FFF0);
+    expect32("JMP to 0x7FFFFFF0 should clear MSB (PC becomes 0x7FFFFFF0)", ia, 32'h7FFF_FFF0);
+    expect_align00("JMP 0x7FFFFFF0 alignment", ia);
+
+    // Step 2: choose id so raw target crosses into 0x8000_xxxx.
+    // old_pc=0x7FFF_FFF0
+    // pc+4 = 0x7FFF_FFF4
+    // want pc+4 + offset = 0x8000_0004 (raw) => offset = +0x0010 (16 bytes) => imm=4
+    begin : branch_cross_msb_protection
+      reg [31:0] old_pc, exp_pc4, exp_raw, exp_prot, exp_aligned;
+      old_pc = ia;  // 0x7FFF_FFF0
+      exp_pc4 = old_pc + 32'd4;  // 0x7FFF_FFF4
+      exp_raw = exp_pc4 + sxtc_x4(16'h0004);  // +16 => 0x8000_0004 (raw)
+      // protection must keep MSB=0 (old_pc[31]=0), so expected is 0x0000_0004
+      exp_prot = protect_msb(old_pc, exp_raw);
+      exp_aligned = {exp_prot[31:2], 2'b00};
+
+      pcsel = 3'b001;
+      id = 16'h0004;
+      #1;
+      expect32("branch(cross): raw would be 0x80000004, protected pc_4_sxtc", pc_4_sxtc, exp_prot);
+      pc_load_once();
+      expect32("branch(cross): ia after load should keep MSB=0", ia, exp_aligned);
+      expect_align00("branch(cross): ia alignment", ia);
+
+      // Extra explicit check of the expected literal in this scenario
+      expect32("branch(cross): expected literal ia", ia, 32'h0000_0004);
+    end
+
+    // =========================================================================
+    // JMP MSB behavior when PC31 is 0:
+    // Once PC31=0, JMP to 0x8000_001C should become 0x0000_001C
+    // because (old_pc[31] & reg_data_1[31]) = 0 & 1 = 0.
+    // =========================================================================
+
+    // Ensure PC31=0 already (it is from previous branch).
+    if (ia[31] !== 1'b0) begin
+      $display("FAIL: expected PC31=0 before JMP MSB test, ia=%h @ t=%0t", ia, $time);
+      $fatal(1);
+    end
+
+    begin : jmp_msb_clear_when_pc31_zero
+      reg [31:0] old_pc, exp_out, exp_aligned;
+      old_pc = ia;  // MSB 0
+      pcsel = 3'b010;
+      reg_data_1 = 32'h8000_001C;  // MSB 1
+      #1;
+
+      exp_out = {(old_pc[31] & reg_data_1[31]), reg_data_1[30:0]};  // should be 0x0000_001C
+      exp_aligned = {exp_out[31:2], 2'b00};
+
+      expect32("jmp(PC31=0, target=0x8000001C): pcsel_out combinational", pcsel_out, exp_out);
+      pc_load_once();
+      expect32("jmp(PC31=0): ia after load should be 0x0000001C", ia, exp_aligned);
+      expect32("jmp(PC31=0): expected literal ia", ia, 32'h0000_001C);
+      expect_align00("jmp(PC31=0): ia alignment", ia);
+    end
+
+    // =========================================================================
+    // JMP that would set MSB to 1 only if allowed.
+    // With PC31=0, even if reg_data_1[31]=1, MSB must stay 0.
+    // With PC31=1, reg_data_1[31]=1, MSB stays 1.
+    // =========================================================================
+
+    // Case A: PC31=0, reg_data_1[31]=1 -> stays 0
+    do_jmp_to(32'hFFFF_FFFC);  // reg_data_1[31]=1 but AND with old_pc[31]=0 => MSB=0
+    expect32("JMP with PC31=0 to 0xFFFFFFFC should still clear MSB", ia, 32'h7FFF_FFFC);
+    // Explanation for the literal above:
+    // pcsel_out = {0 & 1, reg_data_1[30:0]} = {0, 0x7FFF_FFFC} = 0x7FFF_FFFC
+    expect_align00("JMP to 0x7FFFFFFC alignment", ia);
+
+    // Case B: Force PC31=1 again via IRQ vector, then JMP with reg_data_1[31]=1 keeps MSB=1
+    pcsel = 3'b100;
+    pc_load_once();
+    expect32("IRQ again sets PC MSB=1", ia, 32'h8000_0008);
+
+    begin : jmp_keep_msb_when_pc31_one
+      reg [31:0] old_pc, exp_out;
+      old_pc = ia;  // MSB 1
+      pcsel = 3'b010;
+      reg_data_1 = 32'h9000_0011;  // MSB 1, unaligned low bits
+      #1;
+
+      exp_out = {(old_pc[31] & reg_data_1[31]), reg_data_1[30:0]};  // MSB stays 1
+      pc_load_once();
+      expect32("jmp(PC31=1,target msb=1): ia aligned", ia, {exp_out[31:2], 2'b00});
+      expect_align00("jmp(PC31=1): ia alignment", ia);
+    end
+
+    $display("ALL TESTS PASSED");
+    $finish;
+  end
+
+endmodule
+```
+
+If all works well, you should get the following waveform and message:
+
+<img src="{{ site.baseurl }}//docs/Labs/verilog/images/lab6/2026-02-06-16-20-53.png"  class="center_seventy no-invert"/>
+
+The testbench is design to test the following critical scenarios:
+1. Test RESET, IRQ, and ILLOP cases
+2. Test JMP, BEQ/BNE cases (both + and - memory addresses)
+3. PC31 protection (Cleared via JMP, attempt to set via JMP, and BNE/BEQ)
