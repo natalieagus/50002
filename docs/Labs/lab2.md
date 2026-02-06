@@ -793,6 +793,7 @@ Afterwards, instantiate 3 of them to implement 2-to-4 decoder module:
 ```verilog
 module decoder2to4 (
     input v,
+    input a0,
     input a1,
     output y0,
     output y1, 
