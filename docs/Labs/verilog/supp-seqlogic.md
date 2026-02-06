@@ -411,7 +411,7 @@ Each register must be assigned in exactly *one* procedural block
 
 ### Multiple Nonblocking Assignments to the Same Register in the Same Block is Confusing
 
-Within a single procedural block, **multiple** nonblocking assignments to the same register result in the *last executed assignment* determining the final update for that timestep. This is like adding a mux in the `d` port of the dff but the following code *hides the mux* from the untrained eye:
+Within a single procedural block, **multiple** nonblocking assignments to the same register result in the *last executed assignment* determining the final update for that timestep. This is like adding a MUX in the `d` port of the dff but the following code *hides the MUX* from the untrained eye:
 
 
 ```verilog
@@ -457,7 +457,7 @@ always @(posedge clk) begin
 end
 ```
 
-The neatest way would be to separate the combinational next-state mux from the register:
+The neatest way would be to separate the combinational next-state MUX from the register:
 
 ```verilog
 reg q_d;

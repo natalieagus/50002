@@ -314,7 +314,7 @@ Recall in the earlier labs that static discpline must be obeyed in combinational
 {:.note-title}
 > Recap
 > 
-> A **latch** is a *level-sensitive* 1-bit memory element we learned in the lectures (it was simplified an implemented as a mux whose output is connected to `D0` port). When its enable (select) is high, it is “transparent” and `Q` can follow `D` continuously. Conversely, when enable goes low, it “closes” and holds the last value. 
+> A **latch** is a *level-sensitive* 1-bit memory element we learned in the lectures (it was simplified an implemented as a MUX whose output is connected to `D0` port). When its enable (select) is high, it is “transparent” and `Q` can follow `D` continuously. Conversely, when enable goes low, it “closes” and holds the last value. 
 
 In Verilog, latches are most commonly inferred accidentally in **combinational** blocks (`always @*`) when you forget to assign an output on every possible path. The tool must then <span class="orange-bold">create memory</span> during synthesis to preserve the old value, and that memory is a **latch**.
 
@@ -369,7 +369,7 @@ end
 
 An edge-triggered `always` block tells the synthesize the following: “*this signal must be stored across time and only update on clock edges,*”. Therefore, it builds a **D flip-flop** in hardware for `Q` (with an async reset if you include `or posedge rst`). 
 
-When `en==0`, the tool typically implements that as a mux feeding the D input of the flip-flop (select `D` vs select old `Q`) as provided in the diagram above, or equivalent clock-enable circuitry. Either way, it is still a flip-flop, not a latch.
+When `en==0`, the tool typically implements that as a MUX feeding the D input of the flip-flop (select `D` vs select old `Q`) as provided in the diagram above, or equivalent clock-enable circuitry. Either way, it is still a flip-flop, not a latch.
 
 
 ### DFF is not a latch

@@ -189,7 +189,7 @@ Combine the outputs of the finished **adder**, **multiplier**, **compare**, **bo
 
 <img src="{{ site.baseurl }}/assets/contentimage/lab3-fpga/2024-50002-ALU.drawio.png"  class="center_fifty"/>
 
-> You can utilise `mux_4.luc` you've created before if you've followed Part 1 handout closely. 
+> You can utilise `MUX_4.luc` you've created before if you've followed Part 1 handout closely. 
 
 **Two** control signals (`ALUFN[5:4]`) that we have never used before in the individual module have now been utilised to **select which unit** will supply the value for the ALU output.  The encodings for `ALUFN[5:0]` should follow this table that you've seen in the beginning of this handout: 
 

@@ -350,16 +350,16 @@ The `Z`, `V` and `N` inputs to this circuit can only be produced by the adder/su
 In real life, you can speed things up considerably by thinking about the *relative* timing of `Z`, `V` and `N` and then designing your logic to minimize delay paths involving late-arriving signals. For instance, if you need to perform computations involving `Z` and other variables, you can compute those intermediary output involving the other variables first while "waiting" for `Z`. We do not need to worry much about it in this Lab as Vivado will do all sorts of optimisation for you. 
 
 #### Detailed Compare Unit Schematic
-Here’s the detailed schematic of the compare unit. Pay **close** attention to the bit selector and the corresponding inputs at the mux:
+Here’s the detailed schematic of the compare unit. Pay **close** attention to the bit selector and the corresponding inputs at the MUX:
 
 <img src="/50002/assets/contentimage/lab3-fpga/2024-50002-COMPARE.drawio.png"  class="center_fifty"/>
 
 ### Implementation Tips 
 
-You can use `mux4` created before to implement this:
+You can use `MUX4` created before to implement this:
 
 ```verilog
-module mux4 (
+module MUX4 (
     input s0,
     input s1,
     input [3:0] in,
@@ -498,17 +498,17 @@ Here's the general schematic of the Boolean Unit:
 
 One possible implementation of a 32-bit boolean unit uses **32 copies of a 4-to-1 multiplexer** where `ALUFN0`, `ALUFN1`, `ALUFN2`, and `ALUFN3` **hardcode** the operation to be performed, and `Ai` and `Bi` are hooked to the multiplexer **`SELECT`** inputs.  This implementation can produce any of the 16 2-input Boolean functions; but we will only be using 4 of the possibilities: `AND`, `OR`, `XOR`, and `A`. 
 
-In total, you should utilise 32 4-to-1 multiplexers to build the boolean unit. You can utilise the earlier created `mux4.v` module to implement this. 
+In total, you should utilise 32 4-to-1 multiplexers to build the boolean unit. You can utilise the earlier created `MUX4.v` module to implement this. 
 
 ### Implementation Tips 
 
-You can use `genvar`, `generate` and `for` loop to create 32 of these `mux4` modules. Ensure that you connect the pins properly, from lowest to highest bit.
+You can use `genvar`, `generate` and `for` loop to create 32 of these `MUX4` modules. Ensure that you connect the pins properly, from lowest to highest bit.
 
 ```verilog
   genvar i;
   generate
     for (i = 0; i < SIZE; i = i + 1) begin : MUXES
-      mux4 u_mux4 (
+      MUX4 u_MUX4 (
           .s0 (...),
           .s1 (...),
           .in (....), // 4 bits, high to low from left to right
@@ -1128,7 +1128,7 @@ Create a new file `alu.v` and assemble the outputs of the finished **adder**, **
 <img src="{{ site.baseurl }}/assets/contentimage/lab3-fpga/2024-50002-ALU.drawio.png"  class="center_fifty"/>
 
 {:.note}
-You can use `mux4`, or use the `case` statement, or use plain `if-else` statements to implement this.
+You can use `MUX4`, or use the `case` statement, or use plain `if-else` statements to implement this.
 
 **Two** control signals (`ALUFN[5:4]`) that we have never used before in the individual module have now been utilised to **select which unit** will supply the value for the ALU output.  The encodings for `ALUFN[5:0]` should follow this table that you've seen in the beginning of this handout: 
 

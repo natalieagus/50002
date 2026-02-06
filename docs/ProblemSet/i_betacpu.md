@@ -44,7 +44,7 @@ Before you proceed, we suggest you explore the Beta simulator [`bsim`](https://g
 3. The **minimum clock period** of the unpipelined Beta implementation is determined by the *propagation* *delays* of the datapath elements and the amount of time it takes for the **control signals to become valid**. Which of the following select signals should become valid first in order to ensure the smallest possible clock period: `PCSEL, RA2SEL, ASEL, BSEL, WDSEL, WASEL`?
 	
 	<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-	To ensure the <strong>smallest</strong> possible clock period <code>RA2SEL</code> should become valid first. The <code>RA2SEL</code> mux must produce a <strong>stable register address</strong> before the register file can do its thing. All other control signals affect logic that operates <strong>after</strong> the required register values have been accessed, so they don't have to be valid until <i>later</i> in the cycle.
+	To ensure the <strong>smallest</strong> possible clock period <code>RA2SEL</code> should become valid first. The <code>RA2SEL</code> MUX must produce a <strong>stable register address</strong> before the register file can do its thing. All other control signals affect logic that operates <strong>after</strong> the required register values have been accessed, so they don't have to be valid until <i>later</i> in the cycle.
 	</p></div><br>
 
 
@@ -221,7 +221,7 @@ PC <- PC + 4</code></pre></div>
 
 It's evident that we need to perform <strong>3 register reads,</strong> but the Beta's register file has only <strong>2 read ports.</strong> Thus we need to add a <strong>third read port</strong> to the register file.
 <br><br>
-Incidentally, adding a third read port would eliminate the need for the <code>RA2SEL</code> mux because we no longer need to choose between <code>Rb</code> and <code>Rc</code>, since each register field has its own read port.
+Incidentally, adding a third read port would eliminate the need for the <code>RA2SEL</code> MUX because we no longer need to choose between <code>Rb</code> and <code>Rc</code>, since each register field has its own read port.
 </p></div><br>
 
 

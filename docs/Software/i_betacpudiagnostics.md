@@ -91,7 +91,7 @@ The datapath that handles interrupt (due to asynchronous `IRQ` signal) is as fol
 <img src="/50002/assets/contentimage/beta/irq.png"  class="center_seventy"/>
 
 ### Differences in Datapath: Async vs Sync Interrupts (simplified)
-There's only **one** difference between the two types of interrupts (async vs sync): **the datapath at the PCSEL mux**. 
+There's only **one** difference between the two types of interrupts (async vs sync): **the datapath at the PCSEL MUX**. 
   
 The PCSEL multiplexer's fourth and fifth input are called `ILLOP` and `XAdr`. In $$\beta$$ ISA,
 -  `ILLOP` is set at `0x80000004`
@@ -120,7 +120,7 @@ In this address resides the **entry point** of program that **handles** these ev
 
 ## Fault Detection and Diagnostics
 
-In the realm of computer engineering, particularly when dealing with the intricacies of CPU hardware, the process of detecting and isolating faults within the CPU datapath is a **critical** task.  For instance, if the `RA2SEL` mux is **faulty**, then any `ST` instructions will be affected. 
+In the realm of computer engineering, particularly when dealing with the intricacies of CPU hardware, the process of detecting and isolating faults within the CPU datapath is a **critical** task.  For instance, if the `RA2SEL` MUX is **faulty**, then any `ST` instructions will be affected. 
 
 Our objective is to create straightforward test programs specifically designed to identify particular faults. These programs are essential and should be capable of altering the state of the CPU and/or Memory in a distinct manner if such faults are present. Prior to initiating this process, it's crucial to have a clear understanding and reference of the control logic signals:
 
@@ -128,15 +128,15 @@ Our objective is to create straightforward test programs specifically designed t
 
 You should always begin with some **assumptions**, e.g: initial contents of all registers in the regfile are `0`, or that the Memory state from certain address range is of certain values (depending on the question), and then **design** some diagnostic program with a known end state of regfile and/or Memory. You then must run the program for a **fixed** amount of CPU `clk` cycle and observe the differences in the state of the regfile and/or Memory to what you should expect in a fully functional Beta CPU. 
 
-### Example: `RA2SEL` mux is faulty
+### Example: `RA2SEL` MUX is faulty
 
-Suppose you suspected that the `RA2SEL` **mux** might be faulty: 
-* The mux always "sees" that the `RA2SEL` signal given is always **stuck at `0`** 
+Suppose you suspected that the `RA2SEL` **MUX** might be faulty: 
+* The MUX always "sees" that the `RA2SEL` signal given is always **stuck at `0`** 
 * It cannot be `1` even if the Control Unit gives out `RA2SEL` signal of `1`
 
 {: .note}
 > 1.  The values in the `PC` / Registers in Regfile / Memory Unit will be *different* from a working Beta CPU if these programs were to be executed in this faulty Beta. 
-> 2.  You can be 100% sure the discrepancy is caused by  `RA2SEL` mux being faulty and not any other faults (**isolation**)
+> 2.  You can be 100% sure the discrepancy is caused by  `RA2SEL` MUX being faulty and not any other faults (**isolation**)
 
 Suppose we assume the initial content of all registers are `0` for this exercise, and that `PC` starts from `0`. This condition might differ depending on the question's scenario, so read them carefully. Since only `ST` instruction requires `RA2SEL` signal to be `1`, our program must utilise `ST` instructions. 
 
@@ -154,12 +154,12 @@ constant: LONG(8)
 answer: LONG(4)
 ```
 
-In a fully working Beta CPU, we should observe that constant `8` is stored in Memory address `0xFFFC` (as the content `Mem[answer]`). However, if the `RA2SEL` mux is faulty as described above, we will see that the content of `R31` (which is `0`) will instead be stored into `Mem[answer]`. 
+In a fully working Beta CPU, we should observe that constant `8` is stored in Memory address `0xFFFC` (as the content `Mem[answer]`). However, if the `RA2SEL` MUX is faulty as described above, we will see that the content of `R31` (which is `0`) will instead be stored into `Mem[answer]`. 
 
 **Explanation**:
 * The 16-bit signed constant of the `ST` instruction is `0xFFFC`
 * This makes bit 15 to 11 to be `11111` (what we deems as 'Rb')
-* If `RA2SEL` mux selects input `0` during this instruction, it will take the content of register `11111` (`R31`) to be stored at `Mem[answer]`
+* If `RA2SEL` MUX selects input `0` during this instruction, it will take the content of register `11111` (`R31`) to be stored at `Mem[answer]`
 * Therefore we will observe `0` at `Mem[answer]` instead of `8`
 
 Now consider the following program **P2** to be run at exactly 3 clk cycle (or until `HALT()`, whichever comes earlier):: 
@@ -176,25 +176,25 @@ constant: LONG(8)
 answer: LONG(4)
 ```
 
-P2 will <span style="color:#ff791a; font-weight: bold;">not</span> be able to detect the faulty in `RA2SEL` mux because we would have the value `8` stored at `Mem[answer]` regardless of whether the `RA2SEL`  mux is faulty or not.
+P2 will <span style="color:#ff791a; font-weight: bold;">not</span> be able to detect the faulty in `RA2SEL` MUX because we would have the value `8` stored at `Mem[answer]` regardless of whether the `RA2SEL`  MUX is faulty or not.
 
 **Explanation**:
 1. The 16-bit signed constant of the `ST` instruction is `0x07FC`, therefore bit 15 to 11 is now `00000` instead of `11111`
 2. This means that we are **still** storing the content of `R0` to address `answer`
-3. Since both bit 25 to 21 (Rc) and bit 15 to 11 (Rb) are **identical** (`00000`), it does not matter if the `RA2SEL` mux selected Rc or Rb 
+3. Since both bit 25 to 21 (Rc) and bit 15 to 11 (Rb) are **identical** (`00000`), it does not matter if the `RA2SEL` MUX selected Rc or Rb 
 
 
 
 
-### Example: `ASEL` mux is faulty
-Suppose you suspected that the `ASEL` **mux** might be faulty: 
+### Example: `ASEL` MUX is faulty
+Suppose you suspected that the `ASEL` **MUX** might be faulty: 
 * if `ASEL = 0`, the **output** is always 0. 
 * There's no problem if `ASEL = 1`.  
 	
 {: .note}
 > Similarly, note that:
 > 1.  The values in the `PC` / Registers in Regfile / Memory Unit will be *different* from a working Beta CPU if these programs were to be executed in this faulty Beta. 
-> 2.  You can be 100% sure the discrepancy is caused by  `ASEL` mux being faulty and not any other faults (**isolation**)
+> 2.  You can be 100% sure the discrepancy is caused by  `ASEL` MUX being faulty and not any other faults (**isolation**)
 
 Similarly, we assume the initial content of all registers are `0` for this exercise and that `PC` starts from `0`.. We need to write a diagnostic program that requires `ASEl=0`.  This involves all Type 1 arithmetic operation. Consider the following program **P3** to be run at exactly 4 clk cycle (or until `HALT()`, whichever comes earlier):
 
@@ -206,10 +206,10 @@ MUL(R1, R2, R0)
 HALT()  
 ```
 
-The program above can easily detect if the `ASEL` mux is faulty as described by observing the content of `R0` when the program halts. If the Beta CPU is faulty, the content of `R0` will be 0. Otherwise, it will be `64`.
+The program above can easily detect if the `ASEL` MUX is faulty as described by observing the content of `R0` when the program halts. If the Beta CPU is faulty, the content of `R0` will be 0. Otherwise, it will be `64`.
 
 **Explanation**:
-* If the `ASEL` mux is faulty, we are multiplying the content of R2 with `0` instead of the content of `R1`
+* If the `ASEL` MUX is faulty, we are multiplying the content of R2 with `0` instead of the content of `R1`
 * Hence, the result stored at `R0` will be 0 
 
 Now consider the following program **P4**, to be run at exactly 4 clk cycle (or until `HALT()`, whichever comes earlier):
@@ -226,11 +226,11 @@ constant: LONG(0)
 P4 will <span style="color:#ff791a; font-weight: bold;">not</span> be able to detect the fault because the **content** of R0 will be `0` regardless, because `Mem[constant]` that's loaded to `R2` is `0` anyway, and anything multiplied by `0` will have the value of `0`. 
 
 
-### Example: BOTH `ASEL` & `RA2SEL` muxes are faulty
-Now let's try and combine both scenarios where both the `ASEL` and `RA2SEL` muxes are simultaneously faulty as described above, **and** you don't want to waste your time loading and running multiple programs and would like to select one that can **detect both faults**. 
+### Example: BOTH `ASEL` & `RA2SEL` MUXes are faulty
+Now let's try and combine both scenarios where both the `ASEL` and `RA2SEL` MUXes are simultaneously faulty as described above, **and** you don't want to waste your time loading and running multiple programs and would like to select one that can **detect both faults**. 
 
 {: .note}
-> 1.  You can be 100% sure the discrepancy is caused by **both** `RA2SEL` signal or `ASEL` mux faulty.
+> 1.  You can be 100% sure the discrepancy is caused by **both** `RA2SEL` signal or `ASEL` MUX faulty.
 > 2.  Programs that can only detect the `RA2SEL` signal faulty but not `ASEL` multiplexer faulty (or vice versa) is **not acceptable**. 
 
 As usual, you can assume that the initial content of all registers are `0` and that `PC` starts from `0`. To detect **both** faults at once, we need a program that **utilises** `ST` as well as Type 1 arithmetic operations that will alter register or memory contents differently than a fully functional Beta CPU. 
@@ -249,12 +249,12 @@ constant: LONG(8)
 LONG(4)
 ```
 
-The content at `Mem[constant+8]` will be 8 instead of 12 if only the `RA2SEL` mux is faulty, and the **content** stored at R2 will be 4 instead of 12 if only the ASEL mux is faulty. 
+The content at `Mem[constant+8]` will be 8 instead of 12 if only the `RA2SEL` MUX is faulty, and the **content** stored at R2 will be 4 instead of 12 if only the ASEL MUX is faulty. 
 
 **Explanation**:
-* If the `ASEL` mux is faulty, we will be adding `0` (instead of the content of `R0` which is `8`) with the content of `R1` (which is `4`) and storing it at `R2`. The content of `R2 = 0 + Reg[R1] = 4` instead of the expected `12`.
+* If the `ASEL` MUX is faulty, we will be adding `0` (instead of the content of `R0` which is `8`) with the content of `R1` (which is `4`) and storing it at `R2`. The content of `R2 = 0 + Reg[R1] = 4` instead of the expected `12`.
 * `constant` is equivalent to address `20`, or `0x0014`. This makes bit 15 to bit 11 of the `ST` instruction to be `00000`
-* If `RA2SEL` mux is faulty, we will be storing the **content** of `R0` (which is `8`) instead of the **content** of `R2` (which might be 4 or 12 depending on whether `ASEL` mux is faulty) 
+* If `RA2SEL` MUX is faulty, we will be storing the **content** of `R0` (which is `8`) instead of the **content** of `R2` (which might be 4 or 12 depending on whether `ASEL` MUX is faulty) 
 
 
 Now consider another program **P6**, to be run for 5 clk cycles:
@@ -295,8 +295,8 @@ HALT()
 ```
 
 At first glance, the program above seems to be able to detect the faulties just fine. You might think the following:
-1. The content of `R2` will be `8` instead of `12` if the `ASEL` mux is faulty, and 
-2. The content of `Mem[28]` will be `8` instead of `4` if the `RA2SEL` mux is faulty 
+1. The content of `R2` will be `8` instead of `12` if the `ASEL` MUX is faulty, and 
+2. The content of `Mem[28]` will be `8` instead of `4` if the `RA2SEL` MUX is faulty 
 
 However, since `PC` starts from `0`, the **first** instruction that the CPU will attempt to execute will be `LONG(8)` and **not** `LDR(constant, R0)`. This will trigger a **software interrupt** and therefore `P7` <span style="color:#ff791a; font-weight: bold;">will not</span> be able to immediately isolate either of the faults.
 
@@ -313,5 +313,5 @@ Here are the key points from this notes:
 
 Diagnosing faults in Beta CPU datapath is <span class="orange-bold">not</span> an easy task. It requires time and practice, not to mention that you **must** familiarise yourselves with Beta ISA in the first place. [Head to our problem set for more exercise](https://natalieagus.github.io/50002/problemset/betadiagnostics). In the problem set, we will take the **diagnostics** step further by thinking of **alternative** instructions that can be used to replace existing instructions affected by a particular faulty datapath. 
 
-Note that not all faults might have a replacement. For instance, if both `ASEL` and `BSEL` muxes are faulty in the sense that both always output `0` regardless of the input or selector signals, then there's no way to utilise the ALU anymore (which means: we can no longer compute arithmetic instructions anymore, rendering the CPU purposeless).
+Note that not all faults might have a replacement. For instance, if both `ASEL` and `BSEL` MUXes are faulty in the sense that both always output `0` regardless of the input or selector signals, then there's no way to utilise the ALU anymore (which means: we can no longer compute arithmetic instructions anymore, rendering the CPU purposeless).
 

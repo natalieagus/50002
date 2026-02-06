@@ -386,7 +386,7 @@ The `Z`, `V` and `N` inputs to this circuit can only be produced by the adder/su
 In real life, you can speed things up considerably by thinking about the *relative* timing of `Z`, `V` and `N` and then designing your logic to minimize delay paths involving late-arriving signals. For instance, if you need to perform computations involving `Z` and other variables, you can compute those intermediary output involving the other variables first while "waiting" for `Z`. We do not need to worry much about it in this Lab as Vivado will do all sorts of optimisation for you. 
 
 #### Detailed Compare Unit Schematic
-Here’s the detailed schematic of the compare unit. Pay **close** attention to the bit selector and the corresponding inputs at the mux:
+Here’s the detailed schematic of the compare unit. Pay **close** attention to the bit selector and the corresponding inputs at the MUX:
 
 <img src="/50002/assets/contentimage/lab3-fpga/2024-50002-COMPARE.drawio.png"  class="center_fifty"/>
 
@@ -418,8 +418,8 @@ module compare (
 }
 ```
 
-**Reuse mux2to1 and mux4to1**
-You are highly encouraged to reuse the muxes you created in the previous lab to implement the comparator unit. You can then utilise it inside `compare.luc` to implement the compare unit truth table [above](#task-2-compare-unit) using signals Z, V, and N
+**Reuse MUX2to1 and MUX4to1**
+You are highly encouraged to reuse the MUXes you created in the previous lab to implement the comparator unit. You can then utilise it inside `compare.luc` to implement the compare unit truth table [above](#task-2-compare-unit) using signals Z, V, and N
 
 ### Test 
 
@@ -498,24 +498,24 @@ Here's the general schematic of the Boolean Unit:
 
 One possible implementation of a 32-bit boolean unit uses **32 copies of a 4-to-1 multiplexer** where `ALUFN0`, `ALUFN1`, `ALUFN2`, and `ALUFN3` **hardcode** the operation to be performed, and `Ai` and `Bi` are hooked to the multiplexer **`SELECT`** inputs.  This implementation can produce any of the 16 2-input Boolean functions; but we will only be using 4 of the possibilities: `AND`, `OR`, `XOR`, and `A`. 
 
-In total, you should utilise 32 4-to-1 multiplexers to build the boolean unit. You can utilise the earlier created `mux_4.luc` module to implement this. 
+In total, you should utilise 32 4-to-1 multiplexers to build the boolean unit. You can utilise the earlier created `MUX_4.luc` module to implement this. 
 
 ### Implementation Tips 
 
-You will need 32 copies of `ALUFN` signals as you will be plugging them into the input ports of each `mux_4`. To do this, you can use the **duplication** operator in lucid, for instance:
+You will need 32 copies of `ALUFN` signals as you will be plugging them into the input ports of each `MUX_4`. To do this, you can use the **duplication** operator in lucid, for instance:
 
 ```cpp
 // boolean.luc 
   // module declaration 
 
   // declaration of modules utilised in boolean unit 
-  mux_4 mux_4_32[32];
+  MUX_4 MUX_4_32[32];
 {% raw %}
   always{
-    // create 32 copies of ALUFN signal as input to each mux_4 unit 
+    // create 32 copies of ALUFN signal as input to each MUX_4 unit 
     // the double curly brackets are intentional because
     // we are creating 2D array: 32 by 4 bits
-    mux_4_32.in = 32x{{alufn[3:0]}}; 
+    MUX_4_32.in = 32x{{alufn[3:0]}}; 
     // the rest of boolean.luc body 
 
   }
@@ -615,13 +615,13 @@ Afterwards, we can use a 4-way 32-bit multiplexer to select the appropriate answ
 
 ### Implementation Tips 
 
-You might want to use the `mux_2.luc` module here to help your implementation:
+You might want to use the `MUX_2.luc` module here to help your implementation:
 
 ```cpp
-module mux_2 (
+module MUX_2 (
     input s0,
     input in[2], // note: you can put input as an array, or declare them separately, e.g: input d0, input d1
-    // it will affect how you utilise this mux
+    // it will affect how you utilise this MUX
     output out
   ) {
 
@@ -652,21 +652,21 @@ module x_bit_left_shifter #(
   ) {
  
   // module declarations
-  // instantiate mux_2 (32 of them)
+  // instantiate MUX_2 (32 of them)
   // other useful intermediary signals, e.g: shifted_bits[32] 
-  mux2 shift_unit[SIZE];
-  sig in_1shift_unit[SIZE]; // input s1 of each shift_unit mux
+  MUX2 shift_unit[SIZE];
+  sig in_1shift_unit[SIZE]; // input s1 of each shift_unit MUX
   
   always {
     
     // assign value to shifted_bits[32] depending on the value of SHIFT
-    // connect the selector of each mux_2 with shift 
+    // connect the selector of each MUX_2 with shift 
     shift_unit.s0 = SIZEx{do_shift};
     in_1shift_unit = c{a[SIZE-1-SHIFT:0], SHIFTx{pad}};
    
     // use a repeat-loop to: 
-    // connect input[0] of each mux_2 with a[i]
-    // connect input[1] of each mux_2 with the shifted_bits[i] 
+    // connect input[0] of each MUX_2 with a[i]
+    // connect input[1] of each MUX_2 with the shifted_bits[i] 
     repeat(i, SIZE){
        shift_unit.in[i] = c{in_1shift_unit[i], a[i]};
     }
@@ -1001,7 +1001,7 @@ Finally, open `alu.luc` and assemble the outputs of the finished **adder**, **mu
 <img src="{{ site.baseurl }}/assets/contentimage/lab3-fpga/2024-50002-ALU.drawio.png"  class="center_fifty"/>
 
 {:.note}
-You can use `mux2to4`, or use the `case` statement, or use plain `if-else` statements. 
+You can use `MUX2to4`, or use the `case` statement, or use plain `if-else` statements. 
 
 **Two** control signals (`ALUFN[5:4]`) that we have never used before in the individual module have now been utilised to **select which unit** will supply the value for the ALU output.  The encodings for `ALUFN[5:0]` should follow this table that you've seen in the beginning of this handout: 
 

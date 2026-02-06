@@ -772,9 +772,9 @@ A ROM-style `case` table is a clean way to keep test vectors “constant” in V
 Here's the interface for you to get started:
 
 ```verilog
-// src/mux2to1.v
-// 2-to-1 mux (1-bit)
-module mux2to1 (
+// src/MUX2to1.v
+// 2-to-1 MUX (1-bit)
+module MUX2to1 (
   input  wire data0,
   input  wire data1,
   input  wire s,
@@ -787,9 +787,9 @@ endmodule
 ```
 
 ```verilog
-// src/mux4to2.v
-// 4-to-1 mux (1-bit), selected by 2-bit s
-module mux4to1 (
+// src/MUX4to2.v
+// 4-to-1 MUX (1-bit), selected by 2-bit s
+module MUX4to1 (
   input  wire data0,
   input  wire data1,
   input  wire data2,
@@ -799,7 +799,7 @@ module mux4to1 (
 );
 
     // your implementation here
-    // you are encouraged to utilise mux2to1 here
+    // you are encouraged to utilise MUX2to1 here
 
 endmodule
 ```
@@ -812,13 +812,13 @@ Verilog gives you two common styles for conditional logic: **continuous assignme
 
 ##### Ternary operator (continuous assignment)
 
-This is best for small, simple selections. Recommended to be used to implement the muxes.
+This is best for small, simple selections. Recommended to be used to implement the MUXes.
 
 ```verilog
-assign y = sel ? d1 : d0;   // 2-to-1 mux
+assign y = sel ? d1 : d0;   // 2-to-1 MUX
 ```
 
-You can chain ternaries for bigger muxes like so, but it gets hard to read.
+You can chain ternaries for bigger MUXes like so, but it gets hard to read.
 
 ```verilog
 assign y = (s == 2'b00) ? d0 :
@@ -845,7 +845,7 @@ In this style, outputs assigned inside `always` must be declared `reg` (even tho
 
 ##### `always @*` with `case` (procedural combinational)
 
-This is best when you have many discrete choices, like muxes with larger select signals.
+This is best when you have many discrete choices, like MUXes with larger select signals.
 
 ```verilog
 reg y;
@@ -886,7 +886,7 @@ end
 
 {:.note}
 > With these 3 choices, you are advised to:
-> * Use **`assign` + ternary** for short mux-style expressions.
+> * Use **`assign` + ternary** for short MUX-style expressions.
 > * Use **`always @*` + `if/case`** when the selection has many cases or the code reads clearer.
 >
 > When using `always @*`, always provide a **default assignment** (or full coverage) to keep the logic purely combinational.
@@ -894,25 +894,25 @@ end
 
 #### Test: Multiplexers
 
-This testbench contains the def of two modules at once, one to test each mux. Then there's a top level testbench that runs both in sequence.
+This testbench contains the def of two modules at once, one to test each MUX. Then there's a top level testbench that runs both in sequence.
 
 ```verilog
-// test/tb_mux.v
+// test/tb_MUX.v
 `timescale 1ns/1ps
 
 
 // --------------------
-// TB 1: mux2to1
+// TB 1: MUX2to1
 // Runs only after start=1, then raises done=1
 // --------------------
-module tb_mux2to1 (
+module tb_MUX2to1 (
   input  wire start,
   output reg  done
 );
   reg  data0, data1, s;
   wire y;
 
-  mux2to1 dut (.data0(data0), .data1(data1), .s(s), .y(y));
+  MUX2to1 dut (.data0(data0), .data1(data1), .s(s), .y(y));
 
   integer i;
   reg exp;
@@ -921,7 +921,7 @@ module tb_mux2to1 (
     done = 1'b0;
     wait (start == 1'b1);
 
-    $display("=== tb_mux2to1 ===");
+    $display("=== tb_MUX2to1 ===");
     $display("d0 d1 s | y");
 
     for (i = 0; i < 8; i = i + 1) begin
@@ -945,10 +945,10 @@ module tb_mux2to1 (
 endmodule
 
 // --------------------
-// TB 2: mux4to1
+// TB 2: MUX4to1
 // Runs only after start=1, then raises done=1
 // --------------------
-module tb_mux4to1 (
+module tb_MUX4to1 (
   input  wire start,
   output reg  done
 );
@@ -956,7 +956,7 @@ module tb_mux4to1 (
   reg  [1:0] s;
   wire y;
 
-  mux4to1 dut (.data0(data0), .data1(data1), .data2(data2), .data3(data3), .s(s), .y(y));
+  MUX4to1 dut (.data0(data0), .data1(data1), .data2(data2), .data3(data3), .s(s), .y(y));
 
   integer i;
   reg exp;
@@ -965,7 +965,7 @@ module tb_mux4to1 (
     done = 1'b0;
     wait (start == 1'b1);
 
-    $display("=== tb_mux4to1 ===");
+    $display("=== tb_MUX4to1 ===");
     $display("d0 d1 d2 d3 s | y");
 
     for (i = 0; i < 64; i = i + 1) begin
@@ -1001,8 +1001,8 @@ module tb_all;
   reg start1, start2;
   wire done1, done2;
 
-  tb_mux2to1 t1(.start(start1), .done(done1));
-  tb_mux4to1 t2(.start(start2), .done(done2));
+  tb_MUX2to1 t1(.start(start1), .done(done1));
+  tb_MUX4to1 t2(.start(start2), .done(done2));
 
   initial begin
     start1 = 1'b0;
@@ -1025,7 +1025,7 @@ endmodule
 Don't forget to include all modules when compiling and running:
 
 ```bash
- iverilog -g2005 -o sim src/mux2to1.v src/mux4to2.v test/tb_mux.v          `
+ iverilog -g2005 -o sim src/MUX2to1.v src/MUX4to2.v test/tb_MUX.v          `
 ```
 
 
@@ -1213,7 +1213,7 @@ If you are new, you should first write the basic circuits out explicitly, even i
 Do not rush to create a fully generic “N-to-2^n decoder” or a super-parameterised Mux yet. 
 - Get the concrete 1-to-2 and 2-to-4 versions correct and readable first. 
 - Only then is it meaningful to generalise.
-- Sometimes it is not even important to generalise because for instance, you're *not* going to USE that many variations of mux/decoder in your project in the first place. So who are you making it for?
+- Sometimes it is not even important to generalise because for instance, you're *not* going to USE that many variations of MUX/decoder in your project in the first place. So who are you making it for?
   - If it is for learning and you have free time on hand, great. Go ahead.
   - But if it introduces bugs and frustration, that means your knowledge is not adequate yet. Stick to the basics. They always work with minimal errors.
 
@@ -1304,12 +1304,12 @@ Sometimes `instance.port` is acceptable but only in **testbenches/debug** (peeki
 
 
 ## Summary
-This lab mirrors the Lucid Lab 2 flow in plain Verilog: implement a 1-bit full adder from Boolean logic, cascade it into a parameterised ripple-carry adder using genvar + generate, then build muxes and decoders as core combinational blocks with small, readable modules plus testbenches.
+This lab mirrors the Lucid Lab 2 flow in plain Verilog: implement a 1-bit full adder from Boolean logic, cascade it into a parameterised ripple-carry adder using genvar + generate, then build MUXes and decoders as core combinational blocks with small, readable modules plus testbenches.
 
 Key takeaways:
 * Build from **first** principles: Boolean expressions and small modules (avoid + for the 1-bit adder).
 * Use **parameters** for fixed compile-time widths, and `generate` loops to replicate hardware structure.
-* Encourages **composition**: build mux4to1 from mux2to1, and decoder2to4 from decoder1to2.
+* Encourages **composition**: build MUX4to1 from MUX2to1, and decoder2to4 from decoder1to2.
 * **Verify** with testbenches; use ROM-style case tables when you want “constant” vectors under Verilog-2005.
 
 {:.new-title}

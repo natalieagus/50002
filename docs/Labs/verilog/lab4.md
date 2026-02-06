@@ -1183,7 +1183,7 @@ Here's an example demo:
 
 In this lab you implement a **controller–datapath** system in Verilog: 
 * an FSM (controller) generates control signals to sequence multi-step behavior, 
-* a datapath containing the registers, muxes, and arithmetic, and returns simple status signals for the FSM to react to
+* a datapath containing the registers, MUXes, and arithmetic, and returns simple status signals for the FSM to react to
   
 You practice writing structurally clean RTL by keeping state updates **clocked** (nonblocking) and keeping control decode combinational with explicit defaults, then **verify** the timing you observe in simulation (including the common one-cycle Moore-style “enable/output lag”). 
 

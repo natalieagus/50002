@@ -544,7 +544,7 @@ The next thing to do is to start/stop the counter. Since we use the **toggle** f
     // default connection
     slow_clock_enable.d = slow_clock_enable.q 
 
-    // this is a mux deciding whether we stop the clock or set it with certain speed 
+    // this is a MUX deciding whether we stop the clock or set it with certain speed 
     case (slow_clock_enable.q){
             0:
                 slow_clock_edge.in = 0 // always don't increment or decrement

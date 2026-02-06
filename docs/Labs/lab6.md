@@ -53,7 +53,7 @@ The lecture notes on [Designing an Instruction Set](https://natalieagus.github.i
 | --- | --- |
 | **The Von Neumann model: CPU, Memory, IO** (Designing an Instruction Set) | Motivates the separation of the **Beta CPU** and the **Memory Unit** in this lab, explains why the PC supplies `ia` and how `id`, `ma`, `mrd`, `mwd` and `wr` implement the CPU-memory interface. |
 | **Programmability of a Von Neumann Machine**:  control signals and OPCODE (Designing an Instruction Set) | Connects directly to the **CONTROL unit** ROM: decoding `OPCODE[31:26]` to generate control signals (`PCSEL`, `RA2SEL`, `ASEL`, `BSEL`, `WASEL`, `WDSEL`, `WERF`, `WR`) that re-program the datapath without changing hardware. |
-| **Beta ISA format & instruction encoding** (Designing an Instruction Set) | Used when wiring the **REGFILE** and **CONTROL unit** to the instruction word `id[31:0]`: extracting `Ra`, `Rb`, `Rc`, immediate fields, and ensuring your ROM entries and mux inputs line up with the ISA bit positions. |
+| **Beta ISA format & instruction encoding** (Designing an Instruction Set) | Used when wiring the **REGFILE** and **CONTROL unit** to the instruction word `id[31:0]`: extracting `Ra`, `Rb`, `Rc`, immediate fields, and ensuring your ROM entries and MUX inputs line up with the ISA bit positions. |
 | **Program Counter and Physical Memory Unit** (Building the Beta CPU) | Mirrors **Part A: PC Unit** and **Memory Unit**: computing `PC+4`, branch targets, enforcing word-aligned addresses by forcing low 2 bits to `00`, and routing `ia` and `ma` to the instruction/data memories. |
 | **Register Files** (Building the Beta CPU) | Matches **Part B: REGFILE Unit**: 32×32 register file, three ports, special handling of `R31`, write-enable behaviour, and using `RA2SEL`/`WASEL` to steer read/write addresses, plus the Z flag logic from `reg_data_1`. |
 | **Control Logic Unit & control table** (Building the Beta CPU) | Underpins **Part C: CONTROL Unit**: implementing the ROM truth table, then post-processing `PCSEL`, `WERF`, `WDSEL`, `WR`, and `WASEL` for branches, stores, reset and interrupts based on `Z`, `ia31`, and `IRQ`. |
@@ -67,9 +67,9 @@ The lecture notes on [Designing an Instruction Set](https://natalieagus.github.i
 ## Introduction
 The goal of this lab is to build a **fully** functional 32-bit Beta Processor on our FPGA so that it could simulate simple programs written in Beta Assembly Language. It is a huge device, and to make it more bearable we shall modularise it into four major components:
 * (Part A) **PC** Unit: containing the PC register and all necessary components to support the ISA
-* (Part B) **REGFILE** Unit: containing 32 32-bit registers, WASEL, and RA2SEL mux, plus circuitry to compute Z
+* (Part B) **REGFILE** Unit: containing 32 32-bit registers, WASEL, and RA2SEL MUX, plus circuitry to compute Z
 * (Part C) **CONTROL** Unit: containing the ROM and necessary components to produce all Beta control signals given an `OPCODE`
-* (Part D)  **ALU+WDSEL** Unit: containing the ALU and WDSEL, ASEL, BSEL muxes 
+* (Part D)  **ALU+WDSEL** Unit: containing the ALU and WDSEL, ASEL, BSEL MUXes 
 * Finally, assemble the entire Beta CPU using all subcomponents above
  
 <img src="/50002/assets/contentimage/lab4/beta_lab.png"  class="center_seventy"/><br>
@@ -178,7 +178,7 @@ Here is the suggested PC Unit schematic that you can implement. Take note of the
 ### Task 1: PCSEL Multiplexers
 
 {: .highlight}
-Implement the `PCSEL mux` section inside `pc_unit.luc`. You can follow the following guide, and read each of its relevant sections below.
+Implement the `PCSEL MUX` section inside `pc_unit.luc`. You can follow the following guide, and read each of its relevant sections below.
 
 ```verilog
     case (pcsel){
@@ -197,7 +197,7 @@ Implement the `PCSEL mux` section inside `pc_unit.luc`. You can follow the follo
     }
 ```
 
-The 32-bit 5-to-1 PC mux **selects** the value to be loaded into the `PC` register at the next rising edge of the clock depending on the `PCSEL` control signal. 
+The 32-bit 5-to-1 PC MUX **selects** the value to be loaded into the `PC` register at the next rising edge of the clock depending on the `PCSEL` control signal. 
 
 
 #### `XAddr` and `ILLOP`
@@ -211,7 +211,7 @@ Mem[0x80000008] = BR(interrupt_handler)
 
 
 #### Lower Two Bits of `PC`
-You also have to **force** the lower two bits of inputs going into the PC+4, PC+4+4*SXTC, and JT port of the mux to be `b00` because the memory is byte addressable but the Beta obtains one word of data/instructions at each clock cycle. You can do this with appropriate wiring using concatenation:
+You also have to **force** the lower two bits of inputs going into the PC+4, PC+4+4*SXTC, and JT port of the MUX to be `b00` because the memory is byte addressable but the Beta obtains one word of data/instructions at each clock cycle. You can do this with appropriate wiring using concatenation:
 
 Example: 
 
@@ -222,10 +222,10 @@ pc.d = c{pcsel_out[31:2], b00};
 ### Task 2: RESET Multiplexer
 
 {: .highlight}
-Implement the RESET multiplexer in the space provided under `RESET mux` section inside `pc_unit.luc`. 
+Implement the RESET multiplexer in the space provided under `RESET MUX` section inside `pc_unit.luc`. 
 
 
-Remember that we need to add a way to set the PC to zero on `RESET`.  We use a two-input 32-bit mux that selects `0x80000000` when the RESET signal is asserted, and the output of the PCSEL mux when RESET is not asserted. 
+Remember that we need to add a way to set the PC to zero on `RESET`.  We use a two-input 32-bit MUX that selects `0x80000000` when the RESET signal is asserted, and the output of the PCSEL MUX when RESET is not asserted. 
 
 We will use the RESET signal to force the PC to zero during the **first** clock period of the simulation. This can be found inside `motherboard.luc`:
 
@@ -295,9 +295,9 @@ This has the following three implications for your PC unit design:
 
 1. `0x80000000`, `0x80000004` and `0x80000008` are loaded into the PC during `reset`, `ILLOP` and `IRQ` respectively.   This is the only way that the supervisor bit gets set.  Note that after `reset` the Beta starts execution in supervisor mode. This is equivalent to when a regular computer is starting up.
 
-2. **Bit 31** of the `PC+4` and **branch-offset** inputs to the **PCSEL** mux should be connected to the highest bit of the PC Reg output, `ia31`; i.e., the value of the supervisor bit doesn’t change when executing most instructions. 
+2. **Bit 31** of the `PC+4` and **branch-offset** inputs to the **PCSEL** MUX should be connected to the highest bit of the PC Reg output, `ia31`; i.e., the value of the supervisor bit doesn’t change when executing most instructions. 
 
-3. You need to add additional logic to **bit 31** of the `JT` input to the **PCSEL** mux to ensure that JMP instruction can only **clear** or **leave the supervisor bit unchanged**. Here’s a table showing the new value of the supervisor bit after a `JMP` as function of JT31 and the current value of the supervisor bit (PC31):
+3. You need to add additional logic to **bit 31** of the `JT` input to the **PCSEL** MUX to ensure that JMP instruction can only **clear** or **leave the supervisor bit unchanged**. Here’s a table showing the new value of the supervisor bit after a `JMP` as function of JT31 and the current value of the supervisor bit (PC31):
 
 old PC31 (ia31) | JT31 (ra31) | new PC31
 ---------|----------|---------
@@ -327,22 +327,22 @@ Open `regfile_unit.luc` and observe that the module interface has been provided 
 
 
 ### Task 6: RA2SEL and WASEL Mux
-You will need a mux controlled by `RA2SEL` to select the **correct** address for the B read port. The 5-bit 2-to-1 **WASEL** multiplexer determines the write address for the register file. 
+You will need a MUX controlled by `RA2SEL` to select the **correct** address for the B read port. The 5-bit 2-to-1 **WASEL** multiplexer determines the write address for the register file. 
 
 {: .highlight}
-Implement the `RA2SEL mux` and `WASEL mux` sections inside `regfile_unit.luc`.
+Implement the `RA2SEL MUX` and `WASEL MUX` sections inside `regfile_unit.luc`.
 
 ```verilog
-    // RA2SEL mux
+    // RA2SEL MUX
     case(ra2sel){
-      // implement the RA2SEL mux logic here 
+      // implement the RA2SEL MUX logic here 
       default: 
         ra2sel_out = rb; // default case to silence warnings 
     }
 
-    // WASEL mux 
+    // WASEL MUX 
     case(wasel){
-      // implement the WASEL mux logic here 
+      // implement the WASEL MUX logic here 
       default:
         wasel_out = rc; // default case to silence warnings 
     }
@@ -525,13 +525,13 @@ Here is the suggested **ALU + WDSEL** Unit schematic that we implemented:
 
 ### ASEL and BSEL Mux
 
-The low-order 16 bits of the instruction need to be **sign**-extended to 32 bits as an input to the BSEL mux.  You have done sign extension before in Lab 2. Consult Lab 2 handout if you have forgotten how to do so. 
+The low-order 16 bits of the instruction need to be **sign**-extended to 32 bits as an input to the BSEL MUX.  You have done sign extension before in Lab 2. Consult Lab 2 handout if you have forgotten how to do so. 
 
-Also, **Bit 31** of the branch-offset input to the ASEL mux should be set to `0`. This means that the supervisor bit is **ignored** when doing address arithmetic for the `LDR` instruction.
+Also, **Bit 31** of the branch-offset input to the ASEL MUX should be set to `0`. This means that the supervisor bit is **ignored** when doing address arithmetic for the `LDR` instruction.
 
 
 ### WDSEL Mux
-**Bit 31** of the PC+4 input to the **WDSEL** mux should connect to the highest bit of the PC Reg output, `ia31`, saving the current value of the supervisor whenever the value of the PC is saved by a branch instruction or trap.  This is already handled in the PC unit. You don't need to do anything else here.
+**Bit 31** of the PC+4 input to the **WDSEL** MUX should connect to the highest bit of the PC Reg output, `ia31`, saving the current value of the supervisor whenever the value of the PC is saved by a branch instruction or trap.  This is already handled in the PC unit. You don't need to do anything else here.
 
 ### Output Signals
 

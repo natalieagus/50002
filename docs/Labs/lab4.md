@@ -246,7 +246,7 @@ To do this, the FSM should output two control signals:
   * When `1` for a cycle, the next value of `index` becomes `index + 1` (with wraparound if needed).
   * Used in `CHECK` when a test passes and we want to move on.
 
-**Inside the datapath**, we will typically implement a small **mux** to implement this `if-else` logic. The FSM never touches `index` directly. It only set `index_load_zero` and `index_inc`.
+**Inside the datapath**, we will typically implement a small **MUX** to implement this `if-else` logic. The FSM never touches `index` directly. It only set `index_load_zero` and `index_inc`.
 
 ### Control signals for the registered adder and expected sum pipeline
 
@@ -316,7 +316,7 @@ These are self-explanatory. They are the inputs that trigger FSM transitions.
 
 * The **datapath** has:
   * Registers: `index`, `a`, `b`, `s`, and expected sum pipeline
-  * Combinational logic: ROM-like arrays, RCA, comparator, small muxes.
+  * Combinational logic: ROM-like arrays, RCA, comparator, small MUXes
 * The **FSM controller** has:
   * A state register that stores seven states: `IDLE`, `INIT`, `FEED`, `WAIT_1`, `WAIT_2`, `CHECK`, `HALT`.
   * Next-state logic that uses `rst`, `equal`, `last_index`, `slow_clock`, and `clk`

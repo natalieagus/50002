@@ -122,17 +122,17 @@ Your job is to **write some test programs** to help determine if a machine is fa
 You can assume that all registers are reliably set to 0 before each sequence is executed. There's many possible answers, they aren't unique.
 
 Give your instruction sequence for each of the six indicated faults and briefly **explain** how each sequence detects the fault and produces something besides `1` in `R0` when the fault is present:
-* **Fault A:** Input 1 of `PCSEL` mux has a value of `0` instead of `PC+4+4*SEXT(C)`.
+* **Fault A:** Input 1 of `PCSEL` MUX has a value of `0` instead of `PC+4+4*SEXT(C)`.
 * **Fault B:** `RA2SEL` multiplexer control signal is `0` instead of as per intended current instruction `OPCODE`.
 * **Fault C:** `Z` input to control logic is always `0` instead of the correct value depending on `RD1`.
 * **Fault D:**   `BSEL` multiplexer control signal `0`  instead of as per intended current instruction `OPCODE`.
 * **Fault E:** `WR` memory control signal is `0`  instead of as per intended current instruction `OPCODE`.
-* **Fault F:** Input 0 of `WDSEL` mux has a value of `0` instead of `PC+4`.
+* **Fault F:** Input 0 of `WDSEL` MUX has a value of `0` instead of `PC+4`.
 
 
 
 
-**Fault A:** Input 1 of `PCSEL` mux has a value of `0` instead of `PC+4+4*SEXT(C)`.
+**Fault A:** Input 1 of `PCSEL` MUX has a value of `0` instead of `PC+4+4*SEXT(C)`.
 <div cursor="pointer" class="collapsible">Show Answer</div>
 <div class="content_answer"><p>
 <div class="class=language-cpp highlighter-rouge">
@@ -149,7 +149,7 @@ ADDC(R0,1,R0) | 0x4
 Execute for 2 cycles (i.e., execute two instructions):
 <ul>
 <li> If fault A is not present, <code>R0</code> contains <code>1</code> after the second cycle, since the second instruction is fetched from location <code>0x4</code>. </li>
-<li> If fault A is present, the second instruction is fetched from location <code>0</code> (instead of <code>4</code>, since the input <code>1</code> to the <code>PCSEL</code> mux is <code>0</code>), so the value of <code>R0</code> stays <code>0</code>.</li>
+<li> If fault A is present, the second instruction is fetched from location <code>0</code> (instead of <code>4</code>, since the input <code>1</code> to the <code>PCSEL</code> MUX is <code>0</code>), so the value of <code>R0</code> stays <code>0</code>.</li>
 </ul>
 Note that the label <code>.+4</code> means “memory location of current instruction + 4”, which is <code>0+4</code> here.
 </p></div><br>
@@ -225,7 +225,7 @@ Execute for 3 cycles:
 </ul>
 </p></div><br>
 
-**Fault F:** Input `0` of `WDSEL` mux has a value of `0` instead of `PC+4`.
+**Fault F:** Input `0` of `WDSEL` MUX has a value of `0` instead of `PC+4`.
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 <div class="class=language-cpp highlighter-rouge">
 <div class="highlight">
@@ -247,9 +247,9 @@ Execute for 2 cycles:
 When Alice was walking back to her hostel this morning, she dropped her Beta CPU and it hit the ground pretty hard. She suspected that these components do not work properly anymore:
 
 
-* **Fault 1**: Input 2 of `PCSEL` mux (the `JT` input) is always `0` instead of the usual `Reg[Ra]`
+* **Fault 1**: Input 2 of `PCSEL` MUX (the `JT` input) is always `0` instead of the usual `Reg[Ra]`
 * **Fault 2**: `WR` memory control signal is always `1` instead of as per intended current intended instruction `OPCODE` (always writing to memory)
-* **Fault 3**: Input `0` of `BSEL` mux is faulty, it always read `0x00000000` instead of the actual 32-bit register data value produced by the second data port of the REGFILE unit. (Note: REGFILE unit is NOT faulty).
+* **Fault 3**: Input `0` of `BSEL` MUX is faulty, it always read `0x00000000` instead of the actual 32-bit register data value produced by the second data port of the REGFILE unit. (Note: REGFILE unit is NOT faulty).
 
 She quickly wrote a diagnostic program that hopefully can detect all these faults at once. Her program is as follows, starting from address 0. 
 
@@ -270,7 +270,7 @@ HALT()              | 32
 She sets the program to run for **6** cycles (to complete all 6), and then inspect the content of PC Register, Memory, and all registers in the REGFILE. You shall assume that:
 * In the beginning, the content of all registers in the REGFILE is `0`, and
 * If any ILLEGAL operation is executed (illegal `OPCODE`), then the program will **stop** its execution immediately (even if 6 completed cycles are not met yet), and 
-* Muxes that are **not** involved in the current operation will always have its selector bit set as `0`, e.g: if we don't use `RA2SEL` mux during a particular operation, the CU always set `RA2SEL` signal to `0`. 
+* Muxes that are **not** involved in the current operation will always have its selector bit set as `0`, e.g: if we don't use `RA2SEL` MUX during a particular operation, the CU always set `RA2SEL` signal to `0`. 
 * Instruction and Data memory lives in the **same address space** (they're not separate!). This makes **Fault 2** very dangerous. 
 
 State whether each statement below is True or False and provide your reasoning. 

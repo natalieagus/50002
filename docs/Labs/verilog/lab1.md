@@ -224,7 +224,7 @@ In Verilog, an `always` block is a procedural region that <span class="orange-bo
 With an explicit sensitivity list, the designer enumerates which signals **trigger** re-evaluation. This is correct only if the list is complete.
 
 ```verilog
-// 2:1 mux with an explicit sensitivity list (must be complete)
+// 2:1 MUX with an explicit sensitivity list (must be complete)
 always @(a or b or sel) begin
   if (sel) y = b;
   else     y = a;

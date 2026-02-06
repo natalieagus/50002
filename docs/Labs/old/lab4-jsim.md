@@ -58,9 +58,9 @@ Related sections in [Beta CPU](https://natalieagus.github.io/50002/notes/betacpu
 ## Introduction
 The goal of this lab is to build a **fully** functional Beta Processor and simulate it in JSim. It is a huge device, and to make it more bearable we shall modularise it into four major components:
 * (Part A) **PC** Unit: containing the PC register and all necessary components to support the ISA
-* (Part B) **REGFILE** Unit: containing 32 32-bit registers, WASEL, and RA2SEL mux, plus circuitry to compute Z
+* (Part B) **REGFILE** Unit: containing 32 32-bit registers, WASEL, and RA2SEL MUX, plus circuitry to compute Z
 * (Part C) **CONTROL** Unit: containing the ROM and necessary components to produce all Beta control signals given an `OPCODE`
-* **ALU+WDSEL** Unit: containing the ALU and WDSEL, ASEL, BSEL muxes (**given to you**)
+* **ALU+WDSEL** Unit: containing the ALU and WDSEL, ASEL, BSEL MUXes (**given to you**)
 * (Part D) Assemble the entire Beta CPU using all subcomponents above
  
 <img src="/50002/assets/contentimage/lab4/beta_lab.png"  class="center_seventy"/><br>
@@ -138,10 +138,10 @@ Your job is to fill up each blanks between `BEGIN ANSWER` and `END ANSWER`
 ### Task 1: PCSEL Multiplexers
 
 {: .highlight}
-**Write** your answer in the space provided under `5-to-1 PCSEL mux` section inside `lab4_pc_submit.jsim`. Read on to find out how to fill it up.
+**Write** your answer in the space provided under `5-to-1 PCSEL MUX` section inside `lab4_pc_submit.jsim`. Read on to find out how to fill it up.
 
 ```cpp
-**** 5-to-1 PCSEL mux *****
+**** 5-to-1 PCSEL MUX *****
 * BEGIN ANSWER
 
 
@@ -149,14 +149,14 @@ Your job is to fill up each blanks between `BEGIN ANSWER` and `END ANSWER`
 ****************************
 ```
 
-The 32-bit 5-to-1 PC mux **selects** the value to be loaded into the `PC` register at the next rising edge of the clock depending on the `PCSEL` control signal. Since the parts library `stdcell.jsim` does <span style="color:red; font-weight: bold;">not</span> have any 5-input multiplexers, you will have to construct the logic that selects the next PC using other components (mux2 and mux4) and adjust the control logic accordingly (see schematic above).  
+The 32-bit 5-to-1 PC MUX **selects** the value to be loaded into the `PC` register at the next rising edge of the clock depending on the `PCSEL` control signal. Since the parts library `stdcell.jsim` does <span style="color:red; font-weight: bold;">not</span> have any 5-input multiplexers, you will have to construct the logic that selects the next PC using other components (MUX2 and MUX4) and adjust the control logic accordingly (see schematic above).  
 
 {: .warning}
-Be **very very careful**  when plugging in the control signals for mux4 unit. Please read the `stdcell` documentation **carefully** (see [Appendix 3](https://natalieagus.github.io/50002/lab/lab4#appendix-3-standard-cells))
+Be **very very careful**  when plugging in the control signals for MUX4 unit. Please read the `stdcell` documentation **carefully** (see [Appendix 3](https://natalieagus.github.io/50002/lab/lab4#appendix-3-standard-cells))
 
-In particular, the documentation of `mux4`:
+In particular, the documentation of `MUX4`:
 ```cpp
-Xid S0 S1 d0 d1 d2 d3 z mux4
+Xid S0 S1 d0 d1 d2 d3 z MUX4
 ```
 And it means as follows:
 
@@ -180,34 +180,34 @@ Mem[0x80000008] = BR(interrupt_handler)
 We have given you the nodes for constant `0x80000008`  and `0x80000004` called `XAddr[31:0]` and `ILLOP[31:0]`. **Please utilise that**. 
 
 #### Lower Two Bits of `PC`
-You also have to **force** the lower two bits of inputs going into the PC+4, PC+4+4*SXTC, and JT port of the mux to be `0b00` because the memory is byte addressable but the Beta obtains one word of data/instructions at each clock cycle. You can do this with appropriate wiring.
+You also have to **force** the lower two bits of inputs going into the PC+4, PC+4+4*SXTC, and JT port of the MUX to be `0b00` because the memory is byte addressable but the Beta obtains one word of data/instructions at each clock cycle. You can do this with appropriate wiring.
 
 Example: 
 
 ```cpp
-Xmux_unit control_signal#32 input_signal_a[31:2] 0#2 input_signal_b[31:2] 0#2 output_signal[31:0] mux2
+XMUX_unit control_signal#32 input_signal_a[31:2] 0#2 input_signal_b[31:2] 0#2 output_signal[31:0] MUX2
 ```
 
 In the example above, we create 32 bit 2-to-1 multiplexers, so we have to **duplicate** the `control_signal` 32 times  Instead of using all 32 bits of  `input_signal_a[31:0]`, we can just use the upper 30 bits, and append the lower two bits with two zeros using `0#2`. 
 
-The same is done for the second input signal to the mux: `input_signal_b[31:2] 0#2`. JSim will **automatically segment** each signals to create 32 2-to-1 muxes. It is equivalent to writing:
+The same is done for the second input signal to the MUX: `input_signal_b[31:2] 0#2`. JSim will **automatically segment** each signals to create 32 2-to-1 MUXes. It is equivalent to writing:
 
 ```cpp
-Xmux_unit31 control_signal input_signal_a31 input_signal_b31 output_signal31 mux2
-Xmux_unit30 control_signal input_signal_a30 input_signal_b30 output_signal30 mux2
+XMUX_unit31 control_signal input_signal_a31 input_signal_b31 output_signal31 MUX2
+XMUX_unit30 control_signal input_signal_a30 input_signal_b30 output_signal30 MUX2
 ...
-Xmux_unit2 control_signal input_signal_a2 input_signal_b2 output_signal2 mux2
-Xmux_unit1 control_signal 0 0 output_signal1 mux2
-Xmux_unit0 control_signal 0 0 output_signal0 mux2
+XMUX_unit2 control_signal input_signal_a2 input_signal_b2 output_signal2 MUX2
+XMUX_unit1 control_signal 0 0 output_signal1 MUX2
+XMUX_unit0 control_signal 0 0 output_signal0 MUX2
 ```
 
 
 ### Task 2: RESET Multiplexer
 {: .highlight}
-**Write** your answer in the space provided under `RESET mux` and `PC Register` sections inside `lab4_pc_submit.jsim`. Read on to find out how to fill it up.
+**Write** your answer in the space provided under `RESET MUX` and `PC Register` sections inside `lab4_pc_submit.jsim`. Read on to find out how to fill it up.
 
 ```cpp
-**** RESET mux *************
+**** RESET MUX *************
 * BEGIN ANSWER
 
 
@@ -215,7 +215,7 @@ Xmux_unit0 control_signal 0 0 output_signal0 mux2
 ****************************
 ```
 
-Remember that we need to add a way to set the PC to zero on `RESET`.  We use a two-input 32-bit mux that selects `0x80000000` when the RESET signal is asserted, and the output of the PCSEL mux when RESET is not asserted. We will use the RESET signal to force the PC to zero during the first clock period of the simulation.
+Remember that we need to add a way to set the PC to zero on `RESET`.  We use a two-input 32-bit MUX that selects `0x80000000` when the RESET signal is asserted, and the output of the PCSEL MUX when RESET is not asserted. We will use the RESET signal to force the PC to zero during the first clock period of the simulation.
 
 We have given you the nodes for constant `0x80000000` called `RESET[31:0]`, **please utilise that**. 
 
@@ -282,10 +282,10 @@ This has the following three implications for your Beta design:
 
 1. `0x80000000`, `0x80000004` and `0x80000008` are loaded into the PC during `reset`, `ILLOP` and `IRQ` respectively.   This is the only way that the supervisor bit gets set.  Note that after `reset` the Beta starts execution in supervisor mode. This is equivalent to when a regular computer is starting up.
 
-2. **Bit 31** of the `PC+4` and **branch-offset** inputs to the **PCSEL** mux should be connected to the highest bit of the PC Reg output, `ia31`; i.e., the value of the supervisor bit doesn’t change when executing most instructions. 
+2. **Bit 31** of the `PC+4` and **branch-offset** inputs to the **PCSEL** MUX should be connected to the highest bit of the PC Reg output, `ia31`; i.e., the value of the supervisor bit doesn’t change when executing most instructions. 
     * Please ensure your answer in shift-and-add section takes this into account. 
 
-3. You’ll have to add logic to **bit 31** of the `JT` input to the **PCSEL** mux to ensure that JMP instruction can only **clear** or **leave the supervisor bit unchanged**. Here’s a table showing the new value of the supervisor bit after a `JMP` as function of JT31 and the current value of the supervisor bit (PC31): <br>
+3. You’ll have to add logic to **bit 31** of the `JT` input to the **PCSEL** MUX to ensure that JMP instruction can only **clear** or **leave the supervisor bit unchanged**. Here’s a table showing the new value of the supervisor bit after a `JMP` as function of JT31 and the current value of the supervisor bit (PC31): <br>
 
 old PC31 (ia31) | JT31 (ra31) | new PC31
 ---------|----------|---------
@@ -295,10 +295,10 @@ old PC31 (ia31) | JT31 (ra31) | new PC31
 
 
 {: .highlight}
-**Write** your answer in the space provided under `JMP mux` inside `lab4_pc_submit.jsim`.
+**Write** your answer in the space provided under `JMP MUX` inside `lab4_pc_submit.jsim`.
 
 ```cpp
-***** JMP mux *************
+***** JMP MUX *************
 * BEGIN ANSWER
 
 
@@ -354,15 +354,15 @@ Open `lab4_regfile_submit.jsim` and observe that the module interface has been p
 Your job is to fill up each blanks between `BEGIN ANSWER` and `END ANSWER`
 
 ### Task 6: WASEL and RA2SEL Mux
-You will need a mux controlled by `RA2SEL` to select the **correct** address for the B read port. The 5-bit 2-to-1 **WASEL** multiplexer determines the write address for the register file. 
+You will need a MUX controlled by `RA2SEL` to select the **correct** address for the B read port. The 5-bit 2-to-1 **WASEL** multiplexer determines the write address for the register file. 
 
 We have provided the address for `Reg XP` for you, that is the 5-bit constant `30`: `0b11110`. Please utilise that in your implementation. 
 
 {: .highlight}
-**Write** your answer in the space provided under `RA2SEL mux` and `WASEL mux` sections inside `lab4_regfile_submit.jsim`.
+**Write** your answer in the space provided under `RA2SEL MUX` and `WASEL MUX` sections inside `lab4_regfile_submit.jsim`.
 
 ```cpp
-**** RA2SEL mux ************
+**** RA2SEL MUX ************
 * BEGIN ANSWER
 
 
@@ -378,14 +378,14 @@ The register file is a 3-port memory.  Here’s a template netlist for specifyin
 ```cpp
 Xregfile
 + vdd 0 0 ra[4:0] adata[31:0]     // A read port
-+ vdd 0 0 ra2mux[4:0] bdata[31:0] // B read port
++ vdd 0 0 ra2MUX[4:0] bdata[31:0] // B read port
 + 0 clk werf rc[4:0] wdata[31:0]  // write port
 + $memory width=32 nlocations=31
 ```
 
 See [**Appendix 2**](https://natalieagus.github.io/50002/lab/lab4#appendix-2-using-the-jsim-memory-component) at the end of this handout for a more complete description of how to use the `$memory` JSim component.
 
-Note that the memory component **doesn’t know** that location `31` of the register file should always read as `0x00000000`, so you’ll have to add **additional** logic around the memory that makes this happen.  You can use **muxes** or `ANDs` to force the register data for each read port to “0” when the port address = 0b11111 (i.e., R31). 
+Note that the memory component **doesn’t know** that location `31` of the register file should always read as `0x00000000`, so you’ll have to add **additional** logic around the memory that makes this happen.  You can use **MUXes** or `ANDs` to force the register data for each read port to “0” when the port address = 0b11111 (i.e., R31). 
 
 {: .highlight}
 **Write** your answer in the space provided under `Regfile memory` section inside `lab4_regfile_submit.jsim`.
@@ -401,7 +401,7 @@ Note that the memory component **doesn’t know** that location `31` of the regi
 
 * END ANSWER
 
-* RD1 mux
+* RD1 MUX
 * BEGIN ANSWER
 
 * END ANSWER
@@ -411,7 +411,7 @@ Note that the memory component **doesn’t know** that location `31` of the regi
 
 * END ANSWER
 
-* RD2 mux
+* RD2 MUX
 * BEGIN ANSWER
 
 * END ANSWER
@@ -508,10 +508,10 @@ We have already provided you with the bare Control Unit ROM as shown in the sche
 ### WR 
 We do need to be careful with the write enable signal for main memory (WR) which needs to be **valid** even before the first instruction is fetched from memory. WR is an input to the main memory, and recall that ALL inputs need to be VALID (0 is also a valid value!) in order for the main memory to give a valid output data. You should include some additional logic that forces `wr` to `0b0` when `reset=1`. the signal XWR from the ROM needs to combine appropriately with `reset` to form WR. 
 
-We have provided the `reset` mux to handle this in `lab4_control_submit.jsim`:
+We have provided the `reset` MUX to handle this in `lab4_control_submit.jsim`:
 ```cpp
-* reset mux 
-Xresetmux reset wr_temp 0 wr_cu mux2 
+* reset MUX 
+XresetMUX reset wr_temp 0 wr_cu MUX2 
 ```
 
 ### Task 10: PCSEL 
@@ -605,12 +605,12 @@ Open `lab4_aluwdsel.jsim` and observe that the module interface has been provide
 
 ### ASEL and BSEL Mux
 
-The low-order 16 bits of the instruction need to be **sign**-extended to 32 bits as an input to the BSEL mux.  Sign-extension is easy in hardware, no extra components needed as you have known already when creating the shift+add component in PC Unit. 
-Also, **Bit 31** of the branch-offset input to the ASEL mux should be set to `0`. This means that the supervisor bit is **ignored** when doing address arithmetic for the `LDR` instruction.
+The low-order 16 bits of the instruction need to be **sign**-extended to 32 bits as an input to the BSEL MUX.  Sign-extension is easy in hardware, no extra components needed as you have known already when creating the shift+add component in PC Unit. 
+Also, **Bit 31** of the branch-offset input to the ASEL MUX should be set to `0`. This means that the supervisor bit is **ignored** when doing address arithmetic for the `LDR` instruction.
 
 
 ### WDSEL Mux
-**Bit 31** of the PC+4 input to the **WDSEL** mux should connect to the highest bit of the PC Reg output, `ia31`, saving the current value of the supervisor whenever the value of the PC is saved by a branch instruction or trap.
+**Bit 31** of the PC+4 input to the **WDSEL** MUX should connect to the highest bit of the PC Reg output, `ia31`, saving the current value of the supervisor whenever the value of the PC is saved by a branch instruction or trap.
 
 {: .note}
 Please study the circuitry inside `lab4_aluwdsel.jsim` before proceeding to the next section.

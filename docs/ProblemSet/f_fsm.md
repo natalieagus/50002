@@ -275,7 +275,7 @@ Answer the following questions:
 1. How many bits should the constant `Z1` have?
 	<div  cursor="pointer"  class="collapsible">Show Answer</div>  <div  class="content_answer">
 	<p>
-	Since one of the inputs to the muxes are 3-bits, this hardware is implemented using three 2-input mux. <code>Z1</code> is essentially <strong>three bits</strong>, connected to <i>each</i> of the three copies of 2-input muxes.
+	Since one of the inputs to the MUXes are 3-bits, this hardware is implemented using three 2-input MUX. <code>Z1</code> is essentially <strong>three bits</strong>, connected to <i>each</i> of the three copies of 2-input MUXes.
 	</p></div><br>
 
 2. How many bits should the constant `Z2` have?
@@ -311,7 +311,7 @@ Answer the following questions:
 7. What is the minimum **tcd** of `A1` in nanosecond such that **th** of input (`Z2`) can be 0?
 	<div  cursor="pointer"  class="collapsible">Show Answer</div>  <div  class="content_answer">
 	<p>
-	**tcd** of <code>A1</code> has to be large enough so as to satisfy  **th** of <code>R1</code>. **th** of <code>R1</code> is <code>2ns</code>, and  **tcd** of the mux is <code>1ns</code>. Therefore min **tcd** of <code>A1</code> is <code>2-1 = 1ns</code>.
+	**tcd** of <code>A1</code> has to be large enough so as to satisfy  **th** of <code>R1</code>. **th** of <code>R1</code> is <code>2ns</code>, and  **tcd** of the MUX is <code>1ns</code>. Therefore min **tcd** of <code>A1</code> is <code>2-1 = 1ns</code>.
 	</p></div><br>
 
 8. What is value of `A2`'s **tcd** in nanosecond?

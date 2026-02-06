@@ -319,9 +319,9 @@ Universal gates like NAND and NOR simplify circuit design, reduce manufacturing 
 ### [Multiplexer](https://www.youtube.com/watch?v=yXBAy432vT8&t=3493s)
   
 
-Multiplexer (shorted as "mux") is a special combinational logic device that is very commonly used in practice. It is implemented using basic logic gates (INV, AND, and OR, or NANDs). The mux is expensive to manufacture, but *universal*, meaning that it can **implement any boolean function because essentially it "hardcodes" the truth table**. 
+Multiplexer (shorted as "MUX") is a special combinational logic device that is very commonly used in practice. It is implemented using basic logic gates (INV, AND, and OR, or NANDs). The MUX is expensive to manufacture, but *universal*, meaning that it can **implement any boolean function because essentially it "hardcodes" the truth table**. 
 
-The symbol for a mux is as shown in the image below. The truth table is written at the side. A mux **always** has **three** types of terminals: 
+The symbol for a MUX is as shown in the image below. The truth table is written at the side. A MUX **always** has **three** types of terminals: 
 * $$2^k$$ bits data inputs, 
 * `k` bits selector signal(s) --*this is also an input, but we have a special name for them them: selector*-- , and 
 * 1-bit output. 
@@ -329,11 +329,11 @@ The symbol for a mux is as shown in the image below. The truth table is written 
 It's function components: the inputs, the selector signal(s), and the output. It basically "*allows*" one of the input signals to pass through when selected to be reflected at `OUT`. 
 
 {: .highlight}
-For example in the case of 2-input mux below, when S=0, it will reflect whatever value the signal  $$A$$ carries (`1` or `0`) as its output:
+For example in the case of 2-input MUX below, when S=0, it will reflect whatever value the signal  $$A$$ carries (`1` or `0`) as its output:
 
 Take some time to make sense of the truth table. That is if S=0, OUT = A. Else, if S=1, OUT = B. produce the signal  $$D_0$$ as its output:
 
-<img src="https://dropbox.com/s/nbatvm3m7xvq279/muxtt.png?raw=1"    class="center_fifty" >
+<img src="https://dropbox.com/s/nbatvm3m7xvq279/MUXtt.png?raw=1"    class="center_fifty" >
 
 You can build a 2-input multiplexer using basic gates:
 
@@ -343,16 +343,16 @@ Some properties about multiplexers:
 1. Muxes are **universal**, meaning that it can implement any boolean functions
 2. A Mux can have $$2^k$$ data inputs, and $$k$$ bits select inputs, and **only can have 1 output** terminal. 
 
-We can also generalise the multiplexer to take more inputs: 4, or 8, or 16, etc. We can either build a bigger multiplexer from scratch or cascade many 2-input multiplexers. The following figure shows an example of a 4-input multiplexer, implemented as a big mux (left) or using a series of 2-input mux (right):  
+We can also generalise the multiplexer to take more inputs: 4, or 8, or 16, etc. We can either build a bigger multiplexer from scratch or cascade many 2-input multiplexers. The following figure shows an example of a 4-input multiplexer, implemented as a big MUX (left) or using a series of 2-input MUX (right):  
 
-<img src="https://dropbox.com/s/g5sqzvvn5pqwoha/4mux.png?raw=1"   class="center_seventy"   > 	
+<img src="https://dropbox.com/s/g5sqzvvn5pqwoha/4MUX.png?raw=1"   class="center_seventy"   > 	
   
-Similarly, you can build a 4-input mux using basic logic gates: 
+Similarly, you can build a 4-input MUX using basic logic gates: 
 
-<img src="https://dropbox.com/s/pl9902hnvpeg9mp/4muxin.png?raw=1"  class="center_fifty"   >
+<img src="https://dropbox.com/s/pl9902hnvpeg9mp/4MUXin.png?raw=1"  class="center_fifty"   >
 
 #### Using Mux to implement 1 bit FA 
-Below is an example of how a mux can be used to implement a more complex combinational device, the full adder that we encounter in the lab. The truth table of a full adder is as shown, it is basically an addition (of three inputs) in base 2:
+Below is an example of how a MUX can be used to implement a more complex combinational device, the full adder that we encounter in the lab. The truth table of a full adder is as shown, it is basically an addition (of three inputs) in base 2:
 
 
 | A | B | Cin | Cout | S  |
@@ -367,13 +367,13 @@ Below is an example of how a mux can be used to implement a more complex combina
 | 1 | 1 |  1  |  1   |  1  |
 
 
-The multiplexer can simply implement the truth table by mapping each type of output bit $$C_{out}$$, and $$S$$ in each of the input terminals of the mux as illustrated below: 
+The multiplexer can simply implement the truth table by mapping each type of output bit $$C_{out}$$, and $$S$$ in each of the input terminals of the MUX as illustrated below: 
 
 <img src="{{ site.baseurl }}/docs/Hardware/images/d_logicsynthesis/2025-02-04-10-31-14.png"  class="center_fourty"/>
 
 
 {:.note}
-> While it is convenient to use muxes to implement any combinational logic device by directly mapping its truth table, this approach is <span class="orange-bold">not</span> ideal in practical hardware design. 
+> While it is convenient to use MUXes to implement any combinational logic device by directly mapping its truth table, this approach is <span class="orange-bold">not</span> ideal in practical hardware design. 
 > 
 > First, a full adder implemented with logic gates (AND, OR, XOR) is typically more efficient in terms of **propagation** delay, as a dedicated gate-based circuit can compute outputs in fewer logic levels compared to a MUX implementation that must decode and select values. 
 > 
@@ -444,7 +444,7 @@ It can also be implemented using all NAND gates since NAND gates are **universal
 This uses on average **36 transistors** on average (9 2-input nand gates). Implementation can be tricky, but there exist clear pattern(s) to follow. It is out of our syllabus. 
 
 ##### Using Multiplexers 
-Finally, the design with two 3-select muxes (two 8-to-1 muxes) require **160 transistors** on average (approximately 80 transistors to implement each mux)
+Finally, the design with two 3-select MUXes (two 8-to-1 MUXes) require **160 transistors** on average (approximately 80 transistors to implement each MUX)
 
 {:.note}
 From the comparison of different implementations of a 1-bit full adder, we can observe a **clear tradeoff** between circuit complexity, transistor count, and design approach. Choosing the right logic implementation can significantly impact the power, area, and performance of the circuit
@@ -452,24 +452,24 @@ From the comparison of different implementations of a 1-bit full adder, we can o
 
 ### [Demultiplexer](https://www.youtube.com/watch?v=yXBAy432vT8&t=3938s)
 
-A demultiplexer (demux) is a **combinational routing circuit** that takes **one input channel** (where channel can be more than 1-bit wide) and directs it to **exactly one of N output channels**, selected by `k` select lines (typically `N = 2^k`). 
+A demultiplexer (deMUX) is a **combinational routing circuit** that takes **one input channel** (where channel can be more than 1-bit wide) and directs it to **exactly one of N output channels**, selected by `k` select lines (typically `N = 2^k`). 
 
 {:.note}
-**Channel** is the key word: the demux does not have to route only a single wire. The input can be **1 bit** or a **w-bit bus**. 
+**Channel** is the key word: the deMUX does not have to route only a single wire. The input can be **1 bit** or a **w-bit bus**. 
 
 There are two common formal definitions of a demultiplexer:
-1. **1-to-N, 1-bit demux** (common in this course)
+1. **1-to-N, 1-bit deMUX** (common in this course)
   * Input: `D`
   * Outputs: `Y0..Y(N-1)`
   * `Yi = D · decode_i(S)`
-2. **1-to-N, w-bit demux** (less common)
+2. **1-to-N, w-bit deMUX** (less common)
   * Input: `D[w-1:0]`
   * Outputs: `Y0[w-1:0] .. Y(N-1)[w-1:0]`
   * `Yi[b] = D[b] · decode_i(S)` for each bit `b`
 
 
 
-The gate-level schematic of a 1-select input 1-bit demux and its corresponding symbol is:
+The gate-level schematic of a 1-select input 1-bit deMUX and its corresponding symbol is:
 <img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-20-17-25-20.png"  class="center_seventy"/>
 
 {: .note-title}
@@ -478,20 +478,20 @@ The gate-level schematic of a 1-select input 1-bit demux and its corresponding s
 > Draw out the truth table of the demultiplexer above.
 
 #### Decoder
-A common subset of a demux is a **decoder**, as both circuits use select inputs to determine which output is activated. However, while a decoder simply **activates** one of its outputs based on the input combination, a demux not only selects an output but also **forwards** the input data to the selected output.
+A common subset of a deMUX is a **decoder**, as both circuits use select inputs to determine which output is activated. However, while a decoder simply **activates** one of its outputs based on the input combination, a deMUX not only selects an output but also **forwards** the input data to the selected output.
 
 The schematic of a 2-select inputs **decoder**: $$S_0$$ and $$S_1$$ is:
 
 <img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-04-10-25-53.png"  class="center_forty"/>
 
-> Take some time to trace out the selector values to the output and draw out a truth table for the decoder/demux. Do not worry about the logic gate schematics of a decoder. It is only there to show you that a decoder is made up of the normal logic gates like inverters and AND gates.
+> Take some time to trace out the selector values to the output and draw out a truth table for the decoder/deMUX. Do not worry about the logic gate schematics of a decoder. It is only there to show you that a decoder is made up of the normal logic gates like inverters and AND gates.
 
 #### Properties
 
 <img src="{{ site.baseurl }}//docs/Hardware/images/d_logicsynthesis/2025-02-04-11-08-04.png"  class="center_fifty"/>
 
-1. The symbol of a decoder/demux is shown as above
-2. A demux is technically the *opposite* of a multiplexer. It has $$k$$ select inputs, and $$2^k$$  **possible data outputs**, and only 1 bit of input to forward.
+1. The symbol of a decoder/deMUX is shown as above
+2. A deMUX is technically the *opposite* of a multiplexer. It has $$k$$ select inputs, and $$2^k$$  **possible data outputs**, and only 1 bit of input to forward.
 3. A decoder does not "forward" any input, but instead only activates one of the output lanes.32. **At any given time** only 1 bit of the $$2^k$$ output bits can be  `1` (high). This is apparent when we try to draw the truth table for a $$k$$ input decoder.
 
 For example, the truth table for a 1-selector bit decoder is:
@@ -569,8 +569,8 @@ Here are the key points from this notes:
 2. **Synthesize logic**: Given a truth table,  perform straightforward logic synthesis using **sum-of-products**. 
 3. **Boolean Algebra Minimisation**: Minimise boolean functions (e.g: basic sum-of-products) using DeMorgan's theorem, reduction rule, absorption rule, etc or Karnaugh Map to make the boolean equation more compact. This results in simplified hardware (cheaper, smaller) while retaining functionality.
 4. **Universal Gates**: NAND and NOR gates are universal. We can construct **any** combinational logic device by just using NAND gates or NOR gates alone. 
-5. **Complex Combinational Logic Device**: Special devices like demux, decoder, multiplexer, and ROM are essential components. Multiplexers are used to implement **conditional logic** (if-else), decoders are used to perform address decoding among many others. Decoders can be used to implement a ROM. It maps the input address lines to specific memory locations within the ROM.
-6. **Universal Logic Synthesizer**: Both ROMs and Muxes are <span class="orange-bold">universal logic synthesizer</span> and can be used to implement any logic. ROM essentially acts as a look-up table (LUT) where each input combination maps directly to a pre-defined output value. However, this results in **size explosion**. For $n$ inputs, the ROM requires $2^n$ rows,  leading to rapid growth in memory size for large input sizes. Mux-based designs do not suffer from exponential size explosion in the same way. A mux scales **hierarchically**, where smaller muxes can be used to build bigger muxes in a structured way rather than requiring an exponentially growing number of components like ROMs do. 
+5. **Complex Combinational Logic Device**: Special devices like deMUX, decoder, multiplexer, and ROM are essential components. Multiplexers are used to implement **conditional logic** (if-else), decoders are used to perform address decoding among many others. Decoders can be used to implement a ROM. It maps the input address lines to specific memory locations within the ROM.
+6. **Universal Logic Synthesizer**: Both ROMs and Muxes are <span class="orange-bold">universal logic synthesizer</span> and can be used to implement any logic. ROM essentially acts as a look-up table (LUT) where each input combination maps directly to a pre-defined output value. However, this results in **size explosion**. For $n$ inputs, the ROM requires $2^n$ rows,  leading to rapid growth in memory size for large input sizes. Mux-based designs do not suffer from exponential size explosion in the same way. A MUX scales **hierarchically**, where smaller MUXes can be used to build bigger MUXes in a structured way rather than requiring an exponentially growing number of components like ROMs do. 
 
 Design tradeoff summary for logic synthesis:
 * **ROM**-based designs (easiest, simply store the truth table as-is) are useful when precomputed logic storage is acceptable and logic complexity is high. 

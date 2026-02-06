@@ -159,7 +159,7 @@ We have also provided all this information in the repository's [readme](https://
 ### The `slowclk`
 
 {: .important}
-The entire system runs on FPGA `clk`. However we need some other signal to **slow down** specifically the Beta CPU `PC` advancement so that we can **observe** the CPU's states like `id`,`ia`, `ma`, `mrd`, `mwd`, output of all muxes (pcsel mux, asel mux, bsel mux, and wdsel mux), as well as the value of I/O buffers. As such, we need <span style="color:red; font-weight: bold;">additional logics</span> to prevent the `PC` from advancing too fast.  
+The entire system runs on FPGA `clk`. However we need some other signal to **slow down** specifically the Beta CPU `PC` advancement so that we can **observe** the CPU's states like `id`,`ia`, `ma`, `mrd`, `mwd`, output of all MUXes (pcsel MUX, asel MUX, bsel MUX, and wdsel MUX), as well as the value of I/O buffers. As such, we need <span style="color:red; font-weight: bold;">additional logics</span> to prevent the `PC` from advancing too fast.  
 
 The Beta expects an input called `slowclk` so that you can slowly **observe** its execution (either by pressing `io_button[4]` or when `slowclock_edge` or `fastclock_edge` fires). The `slowclock_edge` turns `1` roughly once (for a single FPGA clock cycle) every 1.3s, and `fastclock_edge` is roughly 4 times faster than `slowclock_edge`. You can use `io_dip[2][6]` to enable/disable `fastclock`.
 

@@ -32,9 +32,9 @@ If you are reading this document, we assume that you have already read Lab 4 Luc
 The goal of this lab is to build a **fully** functional 32-bit Beta Processor on our FPGA so that it could simulate simple programs written in Beta Assembly Language. It is a huge device, and to make it more bearable we shall modularise it into six major components:
 * **Memory Unit**: the RAM or physical memory, separated into data and instruction memory.
 * (Beta CPU Part A) **PC** Unit: containing the PC register and all necessary components to support the ISA
-* (Beta CPU Part B) **REGFILE** Unit: containing 32 32-bit registers, WASEL, and RA2SEL mux, plus circuitry to compute Z
+* (Beta CPU Part B) **REGFILE** Unit: containing 32 32-bit registers, WASEL, and RA2SEL MUX, plus circuitry to compute Z
 * (Beta CPU Part C) **CONTROL** Unit: containing the ROM and necessary components to produce all Beta control signals given an `OPCODE`
-* (Beta CPU Part D)  **ALU+WDSEL** Unit: containing the ALU and WDSEL, ASEL, BSEL muxes 
+* (Beta CPU Part D)  **ALU+WDSEL** Unit: containing the ALU and WDSEL, ASEL, BSEL MUXes 
 * **Motherboard**: We assemble the entire Beta CPU using all subcomponents above and connect it to I/O
  
 <img src="/50002/assets/contentimage/lab4/beta_lab.png"  class="center_seventy"/><br>
@@ -752,3 +752,21 @@ module simple_dual_port_ram #(
   
 endmodule
 ```
+
+
+
+## Part A: PC Unit
+### PC Unit Schematic
+Here is the suggested PC Unit schematic that you can implement. Take note of the input and output nodes. This will come in very useful when creating the module for your PC Unit. 
+
+<img src="/50002/assets/contentimage/lab4/pcunit.png"  class="center_seventy"/>
+
+
+
+### Task 1: PCSEL Multiplexers
+
+The 32-bit 5-to-1 PC MUX **selects** the value to be loaded into the `PC` register at the next rising edge of the clock depending on the `PCSEL` control signal. 
+
+However, later on we might want to only advance the pc when some `slowclk` signal is `1` for manual debugging. You should take into account this aspect when building the PCSEL MUX.
+
+

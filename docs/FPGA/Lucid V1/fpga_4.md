@@ -384,9 +384,9 @@ Then, declare all major components for the $$\beta$$ CPU that we have previously
   regfile regfile_system(.clk(clk));
   dff pc[32](#INIT(0),.clk(clk));
 ```
-In the `always` block, we can start connecting them. As we have learned in the previous tutorial, we can use `case` to simulate the behaviour of a multiplexer (for the `asel`, `bsel`, `ra2sel`, `wdsel`, and `wasel` muxes). 
+In the `always` block, we can start connecting them. As we have learned in the previous tutorial, we can use `case` to simulate the behaviour of a multiplexer (for the `asel`, `bsel`, `ra2sel`, `wdsel`, and `wasel` MUXes). 
 
-For example, here's how you can create the `asel` mux:
+For example, here's how you can create the `asel` MUX:
 ```nasm
     alu_system.alufn_signal = control_system.alufn;
     case(control_system.asel){
@@ -398,7 +398,7 @@ For example, here's how you can create the `asel` mux:
         alu_system.a = regfile_system.read_data_1;
     }
 ```
-Here's how you can create the `wasel` mux:
+Here's how you can create the `wasel` MUX:
 ```nasm
     case(control_system.wasel){
       b0:
@@ -417,7 +417,7 @@ In order for us to **observe** the output, we need to slow down the rate of chan
 
 ```nasm
 if (slowclk){ 
-   // PCSEL mux 
+   // PCSEL MUX 
    case (control_system.pcsel){
       b000: 
         pc.d = pc.q + 4;
@@ -586,7 +586,7 @@ One second later, you should see this output due to instruction `CMPEQ(R1, R1, R
 The third instruction `ST(R1, 32)` should result in this output:
 * `PC` register is at `0x8`
 * `ALU` output is `0x20` because that's the address that we're storing to (`32` in decimal)
-* ..and `rb_data` output is `0x7` (showing that implementation of `ra2sel` mux is successful)
+* ..and `rb_data` output is `0x7` (showing that implementation of `ra2sel` MUX is successful)
 <br>
 <img src="https://dropbox.com/s/reihm5lswrjhabw/instr_pc2.png?raw=1" class="center_fifty" ><br>
 
@@ -608,14 +608,14 @@ And then perform a branch based on the content of `R3`: `BNE(R3, 0, R1)`. This s
 <br><img src="https://dropbox.com/s/0it220j8pjxd82d/instr_pc4.png?raw=1" class="center_fifty" ><br>
 
 
-You can try running other series of instruction to test whether other parts of the `beta` implemented is correct, e.g: `illop` triggering instructions to check if `wasel` mux is correctly implemented, `JMP` related instructions, etc. 
+You can try running other series of instruction to test whether other parts of the `beta` implemented is correct, e.g: `illop` triggering instructions to check if `wasel` MUX is correctly implemented, `JMP` related instructions, etc. 
 
 ## Summary
 As mentioned in the introduction, the completed project can be found <a href="https://github.com/natalieagus/SampleAlchitryProjects/tree/master/BetaComponents" target="_blank">here</a>. You can carefully craft some instruction sequences to check if certain parts of the `beta` is correctly implemented or not. 
 
 Below are the purpose of each test instruction:
 1. `ADDC(R31, 7, R1)`, `CMPEQ(R1, R1, R2)`: 
-	* Tests if all related control signals like `wdsel`, `asel` and `bsel` signals for `opc` operations are correctly produced, and each muxes are correctly connected. 
+	* Tests if all related control signals like `wdsel`, `asel` and `bsel` signals for `opc` operations are correctly produced, and each MUXes are correctly connected. 
 	* Tests if writing to `REGFILE` is successful. 
 
 2. `ST(R1, 32)`, `LD(R31, 32, R3)`: tests if read and write to the `data_memory` section in external `memory_unit` is successful.

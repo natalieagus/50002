@@ -160,7 +160,7 @@ Coding a `REGFILE` on an FPGA is not an issue after you have a clear idea about 
 
 We can easily adapt the design of $$\beta$$ when we want to connect the ALU with the REGFILE. It is an art to design a good, programmable datapath. 
 
-A super simple support datapath should have some kind of `ASEL` mux, `BSEL` mux, and `WDSEL` mux:
+A super simple support datapath should have some kind of `ASEL` MUX, `BSEL` MUX, and `WDSEL` MUX:
 * `ASEL`: to decide what's fed into the `A` port of the ALU
 * `BSEL`: to decide what's fed into the `B` port of the ALU
 * `WDSEL`: to decide what's fed into the `DATA IN` port of the REGFILE (what's written into `Reg[Rc]` if any).
@@ -180,17 +180,17 @@ Obviously the control signals required are (coloured in the figure above):
 ### Design Considerations
 
 {: .highlight}
-We can choose to expand the inputs to `ASEL/BSEL/WDSEL` muxes that best suit our game. 
+We can choose to expand the inputs to `ASEL/BSEL/WDSEL` MUXes that best suit our game. 
 
-How many inputs should `ASEL/BSEL/WDSEL` mux handle? This affects how many bits the control signals should be. 
-* The source of inputs to each mux can either be from **other registers**, or **other combinational logic units**, or a **constant** that's **relevant** for your game. 
+How many inputs should `ASEL/BSEL/WDSEL` MUX handle? This affects how many bits the control signals should be. 
+* The source of inputs to each MUX can either be from **other registers**, or **other combinational logic units**, or a **constant** that's **relevant** for your game. 
 
-For this game, we need a few constants and so we **hardcode** it as inputs to `ASEL` and `BSEL` muxes:
-* The value "30" to **reset** the timer: `0x1E` at the `ASEL` mux
-* The value "3" to **compare** against current player's button press: `0x3` at the `BSEL` mux
-* "1" and "0" as **standard** constants to perform comparison in **both** muxes
+For this game, we need a few constants and so we **hardcode** it as inputs to `ASEL` and `BSEL` MUXes:
+* The value "30" to **reset** the timer: `0x1E` at the `ASEL` MUX
+* The value "3" to **compare** against current player's button press: `0x3` at the `BSEL` MUX
+* "1" and "0" as **standard** constants to perform comparison in **both** MUXes
 
-For the `WDSEL` mux, we can hardcode some fixed signal:
+For the `WDSEL` MUX, we can hardcode some fixed signal:
 * `0xFFFF` signifies the "winning signal", 
 * `0x0000` signifies the "losing signal", and 
 * `0x000F` signifies the "draw signal". 
@@ -200,7 +200,7 @@ We can easily load this to the score registers when the game ends to indicate wh
 After you're finished with your `alu.luc` and `regfile.luc` modules, you simply need to assemble them together in a new file e.g: `datapath.luc` that defines the connections for each instance. For example, the asel connection:
 
 ```nasm
-//asel mux
+//asel MUX
 case(game_controlunit.asel){
 	b00 : inputAlu_a = players.out_a;
 	b01 : inputAlu_a = 1;

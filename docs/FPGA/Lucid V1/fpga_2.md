@@ -62,7 +62,7 @@ A DFF serves as a fundamental unit of memory and is commonly utilized to interfa
 > The `reg` type is used to model data storage elements that hold binary values (0 or 1) and are typically used within procedural blocks (such as initial or always blocks) to hold temporary values and implement storage elements like flip-flops or latches.
 
 
-We already have the 8-bit ripple-carry adder module ready from our previous chapter, but not the D Flip-Flop. Fortunately, Lucid's built in `dff` + additional `reset` mux built into it that you can use by **declaring** each unit with the keyword `dff` **before the always block.** 
+We already have the 8-bit ripple-carry adder module ready from our previous chapter, but not the D Flip-Flop. Fortunately, Lucid's built in `dff` + additional `reset` MUX built into it that you can use by **declaring** each unit with the keyword `dff` **before the always block.** 
 
 **Create** a new module and name it `seq_plus_two.luc`. This time round, we accept input `clk` and `rst` signal as per the default `.luc` script. These two signals are fed by the hardware, where `clk` is typically the onboard clock, and `rst` signal is `1` when the `reset` button on Alchitry Au (not Alchitry Io!) is pressed. 
 

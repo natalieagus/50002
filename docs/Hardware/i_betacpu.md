@@ -126,7 +126,7 @@ Two important things happened **at the same time** at every CPU clock cycle:
 1. The output of the PC Register is connected to the `ia` port (the input address port) of the Memory Unit (RAM or **Physical Memory**), hence the Memory Unit will produce the content of that address through the `Ins` (instruction) port. 
 2. The output of the PC REG will also be added by 4. 
 	* If `PCSEL=0` and `RESET=0`,  this value (old PC + 4) will enter the PC REG in the next clock cycle. This will cause the PC to supply the address of the **subsequent instruction word** in the next clock cycle. 
-	*  If `PCSEL!=0` and `RESET=0`, then the value in the PC REG will be equivalent to either of the inputs to the PCSEL mux (depending on what `PCSEL` value is). 
+	*  If `PCSEL!=0` and `RESET=0`, then the value in the PC REG will be equivalent to either of the inputs to the PCSEL MUX (depending on what `PCSEL` value is). 
 
 #### RESET
 If `RESET=1` then the value of the PC REG in the next cycle will be equivalent to `RESET`. We will learn what `RESET` is in the later weeks but in short, if `RESET=1`, then the value in the `PC` REG will will be set to `0x80000000` in the **next** clock cycle *instead of being increased by 4* or whichever other address that the supposed current instruction should compute. 
@@ -177,11 +177,11 @@ To understand how the Write Enable `WE` signal works more clearly, we need to di
 {: .note-title}
 > The Special Register `R31`
 > 
-> R31's content is  always  `0x00000000`, regardless of what values are written to it. Therefore it is not a regular register like the other 30 registers in the REGFILE. It is simply giving out `0x00000000` as output when RA1 or RA2 is 11111, which is illustrated as the 0 on the rightmost part of each read muxes.
+> R31's content is  always  `0x00000000`, regardless of what values are written to it. Therefore it is not a regular register like the other 30 registers in the REGFILE. It is simply giving out `0x00000000` as output when RA1 or RA2 is 11111, which is illustrated as the 0 on the rightmost part of each read MUXes.
 
 <img src="/50002/assets/contentimage/beta/regfile_detailed.png"  class="center_seventy"/>
 
-The `WE` signal is fed into a 1-to-32 demultiplexer unit. The `WA` signal is the selector of this demux. As a result, only 1 out of the 32 outputs of the demux will follow exactly the value of `WE`. The outputs of the demux is used as a selector (`EN` port) to each of the *2-to-1* 32-bit multiplexer connected to each 32-bit register.
+The `WE` signal is fed into a 1-to-32 demultiplexer unit. The `WA` signal is the selector of this deMUX. As a result, only 1 out of the 32 outputs of the deMUX will follow exactly the value of `WE`. The outputs of the deMUX is used as a selector (`EN` port) to each of the *2-to-1* 32-bit multiplexer connected to each 32-bit register.
 
 {: .note}
 Although not drawn (to not clutter the figure further), all the registers are synchronized with the same CLK. 

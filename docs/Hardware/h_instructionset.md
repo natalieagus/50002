@@ -72,7 +72,7 @@ Suppose we have a simple sequential logic circuit called Machine $$M$$ as shown 
 > Drawing Convention
 > 
 > Note that since the machine receives $$N$$ bit inputs, it means that there are $$N$$ **units** of each 2-to-1 multiplexers *in parallel*, as shown:
-> <img src="https://dropbox.com/s/js10ymfd5shqxbp/mux_n.png?raw=1" class="center_fifty" >
+> <img src="https://dropbox.com/s/js10ymfd5shqxbp/MUX_n.png?raw=1" class="center_fifty" >
 > 
 > The registers (DFFs) also are actually `N` 1-bit registers:
 > <img src="https://dropbox.com/s/spox2rzjii4b735/regsN.png?raw=1"  class="center_fifty">

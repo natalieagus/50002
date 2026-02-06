@@ -27,11 +27,11 @@ By the end of this lab, you should be able to:
 1. Turn informal descriptions of small combinational circuits into truth tables, Boolean equations, and gate level schematics.  
 2. Implement a 1 bit full adder using primitive Boolean operators only, and explain how cascading full adders produces an N bit ripple carry adder.  
 3. Use Lucid parameters and `repeat` to generate regular hardware structure at compile time, and contrast this with software style loops that execute over time.  
-4. Describe the behavior of 2 to 1 and 4 to 1 multiplexers, and construct a 4 to 1 mux hierarchically from 2 to 1 muxes.  
+4. Describe the behavior of 2 to 1 and 4 to 1 multiplexers, and construct a 4 to 1 MUX hierarchically from 2 to 1 MUXes.  
 5. Describe the behavior of 1 to 2 and 2 to 4 decoders, including one hot outputs, and construct a 2 to 4 decoder hierarchically from 1 to 2 decoders.  
 6. Correctly use Lucid bit selection and bit range selection, and avoid width mismatches and off by one errors when wiring buses.  
 7. Use Lucid module arrays for repeated structures such as multi bit adders and understand that you index ports of the array, not instances in an object oriented sense.  
-8. Interpret `if` and `case` in Lucid as specifications of combinational selection logic, and relate them directly to muxes, decoders, and enable signals.
+8. Interpret `if` and `case` in Lucid as specifications of combinational selection logic, and relate them directly to MUXes, decoders, and enable signals.
 
 ### Submission
 Complete the Lab 2 [**checkoff**](#checkoff) (2%) with your Cohort TA before the end of next Friday, 6PM (unless otherwise stated). The checkoff is assessed **individually**, but you should attend together with your **project team** so that everyone in the group understands the full workflow and expectations for the 1D project.
@@ -50,9 +50,9 @@ The lecture notes on **[logic synthesis](https://natalieagus.github.io/50002/not
 
 | Lecture notes topic                                                                               | Lab 2 part                                                                                                   |
 | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| Boolean algebra, truth tables, gate-level synthesis (from Logic Synthesis)                        | Full adder design, mux & decoder Boolean expressions and gate implementations                                |
+| Boolean algebra, truth tables, gate-level synthesis (from Logic Synthesis)                        | Full adder design, MUX & decoder Boolean expressions and gate implementations                                |
 | Universal-gate theory, minimisation, SOP/NAND/NOR equivalence                                     | Allowing FA implementation using NAND-only/NOR-only as alternative forms                                     |
-| Hierarchical composition (small modules tp larger modules)                                         | Building 4-to-1 mux from 2-to-1 muxes; 2-to-4 decoder from 1-to-2 decoders; RCA from multiple FAs            |
+| Hierarchical composition (small modules tp larger modules)                                         | Building 4-to-1 MUX from 2-to-1 MUXes; 2-to-4 decoder from 1-to-2 decoders; RCA from multiple FAs            |
 | Combinational logic abstraction + static discipline + clean voltage-levels (from CMOS technology) | Treating all signals as 0/1, driving all outputs cleanly, no floating outputs, combinational `always` blocks |
 | Propagation delay and critical path (CMOS timing)                                                 | Ripple-carry adder’s inherently linear carry chain, it provides insight for *timing* and *scalability*                      |
 
@@ -114,7 +114,7 @@ Adding two 1-bits together doesn't seem much at first. But in order to make an N
 
 ### Multiplexers (MUX)
 
-The next combinational building block is the **multiplexer** (mux). While the full adder *computes*, the mux selects. You will use muxes everywhere in an **ALU** and **datapath** to *choose* which value should flow forward.
+The next combinational building block is the **multiplexer** (MUX). While the full adder *computes*, the MUX selects. You will use MUXes everywhere in an **ALU** and **datapath** to *choose* which value should flow forward.
 
 #### 2:1 MUX
 
@@ -124,13 +124,13 @@ A 2:1 MUX has:
 * **One output**: `Y`
 
 {:.new-title}
-> mux logic recap
+> MUX logic recap
 > 
 > * If `S = 0`, output `Y` should be `D0`
 > * If `S = 1`, output `Y` should be `D1`
 
 
-The boolean expression for a 2-to-1 mux is:
+The boolean expression for a 2-to-1 MUX is:
 $$
 Y = \overline{S} \cdot D_0 + S \cdot D_1
 $$
@@ -141,13 +141,13 @@ This is a very compact sum of products expression. From this single line, you ca
 * One OR gate to combine
 
 {:.note}
-You can think of a 2:1 mux as a <span class="orange-bold">controlled digital switch</span> (an `if` logic). The select line `S` decides *which* data input is connected to the output. In the ALU later, the mux will choose between different **operation** results or between different sources for the same bus.
+You can think of a 2:1 MUX as a <span class="orange-bold">controlled digital switch</span> (an `if` logic). The select line `S` decides *which* data input is connected to the output. In the ALU later, the MUX will choose between different **operation** results or between different sources for the same bus.
 
 For multi bit signals, you simply apply the same equation **bitwise**. For example, a 4 bit 2:1 MUX takes `D0[3:0]`, `D1[3:0]`, and `S`, and produces `Y[3:0]` where each bit of `Y` is selected by the same `S`.
 
 #### From 2:1 MUX to 4:1 MUX
 
-A 4:1 mux is simply an extension to the 2:1 mux. It has:
+A 4:1 MUX is simply an extension to the 2:1 MUX. It has:
 
 * **Four data inputs**: `D0`, `D1`, `D2`, `D3`
 * **Two select inputs**: `S1`, `S0`
@@ -177,7 +177,7 @@ But for the lab, it is more important that you see how to **construct** a 4:1 MU
 * **Second stage**: a final 2:1 MUX selects between those two intermediate results using `S1`
 
 
-<img src="{{ site.baseurl }}/docs/Labs/images/lab2/cs-2026-50002-4-to-1 mux.drawio.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/lab2/cs-2026-50002-4-to-1 MUX.drawio.png"  class="center_fifty"/>
 
 
 {:.note-title}
@@ -190,7 +190,7 @@ But for the lab, it is more important that you see how to **construct** a 4:1 MU
 
 ### Decoder
 
-A **decoder** is another standard combinational block. While a mux selects one of many inputs to drive a single output, a decoder activates **exactly one** of many outputs based on the input code. It essentially converts a binary code into a **one hot** output.
+A **decoder** is another standard combinational block. While a MUX selects one of many inputs to drive a single output, a decoder activates **exactly one** of many outputs based on the input code. It essentially converts a binary code into a **one hot** output.
 
 {: .note}
 A **one-hot** encoding means that **exactly one signal line is HIGH (1) at any given time**, while all others are LOW (0). For a 2-to-4 decoder, this means only one of `Y0`, `Y1`, `Y2`, or `Y3` can ever be `1` for a valid input, and the rest must be `0`. This is useful for selecting or enabling exactly one component in a larger system, such as choosing which register to write to or which operation to activate in a control unit.
@@ -275,7 +275,7 @@ Each output is a **single product term**. No summation is required because exact
 > A decoder can be seen as the structural opposite of a multiplexer. A multiplexer uses a binary code to **select one input**. A decoder uses a binary code to **activate one output**. In a CPU, decoders are used as control logic, for example selecting a *target* register or enabling a specific ALU operation from an opcode.
 
 
-With the **full adder**, **muxes**, and **decoders**, we now have the core combinational patterns that **will be reused continuously** when we assemble the ALU and CPU datapath.
+With the **full adder**, **MUXes**, and **decoders**, we now have the core combinational patterns that **will be reused continuously** when we assemble the ALU and CPU datapath.
 
 ## Implementation 
 
@@ -654,10 +654,10 @@ And test the addition logic:
 
 ### 2-to-1 MUX 
 
-Implement the 2-to-1 mux module:
+Implement the 2-to-1 MUX module:
 
 ```verilog
-module mux2to1 (
+module MUX2to1 (
     input data0,
     input data1,
     input s,
@@ -749,10 +749,10 @@ This is why `if` and `case` in a hardware description language ultimately become
 
 ### 4-to-1 MUX
 
-Now instantiate three 2-to-1 muxes to create 4-to-1 mux:
+Now instantiate three 2-to-1 MUXes to create 4-to-1 MUX:
 
 ```verilog
-module mux4to1 (
+module MUX4to1 (
     input data0, 
     input data1, 
     input data2, 
@@ -810,13 +810,13 @@ module decoder2to4 (
 
 ### Test: MUX and Decoder
 
-Similarly, pick the switch and LEDs to test your mux and decoder logic. You can be fancy and implement a "mode". Here we use `io_dip[2][7:6]` as output enable, to route whether to display 4-to-1 mux's output or 2-to-4 decoder's output:
+Similarly, pick the switch and LEDs to test your MUX and decoder logic. You can be fancy and implement a "mode". Here we use `io_dip[2][7:6]` as output enable, to route whether to display 4-to-1 MUX's output or 2-to-4 decoder's output:
 
 <img src="{{ site.baseurl }}/docs/Labs/images/Screenshot 2025-11-26 at 10.55.49 AM.png"  class="center_seventy no-invert"/>
 
 ```verilog
     // in alchitry_top
-    mux4to1 m
+    MUX4to1 m
     decoder2to4 d
 
     ...
@@ -862,7 +862,7 @@ If you are new, you should first write the basic circuits out explicitly, even i
 Do not rush to create a fully generic “N-to-2^n decoder” or a super-parameterised Mux yet. 
 - Get the concrete 1-to-2 and 2-to-4 versions correct and readable first. 
 - Only then is it meaningful to generalise.
-- Sometimes it is not even important to generalise because for instance, you're *not* going to USE that many variations of mux/decoder in your project in the first place. So who are you making it for?
+- Sometimes it is not even important to generalise because for instance, you're *not* going to USE that many variations of MUX/decoder in your project in the first place. So who are you making it for?
   - If it is for learning and you have free time on hand, great. Go ahead.
   - But if it introduces bugs and frustration, that means your knowledge is not adequate yet. Stick to the basics. They always work with minimal errors.
 
@@ -875,7 +875,7 @@ In practice, most "common" hardware designs typically already exist as a library
 
 <img src="{{ site.baseurl }}//docs/Labs/images/lab2/2025-11-26-08-55-53.png"  class="center_seventy no-invert"/>
 
-There's also an Encoder (not a mux), which is a conceptual opposite of a decoder:
+There's also an Encoder (not a MUX), which is a conceptual opposite of a decoder:
 * A decoder takes a binary code and produces a one-hot output.
   * Example: 2-bit input, 4 outputs, exactly one output is 1.
 * An encoder takes (ideally) one-hot inputs and produces a binary code.
@@ -890,19 +890,19 @@ Explore the component library before trying to re-invent the wheel yourself.
 The following statements are NOT equivalent:
 
 ```verilog
- mux2to1.s[1:0] = 2x{s0}
- mux2to1.s[1:0] = s0 
+ MUX2to1.s[1:0] = 2x{s0}
+ MUX2to1.s[1:0] = s0 
 ```
 
 The first one assigned `s0` to BOTH `s` ports. The second one is trying to drive a 2-bit slice with a 1-bit signal, i.e. it is a <span class="orange-bold">width-mismatched assignment</span>.
-* `mux2to1.s[1:0] = 2x{s0}` explicitly builds a 2-bit bus `{s0, s0}` and assigns it to `s[1:0]`. Both instances see `s0`.
-* `mux2to1.s[1:0] = s0` presents a 1-bit value on the right, but the left is 2 bits wide. In HDL this does **NOT** mean “replicate `s0` twice.” The compiler will treat it as an invalid assignment with incompatible widths and try to fix it automatically padding it with more *zeroes*, because it expects the right-hand side to be 2 bits wide.
+* `MUX2to1.s[1:0] = 2x{s0}` explicitly builds a 2-bit bus `{s0, s0}` and assigns it to `s[1:0]`. Both instances see `s0`.
+* `MUX2to1.s[1:0] = s0` presents a 1-bit value on the right, but the left is 2 bits wide. In HDL this does **NOT** mean “replicate `s0` twice.” The compiler will treat it as an invalid assignment with incompatible widths and try to fix it automatically padding it with more *zeroes*, because it expects the right-hand side to be 2 bits wide.
 
 This is why you need to always **MATCH** signal width assignments. Otherwise, try not to be fancy and write each assignment out without selectors:
 
 ```verilog
-mux2to1.s[0] = s0
-mux2to1.s[1] = s0
+MUX2to1.s[0] = s0
+MUX2to1.s[1] = s0
 ```
 
 **Consult** Lab 1 if needed to recap about width mismatch.
@@ -949,7 +949,7 @@ Grading for QnA is therefore **binary**: 1% if you answer at least one correctly
 
 In this lab we construct **three** core combinational building blocks from first principles: full adders, multiplexers, and decoders. We start with truth tables and Boolean equations, then implement them explicitly in Lucid without relying on high level arithmetic operators. We then scale the 1 bit full adder into a parameterised ripple carry adder, which is the *backbone* of a realistic ALU.
 
-On the **control** side, we recapped muxes and decoders as dual views of selection logic. You build a 4 to 1 mux from smaller 2 to 1 muxes and a 2 to 4 decoder from 1 to 2 decoders, reinforcing the d*esign habit of composing larger circuits from small, verified modules*. Throughout, you practice reading and writing Lucid in a hardware centric way: bit selection instead of array indexing, `repeat` as structural replication rather than looping, module arrays indexed through ports, and conditionals that synthesise to concrete gates instead of runtime branches.
+On the **control** side, we recapped MUXes and decoders as dual views of selection logic. You build a 4 to 1 MUX from smaller 2 to 1 MUXes and a 2 to 4 decoder from 1 to 2 decoders, reinforcing the d*esign habit of composing larger circuits from small, verified modules*. Throughout, you practice reading and writing Lucid in a hardware centric way: bit selection instead of array indexing, `repeat` as structural replication rather than looping, module arrays indexed through ports, and conditionals that synthesise to concrete gates instead of runtime branches.
 
 The **deliberate** repetition and explicit wiring are **intentional**. The goal is to internalise how these blocks actually look and behave as hardware so that later, when you build the ALU and CPU datapath or call into library components, you know exactly what structure you are instantiating rather than treating it as a black box.
 

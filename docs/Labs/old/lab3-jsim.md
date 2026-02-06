@@ -226,7 +226,7 @@ Here's the general schematic of the Boolean Unit:
 <img src="/50002/assets/contentimage/lab3/9.png"  class=" center_fourty"/>
 
 {: .important}
-Pay close attention to the ORDER of the multiplexer **control** signals and its corresponding **output**. See [stdcell documentation](https://drive.google.com/file/d/1ArkRewfiBqJGmVqzkiGzFxbS0fZ-2eWw/view?usp=sharing) on the 4-to-1 mux if you’re unsure how these are obtained. 
+Pay close attention to the ORDER of the multiplexer **control** signals and its corresponding **output**. See [stdcell documentation](https://drive.google.com/file/d/1ArkRewfiBqJGmVqzkiGzFxbS0fZ-2eWw/view?usp=sharing) on the 4-to-1 MUX if you’re unsure how these are obtained. 
 
 The following table shows the encodings for the `ALUFN[3:0]` control signals used by the test jig.  If you choose a different implementation you should also include logic to **convert** the supplied control signals into signals appropriate for your design.
 
@@ -293,7 +293,7 @@ It’s easy to build a shifter after noticing that a **multi-bit shift** can be 
 * For example, a 13-bit shift can be implemented by a shift of 8, followed by a shift of 4, followed by a shift of 1. 
 * So the shifter is just a cascade of multiplexers each controlled by one bit of the shift count.  
 
-Here’s the detailed schematic of the **left shifter**. There are really a lot of muxes. Please use the JSim **ITERATOR** for this!
+Here’s the detailed schematic of the **left shifter**. There are really a lot of MUXes. Please use the JSim **ITERATOR** for this!
 
 <img src="/50002/assets/contentimage/lab3/14.png"  class="center_seventy"/>
 

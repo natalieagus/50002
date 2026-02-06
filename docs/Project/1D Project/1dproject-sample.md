@@ -278,29 +278,29 @@ module game_regfiles (
 
 ### Designing the ALU and support datapath
 
-Drawing inspiration from the $$\beta$$ CPU, we add the selector muxes to dictate the kinds of data that can be fed to the ALU:
-* `ASEL` mux: to decide what's fed into the `A` port of the ALU
-* `BSEL` mux: to decide what's fed into the `B` port of the ALU
-* `WDSEL` mux: to decide what's fed into the `wd` port of the REGFILE
+Drawing inspiration from the $$\beta$$ CPU, we add the selector MUXes to dictate the kinds of data that can be fed to the ALU:
+* `ASEL` MUX: to decide what's fed into the `A` port of the ALU
+* `BSEL` MUX: to decide what's fed into the `B` port of the ALU
+* `WDSEL` MUX: to decide what's fed into the `wd` port of the REGFILE
 
 Planning what other values that should enter the ALU is tightly depends on the FSM ([next section](#designing-the-control-logic-fsm)). 
 
 {: .highlight}
-We can choose to expand the `ASEL/BSEL/WDSEL` muxes to receive more inputs (constants) that best suit our game. 
+We can choose to expand the `ASEL/BSEL/WDSEL` MUXes to receive more inputs (constants) that best suit our game. 
 
-How many inputs should `ASEL/BSEL/WDSEL` mux handle? This affects how many bits the control signals should be. The source of inputs to each mux can either be from **other registers**, or **other combinational logic units**, or a **constant** that's **relevant** for your game. 
+How many inputs should `ASEL/BSEL/WDSEL` MUX handle? This affects how many bits the control signals should be. The source of inputs to each MUX can either be from **other registers**, or **other combinational logic units**, or a **constant** that's **relevant** for your game. 
 
-For this game, we need a few constants and so we **hardcode** it as inputs to `ASEL` and `BSEL` muxes:
-* The value "30" to **reset** the timer: `0x1E` at the `ASEL` mux
-* The value "3" to **compare** against current player's button press: `0x3` at the `BSEL` mux
-* "1" and "0" as **standard** constants to perform comparison in **both** muxes
+For this game, we need a few constants and so we **hardcode** it as inputs to `ASEL` and `BSEL` MUXes:
+* The value "30" to **reset** the timer: `0x1E` at the `ASEL` MUX
+* The value "3" to **compare** against current player's button press: `0x3` at the `BSEL` MUX
+* "1" and "0" as **standard** constants to perform comparison in **both** MUXes
 
-For the `WDSEL` mux, we can hardcode some fixed signal:
+For the `WDSEL` MUX, we can hardcode some fixed signal:
 * `0xFFFF` signifies the "winning signal", 
 * `0x0000` signifies the "losing signal", and 
 * `0xF` signifies the "draw signal". 
 
-The purpose of having these constant values at WDSEL mux is so that we can load these to the **score** registers when the game ends to indicate who wins the game.
+The purpose of having these constant values at WDSEL MUX is so that we can load these to the **score** registers when the game ends to indicate who wins the game.
 
 <img src="{{ site.baseurl }}/docs/FPGA/images/1d-diagram-alu.drawio.png"  class="center_fifty"/>
 
@@ -459,7 +459,7 @@ module game_datapath#(
         // bootstrap rd2 output to CU for convenient branching conditions
         game_cu.regfile_rd2 = game_regfiles.rd2
         
-        // asel mux
+        // asel MUX
         case(game_cu.asel){
             b00  : input_alu_a = game_regfiles.rd1
             b01  : input_alu_a = 1 
@@ -468,7 +468,7 @@ module game_datapath#(
                 input_alu_a = 0
         }
         
-        // bsel mux
+        // bsel MUX
         case(game_cu.bsel){
             b00 : input_alu_b = game_regfiles.rd2
             b01 : input_alu_b = 1
@@ -484,7 +484,7 @@ module game_datapath#(
         game_alu.b = input_alu_b
         game_alu.alufn_signal = game_cu.alufn
         
-        // wdsel mux
+        // wdsel MUX
         case (game_cu.alu_out_sel){
             b01 : game_regfiles.data = hFFFF
             b10 : game_regfiles.data = hF
@@ -636,7 +636,7 @@ You can also have the option to pass ALU's output directly to the Control Unit (
 ```
 
 {:.note}
-The design of the datapath is entirely up to you: selecting which output to connect directly to control unit FSM, deciding the size of asel/bsel/wdsel mux, etc. 
+The design of the datapath is entirely up to you: selecting which output to connect directly to control unit FSM, deciding the size of asel/bsel/wdsel MUX, etc. 
 
 ## Selecting I/O Devices
 This project utilises simple 7 segments, LEDs, and arcade buttons as its interface. This is sufficient to score full marks on your project if executed seamlessly. 
