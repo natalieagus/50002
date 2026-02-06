@@ -155,7 +155,7 @@ We expect **byte addressing** to be supplied at `raddr`, `waddr`, and `ia`. Howe
 Given memory capacity of `WORDS`, we need to take `log2` of it to find the minimum number of bits to address this many `WORDS` of data. When **declaring** `ia`, we state that `ia` contains `$clog2(WORDS)+2` bits. Thus when **indexing**, we want to start from index `$clog2(WORDS)+2-1` (this is MSB). Since we only want word addressing when actually using the `simple_ram`, we simply start from index `$clog2(WORDS)+2-1` and end at index `2` (inclusive). 
 
 {: .note}
-Note that we can declare our `simple_ram` with `#SIZE(4), #DEPTH(WORDS*4)` if we want it to strictly be byte addressable, but we will need additional logics to extract 4 bytes at a type. 
+Note that we can declare our `simple_ram` with `#SIZE(4), #DEPTH(WORDS*4)` if we want it to strictly be byte addressable, but we will need additional logics to extract 4 bytes at a time. 
 
 ### Simulation
 
@@ -240,7 +240,7 @@ We will use the RESET signal to force the PC to zero during the **first** clock 
             instruction_unit.addr = writer_counter.q;
             memory_unit.instruction_towrite = instruction_unit.out;
             memory_unit.instruction_write_enable = b1;
-            memory_unit.ia = writer_counter.q<<2; // pad with two zeroes to make it byte addressable because memory_unit expects byte addresing ia
+            memory_unit.ia = writer_counter.q<<2; // pad with two zeroes to make it byte addressable because memory_unit expects byte  addressing ia
             if ((writer_counter.q + 1) == MEMORY_SIZE){
                 motherboard.d = MotherboardStates.RUN; // wait one more clock cycle to allow the last instruction to be loaded before start execution
         }
@@ -366,7 +366,7 @@ Implement the workings of the REGFILE unit inside the `always` block in `regfile
 The `RD1` port output producing `reg_data_1[31:0]` is also wired directly as the third (for `JMP`) input of the `PCSEL` multiplexer. Remember we <span style="color:red; font-weight: bold;">already</span>  **force** the low-order two bits to zero and to add supervisor bit logic to bit 31 in the `PCSEL` Unit, so we do not have to do it here anymore.
 
 ### Task 8: Z Logic
-Z logic can be added to the output of the RD1 port of the register file memory above. The value of Z must be `1` if and only if `reg_data_1[31:0]` is `0x00000000`. Z must be `0` otherwise. This is exactly a `NOR` logic. You can create a reduction `NOR` logic gate very easily in Lucid and [Verilog](https://class.ece.uw.edu/cadta/verilog/reduction.html)), but you're welcome to follow the schematic above. 
+Z logic can be added to the output of the RD1 port of the register file memory above. The value of Z must be `1` if and only if `reg_data_1[31:0]` is `0x00000000`. Z must be `0` otherwise. This is exactly a `NOR` logic. You can create a reduction `NOR` logic gate very easily in Lucid and [Verilog](https://class.ece.uw.edu/cadta/verilog/reduction.html), but you're welcome to follow the schematic above. 
 
 {: .highlight}
 Implement the `compute Z` section inside `regfile_unit.luc`. You can use reduction NOR for this. 

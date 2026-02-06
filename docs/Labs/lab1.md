@@ -65,7 +65,7 @@ In this lab, we'll explore basics of HDL for FPGA Development. This is crucial f
 
 ### What are we doing here? (Long Version)
 
-Remember the purpose of learning 50.002? To understand *how computers work* from transistors into operating system. That is, to know how to **build** a computer, from literal scratch. A computer is not just our general purpose controller, it can be simple stuffs like microcontroller or logic boards inside your oven, washing machine, airconditioner, etc. When we understand how the general-purpose one works, it's pretty intuitive how other specific types work too.
+Remember the purpose of learning 50.002? To understand *how computers work* from transistors into operating system. That is, to know how to **build** a computer, from literal scratch. A computer is not just our general purpose controller, it can be simple stuffs like microcontroller or logic boards inside your oven, washing machine, air conditioner, etc. When we understand how the general-purpose one works, it's pretty intuitive how other specific types work too.
 
 Anyway, we shall highlight that we are <span class="orange-bold">NOT</span> talking about: buying CPU, motherboard, GPU, RAM and then plugging things in together and calling that "building". We meant *literally* making one from transistors, like this one (you are looking at a 4-bit computer from [this amazing tutorial](https://www.youtube.com/watch?v=_eo8l7HP-9U)):
 
@@ -106,7 +106,7 @@ So this is where FPGA comes into play: it can be programmed to **behave** like c
 
 Without an FPGA, this would mean soldering MOSFETs and rewiring breadboards for every change. The FPGA removes that friction, so you can iterate on circuit design as *easily* as you iterate on code.
 
-### What we are doing here? (Short Version)
+### What are we doing here? (Short Version)
 
 In this lab you will:
 - Treat HDL as a *hardware wiring description*, not a step-by-step program.
@@ -179,7 +179,7 @@ Create a new project with **Base Project** as a template. Choose <span class="or
 
 <img src="{{ site.baseurl }}//docs/Labs/images/lab1/2025-11-20-17-19-07.png"  class="center_seventy no-invert"/>
 
-There a few Lucid (`.luc`) source files created: 
+There are a few Lucid (`.luc`) source files created: 
 1. `alchitry_top.luc`: This is the **top-level** file, like a "main" file. It connects all submodules and interfaces with <span class="orange-bold">external</span> I/O. The ports are defined in this top-level file, while the constraint file (.acf) **maps** them to physical FPGA pins. 
 2. `reset_conditioner.luc`: this is a module obtained from Alchitry component library. It synchronizes the reset button so that all modules in the FPGA can receive the reset signal **at the same time**. 
 3. `Constraint files: alchitry.acf`: a constraint file **maps** the FPGA I/O pin with a logical name that you can define in `alchitry_top.luc`, so that you can define the logic to control these I/Os.
@@ -302,7 +302,7 @@ Here we utilises another module called `reset_conditioner` (you can click on the
         reset_conditioner reset_cond
     }
 ```
-When we instantiate a module, we need to supply its inputs properly either in the instantiation *or* in the always block. `reset_conditoner` requires 1-bit `clk` signal, so we need to supply it as such. This is anologous to instantiation in Java or Python.
+When we instantiate a module, we need to supply its inputs properly either in the instantiation *or* in the always block. `reset_conditioner` requires 1-bit `clk` signal, so we need to supply it as such. This is analogous to instantiation in Java or Python.
 
 The syntax for instantiation and input connection can vary, depending on your preference:
 ```verilog
@@ -380,7 +380,7 @@ or a mixture:
 All four methods yield the same outcome, that is to define the same connection between `reset_conditioner` and `alchitry_top` module (like soldering wire connections). **Rule of thumb**: define connections during instantiation as much as possible (if it's known since the beginning, not some intermediary `sig`) for neater code.
 
 
-The following diagram shows the relationship between `alchitry_top` module and `reset_conditioner` module. Just like lego-pieces, each module can utilise other modules via instantiation and *then you define the connections* based on the port defintion. The port names written in blue are `inputs` and the red ones represent `outputs`. The ones written  in black are intermediary named `signals`, just like private attributes you'd define in a `class`.
+The following diagram shows the relationship between `alchitry_top` module and `reset_conditioner` module. Just like lego-pieces, each module can utilise other modules via instantiation and *then you define the connections* based on the port definition. The port names written in blue are `inputs` and the red ones represent `outputs`. The ones written  in black are intermediary named `signals`, just like private attributes you'd define in a `class`.
 
 <img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-modules-base.drawio.png"  class="center_seventy"/>
 
@@ -530,7 +530,7 @@ This is **NOT the same** as:
 led = 8d12
 ```
 
-`10` by itself has *no fixed width*. The tool must <span class="orange-bold">guess</span>. What is the problem then?
+`12` by itself has *no fixed width*. The tool must <span class="orange-bold">guess</span>. What is the problem then?
 
 ### The Bundle of Wires
 In FPGA design, every signal **is ultimately just a wire or a bundle of wires carrying bits**. When you write `led = 8d12`, you are not assigning an abstract “number” the way software does. <span class="orange-bold">You are sending an 8-bit pattern onto an 8-bit output bus</span>, and each bit drives **one** physical wire. 
@@ -948,7 +948,7 @@ Lucid interprets this as:
 No new “value” was created. Four new wires were simply tied to `0` to make the widths match. This is convenient, but dangerous if you are not tracking the widths mentally (see next Lab's pitfalls).
 
 
-### Auto truncation (wide to to narrow)
+### Auto truncation (wide to narrow)
 
 When the right-hand side is **wider** than the left-hand side, Lucid will **truncate** the value by **discarding the most significant bits**.
 
@@ -1173,7 +1173,7 @@ always {
 }
 ```
 
-It is important to undertand that** the hardware is parallel**, but the `always` block is an <span class="orange-bold">ordered description</span> that the <span class="orange-bold">compiler</span> uses to construct those parallel connections.
+It is important to understand that** the hardware is parallel**, but the `always` block is an <span class="orange-bold">ordered description</span> that the <span class="orange-bold">compiler</span> uses to construct those parallel connections.
 
 
 ## Summary

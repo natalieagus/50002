@@ -277,7 +277,7 @@ testbench test_adder {
 {:.note-title}
 > `$reverse`
 >
-> `$reverse` function reverses the indices of the *outer* most dimension of expr. This is so that `TEST_CASES_ADDER[0]` gives you test case 1 and not 8`.
+> `$reverse` function reverses the indices of the *outer* most dimension of expr. This is so that `TEST_CASES_ADDER[0]` gives you test case 1 and not 8.
 
 #### Manual Test (simulation)
 Once you have implemented `adder.luc`, instantiate and **connect** its input and output properly in `alu.luc` so that we can test our adder unit **manually**.
@@ -578,7 +578,7 @@ Test the `boolean.luc` module by making appropriate connections in `alu.luc` bef
 ```
 
 ## Task 4: Shifter
-Implement a **32-bit shifter** unit that is able to perform a shift left (SHL), shift right (SRA), or shift right arithmetic (SRA) operation on `A`:
+Implement a **32-bit shifter** unit that is able to perform a shift left (SHL), shift right (SHR), or shift right arithmetic (SRA) operation on `A`:
 * The `A[31:0]` input supplies the data to be shifted  
 * The **low-order** 5 bits of the `B[4:0]`  are used as the **shift count** (i.e., from 0 to 31 bits of shift)
 * We do not use the high 27 bits of the `B` input (meaning that `B[31:5]` is **ignored** in this unit)
