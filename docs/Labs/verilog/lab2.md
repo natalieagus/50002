@@ -212,7 +212,7 @@ A possible schematic for a 4-bit adder is shown below:
 
 <img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-4-bit-rca.drawio.png"  class="center_seventy"/>
 
-You can pretty much generalise it into N-bit adder. A common value is 32-bit or 64-bit adder. Modern computers typicall support 64 bits. Simpler microcontrollers might only support 32 bits.
+You can pretty much generalise it into N-bit adder. A common value is 32-bit or 64-bit adder. Modern computers typically support 64 bits. Simpler microcontrollers might only support 32 bits.
 
 This module requires a [*parameter*](https://alchitry.com/tutorials/lucid-reference/#parameters) so that we can instantiate it with different values. We also need a for-loop, as well as a bit of knowledge on bit-indexing.
 

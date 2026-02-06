@@ -75,7 +75,7 @@ This lab deepens your understanding of how specific logic functions are physical
 
 ## The Arithmetic Logic Unit (ALU) 
 
-In this lab, we will build a 32-bit **arithmetic and logic unit (ALU)** for the Beta processor using logic gate primitives. **This is part of your 1D project**. You <span style="color:#ff791a; font-weight: bold;">WILL</span> need the ALU for your 1D Project **and** the also following Lab (Beta CPU).
+In this lab, we will build a 32-bit **arithmetic and logic unit (ALU)** for the Beta processor using logic gate primitives. **This is part of your 1D project**. You <span style="color:#ff791a; font-weight: bold;">WILL</span> need the ALU for your 1D Project **and** also following Lab (Beta CPU).
 
 {: .new-title}
 > Arithmetic Logic Unit (ALU)

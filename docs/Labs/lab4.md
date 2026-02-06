@@ -163,7 +163,7 @@ Before thinking about the controller and how many states it should have + logic,
 
 5. **Comparator and Error Flag**
    * A combinational comparator that checks `s == expected_s`.
-   * This comparator outputs an  flag that is `1` if `s != expected_s`.
+   * This comparator outputs a flag that is `1` if `s != expected_s`.
 
 6. You should also have a **forced error mask** driven by a DIP switch, which flips one bit of the adder output before comparison, so that you can demonstrate that the tester *is actually checking something*.
 

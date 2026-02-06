@@ -52,7 +52,7 @@ The lecture notes on **[logic synthesis](https://natalieagus.github.io/50002/not
 | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | Boolean algebra, truth tables, gate-level synthesis (from Logic Synthesis)                        | Full adder design, MUX & decoder Boolean expressions and gate implementations                                |
 | Universal-gate theory, minimisation, SOP/NAND/NOR equivalence                                     | Allowing FA implementation using NAND-only/NOR-only as alternative forms                                     |
-| Hierarchical composition (small modules tp larger modules)                                         | Building 4-to-1 MUX from 2-to-1 MUXes; 2-to-4 decoder from 1-to-2 decoders; RCA from multiple FAs            |
+| Hierarchical composition (small modules to larger modules)                                         | Building 4-to-1 MUX from 2-to-1 MUXes; 2-to-4 decoder from 1-to-2 decoders; RCA from multiple FAs            |
 | Combinational logic abstraction + static discipline + clean voltage-levels (from CMOS technology) | Treating all signals as 0/1, driving all outputs cleanly, no floating outputs, combinational `always` blocks |
 | Propagation delay and critical path (CMOS timing)                                                 | Ripple-carry adder’s inherently linear carry chain, it provides insight for *timing* and *scalability*                      |
 
@@ -367,7 +367,7 @@ A possible schematic for a 4-bit adder is shown below:
 {:.highlight}
 What do you think is the **tcd** and **tpd** of this 4-bit adder?
 
-You can pretty much generalise it into N-bit adder. A common value is 32-bit or 64-bit adder. Modern computers typicall support 64 bits. Simpler microcontrollers might only support 32 bits.
+You can pretty much generalise it into N-bit adder. A common value is 32-bit or 64-bit adder. Modern computers typically support 64 bits. Simpler microcontrollers might only support 32 bits.
 
 This module requires a [*parameter*](https://alchitry.com/tutorials/lucid-reference/#parameters) so that we can instantiate it with different values. Complete the implementation below. 
 
