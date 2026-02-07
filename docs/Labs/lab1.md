@@ -890,14 +890,14 @@ If there's conflicting assignments, the tool will take the *latest* one (written
 {:.important}
 It is **important** to understand that `sig` is NOT equal to variables in regular programming language. `sig` does <span class="orange-bold">not</span> store values. It does not remember anything. It simply carries its current value.
 
-## Array Replication and Concatenation
-We used this earlier:
+## Array Duplication, Builder, and Concatenation
 
-```verilog
-    io_led = 3x{ {8h0} }
-```
+Lucid lets you build **bigger** buses from smaller parts using `{}` and the duplication operator `Nx{}`.
 
-Lucid lets you build **bigger** buses from smaller parts using `{}` and the repetition operator `Nx{}`.
+### Array Builder
+The **array builder** provides a way to create an array from any number of identically sized expressions.
+
+The syntax is `{ expr1, expr2, ... }` where all `expr` have the **same** width.
 
 This builds a 3 by 8 wire bus:
 
@@ -905,7 +905,7 @@ This builds a 3 by 8 wire bus:
     io_led = {8h0, 8h0, 8h0}
 ```
 
-This is the same as writing:
+Array building like the above is the same as writing:
 
 ```verilog
     io_led[0] = 8h0
@@ -913,16 +913,26 @@ This is the same as writing:
     io_led[2] = 8h0
 ```
 
-Instead of writing the same thing many times, you can use replication:
+### Duplication
+Instead of writing the same thing many times, you can use **duplication**:
 
 ```verilog
     io_led = 3x{ {8h0} } // repeat 8h0 3 times, to fill the whole 3×8 array.
 ```
 
-This is useful when working with large arrays that require repetition such as driving LED matrices.
+Duplication is useful when working with large arrays that require repetition such as driving LED matrices.
 
 {:.note}
 There's no right and wrong way to build an array. Sometimes, the simplest method is best, that is `io_led = {8h0, 8h0, 8h0}`. You don't need to over-refactor or over-engineer your HDL code, and certainly there's no need to apply your "clean code" software principles here, unless you're already experienced in HDL. Remember that this is a group work and group members have various background. So let's stick with the "simple is best" philosophy for now.
+
+### Concatenation 
+If you want to merge two or more buses with differing width, you can use concatenation. Concatenation provides a way to merge two or more arrays.
+
+It takes the form `c{ expr1, expr2, ... }` where all `expr` are arrays or bits.
+
+If the values passed into it are multi-dimensional arrays, all of their sub-dimensions must match. For example, an array of width [2][8] could be concatenated with an array of width [3][8] to form an array of width [5][8].
+
+
 
 ## Auto Truncation, Auto Extension, and Width Mismatches
 
