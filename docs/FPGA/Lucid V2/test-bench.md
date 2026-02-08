@@ -120,7 +120,7 @@ For `$print`, you can use them like how you would use them in python or java, wh
 
 <img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/test_bench_images/Pasted image 20250417215831.png"  class="center_seventy no-invert"/>
 
-### `print(format, exprs...)`
+### `$print(format, exprs...)`
 
 For `$print` with format, it allows you to format and variable into a print statement just like in any programming language.
 
