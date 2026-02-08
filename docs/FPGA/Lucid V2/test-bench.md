@@ -61,7 +61,7 @@ To test, implements your module like how you would in a normal lucid file with t
 - Set the inputs to your module
 - Then call the `$tick()` function to **propagate signal changes**, this is like waiting long enough to capture the output of your module
 
-Once you fully implement the your test modules (no error detected), a play button should appear at the top of the test block. Which means that your test bench is ready to run.
+Once you fully implement your test modules (no error detected), a play button should appear at the top of the test block. Which means that your test bench is ready to run.
 <img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/test_bench_images/Pasted image 20250417195100.png"  class="center_fifty no-invert"/>
 
 Once  Alchitry Lab has finished loading your test case, it will open a new tab with the expected output. 
