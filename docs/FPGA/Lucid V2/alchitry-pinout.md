@@ -77,7 +77,7 @@ module alchitry_top (
 ) 
 ```
 
-Each of these logical design signals is **mapped** to specific physical pin on the FPGA board. This mapping is defined in the .acf file. There are **two** .acf files: `alchitry.acf` and `io_v2.acf`. 
+Each of these logical design signals is **mapped** to specific physical pin on the FPGA board. This mapping is defined in the .acf file. There are **two** .acf files: `alchitry.acf` and `io.acf`. 
 
 ### `alchitry.acf`
 ```verilog
