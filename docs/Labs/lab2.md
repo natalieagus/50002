@@ -548,7 +548,7 @@ The following "theoretically identical" code will result in an error:
 
 The IDE is not “smart” enough to see that the `if` protects the out-of-bounds access. The static checker only sees `in[i-1`] with `i` ranging from `0` to `SIZE-1`.
 
-- At `i = 0` that becomes `in[-1]`, which is obviously *illegal*, so it warns. 
+- At `i = 0` that becomes `in[-1]` which is okay since Lucid V2 supports negative indices, but somehow the checker ran by the IDE in the repeat loop translated it to 255, which is obviously *out of bounds*, so it complains. 
 - It does not analyse the `if (i == 0)` and does not understand that the statement is effectively skipped for that index.
 
 Conceptually the hardware is fine, but the tool cannot prove it, so you should rewrite the pattern so that the indices are always in range *without* relying on conditionals inside repeat.
