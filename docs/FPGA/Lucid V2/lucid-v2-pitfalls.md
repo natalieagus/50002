@@ -51,7 +51,7 @@ When used to instantiate a module, correct port size will be computed:
 ```verilog
 // instantiation 
         
-    index_reverser index_reverser(#COLUMN_DIMENSION(COLUMN_DIMENSION), #COLUMN_DIMENSION(ROW_DIMENSION)) // correct port is created
+    index_reverser index_reverser(#COLUMN_DIMENSION(COLUMN_DIMENSION), #ROW_DIMENSION(ROW_DIMENSION)) // correct port is created
     
 // module declaration, another file 
 module index_reverser#(
