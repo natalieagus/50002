@@ -77,7 +77,7 @@ module alchitry_top (
 ) 
 ```
 
-Each of these logical design signals is **mapped** to specific physical pin on the FPGA board. This mapping is defined in the .acf file. There are **two** .acf files: `alchitry.acf` and `io.acf`. 
+Each of these logical design signals is **mapped** to specific physical pin on the FPGA board. This mapping is defined in the .acf file. There are **two** .acf files: `alchitry.acf` and `io_v1_pullfown.acf`. 
 
 ### `alchitry.acf`
 ```verilog
@@ -124,9 +124,9 @@ Alchitry Au V1 schematic clearly shows the physical name of the pins on the Au B
 
 <img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/fpga_4_2024/2025-01-17-14-45-49.png"  class="center_seventy"/>
 
-### `io.acf`
+### `io.acf` (v1 pulldown, name might vary)
 
-The Io constraint file outlines the mapping between the logical ports in `alchitry_top.luc` and the physical Alchitry pin on the **banks**. There are **four** banks in Alchitry Au V1:
+The IO constraint file outlines the mapping between the logical ports in `alchitry_top.luc` and the physical Alchitry pin on the **banks**. There are **four** banks in Alchitry Au V1:
 
 <img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/fpga_4_2024/2025-01-17-14-49-15.png"  class="center_seventy"/>
 
