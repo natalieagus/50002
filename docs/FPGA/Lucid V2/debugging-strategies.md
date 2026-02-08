@@ -169,7 +169,7 @@ Bottomline: **always connect the external GND to the FPGA GND pin when using ext
 
 If your project fails timing, that means your design logic is too slow to keep up with the 100 MHz clock (i.e., 10 ns per cycle). Even if Vivado compiles it, the actual hardware may behave unpredictably. You should lower the clock frequency in the constraint file (e.g., set to 10 MHz) so Vivado **checks** for more relaxed timing.
 
-<span class="orange-bold">But remember: the onboard clock is still 100 MHz</span>. You must manually slow your logic (e.g., FSM or output updates) to match this by adding delay logic (like a clock divider). For example: delay each FSM state by 10 times using a counter, so your effective FSM cycle is 1 per microsecond instead of 1 per 10 ns. Give [this page](TBC) a read to find out how. 
+<span class="orange-bold">But remember: the onboard clock is still 100 MHz</span>. You must manually slow your logic (e.g., FSM or output updates) to match this by adding delay logic (like a clock divider). For example: delay each FSM state by 10 times using a counter, so your effective FSM cycle is 1 per microsecond instead of 1 per 10 ns. Give [this page](https://natalieagus.github.io/50002/fpga/clocks) a read to find out how. 
 
 
 {:.important}
@@ -207,7 +207,7 @@ Ensure you do not see any warning as such when you compile your project:
 
 <img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/fpga_8_2024/2025-04-10-16-35-58.png"  class="center_seventy"/>
 
-If you do, give [this guide](TBC) a read to fix it first (by slowing the clock or slowing the FSM).
+If you do, give [this lab](https://natalieagus.github.io/50002/lab/lab4#slowing-down-the-fsm-clock) a read to fix it first (by slowing the clock or slowing the FSM).
 
 ### Manually Advancing the FSM 
 
