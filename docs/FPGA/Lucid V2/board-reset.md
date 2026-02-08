@@ -282,7 +282,7 @@ Suppose one period of `slow_clock` lasts for 1000 periods of `clk`. During those
 
 In this short tutorial, we learned about the **importance** of using `reset_conditioner`. 
 
-Our 1D project will be much larger than this sample project, consisting of many sequential logic components. We shall avoid the hassle of ensuring that all components in the project comes out of reset at once (and is properly reset). One way to do this is by ensuring that **all sequential logic components** run on the <span class="orange-bold">the same `clk` signal</span>, and then use additional logic in the body to **slow down** the perceived output.
+Our 1D project will be much larger than this sample project, consisting of many sequential logic components. We shall avoid the hassle of ensuring that all components in the project comes out of reset at once (and is properly reset). One way to do this is by ensuring that **all sequential logic components** run on the <span class="orange-bold"> same `clk` signal</span>, and then use additional logic in the body to **slow down** the perceived output.
 
 Remember to utilise `edge_detector` (detect RISING, FALLING, or both edge) where appropriate, and not the raw `slow_clk` signal where appropriate. Since `slow_clock` operates at a much lower frequency than `clk`, devices running on `clk` should detect the edges of `slow_clock` rather than directly using its raw signal in conditional statements. 
 
