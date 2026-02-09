@@ -415,7 +415,7 @@ Basic values comprise of **Decimals**, **binary** (with `0b` prefix), and **hexa
 For example, if we have 4 different values to be stored: `5`, then `6`, then `7`, then `8`, it will be stored as  `08 07 06 05` as a **consecutive** 8 bytes in memory. `05` gets the lowest address, and `08` gets the highest address. Anything that requires more than 1 byte to represent/store, such as values like: `256 257 258 259` will be **truncated** into 1 byte only, and resulted as the following in memory (only remainder left): `03 02 01 00`. This is why it is important to establish the concept of **data type**. 
 
 {: .note}
-A typical ASCII char takes 1 byte per character and an `int` data type occupies 8 bytes.
+A typical ASCII char takes 1 byte per character and an `int` data type occupies 4 bytes.
 
 ### Assembler Macroinstructions
 Macroinstructions parameterized abbreviations, also known as aliases or shorthands. There are plenty of Beta assembly language macros supported in `bsim` and you have to read the [documentation](https://drive.google.com/file/d/1Tq_Hg-jbZVPKDJZ4O6OZWYF4_8ywakbi/view?usp=share_link) to find out more. 
