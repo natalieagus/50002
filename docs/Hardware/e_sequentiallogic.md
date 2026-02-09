@@ -105,7 +105,7 @@ The term "**pass through**" is used from this point onwards in this chapter to e
 
 Before we progress, let's ensure we understand one thing first:
 * The theory of a working D latch is that when G transitions from HIGH to LOW, Q should hold the value present on D at that moment.
-* However, a combinational device (the Mux) makes NO output guarantees until tpd after an input change and may behave unpredictably between tcd and tpd.
+* However, a combinational device (the Mux) makes NO output guarantees until $$t_{pd}$$ after an input change and may behave unpredictably between $$t_{cd}$$ and $$t_{pd}$$.
 * This is time gap between "remembering old stable value" to "producing new stable value" as input transitions.
 
 So if the falling edge of G briefly invalidates Q, the memory fails because Q is exactly what we are trying to preserve. Therefore, we must ensure that a HIGH-to-LOW transition on G does not disturb Q at all. This is done by the hardware, which is to build a lenient MUX. You can read the appendix section if you're interested, but as long as you can take at face value that HIGH TO LOW transition on G does not disturb Q at all, as long as some prerequisites about D holds (will be explained below), then you're good to continue.
@@ -428,7 +428,7 @@ Here are the key points from this notes:
 1. General structure of **sequential logic devices**:
   <img src="https://dropbox.com/s/7crg33w0e7yg2hn/Q1.png?raw=1"    class="center_seventy"   >
 2. **Dynamic discipline**: The setup time (t1) and hold time (t2) constraints ensures the proper operation of sequential circuits by guaranteeing that data is reliably transferred between flip-flops in a sequential circuit. They prevent timing violations that could lead to incorrect operation of the circuit (incorrect propagation of signals). These constraints enforce specific time windows during which the data must remain **stable** around the clock edge (t1 **before** the clock edge for **upstream** dff, and t2 **after** the clock edge for **downstream** dff)
-3. **tcd and tpd computation of sequential logic devices**: tcd and tpd are computed based only on the downstream combinational logic relative to the clock input, <span class="orange-bold">not</span> user inputs.
+3. **$$t_{cd}$$ and $$t_{pd}$$ computation of sequential logic devices**: $$t_{cd}$$ and $$t_{pd}$$ are computed based only on the downstream combinational logic relative to the clock input, <span class="orange-bold">not</span> user inputs.
 4. **Metastable state**: Occurs in flip-flops when the input changes too close to the clock edge, **violating** setup or hold time. In this state, the output is **neither** a stable 0 nor 1 and may oscillate or settle unpredictably. It arises because flip-flops internal feedback cannot resolve conflicting signal states quickly. We can mitigate metastability (but cannot completely avoid it) by using synchronizers and ensuring that dynamic discipline is obeyed.
 
 # Appendix
@@ -462,7 +462,7 @@ Notice that Q is *also* an input to the MUX. We will meet a <span style="color:r
 Thus, we assume that the MUX used in a latch is a **lenient** MUX. A lenient MUX is a MUX where a 1-to-0 transition on G doesn’t affect the validity of Q output if certain prerequisite holds.
 
 In particular, a lenient MUX WILL produce a stable and valid Q as long as either of 3 conditions below is fulfilled:
-1. When G is 1 (we are loading the latch), once D is valid for as long as *half* of $$T_{setup}$$ (1 tpd), we guarantee that Q will be stable and valid (reflecting D) **independently** of Q' initial value. This allows Q to be unaffected by Q' as it is overwriting Q' when new values from D has just arrived.
+1. When G is 1 (we are loading the latch), once D is valid for as long as *half* of $$T_{setup}$$ (1 $$t_{pd}$$), we guarantee that Q will be stable and valid (reflecting D) **independently** of Q' initial value. This allows Q to be unaffected by Q' as it is overwriting Q' when new values from D has just arrived.
 2. When D is valid for as long as $$T_{setup}$$, we guarantee that Q will be stable and valid (reflecting D) **independently** of G. This ensures that a 1-to-0 transition on G doesn’t contaminate Q output
 3. When G is 0 (memory mode) and Q has been stable for at least $$T_{hold}$$, then Q will no longer be affected by subsequent transitions on D input. Note that the only way for Q to be stable for this long when G has just turned to valid 0 is fulfilled by D, it should be held stable for at least $$T_{hold}$$ for this effect to happen.
 
@@ -515,7 +515,7 @@ The $$t_2$$ constraint ensures that the clock period is **long enough** for thre
 {: .warning}
 Once again, BOTH $$t_1$$ and $$t_2$$ constraints must be fulfilled within **any paths between two connecting DFFs** in a circuit, in order for the overall circuit to obey the dynamic discipline.
 
-### tpd of CL
+### $$t_{pd}$$ of CL
 We can call the $$t_{PD} CL$$ (propagation delay of the CL) as the time taken to do **actual work** or **logic computation**.
 
 {: .highlight}
