@@ -188,9 +188,6 @@ Then compute:
 * **N**: `n = sum[31];` (MSB)
 * **V**: overflow logic depending on add/sub definition (typically from sign bits)
 
-
-Yep, replication + generate/genvar are the two “non-beginner” syntax features here that are worth explicitly teaching. Here are the remarks I’d put in lab notes, focused purely on syntax/semantics.
-
 #### Replication and concatenation are compile-time wiring
 
 Example:
