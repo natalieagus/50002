@@ -1196,3 +1196,712 @@ The testbench is design to test the following critical scenarios:
 1. Test RESET, IRQ, and ILLOP cases
 2. Test JMP, BEQ/BNE cases (both + and - memory addresses)
 3. PC31 protection (Cleared via JMP, attempt to set via JMP, and BNE/BEQ)
+
+
+
+## Part B: REGFILE Unit
+### REGFILE Unit Schematic
+Here is the suggested REGFILE Unit schematic that you can implement. 
+
+<img src="/50002/assets/contentimage/lab4/regfileunit.png"  class="center_seventy"/>
+
+This unit utilises [`regfile_memory`](#task-7-regfile-memory).
+
+The suggested interface for `regfile_unit.v` is:
+
+```verilog
+module regfile_unit (
+    input clk,
+    input rst,
+    input [4:0] ra,
+    input [4:0] rb,
+    input [4:0] rc,
+    input wasel,
+    input ra2sel,
+    input werf,
+    input [31:0] wdsel_out,
+    input slowclk,
+    output z,
+    output [31:0] rd1,
+    output [31:0] rd2,
+    output [31:0] mwd
+);
+```
+
+### Task 6: RA2SEL and WASEL Mux
+You will need a MUX controlled by `RA2SEL` to select the **correct** address for the B read port. The 5-bit 2-to-1 **WASEL** multiplexer determines the write address for the register file. 
+
+
+### Task 7: Regfile Memory
+The register file is a 3-port memory. It should be implemented in `regfile_memory.v`, which is then utilised by `regfile_unit.luc`. 
+
+
+The `RD1` port output producing `reg_data_1[31:0]` is also wired directly as the third (for `JMP`) input of the `PCSEL` multiplexer. Remember we <span style="color:red; font-weight: bold;">already</span>  **force** the low-order two bits to zero and to add supervisor bit logic to bit 31 in the `PCSEL` Unit, so we do not have to do it here anymore.
+
+
+Here's a suggested interface:
+
+```verilog
+module regfile_memory (
+    input clk,
+    input rst,
+    input [4:0] ra1,
+    input [4:0] ra2,
+    input [4:0] wa,
+    input [31:0] wd,
+    input we,
+    output [31:0] rd1,
+    output [31:0] rd2
+);
+```
+
+#### Testbench for Regfile Memory
+
+And you can use the following testbench:
+
+```verilog
+`timescale 1ns / 1ps
+
+module tb_regfile_memory;
+
+  // --------------------------------------------------------------------------
+  // DUT I/O (Verilog-2005 style)
+  // --------------------------------------------------------------------------
+  reg clk;
+  reg rst;
+  reg [4:0] ra1, ra2, wa;
+  reg [31:0] wd;
+  reg        we;
+  wire [31:0] rd1, rd2;
+
+  regfile_memory dut (
+      .clk(clk),
+      .rst(rst),
+      .ra1(ra1),
+      .ra2(ra2),
+      .wa (wa),
+      .wd (wd),
+      .we (we),
+      .rd1(rd1),
+      .rd2(rd2)
+  );
+
+  // --------------------------------------------------------------------------
+  // Clock
+  // --------------------------------------------------------------------------
+  initial begin
+    clk = 1'b0;
+    forever #5 clk = ~clk;
+  end
+
+  // --------------------------------------------------------------------------
+  // Waveform
+  // --------------------------------------------------------------------------
+  initial begin
+    $dumpfile("regfile_memory_tb.vcd");
+    $dumpvars(0, tb_regfile_memory);
+  end
+
+  // --------------------------------------------------------------------------
+  // Simple expected model (R31 always 0)
+  // --------------------------------------------------------------------------
+  reg [31:0] exp[0:31];
+  integer i;
+
+  task exp_reset;
+    begin
+      for (i = 0; i < 32; i = i + 1) exp[i] = 32'b0;
+      exp[31] = 32'b0;
+    end
+  endtask
+
+  task exp_write;
+    input [4:0] waddr;
+    input [31:0] wdata;
+    input wen;
+    begin
+      if (wen && (waddr != 5'd31)) exp[waddr] = wdata;
+      exp[31] = 32'b0;
+    end
+  endtask
+
+  // --------------------------------------------------------------------------
+  // Helpers
+  // --------------------------------------------------------------------------
+  task read_check;
+    input [4:0] a1;
+    input [4:0] a2;
+    begin
+      ra1 = a1;
+      ra2 = a2;
+      #1;  // settle combinational read
+
+      if (rd1 !== exp[a1]) begin
+        $display("FAIL rd1: ra1=%0d got=%h exp=%h time=%0t", a1, rd1, exp[a1], $time);
+        $fatal;
+      end
+      if (rd2 !== exp[a2]) begin
+        $display("FAIL rd2: ra2=%0d got=%h exp=%h time=%0t", a2, rd2, exp[a2], $time);
+        $fatal;
+      end
+    end
+  endtask
+
+  task do_write;
+    input [4:0] waddr;
+    input [31:0] wdata;
+    begin
+      // setup before posedge
+      wa = waddr;
+      wd = wdata;
+      we = 1'b1;
+
+      @(posedge clk);
+      exp_write(waddr, wdata, 1'b1);
+
+      #1;
+      we = 1'b0;
+    end
+  endtask
+
+  // Same-cycle write+read expectation for THIS regfile:
+  // - before posedge: read shows OLD value
+  // - after posedge: read shows NEW value
+  task write_read_same_cycle_check;
+    input [4:0] r;
+    input [31:0] new_data;
+    reg [31:0] old_data;
+    begin
+      old_data = exp[r];
+
+      // set read + write same register
+      ra1 = r;
+      ra2 = r;
+      wa = r;
+      wd = new_data;
+      we = 1'b1;
+
+      // before edge: old
+      #1;
+      if (rd1 !== old_data) begin
+        $display("FAIL same-cycle pre-edge: r=%0d got=%h exp(old)=%h time=%0t", r, rd1, old_data,
+                 $time);
+        $fatal;
+      end
+
+      @(posedge clk);
+      exp_write(r, new_data, 1'b1);
+
+      // after edge: new
+      #1;
+      if (rd1 !== exp[r]) begin
+        $display("FAIL same-cycle post-edge: r=%0d got=%h exp(new)=%h time=%0t", r, rd1, exp[r],
+                 $time);
+        $fatal;
+      end
+
+      we = 1'b0;
+    end
+  endtask
+
+  task apply_reset;
+    begin
+      we  = 1'b0;
+      wa  = 5'd0;
+      wd  = 32'd0;
+      ra1 = 5'd0;
+      ra2 = 5'd0;
+
+      rst = 1'b1;
+      exp_reset();
+
+      @(posedge clk);
+      @(posedge clk);
+      rst = 1'b0;
+
+      #1;
+      read_check(5'd0, 5'd31);
+    end
+  endtask
+
+  // --------------------------------------------------------------------------
+  // Main
+  // --------------------------------------------------------------------------
+  initial begin
+    rst = 1'b0;
+    we  = 1'b0;
+    wa  = 5'd0;
+    wd  = 32'd0;
+    ra1 = 5'd0;
+    ra2 = 5'd0;
+    exp_reset();
+
+    apply_reset();
+
+    // Write to R1, R5, R30, R31
+    do_write(5'd1, 32'h1111_0001);
+    do_write(5'd5, 32'h5555_0005);
+    do_write(5'd30, 32'h3030_0030);
+    do_write(5'd31, 32'hDEAD_BEEF);  // ignored
+
+    // Check outputs in the next cycle (reads are combinational)
+    read_check(5'd1, 5'd5);
+    read_check(5'd30, 5'd31);
+    read_check(5'd31, 5'd31);
+
+    // Write and read "same cycle" to R5: old before posedge, new after posedge
+    write_read_same_cycle_check(5'd5, 32'hAAAA_0005);
+
+    // Read back R5 and something else
+    read_check(5'd5, 5'd1);
+
+    // Extra coverage
+    do_write(5'd0, 32'h0000_1234);
+    do_write(5'd10, 32'h1010_1010);
+    do_write(5'd29, 32'h2929_2929);
+    do_write(5'd31, 32'hFFFF_FFFF);  // still ignored
+    read_check(5'd0, 5'd10);
+    read_check(5'd29, 5'd31);
+
+    $display("PASS: all regfile_memory tests completed.");
+    $finish;
+  end
+
+endmodule
+```
+
+Testbench waveform:
+* To ensure that `R31` is always `0` despite attempts to write to it
+* Read and write in the same cycle update the registers accordingly, no `z` output observed
+
+<img src="{{ site.baseurl }}//docs/Labs/verilog/images/lab6/2026-02-09-10-37-51.png"  class="center_seventy no-invert"/>
+
+
+### Task 8: Z Logic
+Z logic can be added to the output of the RD1 port of the register file memory above. The value of Z must be `1` if and only if `reg_data_1[31:0]` is `0x00000000`. Z must be `0` otherwise. This is exactly a `NOR` logic. You can create a reduction `NOR` logic gate very easily in Lucid and [Verilog](https://class.ece.uw.edu/cadta/verilog/reduction.html), but you're welcome to follow the schematic above. 
+
+
+### Task 9: mwd[31:0] Output
+Finally, we need to connect the output of the `RD2` port of the register file memory above to produce `mwd[31:0]`. 
+
+
+### Testbench
+
+Here's a testbench to get you started:
+
+```verilog
+`timescale 1ns / 1ps
+
+module tb_regfile_unit;
+
+  // --------------------------------------------------------------------------
+  // DUT I/O
+  // --------------------------------------------------------------------------
+  reg clk;
+  reg rst;
+  reg [4:0] ra, rb, rc;
+  reg         wasel;
+  reg         ra2sel;
+  reg         werf;
+  reg  [31:0] wdsel_out;
+  reg         slowclk;
+
+  wire        z;
+  wire [31:0] rd1;
+  wire [31:0] rd2;
+  wire [31:0] mwd;
+
+  regfile_unit dut (
+      .clk(clk),
+      .rst(rst),
+      .ra(ra),
+      .rb(rb),
+      .rc(rc),
+      .wasel(wasel),
+      .ra2sel(ra2sel),
+      .werf(werf),
+      .wdsel_out(wdsel_out),
+      .slowclk(slowclk),
+      .z(z),
+      .rd1(rd1),
+      .rd2(rd2),
+      .mwd(mwd)
+  );
+
+  // --------------------------------------------------------------------------
+  // Clock
+  // --------------------------------------------------------------------------
+  initial begin
+    clk = 1'b0;
+    forever #5 clk = ~clk;
+  end
+
+  // --------------------------------------------------------------------------
+  // Waveform
+  // --------------------------------------------------------------------------
+  initial begin
+    $dumpfile("regfile_unit_tb.vcd");
+    $dumpvars(0, tb_regfile_unit);
+  end
+
+  // --------------------------------------------------------------------------
+  // Expected regfile model (matches regfile_memory: R31 hardwired 0)
+  // --------------------------------------------------------------------------
+  reg [31:0] exp[0:31];
+  integer i;
+
+  task exp_reset;
+    begin
+      for (i = 0; i < 32; i = i + 1) exp[i] = 32'b0;
+      exp[31] = 32'b0;
+    end
+  endtask
+
+  task exp_write;
+    input [4:0] waddr;
+    input [31:0] wdata;
+    input wen;
+    begin
+      if (wen && (waddr != 5'd31)) exp[waddr] = wdata;
+      exp[31] = 32'b0;
+    end
+  endtask
+
+  // --------------------------------------------------------------------------
+  // Effective address functions (like DUT)
+  // --------------------------------------------------------------------------
+  function [4:0] eff_wa;
+    input [4:0] rc_in;
+    input wasel_in;
+    begin
+      eff_wa = wasel_in ? 5'd30 : rc_in;
+    end
+  endfunction
+
+  function [4:0] eff_ra2;
+    input [4:0] rb_in;
+    input [4:0] rc_in;
+    input ra2sel_in;
+    begin
+      eff_ra2 = ra2sel_in ? rc_in : rb_in;
+    end
+  endfunction
+
+  // w_werf inside DUT = slowclk & werf
+  function eff_we;
+    input slow_in;
+    input werf_in;
+    begin
+      eff_we = slow_in & werf_in;
+    end
+  endfunction
+
+  // --------------------------------------------------------------------------
+  // Output checker
+  // --------------------------------------------------------------------------
+  task check_outputs;
+    reg [ 4:0] a2;
+    reg [31:0] exp_rd1;
+    reg [31:0] exp_rd2;
+    reg        exp_z;
+    begin
+      a2 = eff_ra2(rb, rc, ra2sel);
+
+      exp_rd1 = exp[ra];
+      exp_rd2 = exp[a2];
+      exp_z = (exp_rd1 == 32'b0);
+
+      #1;  // settle combinational paths
+
+      if (rd1 !== exp_rd1) begin
+        $display("FAIL rd1: ra=%0d got=%h exp=%h time=%0t", ra, rd1, exp_rd1, $time);
+        $fatal;
+      end
+      if (rd2 !== exp_rd2) begin
+        $display("FAIL rd2: ra2=%0d got=%h exp=%h time=%0t", a2, rd2, exp_rd2, $time);
+        $fatal;
+      end
+      if (mwd !== exp_rd2) begin
+        $display("FAIL mwd: expected mirror of rd2. got=%h exp=%h time=%0t", mwd, exp_rd2, $time);
+        $fatal;
+      end
+      if (z !== exp_z) begin
+        $display("FAIL z: got=%b exp=%b (rd1 exp=%h) time=%0t", z, exp_z, exp_rd1, $time);
+        $fatal;
+      end
+    end
+  endtask
+
+  // --------------------------------------------------------------------------
+  // Reset helper
+  // --------------------------------------------------------------------------
+  task apply_reset;
+    begin
+      ra = 5'd0;
+      rb = 5'd0;
+      rc = 5'd0;
+      wasel = 1'b0;
+      ra2sel = 1'b0;
+      werf = 1'b0;
+      wdsel_out = 32'd0;
+      slowclk = 1'b1;  // default "always enabled" for basic tests
+
+      rst = 1'b1;
+      exp_reset();
+
+      @(posedge clk);
+      @(posedge clk);
+      rst = 1'b0;
+
+      check_outputs();  // all zero, z should be 1
+    end
+  endtask
+
+  // --------------------------------------------------------------------------
+  // Perform a "write attempt" for one clk edge with current control signals.
+  // Update expected only if (slowclk & werf) is 1 at the edge.
+  // --------------------------------------------------------------------------
+  task do_write_attempt_one_edge;
+    input [31:0] wdata;
+    reg [4:0] waddr;
+    reg       wen;
+    begin
+      wdsel_out = wdata;
+
+      // Drive werf high for this attempt
+      werf = 1'b1;
+
+      waddr = eff_wa(rc, wasel);
+      wen = eff_we(slowclk, werf);
+
+      @(posedge clk);
+      exp_write(waddr, wdata, wen);
+
+      #1;
+      werf = 1'b0;
+    end
+  endtask
+
+  // --------------------------------------------------------------------------
+  // Same-cycle write+read check (no bypass):
+  // old before posedge, new after posedge, but only if gated we is 1.
+  // --------------------------------------------------------------------------
+  task write_read_same_cycle_check;
+    input [4:0] target_reg;
+    input [31:0] new_data;
+    input expect_write;  // 1 if slowclk&werf will be 1 at posedge
+    reg [31:0] old_data;
+    reg [ 4:0] waddr;
+    reg        wen;
+    begin
+      old_data = exp[target_reg];
+
+      // Arrange write address = target_reg
+      if (target_reg == 5'd30) begin
+        wasel = 1'b1;
+        rc = 5'd7;
+      end else begin
+        wasel = 1'b0;
+        rc = target_reg;
+      end
+
+      // Read rd1 from same target
+      ra = target_reg;
+
+      wdsel_out = new_data;
+      werf = 1'b1;
+
+      // Pre-edge: old value
+      #1;
+      if (rd1 !== old_data) begin
+        $display("FAIL same-cycle pre-edge: r=%0d got=%h exp(old)=%h time=%0t", target_reg, rd1,
+                 old_data, $time);
+        $fatal;
+      end
+
+      // Edge: update expected depending on gated write enable
+      waddr = eff_wa(rc, wasel);
+      wen   = eff_we(slowclk, werf);
+
+      @(posedge clk);
+      exp_write(waddr, new_data, wen);
+
+      // Post-edge: should be new only if write happened
+      #1;
+      if (expect_write) begin
+        if (rd1 !== exp[target_reg]) begin
+          $display("FAIL same-cycle post-edge (expected write): r=%0d got=%h exp(new)=%h time=%0t",
+                   target_reg, rd1, exp[target_reg], $time);
+          $fatal;
+        end
+      end else begin
+        if (rd1 !== old_data) begin
+          $display(
+              "FAIL same-cycle post-edge (expected NO write): r=%0d got=%h exp(still old)=%h time=%0t",
+              target_reg, rd1, old_data, $time);
+          $fatal;
+        end
+      end
+
+      werf = 1'b0;
+    end
+  endtask
+
+  // --------------------------------------------------------------------------
+  // Main test sequence
+  // --------------------------------------------------------------------------
+  initial begin
+    // init
+    rst = 1'b0;
+    ra = 5'd0;
+    rb = 5'd0;
+    rc = 5'd0;
+    wasel = 1'b0;
+    ra2sel = 1'b0;
+    werf = 1'b0;
+    wdsel_out = 32'd0;
+    slowclk = 1'b1;
+    exp_reset();
+
+    apply_reset();
+
+    // ======================================================================
+    // A) Basic tests with slowclk = 1 (gating disabled)
+    // ======================================================================
+    slowclk = 1'b1;
+
+    // 1) Write to R1 via rc when wasel=0
+    wasel = 1'b0;
+    rc = 5'd1;
+    do_write_attempt_one_edge(32'h1111_0001);
+
+    // read back through rd1 and rd2 muxes
+    ra = 5'd1;
+    rb = 5'd0;
+    ra2sel = 1'b0;  // rd2 from rb (R0)
+    check_outputs();
+
+    ra2sel = 1'b1;  // rd2 from rc (R1)
+    check_outputs();
+
+    // 2) Write to R5
+    wasel = 1'b0;
+    rc = 5'd5;
+    do_write_attempt_one_edge(32'h5555_0005);
+
+    ra     = 5'd5;  // rd1 nonzero => z=0
+    rb     = 5'd1;  // rd2 from rb
+    ra2sel = 1'b0;
+    check_outputs();
+
+    ra2sel = 1'b1;  // rd2 from rc (R5)
+    check_outputs();
+
+    // 3) wasel=1 forces write to R30
+    wasel = 1'b1;
+    rc = 5'd2;  // ignored for write addr
+    do_write_attempt_one_edge(32'h3030_0030);
+
+    ra = 5'd30;
+    rb = 5'd0;
+    ra2sel = 1'b0;
+    check_outputs();
+
+    // 4) Attempt write to R31 (should not change, always 0)
+    wasel = 1'b0;
+    rc = 5'd31;
+    do_write_attempt_one_edge(32'hDEAD_BEEF);
+
+    ra = 5'd31;     // rd1=0 => z=1
+    rb = 5'd31;
+    ra2sel = 1'b0;
+    check_outputs();
+
+    ra2sel = 1'b1;
+    check_outputs();
+
+    // 5) Same-cycle write+read to R5 with slowclk=1: should update at posedge
+    write_read_same_cycle_check(5'd5, 32'hAAAA_0005, 1'b1);
+
+    // ======================================================================
+    // B) Gating tests: keep werf high, but writes only happen when slowclk=1
+    // ======================================================================
+    // Set up: target R10, read it via rd1
+    wasel = 1'b0;
+    rc = 5'd10;
+    ra = 5'd10;
+    rb = 5'd0;
+    ra2sel = 1'b0;
+
+    // Hold werf high across several cycles, toggle slowclk manually.
+    werf = 1'b1;
+
+    // B1) slowclk=0: write should NOT happen
+    slowclk = 1'b0;
+    wdsel_out = 32'h1010_1010;
+
+    // pre-check current value (likely 0)
+    check_outputs();
+
+    @(posedge clk);
+    // expected does NOT update because gated we = 0
+    exp_write(eff_wa(rc, wasel), wdsel_out, eff_we(slowclk, werf));
+
+    #1;
+    check_outputs();  // still old value (no write)
+
+    // B2) slowclk=1: write SHOULD happen on this edge
+    slowclk   = 1'b1;
+    wdsel_out = 32'h1010_1010;
+
+    @(posedge clk);
+    exp_write(eff_wa(rc, wasel), wdsel_out, eff_we(slowclk, werf));
+
+    #1;
+    check_outputs();  // now updated
+
+    // B3) slowclk=0 again: no further change even if wdsel_out changes
+    slowclk   = 1'b0;
+    wdsel_out = 32'h2222_2222;
+
+    @(posedge clk);
+    exp_write(eff_wa(rc, wasel), wdsel_out, eff_we(slowclk, werf));
+
+    #1;
+    check_outputs();  // should remain 0x1010_1010
+
+    // B4) slowclk=1 again: should update to new wdsel_out
+    slowclk = 1'b1;
+
+    @(posedge clk);
+    exp_write(eff_wa(rc, wasel), wdsel_out, eff_we(slowclk, werf));
+
+    #1;
+    check_outputs();  // should become 0x2222_2222
+
+    // stop holding werf
+    werf = 1'b0;
+
+    // Also do a same-cycle write+read check demonstrating gating:
+    // slowclk=0 -> no update
+    slowclk = 1'b0;
+    write_read_same_cycle_check(5'd5, 32'hBBBB_0005, 1'b0);
+
+    // slowclk=1 -> update
+    slowclk = 1'b1;
+    write_read_same_cycle_check(5'd5, 32'hCCCC_0005, 1'b1);
+
+    $display("PASS: all regfile_unit tests completed (including slowclk gating).");
+    $finish;
+  end
+
+endmodule
+
+```
+
+Things to note:
+1. When `ra2sel` is high, we are reading from `rc` instead of `rb`
+2. When `wasel` is high, we are writing to `R30` instead of `rc`, so we need to read from `R30` in the next cycle to confirm that
+3. If `slowclk` is low, then no writing operation happens
+
+<img src="{{ site.baseurl }}//docs/Labs/verilog/images/lab6/2026-02-09-11-01-14.png"  class="center_seventy no-invert"/>
