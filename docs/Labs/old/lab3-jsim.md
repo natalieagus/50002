@@ -85,7 +85,7 @@ Design an **adder/subtractor** unit that operates on 32-bit two’s complement (
 It will be useful to generate three other output signals to be used by the comparison logic in Part B: 
 * `Z` which is true when the S outputs are all zero (i.e., `NOR(S) == 1 ? Z = 1 : Z = 0`)
 * `V` which is true when the addition operation overflows (i.e., the result is too large to be represented in 32 bits), and 
-* `N` which is true when the S is negative (i.e., `S31 == 1 ? N = 1 : N = 0`). 
+* `N` which is true when the S is negative (i.e., `S[31] == 1 ? N = 1 : N = 0`). 
 
 
 The following schematic is a big picture for how to go about the design:

@@ -141,7 +141,7 @@ For now there's no reason you need to compute stuffs like `x < 5` or `x > 250` i
 Implement an **adder/subtractor** unit that can add or subtract 32-bit two’s complement (**SIGNED**) inputs (`A[31:0]`, `B[31:0]`). It should generate a 35-bit output: (`S[31:0]`) **and**`Z`, `V`, `N` signals.  `A[31:0]` and `B[31:0]` are the 32-bit two’s complement (SIGNED) **input** operands and `S[31:0]` is the 32-bit signed **output**. `Z/V/N` are the three **other output** code bits described below: 
 * `Z` which is true when the S outputs are all zero (i.e., `NOR(S) == 1 ? Z = 1 : Z = 0`)
 * `V` which is true when the addition operation overflows (i.e., the result is too large to be represented in 32 bits), and 
-* `N` which is true when the S is negative (i.e., `S31 == 1 ? N = 1 : N = 0`). 
+* `N` which is true when the S is negative (i.e., `S[31] == 1 ? N = 1 : N = 0`). 
 
 `Z, V, N` will later be used by the **comparator** unit (read next section). The following diagram illustrates a suggested implementation of the 32-bit Adder/Subtractor Unit using a Ripple Carry Adder (RCA):
 
