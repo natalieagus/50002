@@ -481,60 +481,60 @@ Cache content after this access:  **`0x0043`**, `0x0012`, `0x0014`, `0x00AB`.
 Cache content after this access::  **`0x0012`**, `0x0014`, `0x00AB`, `0x0033`. 
 
 
-Now during the **second round**, `t=10` to `t=19`, we have the same 9 input sequences. Let's observe the result:
+Now during the **second round**, `t=9` to `t=17`, we have the same 9 input sequences. Let's observe the result:
 
-`At t=10: 0x0014` $$\rightarrow$$ `HIT` 
+`At t=9: 0x0014` $$\rightarrow$$ `HIT` 
 
-`At t=11: 0x0011` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0012`)
+`At t=10: 0x0011` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0012`)
 Cache content after this access::  **`0x0014`**, `0x00AB`, `0x0033`, `0x0011`. 
 
-`At t=12: 0x0022` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0014`)
+`At t=11: 0x0022` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0014`)
 Cache content after this access:  **`0x00AB`**, `0x0033`, `0x0011`, `0x0022`. 
 
-`At t=13: 0x0014`$$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x00AB`)
+`At t=12: 0x0014`$$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x00AB`)
 Cache content after this access:  **`0x0033`**, `0x0011`, `0x0022`, `0x0014`. 
 
-`At t=14: 0x0043`$$\rightarrow$$ `MISS` (and cached by replacing oldest entry:`0x0033`)
+`At t=13: 0x0043`$$\rightarrow$$ `MISS` (and cached by replacing oldest entry:`0x0033`)
 Cache content after this access:  **`0x0011`**, `0x0022`, `0x0014`, `0x0043`. 
 
-`At t=15: 0x0012` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0011`)
+`At t=14: 0x0012` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0011`)
 Cache content after this access:  **`0x0022`**, `0x0014`, `0x0043`, `0x0012`. 
 
-`At t=16: 0x0014`$$\rightarrow$$ `HIT` 
+`At t=15: 0x0014`$$\rightarrow$$ `HIT` 
 
-`At t=17: 0x00AB` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0022`)
+`At t=16: 0x00AB` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0022`)
 Cache content after this access:  **`0x0014`**, `0x0043`, `0x0012`, `0x00AB`. 
 
-`At t=18: 0x0033` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0014`)
+`At t=17: 0x0033` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0014`)
 Cache content after this access: **`0x0043`**, `0x0012`, `0x00AB`, `0x0033`. 
 
 
-Running the cache for **another round** (the third time) at `t=19` to `t=27` with the same 9 input sequences:
+Running the cache for **another round** (the third time) at `t=18` to `t=26` with the same 9 input sequences:
 
-`At t=19: 0x0014` $$\rightarrow$$  `MISS`  (and cached by replacing oldest entry:`0x0043`) 
+`At t=18: 0x0014` $$\rightarrow$$  `MISS`  (and cached by replacing oldest entry:`0x0043`) 
 Cache content after this access:  **`0x0012`**, `0x00AB`, `0x0033`, `0x0014`. 
 
-`At t=20: 0x0011` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0012`)
+`At t=19: 0x0011` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0012`)
 Cache content after this access:  **`0x00AB`**, `0x0033`, `0x0014`, `0x0011`. 
 
-`At t=21: 0x0022` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x00AB`)
+`At t=20: 0x0022` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x00AB`)
 Cache content after this access:  **`0x0033`**, `0x0014`, `0x0011`, `0x0022`. 
 
-`At t=22: 0x0014`$$\rightarrow$$ `HIT` 
+`At t=21: 0x0014`$$\rightarrow$$ `HIT` 
 
-`At t=23: 0x0043`$$\rightarrow$$ `MISS` (and cached by replacing oldest entry:`0x0033`)
+`At t=22: 0x0043`$$\rightarrow$$ `MISS` (and cached by replacing oldest entry:`0x0033`)
 Cache content after this access:  **`0x0014`**, `0x0011`, `0x0022`, `0x0043`. 
 
-`At t=24: 0x0012` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0014`)
+`At t=23: 0x0012` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0014`)
 Cache content after this access::  **`0x0011`**, `0x0022`, `0x0043`, `0x0012`. 
 
-`At t=25: 0x0014`$$\rightarrow$$  `MISS`  (and cached by replacing oldest entry:`0x0011`)
+`At t=24: 0x0014`$$\rightarrow$$  `MISS`  (and cached by replacing oldest entry:`0x0011`)
 Cache content after this access:  **`0x0022`**, `0x0043`, `0x0012`, `0x0014`. 
 
-`At t=26: 0x00AB` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0022`)
+`At t=25: 0x00AB` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0022`)
 Cache content after this access:  **`0x0043`**, `0x0012`, `0x0014`, `0x00AB`. 
 
-`At t=27: 0x0033` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0043`)
+`At t=26: 0x0033` $$\rightarrow$$ `MISS`  (and cached by replacing oldest entry:`0x0043`)
 Cache content after this access:  **`0x0012`**, `0x0014`, `0x00AB`, `0x0033`. 
 
 If we run it again for the *fourth* round, we will have the <span style="color:red; font-weight: bold;">same</span> `HIT` and `MISS` sequences as the *second* round. This implies that the result of running it for the *fifth* round will be identical to the *third* round.
