@@ -181,7 +181,7 @@ The figure below summarizes how NFET works as a "switch" that connects the load 
 	  - Note that $$V_{TH}$$ for PFET is *negative*.
 3.  When it is \"ON\", current can pass from S to D.
 	- Hole, its **majority** charge carrier flows from S to D. 
-		> We can say that its majority charge carrier is **drained** at D (same as NFE)
+		> We can say that its majority charge carrier is **drained** at D (same as NFET)
 	- The output of an PFET is also at the D terminal.
 	- Hence, the output of an \"ON\" p-type is `1`
 4.  It is "OFF" when $$V_{GS}$$ is **high**, as it encourages depletion region to form further.
