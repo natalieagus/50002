@@ -224,7 +224,7 @@ A simplified anatomy is shown below:
 
 You will meet this device [later on ](https://natalieagus.github.io/50002/notes/betacpu#detailed-anatomy-of-the-regfile).
 
-## D [Flip-Flop Timing Constraint](https://www.youtube.com/watch?v=HlizelEp4Yc&t=3458s)
+## [D Flip-Flop Timing Constraint](https://www.youtube.com/watch?v=HlizelEp4Yc&t=3458s)
 
 
 Recall that the *dynamic discipline* ($$T_{setup}$$ and $$T_{hold}$$) ensure that we do not end up storing invalid input signals. In the flip-flop configuration, we **connect** two D-latches together.   Hence the dynamic discipline for the slave latch has to be **obeyed** by the master latch because the *output* of the master latch is the *input* to the slave latch.
