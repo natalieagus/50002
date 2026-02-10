@@ -260,10 +260,10 @@ The Boolean equations are therefore:
 
 $$
 \begin{align}
-Y_0 &= \overline{A_1},\overline{A_0} \\
-Y_1 &= \overline{A_1},A_0 \\
-Y_2 &= A_1,\overline{A_0} \\
-Y_3 &= A_1,A_0
+Y_0 &= \overline{A_1} \cdot \overline{A_0} \\
+Y_1 &= \overline{A_1} \cdot A_0 \\
+Y_2 &= A_1 \cdot \overline{A_0} \\
+Y_3 &= A_1 \cdot A_0
 \end{align}
 $$
 
