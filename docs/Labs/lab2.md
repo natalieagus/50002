@@ -657,7 +657,7 @@ And test the addition logic:
 Implement the 2-to-1 MUX module:
 
 ```verilog
-module MUX2to1 (
+module mux2to1 (
     input data0,
     input data1,
     input s,
@@ -752,7 +752,7 @@ This is why `if` and `case` in a hardware description language ultimately become
 Now instantiate three 2-to-1 MUXes to create 4-to-1 MUX:
 
 ```verilog
-module MUX4to1 (
+module mux4to1 (
     input data0, 
     input data1, 
     input data2, 
