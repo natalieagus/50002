@@ -1905,3 +1905,403 @@ Things to note:
 3. If `slowclk` is low, then no writing operation happens
 
 <img src="{{ site.baseurl }}//docs/Labs/verilog/images/lab6/2026-02-09-11-01-14.png"  class="center_seventy no-invert"/>
+
+
+
+## Part C: CONTROL Unit
+### CONTROL Unit Schematic
+Here is the suggested **CONTROL** Unit schematic that you can implement. 
+
+<img src="/50002/assets/contentimage/lab4/controlunit.png"  class="center_seventy"/>
+
+Here's a suggested interface:
+
+
+```verilog
+module control_unit (
+    input  wire       clk,
+    input  wire       irq,
+    input  wire       z,
+    input  wire       rst,
+    input  wire [5:0] opcode,
+    input  wire       slowclk,
+    input  wire       ia31,
+    output reg  [2:0] pcsel,
+    output reg        wasel,
+    output reg        asel,
+    output reg        ra2sel,
+    output reg        bsel,
+    output reg  [5:0] alufn,
+    output reg  [1:0] wdsel,
+    output reg        werf,
+    output reg        wr
+);
+```
+
+### ROM
+The control logic should be tailored to generate the control signals your logic requires, which may differ from what’s shown in the diagram above. Here's a way to build such ROM in Verilog:
+
+```verilog
+module cu_rom (
+    input  wire [ 5:0] opcode,
+    output wire [16:0] cw
+);
+  reg [16:0] rom[0:63];
+
+  integer i;
+  initial begin
+    // default ILLOP for everything
+    for (i = 0; i < 64; i = i + 1) rom[i] = 17'b01110000000000010;
+
+    // override only the entries you listed
+    rom[6'h3E] = 17'b00000011000110110;  // SRAC
+    rom[6'h3D] = 17'b00000011000010110;  // SHRC
+    rom[6'h3C] = 17'b00000011000000110;  // SHLC
+    rom[6'h3A] = 17'b00000010101100110;  // XORC
+    rom[6'h39] = 17'b00000010111100110;  // ORC
+    rom[6'h38] = 17'b00000010110000110;  // ANDC
+    rom[6'h36] = 17'b00000011101110110;  // CMPLEC
+    rom[6'h35] = 17'b00000011101010110;  // CMPLTC
+    rom[6'h34] = 17'b00000011100110110;  // CMPEQC
+    rom[6'h31] = 17'b00000010000010110;  // SUBC
+    rom[6'h30] = 17'b00000010000000110;  // ADDC
+
+    rom[6'h2E] = 17'b00000001000110110;  // SRA
+    rom[6'h2D] = 17'b00000001000010110;  // SHR
+    rom[6'h2C] = 17'b00000001000000110;  // SHL
+    rom[6'h2A] = 17'b00000000101100110;  // XOR
+    rom[6'h29] = 17'b00000000111100110;  // OR
+    rom[6'h28] = 17'b00000000110000110;  // AND
+    rom[6'h26] = 17'b00000001101110110;  // CMPLE
+    rom[6'h25] = 17'b00000001101010110;  // CMPLT
+    rom[6'h24] = 17'b00000001100110110;  // CMPEQ
+    rom[6'h21] = 17'b00000000000010110;  // SUB
+    rom[6'h20] = 17'b00000000000000110;  // ADD
+
+    rom[6'h1F] = 17'b00001000110101010;  // LDR
+    rom[6'h1E] = 17'b00001000110100010;  // BNE
+    rom[6'h1D] = 17'b00001000110100010;  // BEQ
+    rom[6'h1B] = 17'b01001000110100010;  // JMP
+    rom[6'h19] = 17'b00000110000000001;  // ST
+    rom[6'h18] = 17'b00000010000001010;  // LD
+  end
+
+  assign cw = rom[opcode];
+endmodule
+```
+
+This module is purely combinational, accepting 6 bits OPCODE and producing 17 bits control signal.
+
+Some of the signals can connect directly to the appropriate logic, e.g., `ALUFN[5:0]` can connect **directly** to the **ALUFN** inputs of your **ALU**, however some signals like `PCSEL[2:0]` requires some degree of <span style="color:red; font-weight: bold;">post-processing</span> depending on the value of other signals like `Z`. 
+
+{:.warning}
+If you need to implement `MUL` or `DIV` in your Beta CPU, please modify the ROM yourself. 
+
+For this lab, further processing for control signals: `PCSEL, wasel, wdsel, werf, wr` are needed, let's do this. 
+
+### WR and WERF
+We do need to be careful with the write enable signal for main memory (WR) which needs to be **valid** even before the first instruction is fetched from memory. WR is an **input** to the main memory, and recall that ALL inputs need to be VALID (0 is also a valid value!) in order for the main memory to give a valid output data. You should include some additional logic that forces `wr` to `b0` when `reset is 1`. This takes <span class="orange-bold">highest</span> priority, hence it is written at the <span class="orange-bold">bottom</span> of the `always` block in `control_unit.luc`. 
+
+
+### Task 10: PCSEL 
+The PCSEL logic should take into account the presence of **branching** `BNE/BEQ` OPCODE, and output the correct signal depending on the value of `Z` if branching is indeed happening. Here's the related OPCODE and PCSEL value:
+
+
+OPCODE | Z | PCSEL
+---------|----------|---------
+BEQ `011101` | 0 | `000`
+BEQ `011101` | 1 | `001`
+BNE `011110` | 0 | `001`
+BNE `011110` | 1 | `000`
+
+If you are using **purely** a ROM-based implementation without additional logic (128 words in the ROM as opposed to just 64), you can make `Z` an additional address input to the ROM (**doubling** its size).  A better implementation shall use external logic to modify the value of the PCSEL signals as defined in our schematic above. 
+
+
+### Task 11: IRQ Handling
+When `IRQ` signal is 1 and the Beta is in “user mode” (PC31 is zero), an **interrupt** should occur.  Asserting `IRQ` should have NO effect when in “supervisor mode” (`PC31` is one).  You should add logic that causes the Beta to abort the current instruction and **save** the current **PC+4** in register `XP` (`11110`) and to set the PC to `0x80000008`.  
+
+In other words, an interrupt event forces the following control signals regardless of the current instruction:
+
+1.	PCSEL to `b100` (select `0x80000008` as the next `PC` value)
+2.	WASEL to `b1` (select `XP` as the register file write address)
+3.	WERF to `b1` (write into the register file)
+4.	WDSEL to `b00` (select `PC+4` as the data to be written into the register file)
+5.	WR to `b0` (this ensures that if the interrupted instruction was a `ST` that it doesn’t get to write into main memory).
+
+Note that you’ll also want to add logic to **reset** the Beta; at the very least when `reset` is asserted you’ll need to force the PC to `0x80000000` and ensure that `WR` is 0 (to prevent your initialized main memory from being overwritten).
+
+### Testbench
+
+You can run this tb:
+
+```verilog
+`timescale 1ns / 1ps
+
+module tb_control_unit;
+
+  // DUT inputs
+  reg        clk;
+  reg        irq;
+  reg        z;
+  reg        rst;
+  reg  [5:0] opcode;
+  reg        slowclk;
+  reg        ia31;
+
+  // DUT outputs
+  wire [2:0] pcsel;
+  wire       wasel;
+  wire       asel;
+  wire       ra2sel;
+  wire       bsel;
+  wire [5:0] alufn;
+  wire [1:0] wdsel;
+  wire       werf;
+  wire       wr;
+
+  // Instantiate DUT
+  control_unit dut (
+      .clk(clk),
+      .irq(irq),
+      .z(z),
+      .rst(rst),
+      .opcode(opcode),
+      .slowclk(slowclk),
+      .ia31(ia31),
+      .pcsel(pcsel),
+      .wasel(wasel),
+      .asel(asel),
+      .ra2sel(ra2sel),
+      .bsel(bsel),
+      .alufn(alufn),
+      .wdsel(wdsel),
+      .werf(werf),
+      .wr(wr)
+  );
+
+  // ==========
+  // Clocking
+  // ==========
+  initial clk = 1'b0;
+  always #5 clk = ~clk;
+
+  // ==========
+  // Helpers
+  // ==========
+  task tick;
+    begin
+      @(negedge clk);
+      @(posedge clk);
+      #1;
+    end
+  endtask
+
+  task apply_inputs;
+    input [5:0] op;
+    input z_in;
+    input irq_in;
+    input slow_in;
+    input ia31_in;
+    begin
+      opcode  = op;
+      z       = z_in;
+      irq     = irq_in;
+      slowclk = slow_in;
+      ia31    = ia31_in;
+      #1;
+    end
+  endtask
+
+  task fail;
+    input [255:0] msg;
+    begin
+      $display("FAIL: %0s", msg);
+      $stop;  // pause for debug
+      $finish;  // end if continued
+    end
+  endtask
+
+  task expect_ctrl;
+    input [2:0] exp_pcsel;
+    input exp_wasel;
+    input exp_asel;
+    input exp_ra2sel;
+    input exp_bsel;
+    input [5:0] exp_alufn;
+    input [1:0] exp_wdsel;
+    input exp_werf;
+    input exp_wr;
+    input [255:0] tag;
+    begin
+      if (pcsel !== exp_pcsel) begin
+        $display("FAIL %0s pcsel exp=%b got=%b", tag, exp_pcsel, pcsel);
+        fail("pcsel mismatch");
+      end
+      if (wasel !== exp_wasel) begin
+        $display("FAIL %0s wasel exp=%b got=%b", tag, exp_wasel, wasel);
+        fail("wasel mismatch");
+      end
+      if (asel !== exp_asel) begin
+        $display("FAIL %0s asel exp=%b got=%b", tag, exp_asel, asel);
+        fail("asel mismatch");
+      end
+      if (ra2sel !== exp_ra2sel) begin
+        $display("FAIL %0s ra2sel exp=%b got=%b", tag, exp_ra2sel, ra2sel);
+        fail("ra2sel mismatch");
+      end
+      if (bsel !== exp_bsel) begin
+        $display("FAIL %0s bsel exp=%b got=%b", tag, exp_bsel, bsel);
+        fail("bsel mismatch");
+      end
+      if (alufn !== exp_alufn) begin
+        $display("FAIL %0s alufn exp=%b got=%b", tag, exp_alufn, alufn);
+        fail("alufn mismatch");
+      end
+      if (wdsel !== exp_wdsel) begin
+        $display("FAIL %0s wdsel exp=%b got=%b", tag, exp_wdsel, wdsel);
+        fail("wdsel mismatch");
+      end
+      if (werf !== exp_werf) begin
+        $display("FAIL %0s werf exp=%b got=%b", tag, exp_werf, werf);
+        fail("werf mismatch");
+      end
+      if (wr !== exp_wr) begin
+        $display("FAIL %0s wr exp=%b got=%b", tag, exp_wr, wr);
+        fail("wr mismatch");
+      end
+    end
+  endtask
+
+  task expect_from_cw;
+    input [16:0] cw;
+    input [255:0] tag;
+    begin
+      expect_ctrl(cw[16:14], cw[13], cw[12], cw[11], cw[10], cw[9:4], cw[3:2], cw[1], cw[0], tag);
+    end
+  endtask
+
+  // temp storage for modified cw (declared at module scope: Verilog-2005 safe)
+  reg [16:0] cw_tmp;
+
+  // --------------------------------------------------------------------------
+  // Wave dump
+  // --------------------------------------------------------------------------
+  initial begin
+    $dumpfile("tb_control_unit.vcd");
+    $dumpvars(0, tb_control_unit);
+  end
+
+  // ==========
+  // Test sequence
+  // ==========
+  initial begin
+    // init
+    irq     = 1'b0;
+    z       = 1'b0;
+    rst     = 1'b1;
+    opcode  = 6'h00;
+    slowclk = 1'b0;
+    ia31    = 1'b0;
+
+    // release reset
+    tick;
+    rst = 1'b0;
+    #1;
+
+    // ----------------------------
+    // 1) Regular opcodes (no IRQ)
+    // ----------------------------
+    apply_inputs(6'h20, 1'b0, 1'b0, 1'b0, 1'b0);  // ADD
+    expect_from_cw(17'b00000000000000110, "ADD base");
+
+    apply_inputs(6'h21, 1'b0, 1'b0, 1'b0, 1'b0);  // SUB
+    expect_from_cw(17'b00000000000010110, "SUB base");
+
+    apply_inputs(6'h18, 1'b0, 1'b0, 1'b0, 1'b0);  // LD
+    expect_from_cw(17'b00000010000001010, "LD base");
+
+    apply_inputs(6'h19, 1'b0, 1'b0, 1'b0, 1'b0);  // ST
+    expect_from_cw(17'b00000110000000001, "ST base");
+
+    // ----------------------------
+    // 2) BEQ / BNE override via Z
+    // ----------------------------
+    // BEQ (0x1D) base = 00001000110100010, override pcsel->001 when z=1
+    apply_inputs(6'h1D, 1'b1, 1'b0, 1'b0, 1'b0);
+    cw_tmp = 17'b00001000110100010;
+    cw_tmp[16:14] = 3'b001;
+    expect_from_cw(cw_tmp, "BEQ z=1 override pcsel");
+
+    apply_inputs(6'h1D, 1'b0, 1'b0, 1'b0, 1'b0);
+    expect_from_cw(17'b00001000110100010, "BEQ z=0 base");
+
+    // BNE (0x1E) base = 00001000110100010, override pcsel->001 when z=0
+    apply_inputs(6'h1E, 1'b0, 1'b0, 1'b0, 1'b0);
+    cw_tmp = 17'b00001000110100010;
+    cw_tmp[16:14] = 3'b001;
+    expect_from_cw(cw_tmp, "BNE z=0 override pcsel");
+
+    apply_inputs(6'h1E, 1'b1, 1'b0, 1'b0, 1'b0);
+    expect_from_cw(17'b00001000110100010, "BNE z=1 base");
+
+    // ----------------------------
+    // 3) IRQ path
+    // ----------------------------
+    // latch irq_q=1
+    apply_inputs(6'h20, 1'b0, 1'b1, 1'b0, 1'b0);
+    tick;
+
+    // service when slowclk=1 and ia31=0
+    apply_inputs(6'h20, 1'b0, 1'b0, 1'b1, 1'b0);
+    #1;
+    if (pcsel !== 3'b100) fail("IRQ service pcsel not 100");
+    if (wasel !== 1'b1) fail("IRQ service wasel not 1");
+    if (werf !== 1'b1) fail("IRQ service werf not 1");
+    if (wdsel !== 2'b00) fail("IRQ service wdsel not 00");
+    if (wr !== 1'b0) fail("IRQ service wr not 0");
+
+    // next clock clears irq_q
+    tick;
+    apply_inputs(6'h20, 1'b0, 1'b0, 1'b0, 1'b0);
+    expect_from_cw(17'b00000000000000110, "Post-IRQ back to base");
+    // ----------------------------
+    // 3) IRQ should NOT service in kernel mode (ia31=1)
+    // ----------------------------
+    // Step A: latch irq_q=1
+    apply_inputs(6'h20, 1'b0, 1'b1, 1'b0, 1'b1);  // ia31=1 (kernel)
+    tick;
+
+    // Step B: even with slowclk=1, since ia31=1 it must NOT override
+    apply_inputs(6'h20, 1'b0, 1'b0, 1'b1, 1'b1);  // slowclk=1, still kernel
+    expect_from_cw(17'b00000000000000110, "IRQ pending but ia31=1: no override (ADD base)");
+
+    // Cleanup: go back to user mode and allow one service to clear irq_q
+    apply_inputs(6'h20, 1'b0, 1'b0, 1'b1, 1'b0);  // ia31=0, slowclk=1
+    #1;
+    if (pcsel !== 3'b100) fail("IRQ cleanup service pcsel not 100");
+    tick;  // clear irq_q via irq_d=0
+    // ----------------------------
+    // 5) ILLOP
+    // ----------------------------
+    apply_inputs(6'h00, 1'b0, 1'b0, 1'b0, 1'b0);
+    expect_from_cw(17'b01110000000000010, "ILLOP default 0x00");
+
+    apply_inputs(6'h3F, 1'b0, 1'b0, 1'b0, 1'b0);
+    expect_from_cw(17'b01110000000000010, "ILLOP 0x3F");
+
+    $display("ALL TESTS PASSED");
+    $finish;
+  end
+
+endmodule
+```
+
+And you shall have the following waveform. It tests:
+1. `BEQ`/`BNE` logic to select the right `PCSEL` with various value of `Z`
+2. Special cases: `ILLOP`, `IRQ` (`PCSEL` selects `XAddr`), `RESET`
+3. `IRQ` should not trigger interrupt when `ia31` is high
+4. Other regular instructions and ensuring `wr` is `0` when `RESET` is high
+
+<img src="{{ site.baseurl }}/docs/Labs/verilog/images/lab6/docs/Labs/verilog/images/lab6/2026-02-10-16-11-00.png.png"  class="center_seventy no-invert"/>
+
+Note that the CU unit is mostly combinational, except the `irq` sampler.
