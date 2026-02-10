@@ -177,7 +177,7 @@ But for the lab, it is more important that you see how to **construct** a 4:1 MU
 * **Second stage**: a final 2:1 MUX selects between those two intermediate results using `S1`
 
 
-<img src="{{ site.baseurl }}/docs/Labs/images/lab2/cs-2026-50002-4-to-1 MUX.drawio.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/lab2/cs-2026-50002-4-to-1 mux.drawio.png"  class="center_fifty"/>
 
 
 {:.note-title}
