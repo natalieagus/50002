@@ -765,9 +765,9 @@ Each test case is stored as **one record**, so alignment errors are impossible. 
 ### Matching Latency in the Tester
 
 Our registered adder has **registers** at **both** the inputs and the sum output. From the testbench’s point of view, this means:
-* At clock **edge** `k`: the testbench presents (a, b) and they get sampled into the input registers.
-* **During** cycle `k` to `k+1`: the combinational adder computes the sum.
-* At clock **edge** `k+1`: the result is captured into the output register.
+* At clock **edge** `k`: the testbench presents (a, b) and they are about to be sampled to the input registers (present at the `d` ports)
+* **During** cycle `k` to `k+1`: (a,b) are captured (sampled) into the input regs and the combinational adder computes the sum.
+* At clock **edge** `k+1`: the result is captured (sampled) into the output register.
 * At clock **edge** `k+2`: that result is visible and stable at the module’s s port.
 
 So the sum that you see at time `k+2` belongs to the inputs that were applied at time `k`. This diagram illustrates that:
