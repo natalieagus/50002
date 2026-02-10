@@ -13,11 +13,11 @@ nav_order:  2
 # Running Vivado on Apple Silicon mac
 {: .no_toc}
 
-As of early 2025, there's no officially supported way to run Vivado on Apple Silicon mac. We have managed to run **Vivado + Alchitry Lab V2 on Debian 12 + Rosetta**, running on UTM (virtual machines for Apple Silicon mac). This document shares how you can download the prepared image and run it using UTM. 
+As of early 2026, there's no officially supported way to run Vivado on Apple Silicon mac. We have managed to run **Vivado + Alchitry Lab V2 on Debian 12 + Rosetta**, running on UTM (virtual machines for Apple Silicon mac). This document shares how you can download the prepared image and run it using UTM. 
 
 
 ## System Requirement 
-Apple Silicon mac with least 8 GB of RAM and **280GB** of free space for both **downloading** and **unzipping** (final free space needed: 160GB). You can use an external SSD + thunderbolt connection for this, directly store the VM image for usage, no need to migrate it to your machine. 
+Apple Silicon mac with least 16 GB of RAM and **200GB** of free space for both **downloading** and **unzipping** (final free space needed: 140GB). You can use an external SSD + thunderbolt connection for this, directly store the VM image for usage, no need to migrate it to your machine. 
 
 {: .note}
 This method is tested on **M2 Max Mac Studio** and **15" M2 Macbook Air**. 
@@ -32,9 +32,9 @@ brew install --cask utm
 ```
 
 ### Download the VM Image 
-After that, [download the VM Image from here](https://sutdapac-my.sharepoint.com/:u:/g/personal/natalie_agus_sutd_edu_sg/ETc9Zr6Np4hBioSaB_ojFNEBcSYvuPXhBXLv_XUeNK6WZA?e=d0koOc)
+After that, [download the VM Image from here](https://sutdapac-my.sharepoint.com/:f:/g/personal/natalie_agus_sutd_edu_sg/IgCvF5fdaeAsSZpf0VFA_o5_ATzvnyHRygV-_eXPNAeptVU?e=CeySho)
 * You need to be <span className="orange-bold">signed in to your SUTD account</span> 
-* This image comes with Debian 12, Rosetta, Vivado 2023.2, Alchitry Labs 1.2.7 (legacy) and Alchitry Labs 2 pre-installed (current)
+* This image comes with Debian 12, Rosetta, Vivado 2025.2, Alchitry Labs V2 pre-installed (2.0.52 Beta)
 
 ### Unzip
 Then **unzip** the downloaded file, either using Finder or CLI: 
@@ -42,21 +42,16 @@ Then **unzip** the downloaded file, either using Finder or CLI:
 unzip <source.zip> -d <destination_directory>
 ```
 
-It is recommended that you **download** this to an external drive, and then unzip and store the unzipped `.utm` file to your computer. This process will take about **30-50 minutes** because the size of the image is huge (approx 130 GB). You might want to move it out of your Downloads folder and put it somewhere more practical. This image will contain all your virtual machine's data. 
+It is recommended that you **download** this to an external drive, and then unzip and store the unzipped `.utm` file to your computer. This process will take about **10-20 minutes** because the size of the image is rather large (approx 40GB). You might want to move it out of your Downloads folder and put it somewhere more practical. This image will contain all your virtual machine's data. 
 
 ### Start the VM
 Once done, open UTM and import the image. 
 
-<img src="{{ site.baseurl }}/docs/FPGA/images/fpga_applesilicon/shared-dir.png"  class="center_full no-invert"/>
-
-{: .warning}
-> Check that there are **TWO** drives: sized approx 64 GB and 80 GB respectively in your `.utm` file. Right click on your `.utm` file and click **Show package contents**. You should see the following under `Data/`: 
-> <img src="{{ site.baseurl }}/docs/FPGA/images/fpga_applesilicon/2024-03-18-17-47-02.png"  class="center_full no-invert"/>
+<img src="{{ site.baseurl }}//docs/FPGA/images/fpga_applesilicon/2026-02-10-09-30-19.png"  class="center_seventy no-invert"/>
 
 ### Share Directories with Host Machine 
 
-You can **share directories** with your mac (host machine) by setting the desired shared directory in your host machine here. In this example we use `Documents/alchitry-utm` in our host machine as shared directory: 
-<img src="{{ site.baseurl }}/docs/FPGA/images/fpga_applesilicon/shared-dir.png"  class="center_full no-invert"/>
+You can **share directories** with your mac (host machine) by setting the desired shared directory in your host machine. You can view the steps [here](https://docs.getutm.app/basics/basics/).
 
 Then in Debian (your VM), you can access this directory via the path `/media/share/DIRECTORY_NAME`, in this case it will be `/media/share/alchitry-utm`.
 
@@ -65,19 +60,21 @@ Then in Debian (your VM), you can access this directory via the path `/media/sha
 {:.important}
 Start the VM and login with the **password** **`debian`**. The `sudo` password is also `debian`.
 
-Ensure that your desktop looks like this. If it doesn't it means that what you have downloaded might be corrupted. Ensure you have enough space (280GB in total)!
+Ensure that your desktop looks like this. If it doesn't it means that what you have downloaded might be corrupted. 
 
 <img src="{{ site.baseurl }}/docs/FPGA/images/fpga_applesilicon/2024-03-25-17-35-03.png"  class="center_full no-invert"/>
 
 ### Launching Alchitry Labs 2
-You can start alchitry labs by opening terminal from the bottom menu of the desktop (press **command** if the dock isn't visible to show it, or the top left **activity** button). Then select Terminal from the dock:
+
+Upon login, a terminal window should automatically appear. If not, you can press the **CMD** button and select it from the dock, or via activities menu on the top left.
 
 
 <img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/fpga_applesilicon/2025-01-28-02-41-23.png"  class="center_thirty no-invert"/>
 
 <img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/fpga_applesilicon/2025-01-28-02-52-41.png"  class="center_seventy no-invert"/>
 
-and type `a2` command (an alias that launches the Alchitry Labs V2 binary). 
+
+You can start alchitry labs by typing the `a2` command (an [alias](#run-alchitry-labs-with-local-jre) that launches the Alchitry Labs V2 binary). 
 
 Key in `debian` as password when prompted.
 
@@ -101,11 +98,12 @@ Update the IDE to the latest version (whenever you download the VM). See [this](
 
 ## Loading .bin from your mac to Alchitry Au FPGA
 
+
 After **building** your code, you will need to load the binary to your FPGA. There's no USB passthrough with the VM (it's not the usual QEMU), so you will need to <span class="orange-bold">migrate</span> `PROJECT_PATH/build/alchitry_au.bin` to your host machine and flash it to your FPGA using [Alchitry Loader part of the Alchitry Labs IDE for Apple Silicon](https://alchitry.com/Alchitry-Labs-V2/download.html).
 
 If you have set up the [shared directory](#share-directories-with-host-machine) above, simply navigate to this location.
 
-### Install Alchitry Labs V2 in your mac
+### Install Alchitry Labs V2 in your host macOS
 
 From this link, [install](https://alchitry.com/alchitry-labs/) the Alchitry Labs V2 IDE. Follow the installation guide properly and open the app. Here's the important steps:
 This application does not prove its origin with a developer signature. To open it:
@@ -141,7 +139,7 @@ The VM image you download above comes with Alchitry Labs V2 `2.0.24`. It is **li
 
 
 
-Click the `Download.tar.gz` (not the .deb!):
+Click the `Download.tar.gz` (<span class="orange-bold">not</span> the .deb!):
 
 <img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/fpga_applesilicon/2025-01-28-02-19-04.png"  class="center_seventy no-invert"/>
 
@@ -161,8 +159,6 @@ You should see a new folder created corresponding to the version of the alchitry
 
 You can run Alchitry Labs as per normal using the command `a2`. It is an alias, defined in `~/.bashrc`.
 
-
-
 ```sh
 # ~/.bashrc
 alias a2='sudo java \
@@ -172,7 +168,7 @@ alias a2='sudo java \
 com.alchitry.labs2.GUIKt'
 ```
 
-> Note that you can't just run the binary listed under `/bin` because it will use the pre-bundled JRE. We aliased the command `a2` to run the `.jar` file with the local JRE:
+> Note that you can't just run the binary listed under `/bin` because it will use the pre-bundled JRE, and it causes some problems with Vivado 2025.2. Therefore we aliased the command `a2` to run the `.jar` file with the local JRE.
 
 {:.important}
 Ensure that in `~/Downloads` you have **deleted** the old alchitry labs directory and only has the most recent one
@@ -180,7 +176,7 @@ Ensure that in `~/Downloads` you have **deleted** the old alchitry labs director
 
 ### Updating Java Version
 
-The newest Alchitry Labs V2 requires Java 22 or newer at the time of this writing. The VM comes with Java 23. However, should it require newer version of Java, then you might need to upgrade your java version to run it. First, go to [Oracle website](docs/FPGA/images/Screenshot 2025-02-13 at 4.03.48 PM.png) and download the latest java:
+The newest Alchitry Labs V2 requires Java 22 or newer at the time of this writing. The VM comes with Java 22. However, should it require newer version of Java, then you might need to upgrade your java version to run it. First, go to [Oracle website](docs/FPGA/images/Screenshot 2025-02-13 at 4.03.48 PM.png) and download the latest java <span class="orange-bold">for x64 architecture</span> (not ARM64!):
 
 <img src="{{ site.baseurl }}/docs/FPGA/images/Screenshot 2025-02-13 at 4.03.48 PM.png"  class="center_seventy"/>
 
@@ -212,48 +208,30 @@ sudo update-alternatives --config java
 
 You’ll see a list of installed JDKs—choose the number corresponding to `/usr/lib/jvm/jdk-VERSION/bin/java`. 
 
+## Running Vivado
 
-<!-- 
-For some reason, you cannot use the pre-compiled Linux binary from the [**release**](https://github.com/alchitry/Alchitry-Labs-V2/releases) page (linux-amd64) because the JRE that comes with it just couldn't execute Vivado at 
+You can run Vivado directly in the VM using the command `vivado`:
 
-### Pull the latest changes 
-Alchitry Labs is **installed** on this directory: `/home/debian/Alchitry-Labs-V2`. Navigate there and run `git pull` to clone the latest change: 
+<img src="{{ site.baseurl }}//docs/FPGA/images/fpga_applesilicon/2026-02-10-09-39-13.png"  class="center_seventy no-invert"/>
 
+`vivado` is really just an alias to run Vivado binary using `sudo`:
+
+```bash
+# defined in bashrc
+alias vivado ="sudo ~/Xilinx/2025.2/Vivado/bin/vivado"
 ```
-cd /home/debian/Alchitry-Labs-V2
-git pull
-```
 
-### Merge Conflicts
-You might be met with some conflict as follows:
+### Open a Sample Project
 
-<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/fpga_applesilicon/2025-01-28-01-38-07.png"  class="center_seventy no-invert"/>
+You can open the given sample project `vivado-base-2025-2` located at `~/Desktop/2025.2`. This is a starter project provided to program the Alchitry Au FPGA, complete with the constraint file and demo code (it's basically the `io_demo_v1_pulldown` template):
 
-Open the file causing the conflict using `nano`:
+Opening the project should give you this window.
 
-`nano src/main/kotlin/com/alchitry/labs2/project/Locations.kt`
+<img src="{{ site.baseurl }}//docs/FPGA/images/fpga_applesilicon/2026-02-10-09-40-52.png"  class="center_seventy no-invert"/>
 
+You can try to Generate Bitstream (bottom left of the window) to compile the sources. After synthesis and implementation is completed, you should find the binary `alchitry.bin` under the directory `<PROJECT_DIR>/<PROJECT_NAME>.runs/impl_1/alchitry_top.bin`:
 
-Scroll down until you see some kind of conflict beginning with `>>>>>>` and ending with `<<<<<<`:
+<img src="{{ site.baseurl }}//docs/FPGA/images/fpga_applesilicon/2026-02-10-09-42-36.png"  class="center_seventy no-invert"/>
 
-<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/fpga_applesilicon/2025-01-28-01-40-59.png"  class="center_seventy no-invert"/>
+Migrate the `.bin` file to your host macOS and use [Alchitry Loader](#alchitry-loader) to load that to your FPGA.
 
-Edit them completely so the declarations above look like this:
-
-<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/fpga_applesilicon/2025-01-28-01-47-54.png"  class="center_seventy no-invert"/>
-
-Then, exit `nano` using `Ctrl + X`. 
-
-### Compile 
-Then run  `./gradlew clean createDistributable` to recompile the project. It should take 3-5 minutes. 
-
-You should see `BUILD SUCCESSFULL` message at the end:
-
-<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/fpga_applesilicon/2025-01-28-02-05-53.png"  class="center_seventy no-invert"/>
-
-### Run Alchitry Labs V2 
-
-Once compiled, you should be able to run Alchitry Labs V2 as per normal using the `a2` command. 
-
-{:.highlight}
-Contact Natalie if you found any issue(s) with the installation. -->
