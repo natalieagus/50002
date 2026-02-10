@@ -99,7 +99,7 @@ Once enabled, the shared folder appears as a **mounted** **drive** or network lo
 When possible, configure your virtual machine to **access a USB device** so you can load the binary to the FPGA after compilation. Search on Google (or other search engines) for the most updated guides. 
 
 #### x86: Installing Natively 
-We recommend you to install [Vivado ML Edition - 2023.2](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/archive.html). You are free to install the [latest](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2025-2.html) version too: Vivado 2024.2. 
+In this guide, we will demonstrate how to install [Vivado ML Edition - 2023.2](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/archive.html). You are free to install the [latest](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2025-2.html) version too: Vivado 2025.2. Both version works.
 
 {:.highlight}
 Please just choose one and just install one version.
@@ -107,6 +107,10 @@ Please just choose one and just install one version.
 This guide assumes you select Vivado ML Edition - 2023.2. It works the same for other newer versions too.
 
 #### Vivado ML Edition - 2023.2 
+
+{:.note}
+You are free to install the [latest](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2025-2.html) version too: Vivado 2025.2. Both version works. We are just using version 2023.2 as part of this guide.
+
 [Create an AMD account](https://www.amd.com/en/registration/create-account.html?custtarg=aHR0cHM6Ly9hY2NvdW50LmFtZC5jb20vZW4vcHJvZmlsZS5odG1s) first. 
 
 Then, download [Vivado ML Edition - 2023.2 self-extracting web installer](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/archive.html), select version from the left tab (Windows / Linux only). 
