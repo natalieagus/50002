@@ -220,8 +220,8 @@ The Boolean equations are:
 
 $$
 \begin{align}
-Y_0 &= \overline{A} & V \\
-Y_1 &= A & V
+Y_0 &= \overline{A} \cdot V \\
+Y_1 &= A \cdot V
 \end{align}
 $$
 
