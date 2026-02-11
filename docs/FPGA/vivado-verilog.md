@@ -16,7 +16,7 @@ nav_order:  3
 This guide is written for students who want to entirely skip using Alchitry Labs V2 and code their RTL in Verilog using Vivado (or other tools). You can use Verilog simulator like Icarus-Verilog to test and verify your code, and then turn to Vivado to compile the output.
 
 {:.note}
-Using Vivado is out of the syllabus, and we will not be giving you any tutorial on how to use it. This guide is meant exactly to generate a binary to be loaded to your Alchitry Au board.
+Using Vivado is out of the syllabus, and we will not be giving you any tutorial on how to use it. This guide is meant to give you enough starter code (constraints and top module) and steps to generate a binary to be loaded to your Alchitry Au board.
 
 
 ## Overview
