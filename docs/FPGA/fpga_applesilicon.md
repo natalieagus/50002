@@ -237,7 +237,9 @@ Migrate the `.bin` file to your host macOS and use [Alchitry Loader](#alchitry-l
 
 ### System Verilog vs Verilog
 
-Note that the starter project is written in System Verilog. The project can accept both System Verilog and Verilog modules, so you should have no problem implementing the modules in the Verilog version of the lab into this project.
+Note that the starter code in the project is written in System Verilog. The project **can** accept both System Verilog and Verilog modules, so you should have no problem implementing the modules in the Verilog version of the lab into this project.
+
+Read [this]({{ site.baseurl }}/fpga/fpga_vivado_verilog#creating-design-sources-in-verilog) guide for more info.
 
 ## VM Crash
 
