@@ -312,7 +312,7 @@ We can build this easily in Lucid, following this arrangement:
         dff value_b[SIZE](.clk(clk), .rst(rst), #INIT(0))
         dff value_s[SIZE](.clk(clk), .rst(rst), #INIT(0)) // optionally, you can set this to have SIZE + 1 bits to include cout. We omitted it for this lab
         
-        rca rca(#SIZE(8), .a(value_a.q), .b(value_b.q))
+        rca rca(#SIZE(8), .a(value_a.q), .b(value_b.q), .cin(0)) // edit the ports yourself to suit your rca's interface
 
         always {
             s = value_s.q
