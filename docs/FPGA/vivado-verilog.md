@@ -81,3 +81,315 @@ Find the synthesized binary and load it to your Alchitry Au FPGA:
 ## Create a New Vivado Project (From Scratch)
 
 This section is written to help you set up a new Vivado project if you can't open the starter project given because of version differences (you did not use 2025.2).
+
+First, create a new project:
+
+<img src="{{ site.baseurl }}//docs/FPGA/images/vivado-verilog/2026-02-11-14-09-30.png"  class="center_seventy no-invert"/>
+
+Click next, decide the project path:
+<img src="{{ site.baseurl }}//docs/FPGA/images/vivado-verilog/2026-02-11-14-10-17.png"  class="center_seventy no-invert"/>
+
+Select RTL project, click "do not specify sources at this time":
+
+<img src="{{ site.baseurl }}//docs/FPGA/images/vivado-verilog/2026-02-11-14-10-28.png"  class="center_seventy no-invert"/>
+
+Select the parts: `xc7a35tftg256-1`. This is our Artix-7 FPGA inside Alchitry Au:
+
+<img src="{{ site.baseurl }}//docs/FPGA/images/vivado-verilog/2026-02-11-14-11-28.png"  class="center_seventy no-invert"/>
+
+View the summary page then click Finish:
+
+<img src="{{ site.baseurl }}//docs/FPGA/images/vivado-verilog/2026-02-11-14-11-50.png"  class="center_seventy no-invert"/>
+
+You will now see this window:
+
+<img src="{{ site.baseurl }}//docs/FPGA/images/vivado-verilog/2026-02-11-14-12-10.png"  class="center_seventy no-invert"/>
+
+Pay attention to the sections highlighted in the screenshot above.
+
+### Create Constraint Files
+
+Click the + button under Sources pane, and select *Add or create constraints*:
+
+<img src="{{ site.baseurl }}//docs/FPGA/images/vivado-verilog/2026-02-11-14-14-03.png"  class="center_seventy no-invert"/>
+
+Then click Create File. Create 2 new files: `alchitry.xdc` and `au_props.xdc`. When done, click finish.
+
+<img src="{{ site.baseurl }}//docs/FPGA/images/vivado-verilog/2026-02-11-14-17-51.png"  class="center_seventy no-invert"/>
+
+Then open `alchitry.xdc` from the Sources pane, and paste [this](https://github.com/natalieagus/vivado-2025-2-starter-alchitry-au-v1-io-demo/blob/main/vivado-base-2025-2.srcs/constrs_1/imports/constraint/alchitry.xdc) content into it, and **save it**:
+
+<img src="{{ site.baseurl }}//docs/FPGA/images/vivado-verilog/2026-02-11-14-18-51.png"  class="center_seventy no-invert"/>
+
+Afterwards, open `au_props.xdc` and paste [this](https://github.com/natalieagus/vivado-2025-2-starter-alchitry-au-v1-io-demo/blob/main/vivado-base-2025-2.srcs/constrs_1/imports/constraint/au_props.xdc) content into it:
+
+<img src="{{ site.baseurl }}//docs/FPGA/images/vivado-verilog/2026-02-11-14-20-01.png"  class="center_seventy no-invert"/>
+
+
+### About Constraints
+In a Vivado project, the constraint file (XDC) is where you tell Vivado everything your RTL does **not** say:
+
+1. **How your top-level ports connect to the real FPGA package pins** (pinout)
+2. **What electrical standard each pin uses** (voltage, IO standard, pulls, drive, slew, etc.)
+3. **Timing intent** (what clock frequency you’re targeting, which clocks are unrelated, false paths, etc.)
+4. **Bitstream and configuration options** (how the FPGA will be programmed, SPI width, config rate, compression)
+
+If you don’t constrain these, Vivado will guess or leave defaults, and you get stuff like: wrong pins, wrong voltage standard, floating inputs, or timing that “passes” in a meaningless way. 
+
+Each of the section below explains the high-level understanding behind the lines you pasted into `au.xdc` and `alchitry.xdc`.
+#### Bitstream / configuration (how programming behaves)
+
+These affect how the `.bit` (and possibly `.bin`) is generated and how the FPGA config logic talks to the flash/programmer.
+
+```tcl
+set_property BITSTREAM.GENERAL.COMPRESS TRUE [current_design]
+```
+
+Compress the bitstream. Smaller file, faster to transfer sometimes. Slightly more decompression work during config (usually fine).
+
+```tcl
+set_property BITSTREAM.CONFIG.CONFIGRATE 66 [current_design]
+```
+
+Requested configuration clock rate (in MHz) used during configuration. Too aggressive can make config unreliable on some boards; board design matters.
+
+```tcl
+set_property CONFIG_VOLTAGE 3.3 [current_design]
+set_property CFGBVS VCCO [current_design]
+```
+
+These describe the configuration bank voltage environment. In plain terms: “assume config related IO is at 3.3 V, and the config bank voltage source is VCCO”. Helps ensure the bitstream/settings are consistent with the board’s voltage scheme.
+
+```tcl
+set_property BITSTREAM.CONFIG.SPI_32BIT_ADDR NO [current_design]
+set_property BITSTREAM.CONFIG.SPI_BUSWIDTH 2 [current_design]
+set_property BITSTREAM.CONFIG.SPI_FALL_EDGE YES [current_design]
+```
+
+SPI flash configuration behavior:
+
+* `SPI_BUSWIDTH 2`: use dual-SPI (2 data lines) during configuration.
+* `SPI_FALL_EDGE YES`: sample on falling edge (board/flash timing requirement).
+* `SPI_32BIT_ADDR NO`: use 24-bit addressing mode (relevant for larger flashes and how commands are emitted).
+
+#### Physical pin mapping + electrical standard (makes signals land on the right wires)
+
+This is the “your Verilog port named `clk` is physically on pin N14 and is a 3.3 V CMOS IO” part.
+
+```tcl
+set_property PACKAGE_PIN N14 [get_ports {clk}]
+set_property IOSTANDARD LVCMOS33 [get_ports {clk}]
+```
+
+* `PACKAGE_PIN N14` ties your `clk` port to the FPGA package ball/pin N14 (board-specific).
+* `IOSTANDARD LVCMOS33` says it’s a 3.3 V single-ended CMOS IO standard.
+
+Same idea for `rst_n`, `led[0]`, `usb_rx`, etc. 
+
+#### Timing constraints 
+
+```tcl
+create_clock -period 10.0 -name clk_0 -waveform {0.000 5.0} [get_ports clk]
+```
+
+Declares `clk` as a 100 MHz clock:
+
+* period 10 ns
+* waveform rising at 0, falling at 5 ns (50% duty)
+
+This is used by timing analysis, so that you can get a design that “builds” and does not fail on hardware.
+
+
+#### Input conditioning (avoid floating inputs)
+
+These matter a lot for switches/buttons because they can float and randomly toggle.
+
+Example:
+
+```tcl
+set_property PULLDOWN true [get_ports {io_button[0]}]
+```
+
+Enables an internal pulldown resistor on that FPGA input, so the signal defaults to 0 when the button/switch is open (assuming the board wiring matches that expectation). We set pulldowns on DIP and buttons, which is typical.
+
+
+### Create Design Sources
+
+This is where your verilog files live. Create a new design source called `alchitry_top.sv` (System Verilog). This is your top module.
+
+<img src="{{ site.baseurl }}//docs/FPGA/images/vivado-verilog/2026-02-11-14-31-13.png"  class="center_seventy no-invert"/>
+
+{:.note}
+You can use Verilog for your other modules, but for the top modules, we use SystemVerilog to support the 2D array `io_led` and `io_dip` defined in the constraint file. You can flatten it later in the later modules.
+
+You can define the ports now, or later in the script. In this example, we define just the `clk` port from the GUI:
+
+<img src="{{ site.baseurl }}//docs/FPGA/images/vivado-verilog/2026-02-11-14-32-30.png"  class="center_seventy no-invert"/>
+
+Once you have the following `alchitry_top.sv` file, add the remaining ports, as well as the default connections:
+
+```verilog
+module alchitry_top(
+    input clk,
+    input wire rst_n,
+    output reg [7:0] led,
+    input wire usb_rx,
+    output reg usb_tx,
+    output reg [2:0][7:0] io_led,
+    output reg [7:0] io_segment,
+    output reg [3:0] io_select,
+    input wire [4:0] io_button,
+    input wire [2:0][7:0] io_dip
+    );
+    
+    always @* begin
+        led = 8'h0;
+        usb_tx = usb_rx; 
+        io_led = {8'h0, 8'h0, 8'h0};
+        io_segment = 8'hff;
+        io_select = 4'hff;
+    end
+endmodule
+```
+
+<img src="{{ site.baseurl }}//docs/FPGA/images/vivado-verilog/2026-02-11-14-38-03.png"  class="center_seventy no-invert"/>
+
+### Generate Bitstream
+
+To test compile your RTL, go to the TCL Console and type the command:
+
+```bash
+set_property STEPS.WRITE_BITSTREAM.ARGS.BIN_FILE true [get_runs impl_1]
+```
+
+It tells Vivado to generate a `.bin` file in addition to the `.bit` file during the `write_bitstream` step of the `impl_1` implementation run.
+
+
+<img src="{{ site.baseurl }}//docs/FPGA/images/vivado-verilog/2026-02-11-14-39-23.png"  class="center_seventy no-invert"/>
+
+Press enter, and you should see the command taking effect:
+
+<img src="{{ site.baseurl }}//docs/FPGA/images/vivado-verilog/2026-02-11-14-40-34.png"  class="center_seventy no-invert"/>
+
+Finally, click the Generate Bitstream under Flow Navigator: Program and Debug, then press OK:
+
+<img src="{{ site.baseurl }}//docs/FPGA/images/vivado-verilog/2026-02-11-14-41-00.png"  class="center_seventy no-invert"/>
+
+You should see that Vivado is running to synthesize your design under Design Runs:
+
+<img src="{{ site.baseurl }}//docs/FPGA/images/vivado-verilog/2026-02-11-14-41-35.png"  class="center_seventy no-invert"/>
+
+Once completed, you should see this window. You can view the report if you want to.
+
+<img src="{{ site.baseurl }}//docs/FPGA/images/vivado-verilog/2026-02-11-14-43-34.png"  class="center_seventy no-invert"/>
+
+{:.note}
+If your design failed for whatever reason, open the Log tab and inspect.
+
+### Load `.bin` File to Alchitry Au
+
+The generated `alchitry.bin` file can be found under the directory `<PROJECT_DIR>/<PROJECT_NAME>.runs/impl_1/alchitry_top.bin`:
+
+<img src="{{ site.baseurl }}//docs/FPGA/images/fpga_applesilicon/2026-02-10-09-42-36.png"  class="center_seventy no-invert"/>
+
+Use Alchitry Labs to load the binary to your FPGA. If you don't have it yet, [install from here](https://alchitry.com/alchitry-labs/). When you open the app, switch to Alchitry Loader first: 
+
+<img src="{{ site.baseurl }}/docs/FPGA/images/fpga_applesilicon/2024-03-18-14-34-46.png"  class="center_full no-invert"/>
+
+Find the synthesized binary and load it to your Alchitry Au FPGA: 
+
+<img src="{{ site.baseurl }}//docs/FPGA/images/fpga_applesilicon/2024-10-07-11-22-40.png"  class="center_full no-invert"/>
+
+
+## Creating Design Sources in Verilog
+
+The top file `alchitry_top` is written in System Verilog, which has lots of upgrades like multi-dimensional ports. It is handy in our case, since `io_led` and `io_dip` are defined in the constraint files as multi-dimensional ports.
+
+Verilog (often “Verilog-2001/2005” in FPGA flows) is the *older* HDL. The labs are all written in Verilog for educational and simplicity purposes. Because of this, we need to "bridge" the top module with the verilog version.
+
+
+### Bridge Top Module
+Create another design source called `alchitry_top_verilog.v`:
+
+```verilog
+`timescale 1ns / 1ps
+
+module alchitry_top_verilog(
+    input        clk,
+    input        rst_n,
+    output reg [7:0] led,
+    input        usb_rx,
+    output reg   usb_tx,
+
+    // Flattened io_led[2:0][7:0] into 24 bits:
+    // [7:0]   = io_led[0]
+    // [15:8]  = io_led[1]
+    // [23:16] = io_led[2]
+    output reg [23:0] io_led_flat,
+
+    output reg [7:0]  io_segment,
+    output reg [3:0]  io_select,
+    input      [4:0]  io_button,
+
+    // Flattened io_dip[2:0][7:0] into 24 bits:
+    // [7:0]   = io_dip[0]
+    // [15:8]  = io_dip[1]
+    // [23:16] = io_dip[2]
+    input      [23:0] io_dip_flat
+);
+
+  always @* begin
+    led         = 8'h00;
+    usb_tx      = usb_rx;
+    io_led_flat = 24'h000000;
+    io_segment  = 8'hFF;
+    io_select   = 4'hF;
+  end
+
+endmodule
+```
+
+<img src="{{ site.baseurl }}//docs/FPGA/images/vivado-verilog/2026-02-11-14-50-10.png"  class="center_seventy no-invert"/>
+
+This is a bridging module that **flattens** the multi-dimensional ports `io_led` and `io_dip`.
+
+Then edit `alchitry_top.sv` to wrap over this module:
+
+```verilog
+module alchitry_top(
+    input  logic clk,
+    input  logic rst_n,
+    output logic [7:0] led,
+    input  logic usb_rx,
+    output logic usb_tx,
+    output logic [2:0][7:0] io_led,
+    output logic [7:0] io_segment,
+    output logic [3:0] io_select,
+    input  logic [4:0] io_button,
+    input  logic [2:0][7:0] io_dip
+);
+
+  // pack SV arrays into flat vectors for the Verilog-2005 module
+  wire [23:0] io_dip_flat = { io_dip[2], io_dip[1], io_dip[0] };
+  wire [23:0] io_led_flat;
+
+  // unpack flat vector back into SV array
+  assign { io_led[2], io_led[1], io_led[0] } = io_led_flat;
+
+  alchitry_top_verilog u_core (
+    .clk(clk),
+    .rst_n(rst_n),
+    .led(led),
+    .usb_rx(usb_rx),
+    .usb_tx(usb_tx),
+    .io_led_flat(io_led_flat),
+    .io_segment(io_segment),
+    .io_select(io_select),
+    .io_button(io_button),
+    .io_dip_flat(io_dip_flat)
+  );
+
+endmodule
+```
+
+Then from now onwards, you only modify `alchitry_top.v` and connect it with your datapath's top module accordingly, and leave the System Verilog `alchitry_top.sv` alone.

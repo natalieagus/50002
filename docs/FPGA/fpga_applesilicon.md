@@ -235,3 +235,27 @@ You can try to Generate Bitstream (bottom left of the window) to compile the sou
 
 Migrate the `.bin` file to your host macOS and use [Alchitry Loader](#alchitry-loader) to load that to your FPGA.
 
+### System Verilog vs Verilog
+
+Note that the starter project is written in System Verilog. The project can accept both System Verilog and Verilog modules, so you should have no problem implementing the modules in the Verilog version of the lab into this project.
+
+## VM Crash
+
+Sometimes the VM might crash for unknown reasons, and then when you restart, you are met with this screen:
+
+<img src="{{ site.baseurl }}//docs/FPGA/images/fpga_applesilicon/2026-02-11-14-06-33.png"  class="center_seventy no-invert"/>
+
+
+Simply type the command:
+
+```bash
+fsck /dev/vda2 -y
+```
+
+When it's done, reboot the system:
+ 
+```bash
+reboot -f
+```
+
+<img src="{{ site.baseurl }}//docs/FPGA/images/fpga_applesilicon/2026-02-11-14-07-35.png"  class="center_seventy no-invert"/>
