@@ -238,7 +238,7 @@ Head to [Appendix](#dff-timing-constraint) if you're interested to learn why.
 
 
 
-## [Sequential Logic Device Timing Constraint (t1 and t2)](https://www.youtube.com/watch?v=HlizelEp4Yc&t=2974s)
+## [Sequential Logic Device Timing Constraint (t1 and t2)](https://youtu.be/HlizelEp4Yc?si=OtkjqiYRpIDcVyRq&t=3903)
 We can integrate Flip-Flops into our circuits as 'synchronization' or 'memory' devices, ensuring stable output for at least one clock cycle. These can be placed either before or after any combinational logic circuit. To ensure reliable operation of such sequential logic circuits or devices, adherence to the **dynamic discipline** is crucial at all times. This discipline ensures that all parts of the circuit properly manage timing, charge, and signal integrity to function correctly.
 
 {: .warning}
