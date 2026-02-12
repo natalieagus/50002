@@ -58,11 +58,11 @@ To be exact, no other **general purpose microcontrollers**: **any programmable /
 
 **This means: No Arduino, ESP, Raspberry Pi, PIC , or equivalent microcontrollers that have *complex* microprocessors or capability to decode pre-programmed animations (or sound)**.
 
-### Usage of Selected Serial to Paralel Interface
+### Usage of Selected Serial to Parallel Interface
 
 You CAN use a selected **serial** to **parallel** **interface** to make your life easier, such as **74HC595**, **HUB75**, or *equivalent*. You **can also use** MAX7219 but with its decode functionality disabled. When in doubt, send your inquiries to our instructors.
 
-However, you **NEED** to write your own drivers to interface with these parallel or serial interfaces. We have some custom drivers written in LucidV2 under [this resource tab (look at the side bar)](/fpga/lucid-v2/intro).
+However, you **NEED** to write your own drivers to interface with these parallel or serial interfaces. We have some custom drivers written in LucidV2 under [this resource tab (look at the side bar)]({{ site.baseurl }}/fpga/lucid-v2/intro).
 
 You are **strongly encouraged** to use **basic** LEDs / LED strips / LED matrix as your **output**, and simple buttons or switches as your **input**. It is your choice to use more complex I/O devices: keyboard, mouse, VGA output, USB output, *but you are on your own (find your own resources, etc)*
 
