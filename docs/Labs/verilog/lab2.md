@@ -223,10 +223,10 @@ Here's the starter code:
 module rca#(
     parameter SIZE = 8 // bit-width
 )(
-  input  [N-1:0] a,
-  input  [N-1:0] b,
+  input  [SIZEN-1:0] a,
+  input  [SIZEN-1:0] b,
   input           ci,
-  output [N-1:0] s,
+  output [SIZEN-1:0] s,
   output          co
 )
 

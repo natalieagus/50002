@@ -55,93 +55,107 @@ We strongly suggest that the memory Unit is made physically *separated* into two
 {: .note}
 In practice, the *data* segment and the *instruction* segment are only **logically** segregated, so it would need to support two reads in a single cycle (for both data and instruction). They still share the same physical device we call **RAM**, but we implement them as two RAM blocks here to keep the Beta CPU wiring simple. For more details regarding 2R1W type of RAM and possible implementation in FPGA, see the [appendix](#unified-memory-model).
 
-Below is a sample implementation of the memory unit that can be used to alongside your Beta CPU. It utilises `simple_ram` and `simple_dual_port_ram` (see sections below) provided by Alchitry Labs' component library, which will utilise the BRAMs of the FPGA to implement the memory unit instead of using the limited LUTs. 
+Below is a sample implementation of the memory unit that can be used to alongside your Beta CPU. It utilises a simple rom
+(`firmware`) and `simple_dual_port_ram` (see sections below) provided by Alchitry Labs' component library, which will utilise the BRAMs of the FPGA to implement the memory unit instead of using the limited LUTs. 
 
 
 ```verilog
 // Byte-addressed inputs, word-aligned internally (addr >> 2)
 module memory_unit #(
     parameter integer WORDS = 16
-)(
-    input  wire clk,
+) (
+    input wire clk,
 
     // data memory (byte addressing expected)
     input  wire [$clog2(WORDS)+2-1:0] raddr,
     input  wire [$clog2(WORDS)+2-1:0] waddr,
-    input  wire [31:0]                wd,
+    input  wire [               31:0] wd,
     input  wire                       we,
-    output wire [31:0]                mrd,
+    output wire [               31:0] mrd,    // 1-cycle latency
 
     // instruction memory (byte addressing expected)
-    input  wire [$clog2(WORDS)+2-1:0] ia,
-    input  wire                       instruction_we,
-    input  wire [31:0]                instruction_wd,
-    output wire [31:0]                id
+    input wire [31:0] ia,
+    output wire [31:0] id,  // combinational
+    output wire [7:0] num_instr
 );
+
+
+  // instruction
+  firmware_rom u_firmware_rom (
+      .ia(ia),
+      .id(id),
+      .num_instr(num_instr)
+  );
+
 
   localparam integer AW = $clog2(WORDS);
 
   // Convert byte address -> word address by dropping low 2 bits
-  wire [AW-1:0] ia_word = ia[AW+1:2];
   wire [AW-1:0] ra_word = raddr[AW+1:2];
   wire [AW-1:0] wa_word = waddr[AW+1:2];
 
-  // Instruction memory: single-port RAM (sync read, 1-cycle latency)
-  simple_ram #(
-      .WIDTH(32),
-      .ENTRIES(WORDS)
-  ) instruction_memory (
-      .clk          (clk),
-      .address      (ia_word),
-      .read_data    (id),
-      .write_data   (instruction_wd),
-      .write_enable (instruction_we)
-  );
 
   // Data memory: dual-port RAM (sync read on rclk, write on wclk)
   simple_dual_port_ram #(
-      .WIDTH(32),
+      .WIDTH  (32),
       .ENTRIES(WORDS)
   ) data_memory (
-      .wclk         (clk),
-      .waddr        (wa_word),
-      .write_data   (wd),
-      .write_enable (we),
+      .wclk        (clk),
+      .waddr       (wa_word),
+      .write_data  (wd),
+      .write_enable(we),
 
-      .rclk         (clk),
-      .raddr        (ra_word),
-      .read_data    (mrd)
+      .rclk     (clk),
+      .raddr    (ra_word),
+      .read_data(mrd)
   );
 
 endmodule
+
 ```
 
 
 
 ### Instruction Memory
 
-The instruction memory is implemented using the `simple_ram` component from Alchitry Labs, code featured in [Appendix](#simple_ramv).
+The instruction memory can be implemented as a ROM since it's supposed to be read-only. You can create submodule `firmware` and load different instructions in it based on the `ia` given. 
 
-* `read_data` outputs the value of the entry pointed to by `address` in the <span style="color:red; font-weight: bold;">previous</span> clock cycle. If you want to read address `EA`, you set `address = EA_word` and wait one FPGA clock cycle for `Mem[EA]` to show up.
-* If you read and write the **same** address, then:
+Note that this module is implemented as combinational logic so it is not ideal if you have large number of instructions. If you have larger number of instructions then you need synchronous ROM (implemented as BRAM) and clock it with a signal that's twice as fast as the beta cpu clock. We will address this in the later sections.
 
-  * on the next cycle you will see the **old** value at `read_data`, and
-  * one cycle later you will see the **newly written** value at `read_data`.
-
-Since we never need to **write** to instruction memory *during program execution*, we normally keep `instruction_we = 0`. However, the port is provided so that we can load programs into instruction memory during testing.
-
-The interface is:
 
 ```verilog
-// for instruction memory (byte addressing expected)
-input  ia[$clog2(WORDS)+2],
-input  instruction_we,
-input  instruction_wd[32],
-output id[32]
+`timescale 1ns / 1ps
+
+// ------------------------------------------------------------
+// Firmware ROM (BYTE-addressed)
+// memory_unit expects byte addresses, word-aligned internally.
+// So we case on ia byte addresses: 0x000,0x004,0x008,0x00C,0x010...
+// ------------------------------------------------------------
+module firmware_rom (
+    input wire [31:0] ia,  // byte address
+    output reg [31:0] id,
+    output wire [7:0] num_instr
+);
+  assign num_instr = 8'd5;
+  always @(*) begin
+    id = 32'h00000000;  // default (ILLOP / NOP depending on your ISA)
+
+    // Strict word-aligned fetch by masking low 2 bits
+    // This makes ia=0x...1/2/3 behave like ia=0x...0 (typical).
+    case ({
+      ia[31:2], 2'b00
+    })
+      32'h00000000: id = 32'hC03F0003;  // 0x000 ADDC(R31, 3, R1) --- main
+      32'h00000004: id = 32'h90410800;  // 0x004 CMPEQ(R1, R1, R2)
+      32'h00000008: id = 32'h643F0020;  // 0x008 ST(R1, 32, R31)
+      32'h0000000C: id = 32'h607F0020;  // 0x00C LD(R31, 32, R3)
+      32'h00000010: id = 32'h7BE3FFFB;  // 0x010 BNE(R3, main, R31)
+      default:      id = 32'h00000000;
+    endcase
+  end
+endmodule
 ```
 
-{:.important}
-`id` outputs the value of the entry pointed to by `ia` in the **previous** clock cycle. Also, if you read and write the same address `ia` and hold `ia`, the first clock cycle the address will be written, the second clock cycle the old value will be output on `id`, and on the third clock cycle the newly updated value will be output on `id`.
 
 ### Data Memory
 
@@ -220,7 +234,7 @@ module tb_memory_unit;
   // Params
   // --------------------------------------------------------------------------
   localparam integer WORDS = 16;
-  localparam integer AWB = $clog2(WORDS) + 2;  // byte-address width
+  localparam integer AWB = $clog2(WORDS) + 2;  // byte-address width for data mem ports
 
   // --------------------------------------------------------------------------
   // DUT I/O
@@ -233,10 +247,9 @@ module tb_memory_unit;
   reg            we;
   wire [   31:0] mrd;
 
-  reg  [AWB-1:0] ia;
-  reg            instruction_we;
-  reg  [   31:0] instruction_wd;
+  reg  [   31:0] ia;  // instruction addr is now 32-bit
   wire [   31:0] id;
+  wire [    7:0] num_instr;
 
   // --------------------------------------------------------------------------
   // Instantiate DUT
@@ -252,10 +265,9 @@ module tb_memory_unit;
       .we   (we),
       .mrd  (mrd),
 
-      .ia            (ia),
-      .instruction_we(instruction_we),
-      .instruction_wd(instruction_wd),
-      .id            (id)
+      .ia       (ia),
+      .id       (id),
+      .num_instr(num_instr)
   );
 
   // --------------------------------------------------------------------------
@@ -278,7 +290,13 @@ module tb_memory_unit;
   task tick;
     begin
       @(posedge clk);
-      #1;  // small delay for signals to settle
+      #1;  // small delay for sync RAM outputs to settle
+    end
+  endtask
+
+  task settle;
+    begin
+      #1;  // for combinational ROM settle
     end
   endtask
 
@@ -289,7 +307,6 @@ module tb_memory_unit;
     end
   endtask
 
-  // Simple "assert equal" helper
   task assert_eq32(input [31:0] got, input [31:0] exp, input [1023:0] what);
     begin
       if (got !== exp) begin
@@ -300,25 +317,17 @@ module tb_memory_unit;
     end
   endtask
 
-  task instr_write(input [31:0] byte_addr, input [31:0] data);
+  task assert_eq8(input [7:0] got, input [7:0] exp, input [1023:0] what);
     begin
-      ia             = byte_addr[AWB-1:0];
-      instruction_wd = data;
-      instruction_we = 1'b1;
-      tick();
-      instruction_we = 1'b0;
+      if (got !== exp) begin
+        $display("  got = 0x%02h", got);
+        $display("  exp = 0x%02h", exp);
+        tb_fatal(what);
+      end
     end
   endtask
 
-  // Sets ia, ticks once (read occurs), then checks id (which updates on that tick)
-  task instr_read_check(input [31:0] byte_addr, input [31:0] exp);
-    begin
-      ia = byte_addr[AWB-1:0];
-      tick();  // id <= mem[ia_word] at this edge
-      assert_eq32(id, exp, {"instr read @", hex32(byte_addr), " (word-aligned)"});
-    end
-  endtask
-
+  // Data memory helpers (sync read)
   task data_write(input [31:0] byte_addr, input [31:0] data);
     begin
       waddr = byte_addr[AWB-1:0];
@@ -332,15 +341,24 @@ module tb_memory_unit;
   task data_read_check(input [31:0] byte_addr, input [31:0] exp);
     begin
       raddr = byte_addr[AWB-1:0];
-      tick();  // mrd <= mem[raddr_word] at this edge
+      tick();  // mrd updates on posedge
       assert_eq32(mrd, exp, {"data read @", hex32(byte_addr), " (word-aligned)"});
     end
   endtask
 
-  // Format helper: return 8-hex string for messages
+  // Instruction ROM helper (combinational read)
+  // Your firmware_rom masks low 2 bits via {ia[31:2],2'b00}, so alignment works.
+  task instr_read_check(input [31:0] byte_addr, input [31:0] exp);
+    begin
+      ia = byte_addr;
+      settle();  // combinational settle
+      assert_eq32(id, exp, {"instr read @", hex32(byte_addr), " (masked to word boundary)"});
+    end
+  endtask
+
+  // Format helper: "0x" + 8 hex digits
   function [8*10-1:0] hex32(input [31:0] x);
     begin
-      // "0x" + 8 hex digits = 10 chars
       hex32 = {
         "0x",
         nyb(x[31:28]),
@@ -378,45 +396,38 @@ module tb_memory_unit;
     end
   endfunction
 
-
-  function [AWB-1:0] trunc_addr(input [31:0] x);
-    begin
-      trunc_addr = x[AWB-1:0];
-    end
-  endfunction
-
   // --------------------------------------------------------------------------
   // Stimulus + Asserts
   // --------------------------------------------------------------------------
   initial begin
     // init inputs
-    raddr          = {AWB{1'b0}};
-    waddr          = {AWB{1'b0}};
-    wd             = 32'h0;
-    we             = 1'b0;
+    raddr = {AWB{1'b0}};
+    waddr = {AWB{1'b0}};
+    wd    = 32'h0;
+    we    = 1'b0;
+    ia    = 32'h0;
 
-    ia             = {AWB{1'b0}};
-    instruction_we = 1'b0;
-    instruction_wd = 32'h0;
-
-    // idle cycles (first reads likely X unless RAM init elsewhere)
-    tick();
+    // Give one tick so sync RAM isn't X purely from time 0 races
     tick();
 
     // ------------------------------------------------------------------------
-    // Instruction memory: write then read back (word-aligned)
+    // Instruction ROM: check firmware contents + alignment behavior
     // ------------------------------------------------------------------------
-    instr_write(32'h0000_0000, 32'h1111_0000);
-    instr_write(32'h0000_0004, 32'h2222_0001);
-    instr_write(32'h0000_0008, 32'h3333_0002);
+    assert_eq8(num_instr, 8'd5, "num_instr should be 5");
 
-    instr_read_check(32'h0000_0000, 32'h1111_0000);
-    instr_read_check(32'h0000_0004, 32'h2222_0001);
-    instr_read_check(32'h0000_0008, 32'h3333_0002);
+    instr_read_check(32'h0000_0000, 32'hC03F0003);
+    instr_read_check(32'h0000_0004, 32'h90410800);
+    instr_read_check(32'h0000_0008, 32'h643F0020);
+    instr_read_check(32'h0000_000C, 32'h607F0020);
+    instr_read_check(32'h0000_0010, 32'h7BE3FFFB);
 
-    // Word-alignment: 0x0,0x1,0x2,0x3 all map to word 0
-    instr_read_check(32'h0000_0001, 32'h1111_0000);
-    instr_read_check(32'h0000_0003, 32'h1111_0000);
+    // Word-alignment masking: 0x0,0x1,0x2,0x3 all map to 0x0
+    instr_read_check(32'h0000_0001, 32'hC03F0003);
+    instr_read_check(32'h0000_0002, 32'hC03F0003);
+    instr_read_check(32'h0000_0003, 32'hC03F0003);
+
+    // Default case
+    instr_read_check(32'h0000_0040, 32'h0000_0000);
 
     // ------------------------------------------------------------------------
     // Data memory: write then read back (word-aligned)
@@ -431,17 +442,20 @@ module tb_memory_unit;
     data_read_check(32'h0000_000E, 32'hAAAA_0003);
 
     // ------------------------------------------------------------------------
-    // Fun: drive BOTH instruction + data read addresses together
-    // (They are independent RAMs here, so both should work in parallel.)
+    // Parallel: ROM read + data read together
+    // ROM is combinational, data is sync
     // ------------------------------------------------------------------------
-    ia    = trunc_addr(32'h0000_0004);
-    raddr = trunc_addr(32'h0000_0010);
+    ia    = 32'h0000_0004;  // ROM should show immediately after settle
+    raddr = 32'h0000_0010;  // auto-trunc to AWB bits
+
+    settle();
+    assert_eq32(id, 32'h90410800, "parallel: id should be instr @ 0x4");
+
     tick();
-    assert_eq32(id, 32'h2222_0001, "parallel read: id should be instr word 1");
-    assert_eq32(mrd, 32'hBBBB_0004, "parallel read: mrd should be data word 4");
+    assert_eq32(mrd, 32'hBBBB_0004, "parallel: mrd should be data word 4");
 
     // ------------------------------------------------------------------------
-    // Another write/read quick check
+    // Another quick data check
     // ------------------------------------------------------------------------
     data_write(32'h0000_0014, 32'hCCCC_0005);  // word 5
     data_read_check(32'h0000_0014, 32'hCCCC_0005);
@@ -456,15 +470,13 @@ endmodule
 
 And you will obtain the following waveform:
 
-<img src="{{ site.baseurl }}//docs/Labs/verilog/images/lab6/2026-02-05-10-28-52.png"  class="center_full no-invert"/>
+<img src="{{ site.baseurl }}//docs/Labs/verilog/images/lab6/2026-02-12-13-53-24.png"  class="center_seventy no-invert"/>
 
 Few things to note:
 1. Read data comes out one cycle later after address `ia`/`raddr`/`waddr` is given
-2. From 0 to 55000 ps, `id` is `x` because we are technically "reading" from them as we are writing to them in each cycle here.
-3. Writing to instruction memory / data memory is only done when `instruction_we` or `we` is high
-4. Data memory was initially "empty" (giving out `x`)
-5. We started writing to data memory from 95000 ps onwards, on address `0x0C` and `0x10` as `we` is high
-6. Memory data is able to produce what's written from 125000 ps onwards, based on read address given by `raddr`
+2. Writing to data memory is only done when  or `we` is high
+3. Data memory was initially "empty" (giving out `x`)
+4. Memory data is able to produce what's written, based on read address given by `raddr`
 
 
 ## Appendix
@@ -2305,3 +2317,306 @@ And you shall have the following waveform. It tests:
 <img src="{{ site.baseurl }}/docs/Labs/verilog/images/lab6/docs/Labs/verilog/images/lab6/2026-02-10-16-11-00.png.png"  class="center_seventy no-invert"/>
 
 Note that the CU unit is mostly combinational, except the `irq` sampler.
+
+
+## Part D: Assemble Completed Beta
+
+### Task 12
+
+The complete schematic of the Beta is as follows (you might want to open this image in another tab and zoom in):
+
+<img src="/50002/assets/contentimage/beta/beta.png"  class="center_seventy"/>
+
+This is a suggested interface:
+
+```verilog
+module beta_cpu (
+    input         clk,
+    input         slowclk,
+    input         rst,
+    input         irq,
+    input  [31:0] instruction,
+    input  [31:0] mem_data_input,
+    output [31:0] ia,
+    output [31:0] mem_data_address,
+    output [31:0] mem_data_output,
+    output        wr,
+    output [15:0] debug_0,
+    output [15:0] debug_1,
+    output [15:0] debug_2,
+    output [15:0] debug_3
+);
+```
+
+
+### ALU + WDSEL Unit
+This unit is fairly straightforward to implement.  
+
+### ALU+WDSEL Unit Schematic
+Here is the suggested **ALU + WDSEL** Unit schematic that we implemented: 
+
+<img src="/50002/assets/contentimage/lab4/aluwdselunit.png"  class="center_seventy"/>
+
+
+### ASEL and BSEL Mux
+
+The low-order 16 bits of the instruction need to be **sign**-extended to 32 bits as an input to the BSEL MUX.  You have done sign extension before in Lab 2. Consult Lab 2 handout if you have forgotten how to do so. 
+
+Also, **Bit 31** of the branch-offset input to the ASEL MUX should be set to `0`. This means that the supervisor bit is **ignored** when doing address arithmetic for the `LDR` instruction.
+
+
+### WDSEL Mux
+**Bit 31** of the PC+4 input to the **WDSEL** MUX should connect to the highest bit of the PC Reg output, `ia31`, saving the current value of the supervisor whenever the value of the PC is saved by a branch instruction or trap.  This is already handled in the PC unit. You don't need to do anything else here.
+
+### Connect Debug Signals 
+
+It is really hard to debug your FPGA and it takes a long time to compile your Verilog code. As such, it always helps to create additional debug output so that we can "inspect" the content of each crucial component in the Beta CPU during each instruction execution when confirming the process in hardware.
+
+Therefore, we proposed the 4 debug ports which you can connect to allow the top module to "view" the following:
+
+```verilog
+  assign debug_0          = pcsel_out[15:0];
+  assign debug_1          = asel_out[15:0];
+  assign debug_2          = bsel_out[15:0];
+  assign debug_3          = wdsel_out[15:0];
+```
+
+### Testbench
+
+```verilog
+`timescale 1ns / 1ps
+
+module tb_beta_cpu;
+
+  // -----------------------------
+  // DUT inputs
+  // -----------------------------
+  reg         clk;
+  reg         slowclk;
+  reg         rst;
+  reg         irq;
+  reg  [31:0] instruction;
+  reg  [31:0] mem_data_input;
+
+  // -----------------------------
+  // DUT outputs
+  // -----------------------------
+  wire [31:0] ia;
+  wire [31:0] mem_data_address;
+  wire [31:0] mem_data_output;
+  wire        wr;
+
+  wire [15:0] debug_0;
+  wire [15:0] debug_1;
+  wire [15:0] debug_2;
+  wire [15:0] debug_3;
+
+  // -----------------------------
+  // Instantiate DUT
+  // -----------------------------
+  beta_cpu dut (
+      .clk             (clk),
+      .slowclk         (slowclk),
+      .rst             (rst),
+      .irq             (irq),
+      .instruction     (instruction),
+      .mem_data_input  (mem_data_input),
+      .ia              (ia),
+      .mem_data_address(mem_data_address),
+      .mem_data_output (mem_data_output),
+      .wr              (wr),
+      .debug_0         (debug_0),
+      .debug_1         (debug_1),
+      .debug_2         (debug_2),
+      .debug_3         (debug_3)
+  );
+
+  // -----------------------------
+  // Helpers (Verilog-2005 friendly)
+  // -----------------------------
+  task tick_clock;
+    begin
+      clk = 1'b0;
+      #1;
+      clk = 1'b1;
+      #1;
+    end
+  endtask
+
+  task assert_eq32;
+    input [31:0] got;
+    input [31:0] exp;
+    input [1023:0] msg;
+    begin
+      if (got !== exp) begin
+        $display("ASSERT FAIL: %s | got=0x%08h exp=0x%08h (t=%0t)", msg, got, exp, $time);
+        $finish;
+      end
+    end
+  endtask
+
+  task assert_eq1;
+    input got;
+    input exp;
+    input [1023:0] msg;
+    begin
+      if (got !== exp) begin
+        $display("ASSERT FAIL: %s | got=%b exp=%b (t=%0t)", msg, got, exp, $time);
+        $finish;
+      end
+    end
+  endtask
+
+
+  // --------------------------------------------------------------------------
+  // Wave dump
+  // --------------------------------------------------------------------------
+  initial begin
+    $dumpfile("tb_beta_cpu.vcd");
+    $dumpvars(0, tb_beta_cpu);
+  end
+
+  // -----------------------------
+  // Test sequence
+  // -----------------------------
+  initial begin
+    // init
+    clk = 1'b0;
+    irq = 1'b0;
+    slowclk = 1'b1;
+    rst = 1'b0;
+    instruction = 32'h00000000;
+    mem_data_input = 32'h00000000;
+
+    // -------------------------
+    // test rst
+    // -------------------------
+    rst = 1'b1;
+    instruction = 32'hC03F0003;  // ADDC(R31, 3, R1)
+    mem_data_input = 32'h00000000;
+    tick_clock();
+
+    assert_eq32(ia, 32'h80000000, "rst: ia should be 0x80000000");
+    assert_eq1(wr, 1'b0, "rst: wr should be 0");
+    $display("PASS: rst");
+
+    // -------------------------
+    // regular pc+4 after rst
+    // -------------------------
+    rst = 1'b0;
+    instruction = 32'hC03F0003;  // ADDC(R31, 3, R1)
+    tick_clock();
+
+    assert_eq32(ia, 32'h80000004, "ADDC: ia should be pc+4");
+    assert_eq32(mem_data_address, 32'h00000003, "ADDC: alu_out (mem_data_address) should be 3");
+    $display("PASS: regular pc+4 instruction (ADDC)");
+
+    // -------------------------
+    // JMP to clear the pc31 bit
+    // at this point, R1 = 3
+    // -------------------------
+    instruction = 32'h6FE10000;  // JMP(R1)
+    tick_clock();
+
+    assert_eq32(ia, 32'h00000000, "JMP: ia should be 0x00000000 (LSBs protected)");
+    $display("PASS: JMP to clear pc31");
+
+    // -------------------------
+    // Type 1 instruction
+    // at this point, R1 = 3
+    // -------------------------
+    instruction = 32'h80010800;  // ADD(R1, R1, R0)
+    tick_clock();
+
+    assert_eq32(ia, 32'h00000004, "ADD: ia should be pc+4");
+    assert_eq32(mem_data_address, 32'h00000006, "ADD: alu_out should be 6 (3+3)");
+    $display("PASS: Type 1 instruction ADD");
+
+    // -------------------------
+    // Branch
+    // -------------------------
+    instruction = 32'h753F0001;  // BEQ(R31, to pc 12, R9)
+    tick_clock();
+
+    assert_eq32(ia, 32'd12, "BEQ: ia should branch to 12");
+    $display("PASS: BEQ to address");
+
+    // -------------------------
+    // Store to address 32 in Memory
+    // at this point, R9 = 8
+    // -------------------------
+    instruction = 32'h653F0020;  // ST(R9, 32, R31)
+    tick_clock();
+
+    assert_eq32(ia, 32'd16, "ST: ia should be pc+4 (16)");
+    assert_eq32(mem_data_address, 32'd32, "ST: mem_data_address should be 32");
+    assert_eq32(mem_data_output, 32'd8, "ST: mem_data_output should be 8");
+    $display("PASS: ST R9 to Mem[32]");
+
+    // -------------------------
+    // test ILLOP
+    // -------------------------
+    instruction = 32'h00000000;
+    tick_clock();
+
+    assert_eq32(ia, 32'h80000004, "ILLOP: ia should go to 0x80000004");
+    $display("PASS: ILLOP");
+
+    // -------------------------
+    // test IRQ (fail)
+    // -------------------------
+    instruction = 32'h80010800;  // ADD(R1, R1, R0)
+    tick_clock();
+
+    irq = 1'b1;
+    tick_clock();
+
+    assert_eq32(ia, 32'h8000000C, "IRQ fail-case: ia should be 0x8000000C");
+    $display("PASS: IRQ when pc31 not triggered");
+
+    // -------------------------
+    // test IRQ (success)
+    // at this point, R1 = 3
+    // -------------------------
+    instruction = 32'h6FE10000;  // JMP(R1)
+    tick_clock();  // clears ia31 bit
+
+    irq = 1'b1;
+    tick_clock();
+
+    assert_eq32(ia, 32'h80000008, "IRQ success-case: ia should be 0x80000008");
+    $display("PASS: IRQ successful after clearing pc31");
+
+    // -------------------------
+    // test LD
+    // -------------------------
+    instruction = 32'h605F0014;  // LD(R31, Mem[20], R2)
+    mem_data_input = 32'd55;  // assume Mem[20] = 55
+    tick_clock();
+
+    // Dummy instruction to route R2 somewhere observable
+    instruction = 32'h83FF1000;
+    tick_clock();
+
+    assert_eq32(ia, 32'h80000010, "LD: ia should be 0x80000010 after dummy step");
+    assert_eq32(mem_data_address, 32'd55,
+                "LD: mem_data_address should reflect 55 in this test expectation");
+    $display("PASS: LD");
+
+    $display("ALL TESTS PASSED");
+    $finish;
+  end
+
+endmodule
+```  
+
+When successfully run, it will print the following message and produce the following waveform:
+
+<img src="{{ site.baseurl }}//docs/Labs/verilog/images/lab6/2026-02-12-11-17-45.png"  class="center_seventy no-invert"/>
+
+## The Motherboard
+
+Our final job is to now connect the Memory Unit and the Beta CPU together, and run the series of instructions. We need to first load the instructions into the instruction memory, and then let the Beta CPU run as long as `slowclk` is high.
+
+
+

@@ -817,7 +817,7 @@ Similarly, pick the switch and LEDs to test your MUX and decoder logic. You can 
 
 ```verilog
     // in alchitry_top
-    MUX4to1 m
+    mux4to1 m
     decoder2to4 d
 
     ...
@@ -891,19 +891,19 @@ Explore the component library before trying to re-invent the wheel yourself.
 The following statements are NOT equivalent:
 
 ```verilog
- MUX2to1.s[1:0] = 2x{s0}
- MUX2to1.s[1:0] = s0 
+ mux2to1.s[1:0] = 2x{s0}
+ mux2to1.s[1:0] = s0 
 ```
 
 The first one assigned `s0` to BOTH `s` ports. The second one is trying to drive a 2-bit slice with a 1-bit signal, i.e. it is a <span class="orange-bold">width-mismatched assignment</span>.
-* `MUX2to1.s[1:0] = 2x{s0}` explicitly builds a 2-bit bus `{s0, s0}` and assigns it to `s[1:0]`. Both instances see `s0`.
-* `MUX2to1.s[1:0] = s0` presents a 1-bit value on the right, but the left is 2 bits wide. In HDL this does **NOT** mean “replicate `s0` twice.” The compiler will treat it as an invalid assignment with incompatible widths and try to fix it automatically padding it with more *zeroes*, because it expects the right-hand side to be 2 bits wide.
+* `mux2to1.s[1:0] = 2x{s0}` explicitly builds a 2-bit bus `{s0, s0}` and assigns it to `s[1:0]`. Both instances see `s0`.
+* `mux2to1.s[1:0] = s0` presents a 1-bit value on the right, but the left is 2 bits wide. In HDL this does **NOT** mean “replicate `s0` twice.” The compiler will treat it as an invalid assignment with incompatible widths and try to fix it automatically padding it with more *zeroes*, because it expects the right-hand side to be 2 bits wide.
 
 This is why you need to always **MATCH** signal width assignments. Otherwise, try not to be fancy and write each assignment out without selectors:
 
 ```verilog
-MUX2to1.s[0] = s0
-MUX2to1.s[1] = s0
+mux2to1.s[0] = s0
+mux2to1.s[1] = s0
 ```
 
 **Consult** Lab 1 if needed to recap about width mismatch.
