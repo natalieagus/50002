@@ -1138,7 +1138,7 @@ Finally, connect your FPGA and load the binary. If you load the sample code abov
 
 
 {:.warning}
-While you technically can skip Alchitry Labs entirely and use Vivado directly to generate the bitstream, the steps are more involved. You can refer to [this](tbc) guide instead.
+While you technically can skip Alchitry Labs entirely and use Vivado directly to generate the bitstream, the steps are more involved[. You can refer to [this]() guide instead.]({{ site.baseurl }}/fpga/fpga_vivado_verilog)
 
 
 ## Processing Button Presses

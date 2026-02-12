@@ -142,19 +142,23 @@ module firmware_rom (
 
     // Strict word-aligned fetch by masking low 2 bits
     // This makes ia=0x...1/2/3 behave like ia=0x...0 (typical).
+    // ignore the PC31
     case ({
-      ia[31:2], 2'b00
+      ia[30:2], 2'b00
     })
-      32'h00000000: id = 32'hC03F0003;  // 0x000 ADDC(R31, 3, R1) --- main
-      32'h00000004: id = 32'h90410800;  // 0x004 CMPEQ(R1, R1, R2)
-      32'h00000008: id = 32'h643F0020;  // 0x008 ST(R1, 32, R31)
-      32'h0000000C: id = 32'h607F0020;  // 0x00C LD(R31, 32, R3)
-      32'h00000010: id = 32'h7BE3FFFB;  // 0x010 BNE(R3, main, R31)
+      31'h00000000: id = 32'hC03F0003;  // 0x000 ADDC(R31, 3, R1) --- main
+      31'h00000004: id = 32'h90410800;  // 0x004 CMPEQ(R1, R1, R2)
+      31'h00000008: id = 32'h643F0020;  // 0x008 ST(R1, 32, R31)
+      31'h0000000C: id = 32'h607F0020;  // 0x00C LD(R31, 32, R3)
+      31'h00000010: id = 32'h7BE3FFFB;  // 0x010 BNE(R3, main, R31)
       default:      id = 32'h00000000;
     endcase
   end
 endmodule
 ```
+
+{:.note}
+For the `case` inside the `firmware`, we ignore `ia31` (`PC31`), which is the Beta CPU's status bit.
 
 
 ### Data Memory
@@ -478,292 +482,6 @@ Few things to note:
 3. Data memory was initially "empty" (giving out `x`)
 4. Memory data is able to produce what's written, based on read address given by `raddr`
 
-
-## Appendix
-
-
-### Unified Memory Model 
-
-In practice, the **instruction memory** and **data memory** are only **logically** segregated. Architecturally, the CPU treats them as separate spaces because they serve different purposes, but physically they can reside in the **same RAM device**.
-
-What the CPU actually requires in a single cycle is:
-
-* **one instruction fetch** (read),
-* **one data load** (read), and
-* **optionally one data store** (write).
-
-{:.highlight}
-This access pattern corresponds to a **2-read, 1-write (2R1W)** memory.
-
-
-### Physical Realisation on FPGA
-
-Most FPGA block RAMs natively support at most **two ports**. A true 2R1W memory is therefore *not* directly available as a single primitive. In practice, FPGA designs implement this behaviour using one of the following techniques:
-
-1. **Separate instruction and data memories** (what we do): Instruction memory and data memory are instantiated as two independent RAM blocks. This is simple to reason about and is commonly used in teaching designs.
-
-2. **Replicated memory**: Two identical copies of the same memory are created. This technique provides the illusion of a single unified memory with two independent read ports and one write port.
-   * one copy services the **instruction read port**, and
-   * the other copy services the **data read port**.
-   * Any **write** operation updates **both copies**, ensuring that the two read ports always observe consistent memory contents.
-
-
-Below is a sample implementation for method (2):
-
-```verilog
-// Unified RAM: 2 read ports (ia + raddr) and 1 write port (waddr)
-// Byte-addressed inputs, word-aligned internally (addr >> 2)
-//
-// Implementation: replicated RAM for the two read ports.
-// Any write updates BOTH copies so both reads see the same memory contents.
-module memory_unit_2r1w #(
-    parameter integer WORDS = 16
-)(
-    input  wire clk,
-
-    // instruction fetch (byte addressing expected)
-    input  wire [$clog2(WORDS)+2-1:0] ia,
-    output reg  [31:0]                id,
-
-    // data read (byte addressing expected)
-    input  wire [$clog2(WORDS)+2-1:0] raddr,
-    output reg  [31:0]                mrd,
-
-    // data write (byte addressing expected)
-    input  wire [$clog2(WORDS)+2-1:0] waddr,
-    input  wire [31:0]                wd,
-    input  wire                       we
-);
-
-  localparam integer AW = $clog2(WORDS);
-
-  wire [AW-1:0] ia_word = ia[AW+1:2];
-  wire [AW-1:0] ra_word = raddr[AW+1:2];
-  wire [AW-1:0] wa_word = waddr[AW+1:2];
-
-  // Two identical copies to get two independent synchronous read ports
-  // Tells synthesis tool to implement this array as block RAM (BRAM) instead of flip-flops (LUT RAM)
-  (* ram_style = "block" *) reg [31:0] mem_i [0:WORDS-1]; // for instruction read
-  (* ram_style = "block" *) reg [31:0] mem_d [0:WORDS-1]; // for data read
-
-  integer k;
-  initial begin
-    // Optional: init to 0 for simulation friendliness
-    for (k = 0; k < WORDS; k = k + 1) begin
-      mem_i[k] = 32'h0;
-      mem_d[k] = 32'h0;
-    end
-  end
-
-  always @(posedge clk) begin
-    // synchronous reads (1-cycle latency)
-    id  <= mem_i[ia_word];
-    mrd <= mem_d[ra_word];
-
-    // write updates BOTH copies
-    if (we) begin
-      mem_i[wa_word] <= wd;
-      mem_d[wa_word] <= wd;
-    end
-  end
-
-endmodule
-```
-
-Note that if you use this construct, then the addresses used in `LD`, `ST` and `LDR` instruction would differ from when you use the separated instruction-data construct.
-
-### Timing Semantics
-
-All memory accesses are **synchronous**:
-
-* Read data is returned in the <span style="color:red; font-weight: bold;">next</span> clock cycle.
-* Write data is committed at the **end of the current cycle** if the write enable is asserted.
-
-As a result:
-
-* Instruction fetch and data load addresses are presented in cycle *N*.
-* The corresponding values become visible in cycle *N+1*.
-
-
-### Addressing Convention (Byte Address In, Word-Aligned)
-
-The memory unit accepts **byte addresses** at its interface, but stores data internally as **32-bit words**. Therefore, the memory is **word-aligned**:
-
-* The lowest two bits of every address (`addr[1:0]`) are ignored.
-* The internal word index is effectively `addr >> 2`.
-
-This is implemented by slicing the address as follows:
-
-```verilog
-addr_word = addr[$clog2(WORDS)+2-1 : 2];
-```
-
-Consequences:
-
-* Addresses that differ only in the lowest two bits map to the same word.
-* Unaligned byte or halfword accesses are not supported and are implicitly forced to the nearest aligned word.
-
-{: .note}
-A strictly byte-addressable memory could be implemented by storing 8-bit entries and assembling 32-bit words in logic, but this would significantly complicate the design. For the Beta CPU, a word-aligned memory provides a cleaner and more instructive model.
-
-
-
-### `simple_ram.v`
-
-```verilog
-/******************************************************************************
-
-   The MIT License (MIT)
-
-   Copyright (c) 2026 Alchitry
-
-   Permission is hereby granted, free of charge, to any person obtaining a copy
-   of this software and associated documentation files (the "Software"), to deal
-   in the Software without restriction, including without limitation the rights
-   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-   copies of the Software, and to permit persons to whom the Software is
-   furnished to do so, subject to the following conditions:
-
-   The above copyright notice and this permission notice shall be included in
-   all copies or substantial portions of the Software.
-
-   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-   THE SOFTWARE.
-
-   *****************************************************************************
-
-   This module is a simple single port RAM. This RAM is implemented in such a
-   way that the tools will recognize it as a RAM and implement large
-   instances in block RAM instead of flip-flops.
-
-   The parameter WIDTH is used to specify the word size. That is the size of
-   each entry in the RAM.
-
-   The parameter ENTRIES is used to specify how many entries are in the RAM.
-
-   read_data outputs the value of the entry pointed to by address in the previous
-   clock cycle. That means to read address 10, you would set address to be 10
-   and wait one cycle for its value to show up. The RAM is always reading whatever
-   address is. If you don't need to read, just ignore this value.
-
-   To write, set write_enable to 1, write_data to the value to write,
-   and address to the address you want to write.
-
-   If you read and write the same address, the first clock cycle the address will
-   be written, the second clock cycle the old value will be output on read_data,
-   and on the third clock cycle the newly updated value will be output on
-   read_data.
-*/
-
-module simple_ram #(
-    parameter WIDTH = 1,                  // size of each entry
-    parameter ENTRIES = 1                 // number of entries
-  )(
-    input clk,                            // clock
-    input [$clog2(ENTRIES)-1:0] address,  // address to read or write
-    output reg [WIDTH-1:0] read_data,     // data read
-    input [WIDTH-1:0] write_data,         // data to write
-    input write_enable                    // write enable (1 = write)
-  );
-
-  reg [WIDTH-1:0] ram [ENTRIES-1:0];      // memory array
-
-  always @(posedge clk) begin
-    read_data <= ram[address];            // read the entry
-
-    if (write_enable)                     // if we need to write
-      ram[address] <= write_data;         // update that value
-  end
-
-endmodule
-```
-
-### `simple_dual_port_ram.v`
-
-
-```verilog
-/******************************************************************************
-
-   The MIT License (MIT)
-
-   Copyright (c) 2026 Alchitry
-
-   Permission is hereby granted, free of charge, to any person obtaining a copy
-   of this software and associated documentation files (the "Software"), to deal
-   in the Software without restriction, including without limitation the rights
-   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-   copies of the Software, and to permit persons to whom the Software is
-   furnished to do so, subject to the following conditions:
-
-   The above copyright notice and this permission notice shall be included in
-   all copies or substantial portions of the Software.
-
-   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-   THE SOFTWARE.
-
-   *****************************************************************************
-
-   This module is a simple dual port RAM. This RAM is implemented in such a
-   way that Xilinx's tools will recognize it as a RAM and implement large
-   instances in block RAM instead of flip-flops.
-
-   The parameter WIDTH is used to specify the word size. That is the size of
-   each entry in the RAM.
-
-   The parameter ENTRIES is used to specify how many entries are in the RAM.
-
-   read_data outputs the value of the entry pointed to by raddr in the previous
-   clock cycle. That means to read address 10, you would set address to be 10
-   and wait one cycle for its value to show up. The RAM is always reading whatever
-   address is. If you don't need to read, just ignore this value.
-
-   To write, set write_enable to 1, write_data to the value to write, and waddr to
-   the address you want to write.
-
-   You should avoid reading and writing to the same address simultaneously. The
-   value read in this case is undefined.
-*/
-module simple_dual_port_ram #(
-    parameter WIDTH = 8,                // size of each entry
-    parameter ENTRIES = 8               // number of entries
-  )(
-    // write interface
-    input wclk,                         // write clock
-    input [$clog2(ENTRIES)-1:0] waddr,  // write address
-    input [WIDTH-1:0] write_data,       // write data
-    input write_enable,                 // write enable (1 = write)
-    
-    // read interface
-    input rclk,                         // read clock
-    input [$clog2(ENTRIES)-1:0] raddr,  // read address
-    output reg [WIDTH-1:0] read_data    // read data
-  );
-  
-  reg [WIDTH-1:0] mem [ENTRIES-1:0];    // memory array
-  
-  // write clock domain
-  always @(posedge wclk) begin
-    if (write_enable)                   // if write enable
-      mem[waddr] <= write_data;         // write memory
-  end
-  
-  // read clock domain
-  always @(posedge rclk) begin
-    read_data <= mem[raddr];            // read memory
-  end
-  
-endmodule
-```
 
 
 
@@ -2618,5 +2336,1038 @@ When successfully run, it will print the following message and produce the follo
 
 Our final job is to now connect the Memory Unit and the Beta CPU together, and run the series of instructions. We need to first load the instructions into the instruction memory, and then let the Beta CPU run as long as `slowclk` is high.
 
+### MMIO
+
+We can also support a little bit of IO, in particular, MMIO style (memory-mapped IO) where the motherboard decides whether the Beta CPU reads from an input reg or Memory Unit, and write to an output reg or Memory Unit based on the address given at `mem_data_address` port.
+
+In particular:
+1. `0x000F000`: output reg (write)
+2. `0x000E000`: input reg (read)
+
+### Implementation
+
+Here's a simple implementation of the motherboard, complete with MMIO.
+
+```verilog
+module motherboard #(
+    parameter integer WORDS = 64
+) (
+    input wire clk,
+    input wire rst,
+    input wire irq,
+    input wire slowclk, // pulse of slow clock
+
+    // input device reg
+    input wire [31:0] in_reg,
+
+    // output device reg
+    output wire [31:0] out_reg,
+
+    output wire [31:0] id_out,
+    output wire [31:0] ia_out,
+    output wire [31:0] ea_out,   // EA
+    output wire [31:0] mrd_out,  // mem[EA]
+    output wire [31:0] mwd_out,
+
+    output wire [15:0] pcsel_out,
+    output wire [15:0] asel_out,
+    output wire [15:0] bsel_out,
+    output wire [15:0] wdsel_out
+);
+
+  // cpu wires
+  wire [31:0] id;
+  wire [31:0] mem_data_input = is_mmio_in ? mmio_in_q : mrd;
+  wire [31:0] ia;
+  wire [31:0] mem_data_address;
+  wire [31:0] mem_data_output;
+  wire        wr;
+  wire [15:0] debug_0;
+  wire [15:0] debug_1;
+  wire [15:0] debug_2;
+  wire [15:0] debug_3;
+
+  // memory unit wires
+  wire        we = wr & ~is_mmio_out;
+  wire [31:0] mrd;
+
+  // mmio decode
+  wire        is_mmio_out = (mem_data_address == 32'h000F0000);
+  wire        is_mmio_in = (mem_data_address == 32'h000E0000);
+
+  // mmio wires
+  wire [31:0] mmio_out_q;
+  wire [31:0] mmio_in_q;
+
+  wire        mmio_out_we = wr & is_mmio_out;
+
+  // mmio regs
+  // output device
+  register #(
+      .W(32),
+      .RESET_VALUE(0)
+  ) u_mmio_out (
+      .clk(clk),
+      .rst(rst),
+      .en (mmio_out_we),
+      .d  (mem_data_output),
+      .q  (mmio_out_q)
+  );
+  // input device
+  // written to only when interrupt is high
+  // store on interrupt
+  // can only be read one cycle later
+  register #(
+      .W(32),
+      .RESET_VALUE(0)
+  ) u_mmio_in (
+      .clk(clk),
+      .rst(rst),
+      .en (irq),
+      .d  (in_reg),
+      .q  (mmio_in_q)
+  );
+
+
+
+  beta_cpu u_beta_cpu (
+      .clk(clk),
+      .slowclk(slowclk),
+      .rst(rst),
+      .irq(irq),
+      .id(id),
+      .mem_data_input(mem_data_input),
+      .ia(ia),
+      .mem_data_address(mem_data_address),
+      .mem_data_output(mem_data_output),
+      .wr(wr),
+      .debug_0(debug_0),
+      .debug_1(debug_1),
+      .debug_2(debug_2),
+      .debug_3(debug_3)
+  );
+
+
+  reg i_we;
+
+  memory_unit #(
+      .WORDS(WORDS)
+  ) memory_unit (
+      .clk(clk),
+      .raddr(mem_data_address),
+      .waddr(mem_data_address),
+      .wd(mem_data_output),
+      .we(we),
+      .mrd(mrd),
+      .ia(ia),
+      .id(id)
+  );
+
+
+
+  // output signals
+  assign out_reg = mmio_out_q;
+
+  assign id_out = id;
+  assign ia_out = ia;
+  assign ea_out = mem_data_address;  // EA
+  assign mrd_out = mrd;  // mem[EA]
+  assign mwd_out = mem_data_output;
+
+  assign pcsel_out = debug_0;
+  assign asel_out = debug_1;
+  assign bsel_out = debug_2;
+  assign wdsel_out = debug_3;
+
+endmodule
+```
+
+### `clk` Requirements
+
+`write` requires two clock cycles, so any `ST` cannot be immediately followed by `LD` in the next `clk` cycle. The easiest way to do this is to ensure that `slowclk` signal is at least four times slower than original `clk` cycle, to allow time for the memory unit to latch and store, should we have instructions of `LD` immediately after `ST`.
+
+This is also useful if BRAM firmware is used, where instruction read is no longer combinational (it becomes sequential with 1 `clk` cycle latency). See [this](#using-bram-for-firmware) section.
+
+### Testbench
+
+This simple tb generates the waveform based on the current instructions given:
+
+```verilog
+`timescale 1ns / 1ps
+
+module tb_motherboard;
+
+  localparam integer WORDS = 64;
+
+  // ------------------------------------------------------------
+  // DUT inputs
+  // ------------------------------------------------------------
+  reg         clk;
+  reg         rst;
+  reg         irq;
+  reg         slowclk;
+  reg  [31:0] in_reg;
+
+  // ------------------------------------------------------------
+  // DUT outputs
+  // ------------------------------------------------------------
+  wire [31:0] out_reg;
+
+  wire [31:0] id_out;
+  wire [31:0] ia_out;
+  wire [31:0] ea_out;
+  wire [31:0] mrd_out;
+  wire [31:0] mwd_out;
+
+  wire [15:0] pcsel_out;
+  wire [15:0] asel_out;
+  wire [15:0] bsel_out;
+  wire [15:0] wdsel_out;
+
+  // ------------------------------------------------------------
+  // Instantiate DUT
+  // ------------------------------------------------------------
+  motherboard #(
+      .WORDS(WORDS)
+  ) dut (
+      .clk(clk),
+      .rst(rst),
+      .irq(irq),
+      .slowclk(slowclk),
+
+      .in_reg (in_reg),
+      .out_reg(out_reg),
+
+      .id_out (id_out),
+      .ia_out (ia_out),
+      .ea_out (ea_out),
+      .mrd_out(mrd_out),
+      .mwd_out(mwd_out),
+
+      .pcsel_out(pcsel_out),
+      .asel_out (asel_out),
+      .bsel_out (bsel_out),
+      .wdsel_out(wdsel_out)
+  );
+
+  // ------------------------------------------------------------
+  // Clock: 100 MHz
+  // ------------------------------------------------------------
+  initial clk = 1'b0;
+  always #5 clk = ~clk;
+
+  // ------------------------------------------------------------
+  // slowclk: 1-cycle pulse every 4 clk cycles
+  // e.g. high on cycles 4,8,12,... for one clk each time
+  // ------------------------------------------------------------
+  reg [1:0] scnt;
+  always @(posedge clk) begin
+    if (rst) begin
+      scnt    <= 2'd0;
+      slowclk <= 1'b0;
+    end else begin
+      scnt <= scnt + 2'd1;
+      slowclk <= (scnt == 2'd3);  // 1-cycle pulse
+    end
+  end
+
+  // ------------------------------------------------------------
+  // Wave dump
+  // ------------------------------------------------------------
+  initial begin
+    $dumpfile("tb_motherboard.vcd");
+    $dumpvars(0, tb_motherboard);
+  end
+
+  // ------------------------------------------------------------
+  // Stimulus
+  // ------------------------------------------------------------
+  initial begin
+    // init
+    rst    = 1'b1;
+    irq    = 1'b0;
+    in_reg = 32'h0000_0000;
+
+    // hold reset a few cycles
+    repeat (4) @(posedge clk);
+    rst = 1'b0;
+
+    // let CPU "manual advance" via slowclk pulses
+    repeat (20) @(posedge clk);
+
+    // poke input device and interrupt to latch mmio_in_q
+    in_reg = 32'hDEAD_BEEF;
+    irq    = 1'b1;
+    @(posedge clk);
+    irq = 1'b0;
+
+    repeat (20) @(posedge clk);
+
+    in_reg = 32'h1234_5678;
+    irq    = 1'b1;
+    @(posedge clk);
+    irq = 1'b0;
+
+    // run a bit more
+    repeat (60) @(posedge clk);
+
+    $finish;
+  end
+
+endmodule
+```
+
+You should obtain the following waveform, where `ia` is looping between the 5 instructions in address `0x80000000 to 0x80000010`.
+
+<img src="{{ site.baseurl }}//docs/Labs/verilog/images/lab6/2026-02-12-16-45-24.png"  class="center_seventy no-invert"/>
+
+What to check (manually):
+1. `ia` matches `id` as per what you specified in `firmware`
+2. `ia` advances on `slowclk`
+3. `irq` doesnt interrupt when `ia31` is `1`
+4. `BNE/BEQ` is computed successfully
+5. `LD/ST` works without issue
+
+## Using BRAM for `firmware`
+
+The `firmware` offered above still uses combinational logic, and it can be quite expensive depending on the amount of instructions you want to store.
+
+You can use the BRAM for this, but to get BRAM inference you need a synchronous-read memory array (registered output). Here's one implementation. It keeps the same logical interface, just that we use `clk` here:
+
+
+```verilog
+`timescale 1ns / 1ps
+`define FW_HEX_FILE "data/firmware.hex"
+
+module firmware_rom_bram #(
+    parameter integer WORDS = 128
+) (
+    input  wire        clk,
+    input  wire [31:0] ia,        // byte address
+    output reg  [31:0] id,
+    output wire [ 7:0] num_instr
+);
+
+  // Verilog-2005 clog2
+  function integer clog2;
+    input integer value;
+    integer i;
+    begin
+      value = value - 1;
+      for (i = 0; value > 0; i = i + 1) value = value >> 1;
+      clog2 = i;
+    end
+  endfunction
+
+  localparam integer AW = clog2(WORDS);
+
+  // ROM storage
+  reg [31:0] rom[0:WORDS-1];
+
+  assign num_instr = 8'd5;
+
+  wire [AW-1:0] ia_word;
+  assign ia_word = ia[AW+1:2];
+
+  initial begin
+    // loads word 0 from line 0, word 1 from line 1, etc.
+    $readmemh(`FW_HEX_FILE, rom);
+  end
+
+  always @(posedge clk) begin
+    id <= rom[ia_word];
+  end
+
+endmodule
+```
+
+Then you instantiate this in `memory_unit.v` as:
+
+```verilog
+firmware_rom #(.WORDS(128), .INIT_HEX("firmware.hex")) u_firmware_rom (
+  .clk(clk),
+  .ia(ia),
+  .id(id),
+  .num_instr(num_instr)
+);
+```
+
+For the instruction data, store this inside `data/firmware.hex`. Note that the first line is the code fed to address `0`. 
+
+```verilog
+C03F0003
+90410800
+643F0020
+607F0020
+7BE3FFFB
+```
+
+### `slowclk` Requirement
+
+Since instruction read takes 1 `clk` cycle, then `slowclk` must fire once at most every two `clk` cycles. Here we fire `slowclk` every 4 `clk` cycles and obtain the following waveform. You can see clearly that `id` is produced synchronously with the `clk`, which means we have 1 `clk` cycle latency from the moment we produce `ia`.
+
+<img src="{{ site.baseurl }}//docs/Labs/verilog/images/lab6/2026-02-12-16-58-59.png"  class="center_seventy no-invert"/>
+
+## Connecting it with hardware
+
+The one thing left to do is to connect the signals into buttons and leds defined in `alchitry_top`. You can use the suggested `alchitry_top_verilog` which flattened the `io_dip` and `io_led`s. `io_button[0]` is used as "next" (`slowclk`) button, and `io_button[1]` is used as interrupt button, to capture the status of the 24 dips as MMIO.
+
+We shall use the same UI interface as defined in the [official lab]({{ site.baseurl }}/lab/lab6). 
+
+```verilog
+`timescale 1ns / 1ps
+
+module alchitry_top_verilog (
+    input            clk,
+    input            rst_n,
+    output reg [7:0] led,
+    input            usb_rx,
+    output reg       usb_tx,
+
+    output reg [23:0] io_led_flat,
+
+    output reg [7:0] io_segment,
+    output reg [3:0] io_select,
+    input      [4:0] io_button,
+
+    input [23:0] io_dip_flat
+);
+
+  // ------------------------------------------------------------
+  // Basic always-on IO defaults
+  // ------------------------------------------------------------
+
+  always @* begin
+    usb_tx     = usb_rx;
+    io_segment = 8'hFF;
+    io_select  = 4'hF;
+  end
+
+  // ------------------------------------------------------------
+  // DIP unpack
+  // ------------------------------------------------------------
+  wire [7:0] io_dip0 = io_dip_flat[7:0];  // io_dip[0]
+  wire [7:0] io_dip1 = io_dip_flat[15:8];  // io_dip[1]
+  wire [7:0] io_dip2 = io_dip_flat[23:16];  // io_dip[2]
+
+  wire [3:0] view_sel = io_dip0[3:0];
+
+  // ------------------------------------------------------------
+  // Slowclk from button 0: conditioner + rising-edge detector
+  // ------------------------------------------------------------
+  wire       btn_raw = io_button[0];
+  wire       btn_cond;
+
+  button_conditioner #(
+      .CLK_FREQ (27'h5f5e100),
+      .MIN_DELAY(5'h14),
+      .NUM_SYNC (2'h2)
+  ) u_bc (
+      .clk(clk),
+      .in (btn_raw),
+      .out(btn_cond)
+  );
+
+  wire slowclk_pulse;
+
+  edge_detector #(
+      .EDGE(1)
+  ) u_ed_1 (
+      .clk  (clk),
+      .rst  (rst),
+      .sig  (btn_cond),
+      .pulse(slowclk_pulse)
+  );
+  // ------------------------------------------------------------
+  // IRQ from button 1: conditioner + rising-edge detector
+  // ------------------------------------------------------------
+  wire btn_raw_1 = io_button[1];
+  wire btn_cond_1;
+
+  button_conditioner #(
+      .CLK_FREQ (27'h5f5e100),
+      .MIN_DELAY(5'h14),
+      .NUM_SYNC (2'h2)
+  ) u_bc_1 (
+      .clk(clk),
+      .in (btn_raw_1),
+      .out(btn_cond_1)
+  );
+
+  wire btn_1_pulse;
+
+  edge_detector #(
+      .EDGE(1)
+  ) u_ed_2 (
+      .clk  (clk),
+      .rst  (rst),
+      .sig  (btn_cond_1),
+      .pulse(btn_1_pulse)
+  );
+
+  // ------------------------------------------------------------
+  // reset conditioner
+  // ------------------------------------------------------------
+  wire rst;
+
+  reset_conditioner u_reset_conditioner (
+      .clk(clk),
+      .in (rst_n),
+      .out(rst)
+  );
+  // ------------------------------------------------------------
+  // Motherboard instance
+  // ------------------------------------------------------------
+  wire [31:0] out_reg_w;
+
+  wire [31:0] id_out;
+  wire [31:0] ia_out;
+  wire [31:0] ea_out;
+  wire [31:0] mrd_out;
+  wire [31:0] mwd_out;
+
+  wire [15:0] pcsel_out;
+  wire [15:0] asel_out;
+  wire [15:0] bsel_out;
+  wire [15:0] wdsel_out;
+
+  // Choose what drives in_reg:
+  // Option: pack dips into 32-bit so you can "type" values from switches.
+  wire [31:0] in_reg_w = {8'h00, io_dip2, io_dip1, io_dip0};
+
+  // irq source: you can map a button (e.g. io_button[1]) or dip bit.
+  wire irq_w = btn_1_pulse;
+
+  motherboard #(
+      .WORDS(64)
+  ) u_mb (
+      .clk(clk),
+      .rst(rst),
+      .irq(irq_w),
+      .slowclk(slowclk_pulse),
+
+      .in_reg (in_reg_w),
+      .out_reg(out_reg_w),
+
+      .id_out (id_out),
+      .ia_out (ia_out),
+      .ea_out (ea_out),
+      .mrd_out(mrd_out),
+      .mwd_out(mwd_out),
+
+      .pcsel_out(pcsel_out),
+      .asel_out (asel_out),
+      .bsel_out (bsel_out),
+      .wdsel_out(wdsel_out)
+  );
+
+  // ------------------------------------------------------------
+  // Viewer mux: select 16-bit value to show on io_led[1:0]
+  // io_led_flat[15:0] = {io_led[1], io_led[0]}
+  // ------------------------------------------------------------
+  reg [15:0] view16;
+
+  always @* begin
+    case (view_sel)
+      4'h0: view16 = id_out[31:16];
+      4'h1: view16 = id_out[15:0];
+      4'h2: view16 = ia_out[15:0];
+      4'h3: view16 = ea_out[15:0];
+      4'h4: view16 = ea_out[31:16];
+      4'h5: view16 = mrd_out[15:0];
+      4'h6: view16 = mrd_out[31:16];
+      4'h7: view16 = mwd_out[15:0];
+      4'h8: view16 = mwd_out[31:16];
+      4'h9: view16 = pcsel_out[15:0];
+      4'hA: view16 = asel_out[15:0];
+      4'hB: view16 = bsel_out[15:0];
+      4'hC: view16 = wdsel_out[15:0];
+      4'hD: view16 = ia_out[31:16];
+      4'hE: view16 = in_reg_w[15:0];     // your "beta input buffer" view
+      4'hF: view16 = out_reg_w[15:0];    // your "beta output buffer" view
+      default: view16 = 16'h0000;
+    endcase
+  end
+
+  // Drive LEDs
+  always @* begin
+    // Put view16 on LED banks 0 and 1
+    io_led_flat[7:0] = view16[7:0];
+    io_led_flat[15:8] = view16[15:8];
+
+    // Use LED bank 2 for something useful (optional)
+    // Here: show selector + slowclk pulse + irq
+    io_led_flat[23:16] = {view_sel, 2'b00, irq_w, slowclk_pulse};
+
+    // Also drive the onboard 8 LEDs with out_reg low byte (optional)
+    led = out_reg_w[7:0];
+  end
+
+endmodule
+
+```
+
+{:.note}
+The module above uses `button_conditioner`. See appendix.
+
+You can then wrap the above with `alchitry_top.sv` available in the starter code. If you're unsure how to use this, read [this guide]({{ site.baseurl }}/fpga/fpga_vivado_verilog).
+
+```verilog
+module alchitry_top(
+    input  logic clk,
+    input  logic rst_n,
+    output logic [7:0] led,
+    input  logic usb_rx,
+    output logic usb_tx,
+    output logic [2:0][7:0] io_led,
+    output logic [7:0] io_segment,
+    output logic [3:0] io_select,
+    input  logic [4:0] io_button,
+    input  logic [2:0][7:0] io_dip
+);
+
+  // pack SV arrays into flat vectors for the Verilog-2005 module
+  wire [23:0] io_dip_flat = { io_dip[2], io_dip[1], io_dip[0] };
+  wire [23:0] io_led_flat;
+
+  // unpack flat vector back into SV array
+  assign { io_led[2], io_led[1], io_led[0] } = io_led_flat;
+
+  alchitry_top_verilog u_core (
+    .clk(clk),
+    .rst_n(rst_n),
+    .led(led),
+    .usb_rx(usb_rx),
+    .usb_tx(usb_tx),
+    .io_led_flat(io_led_flat),
+    .io_segment(io_segment),
+    .io_select(io_select),
+    .io_button(io_button),
+    .io_dip_flat(io_dip_flat)
+  );
+
+endmodule
+```
+
+
+## Compile and Run
+Congratulations! 🎉 
+
+You have made a working Beta CPU. Please take your time to understand how each component works. You shall now **compile**, run the program and then vary `io_dip[0]` switches to **inspect** each state.
+
+`io_dip[0]` can be changed to "view" various states presented at `io_led[1]` and `io_led[0]` (16 bits of values at once). Simply set it to represent the values below, e.g: `0x3` means that `io_dip[0]` is set to `00000011` (turn the rightmost two switches on). Here is the exhaustive list:
+
+1. `0x0`: MSB 16 bits of current instruction (id[31:16])
+2. `0x1`: LSB 16 bits of current instruction (id[15:0])
+3. `0x2`: LSB 16 bits of instruction address (ia[15:0])
+4. `0x3`: LSB 16 bits of EA (this is also ALU output) (ma[15:0])
+5. `0x4`: MSB 16 bits of EA (this is also ALU output) (ma[31:16])
+6. `0x5`: LSB 16 bits of Mem[EA] (mrd[15:0])
+7. `0x6`: MSB 16 bits of Mem[EA] (mrd[31:16])
+8. `0x7`: LSB 16 bits of RD2 (mwd[15:0])
+9. `0x8`: MSB 16 bits of RD2 (mwd[31:16])
+10. `0x9`: LSB 16 bits of pcsel_out
+11. `0xA`: LSB 16 bits of asel_out
+12. `0xB`: LSB 16 bits of bsel_out
+13. `0xC`: LSB 16 bits of wdsel_out
+14. `0xD`: MSB 16 bits of instruction address. Useful to see PC31 (kernel/user mode) (ia[31:16])
+15. `0xE`: LSB 16 bits of beta input buffer. This is a dff that's hardwired to reflect Mem[0x10]
+16. `0xF`: LSB 16 bits of beta output buffer. This is a dff that's hardwired to reflect Mem[0xC]
+
+## What next?
+
+You can try new types of instructions that utilises the MMIO.
+
+## Appendix
+
+
+### Unified Memory Model 
+
+In practice, the **instruction memory** and **data memory** are only **logically** segregated. Architecturally, the CPU treats them as separate spaces because they serve different purposes, but physically they can reside in the **same RAM device**.
+
+What the CPU actually requires in a single cycle is:
+
+* **one instruction fetch** (read),
+* **one data load** (read), and
+* **optionally one data store** (write).
+
+{:.highlight}
+This access pattern corresponds to a **2-read, 1-write (2R1W)** memory.
+
+
+### Physical Realisation on FPGA
+
+Most FPGA block RAMs natively support at most **two ports**. A true 2R1W memory is therefore *not* directly available as a single primitive. In practice, FPGA designs implement this behaviour using one of the following techniques:
+
+1. **Separate instruction and data memories** (what we do): Instruction memory and data memory are instantiated as two independent RAM blocks. This is simple to reason about and is commonly used in teaching designs.
+
+2. **Replicated memory**: Two identical copies of the same memory are created. This technique provides the illusion of a single unified memory with two independent read ports and one write port.
+   * one copy services the **instruction read port**, and
+   * the other copy services the **data read port**.
+   * Any **write** operation updates **both copies**, ensuring that the two read ports always observe consistent memory contents.
+
+
+Below is a sample implementation for method (2):
+
+```verilog
+// Unified RAM: 2 read ports (ia + raddr) and 1 write port (waddr)
+// Byte-addressed inputs, word-aligned internally (addr >> 2)
+//
+// Implementation: replicated RAM for the two read ports.
+// Any write updates BOTH copies so both reads see the same memory contents.
+module memory_unit_2r1w #(
+    parameter integer WORDS = 16
+)(
+    input  wire clk,
+
+    // instruction fetch (byte addressing expected)
+    input  wire [$clog2(WORDS)+2-1:0] ia,
+    output reg  [31:0]                id,
+
+    // data read (byte addressing expected)
+    input  wire [$clog2(WORDS)+2-1:0] raddr,
+    output reg  [31:0]                mrd,
+
+    // data write (byte addressing expected)
+    input  wire [$clog2(WORDS)+2-1:0] waddr,
+    input  wire [31:0]                wd,
+    input  wire                       we
+);
+
+  localparam integer AW = $clog2(WORDS);
+
+  wire [AW-1:0] ia_word = ia[AW+1:2];
+  wire [AW-1:0] ra_word = raddr[AW+1:2];
+  wire [AW-1:0] wa_word = waddr[AW+1:2];
+
+  // Two identical copies to get two independent synchronous read ports
+  // Tells synthesis tool to implement this array as block RAM (BRAM) instead of flip-flops (LUT RAM)
+  (* ram_style = "block" *) reg [31:0] mem_i [0:WORDS-1]; // for instruction read
+  (* ram_style = "block" *) reg [31:0] mem_d [0:WORDS-1]; // for data read
+
+  integer k;
+  initial begin
+    // Optional: init to 0 for simulation friendliness
+    for (k = 0; k < WORDS; k = k + 1) begin
+      mem_i[k] = 32'h0;
+      mem_d[k] = 32'h0;
+    end
+  end
+
+  always @(posedge clk) begin
+    // synchronous reads (1-cycle latency)
+    id  <= mem_i[ia_word];
+    mrd <= mem_d[ra_word];
+
+    // write updates BOTH copies
+    if (we) begin
+      mem_i[wa_word] <= wd;
+      mem_d[wa_word] <= wd;
+    end
+  end
+
+endmodule
+```
+
+Note that if you use this construct, then the addresses used in `LD`, `ST` and `LDR` instruction would differ from when you use the separated instruction-data construct.
+
+### Timing Semantics
+
+All memory accesses are **synchronous**:
+
+* Read data is returned in the <span style="color:red; font-weight: bold;">next</span> clock cycle.
+* Write data is committed at the **end of the current cycle** if the write enable is asserted.
+
+As a result:
+
+* Instruction fetch and data load addresses are presented in cycle *N*.
+* The corresponding values become visible in cycle *N+1*.
+
+
+### Addressing Convention (Byte Address In, Word-Aligned)
+
+The memory unit accepts **byte addresses** at its interface, but stores data internally as **32-bit words**. Therefore, the memory is **word-aligned**:
+
+* The lowest two bits of every address (`addr[1:0]`) are ignored.
+* The internal word index is effectively `addr >> 2`.
+
+This is implemented by slicing the address as follows:
+
+```verilog
+addr_word = addr[$clog2(WORDS)+2-1 : 2];
+```
+
+Consequences:
+
+* Addresses that differ only in the lowest two bits map to the same word.
+* Unaligned byte or halfword accesses are not supported and are implicitly forced to the nearest aligned word.
+
+{: .note}
+A strictly byte-addressable memory could be implemented by storing 8-bit entries and assembling 32-bit words in logic, but this would significantly complicate the design. For the Beta CPU, a word-aligned memory provides a cleaner and more instructive model.
+
+
+
+### `simple_ram.v`
+
+```verilog
+/******************************************************************************
+
+   The MIT License (MIT)
+
+   Copyright (c) 2026 Alchitry
+
+   Permission is hereby granted, free of charge, to any person obtaining a copy
+   of this software and associated documentation files (the "Software"), to deal
+   in the Software without restriction, including without limitation the rights
+   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+   copies of the Software, and to permit persons to whom the Software is
+   furnished to do so, subject to the following conditions:
+
+   The above copyright notice and this permission notice shall be included in
+   all copies or substantial portions of the Software.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+   THE SOFTWARE.
+
+   *****************************************************************************
+
+   This module is a simple single port RAM. This RAM is implemented in such a
+   way that the tools will recognize it as a RAM and implement large
+   instances in block RAM instead of flip-flops.
+
+   The parameter WIDTH is used to specify the word size. That is the size of
+   each entry in the RAM.
+
+   The parameter ENTRIES is used to specify how many entries are in the RAM.
+
+   read_data outputs the value of the entry pointed to by address in the previous
+   clock cycle. That means to read address 10, you would set address to be 10
+   and wait one cycle for its value to show up. The RAM is always reading whatever
+   address is. If you don't need to read, just ignore this value.
+
+   To write, set write_enable to 1, write_data to the value to write,
+   and address to the address you want to write.
+
+   If you read and write the same address, the first clock cycle the address will
+   be written, the second clock cycle the old value will be output on read_data,
+   and on the third clock cycle the newly updated value will be output on
+   read_data.
+*/
+
+module simple_ram #(
+    parameter WIDTH = 1,                  // size of each entry
+    parameter ENTRIES = 1                 // number of entries
+  )(
+    input clk,                            // clock
+    input [$clog2(ENTRIES)-1:0] address,  // address to read or write
+    output reg [WIDTH-1:0] read_data,     // data read
+    input [WIDTH-1:0] write_data,         // data to write
+    input write_enable                    // write enable (1 = write)
+  );
+
+  reg [WIDTH-1:0] ram [ENTRIES-1:0];      // memory array
+
+  always @(posedge clk) begin
+    read_data <= ram[address];            // read the entry
+
+    if (write_enable)                     // if we need to write
+      ram[address] <= write_data;         // update that value
+  end
+
+endmodule
+```
+
+### `simple_dual_port_ram.v`
+
+
+```verilog
+/******************************************************************************
+
+   The MIT License (MIT)
+
+   Copyright (c) 2026 Alchitry
+
+   Permission is hereby granted, free of charge, to any person obtaining a copy
+   of this software and associated documentation files (the "Software"), to deal
+   in the Software without restriction, including without limitation the rights
+   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+   copies of the Software, and to permit persons to whom the Software is
+   furnished to do so, subject to the following conditions:
+
+   The above copyright notice and this permission notice shall be included in
+   all copies or substantial portions of the Software.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+   THE SOFTWARE.
+
+   *****************************************************************************
+
+   This module is a simple dual port RAM. This RAM is implemented in such a
+   way that Xilinx's tools will recognize it as a RAM and implement large
+   instances in block RAM instead of flip-flops.
+
+   The parameter WIDTH is used to specify the word size. That is the size of
+   each entry in the RAM.
+
+   The parameter ENTRIES is used to specify how many entries are in the RAM.
+
+   read_data outputs the value of the entry pointed to by raddr in the previous
+   clock cycle. That means to read address 10, you would set address to be 10
+   and wait one cycle for its value to show up. The RAM is always reading whatever
+   address is. If you don't need to read, just ignore this value.
+
+   To write, set write_enable to 1, write_data to the value to write, and waddr to
+   the address you want to write.
+
+   You should avoid reading and writing to the same address simultaneously. The
+   value read in this case is undefined.
+*/
+module simple_dual_port_ram #(
+    parameter WIDTH = 8,                // size of each entry
+    parameter ENTRIES = 8               // number of entries
+  )(
+    // write interface
+    input wclk,                         // write clock
+    input [$clog2(ENTRIES)-1:0] waddr,  // write address
+    input [WIDTH-1:0] write_data,       // write data
+    input write_enable,                 // write enable (1 = write)
+    
+    // read interface
+    input rclk,                         // read clock
+    input [$clog2(ENTRIES)-1:0] raddr,  // read address
+    output reg [WIDTH-1:0] read_data    // read data
+  );
+  
+  reg [WIDTH-1:0] mem [ENTRIES-1:0];    // memory array
+  
+  // write clock domain
+  always @(posedge wclk) begin
+    if (write_enable)                   // if write enable
+      mem[waddr] <= write_data;         // write memory
+  end
+  
+  // read clock domain
+  always @(posedge rclk) begin
+    read_data <= mem[raddr];            // read memory
+  end
+  
+endmodule
+```
+
+## Reset Conditioner
+
+```verilog
+`timescale 1ns / 1ps
+
+module reset_conditioner #(
+    parameter integer STAGES = 4
+) (
+    input  wire clk,
+    input  wire in,
+    output reg  out
+);
+
+  reg [STAGES-1:0] stage_q;
+
+  // Combinational out is MSB of the shift register
+  always @* begin
+    out = stage_q[STAGES-1];
+  end
+
+  // Async assert, sync deassert (shift zeros in)
+  always @(posedge clk or posedge in) begin
+    if (in) begin
+      stage_q <= {STAGES{1'b1}};
+    end else begin
+      stage_q <= {stage_q[STAGES-2:0], 1'b0};
+    end
+  end
+
+endmodule
+
+```
+## Button Conditioner
+
+
+```verilog
+`timescale 1ns / 1ps
+
+module button_conditioner #(
+    parameter integer CLK_FREQ  = 100000000,  // Hz
+    parameter integer MIN_DELAY = 20,         // ms
+    parameter integer NUM_SYNC  = 2
+) (
+    input  wire clk,
+    input  wire in,
+    output reg  out
+);
+
+
+  function integer clog2;
+    input integer value;
+    integer v;
+    begin
+      v = value - 1;
+      clog2 = 0;
+      while (v > 0) begin
+        v = v >> 1;
+        clog2 = clog2 + 1;
+      end
+      if (clog2 < 1) clog2 = 1;
+    end
+  endfunction
+
+  // Target cycles for MIN_DELAY ms (rounded down). Ensure >= 1.
+  localparam integer TARGET_CYCLES_RAW = (CLK_FREQ / 1000) * MIN_DELAY;
+  localparam integer TARGET_CYCLES = (TARGET_CYCLES_RAW < 1) ? 1 : TARGET_CYCLES_RAW;
+
+    `ifdef SIM
+    // Fast debounce for sim: 4 cycles to reach all-ones if CTR_W=2
+    localparam integer CTR_W = 2;
+    `else
+    localparam integer CTR_W = clog2(TARGET_CYCLES);
+    `endif
+
+  // -----------------------------
+  // Synchronizer chain
+  // -----------------------------
+  reg [NUM_SYNC-1:0] sync_ff;
+  integer k;
+
+  always @(posedge clk) begin
+    sync_ff[0] <= in;
+    for (k = 1; k < NUM_SYNC; k = k + 1) begin
+      sync_ff[k] <= sync_ff[k-1];
+    end
+  end
+
+  wire in_sync = sync_ff[NUM_SYNC-1];
+
+  // -----------------------------
+  // Debounce counter 
+  // -----------------------------
+  reg [CTR_W-1:0] ctr;
+
+  always @(posedge clk) begin
+    if (!in_sync) begin
+      ctr <= {CTR_W{1'b0}};
+    end else if (!(&ctr)) begin
+      ctr <= ctr + {{(CTR_W - 1) {1'b0}}, 1'b1};
+    end
+    out <= &ctr;
+  end
+
+endmodule
+```
 
 

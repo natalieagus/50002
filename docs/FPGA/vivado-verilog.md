@@ -401,8 +401,9 @@ If you are developing your project entirely in Verilog, using Vivado or editor o
 
 Here's a suggested implementation (taken from Alchitry Lab's automatic build, which you can find under `<PROJECT_DIR>/build/src` folder).
 
-### Reset Conditioner (System Verilog)
+### Reset Conditioner 
 
+#### System Verilog
 
 ```systemverilog
 // reset_conditioner.sv
@@ -438,7 +439,42 @@ module reset_conditioner #(
 endmodule
 ```
 
-### Button Conditioner (System Verilog)
+#### Verilog
+
+```verilog
+`timescale 1ns / 1ps
+
+module reset_conditioner #(
+    parameter integer STAGES = 4
+) (
+    input  wire clk,
+    input  wire in,
+    output reg  out
+);
+
+  reg [STAGES-1:0] stage_q;
+
+  // Combinational out is MSB of the shift register
+  always @* begin
+    out = stage_q[STAGES-1];
+  end
+
+  // Async assert, sync deassert (shift zeros in)
+  always @(posedge clk or posedge in) begin
+    if (in) begin
+      stage_q <= {STAGES{1'b1}};
+    end else begin
+      stage_q <= {stage_q[STAGES-2:0], 1'b0};
+    end
+  end
+
+endmodule
+
+```
+
+### Button Conditioner 
+
+#### System Verilog
 
 ```systemverilog
 // button_conditioner.sv
@@ -492,17 +528,99 @@ module button_conditioner #(
 endmodule
 ```
 
+#### Verilog
+
+```verilog
+`timescale 1ns / 1ps
+
+module button_conditioner #(
+    parameter integer CLK_FREQ  = 100000000,  // Hz
+    parameter integer MIN_DELAY = 20,         // ms
+    parameter integer NUM_SYNC  = 2
+) (
+    input  wire clk,
+    input  wire in,
+    output reg  out
+);
+
+
+  function integer clog2;
+    input integer value;
+    integer v;
+    begin
+      v = value - 1;
+      clog2 = 0;
+      while (v > 0) begin
+        v = v >> 1;
+        clog2 = clog2 + 1;
+      end
+      if (clog2 < 1) clog2 = 1;
+    end
+  endfunction
+
+  // Target cycles for MIN_DELAY ms (rounded down). Ensure >= 1.
+  localparam integer TARGET_CYCLES_RAW = (CLK_FREQ / 1000) * MIN_DELAY;
+  localparam integer TARGET_CYCLES = (TARGET_CYCLES_RAW < 1) ? 1 : TARGET_CYCLES_RAW;
+
+    `ifdef SIM
+    // Fast debounce for sim: 4 cycles to reach all-ones if CTR_W=2
+    localparam integer CTR_W = 2;
+    `else
+    localparam integer CTR_W = clog2(TARGET_CYCLES);
+    `endif
+
+  // -----------------------------
+  // Synchronizer chain
+  // -----------------------------
+  reg [NUM_SYNC-1:0] sync_ff;
+  integer k;
+
+  always @(posedge clk) begin
+    sync_ff[0] <= in;
+    for (k = 1; k < NUM_SYNC; k = k + 1) begin
+      sync_ff[k] <= sync_ff[k-1];
+    end
+  end
+
+  wire in_sync = sync_ff[NUM_SYNC-1];
+
+  // -----------------------------
+  // Debounce counter 
+  // -----------------------------
+  reg [CTR_W-1:0] ctr;
+
+  always @(posedge clk) begin
+    if (!in_sync) begin
+      ctr <= {CTR_W{1'b0}};
+    end else if (!(&ctr)) begin
+      ctr <= ctr + {{(CTR_W - 1) {1'b0}}, 1'b1};
+    end
+    out <= &ctr;
+  end
+
+endmodule
+```
+
 ### Usage
 
 A Verilog-2005 (.v) module can instantiate a SystemVerilog (.sv) module as long as Vivado compiles both into the same design and the port list matches.
 
 For example, suppose we create `reset_conditioner.sv`, just use it like so inside `alchitry_top_verilog.v`:
 
-<img src="{{ site.baseurl }}//docs/FPGA/images/vivado-verilog/2026-02-11-15-03-47.png"  class="center_seventy no-invert"/>
+```verilog
+wire rst;
+
+reset_conditioner u_reset_conditioner(
+    .clk(clk),
+    .in(rst_n),
+    .out(rst)
+)
+```
 
 Similarly with button conditioner:
 ```verilog
-  wire btn_cond;
+  wire btn_raw;
+  wire btn_clean;
 
   button_conditioner #(
     .CLK_FREQ(27'h5f5e100),
@@ -511,10 +629,8 @@ Similarly with button conditioner:
   ) u_bc (
     .clk(clk),
     .in(btn_raw),
-    .out(btn_cond)
+    .out(btn_clean)
   );
-
-  wire btn_clean = btn_cond;
 ```
 
 
