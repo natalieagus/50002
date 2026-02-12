@@ -2710,9 +2710,32 @@ Since instruction read takes 1 `clk` cycle, then `slowclk` must fire once at mos
 
 ## Connecting it with hardware
 
-The one thing left to do is to connect the signals into buttons and leds defined in `alchitry_top`. You can use the suggested `alchitry_top_verilog` which flattened the `io_dip` and `io_led`s. `io_button[0]` is used as "next" (`slowclk`) button, and `io_button[1]` is used as interrupt button, to capture the status of the 24 dips as MMIO.
+The one thing left to do is to connect the signals into buttons and leds defined in `alchitry_top`. You can use the suggested `alchitry_top_verilog` below which flattened the `io_dip` and `io_led`s. `io_button[0]` is used as "next" (`slowclk`) button, and `io_button[1]` is used as interrupt button, to capture the status of the 24 dips as MMIO.
 
+### UI
 We shall use the same UI interface as defined in the [official lab]({{ site.baseurl }}/lab/lab6). 
+
+
+`io_dip[0]` can be changed to "view" various states presented at `io_led[1]` and `io_led[0]` (16 bits of values at once). Simply set it to represent the values below, e.g: `0x3` means that `io_dip[0]` is set to `00000011` (turn the rightmost two switches on). Here is the exhaustive list:
+
+1. `0x0`: MSB 16 bits of current instruction (id[31:16])
+2. `0x1`: LSB 16 bits of current instruction (id[15:0])
+3. `0x2`: LSB 16 bits of instruction address (ia[15:0])
+4. `0x3`: LSB 16 bits of EA (this is also ALU output) (ma[15:0])
+5. `0x4`: MSB 16 bits of EA (this is also ALU output) (ma[31:16])
+6. `0x5`: LSB 16 bits of Mem[EA] (mrd[15:0])
+7. `0x6`: MSB 16 bits of Mem[EA] (mrd[31:16])
+8. `0x7`: LSB 16 bits of RD2 (mwd[15:0])
+9. `0x8`: MSB 16 bits of RD2 (mwd[31:16])
+10. `0x9`: LSB 16 bits of pcsel_out
+11. `0xA`: LSB 16 bits of asel_out
+12. `0xB`: LSB 16 bits of bsel_out
+13. `0xC`: LSB 16 bits of wdsel_out
+14. `0xD`: MSB 16 bits of instruction address. Useful to see PC31 (kernel/user mode) (ia[31:16])
+15. `0xE`: LSB 16 bits of beta input buffer. This is a dff that's hardwired to reflect Mem[0x10]
+16. `0xF`: LSB 16 bits of beta output buffer. This is a dff that's hardwired to reflect Mem[0xC]
+
+### Suggested Verilog top file
 
 ```verilog
 `timescale 1ns / 1ps
@@ -2910,6 +2933,8 @@ endmodule
 {:.note}
 The module above uses `button_conditioner`. See appendix.
 
+### Combine with default `alchitry_top.sv`
+
 You can then wrap the above with `alchitry_top.sv` available in the starter code. If you're unsure how to use this, read [this guide]({{ site.baseurl }}/fpga/fpga_vivado_verilog).
 
 ```verilog
@@ -2949,30 +2974,14 @@ module alchitry_top(
 endmodule
 ```
 
+{:.note}
+If you don't use Vivado IDE, you can also use `alchitry_top.luc` and Alchitry Labs IDE as per normal after importing all necessary verilog files and connect the signals together.
 
 ## Compile and Run
 Congratulations! 🎉 
 
 You have made a working Beta CPU. Please take your time to understand how each component works. You shall now **compile**, run the program and then vary `io_dip[0]` switches to **inspect** each state.
 
-`io_dip[0]` can be changed to "view" various states presented at `io_led[1]` and `io_led[0]` (16 bits of values at once). Simply set it to represent the values below, e.g: `0x3` means that `io_dip[0]` is set to `00000011` (turn the rightmost two switches on). Here is the exhaustive list:
-
-1. `0x0`: MSB 16 bits of current instruction (id[31:16])
-2. `0x1`: LSB 16 bits of current instruction (id[15:0])
-3. `0x2`: LSB 16 bits of instruction address (ia[15:0])
-4. `0x3`: LSB 16 bits of EA (this is also ALU output) (ma[15:0])
-5. `0x4`: MSB 16 bits of EA (this is also ALU output) (ma[31:16])
-6. `0x5`: LSB 16 bits of Mem[EA] (mrd[15:0])
-7. `0x6`: MSB 16 bits of Mem[EA] (mrd[31:16])
-8. `0x7`: LSB 16 bits of RD2 (mwd[15:0])
-9. `0x8`: MSB 16 bits of RD2 (mwd[31:16])
-10. `0x9`: LSB 16 bits of pcsel_out
-11. `0xA`: LSB 16 bits of asel_out
-12. `0xB`: LSB 16 bits of bsel_out
-13. `0xC`: LSB 16 bits of wdsel_out
-14. `0xD`: MSB 16 bits of instruction address. Useful to see PC31 (kernel/user mode) (ia[31:16])
-15. `0xE`: LSB 16 bits of beta input buffer. This is a dff that's hardwired to reflect Mem[0x10]
-16. `0xF`: LSB 16 bits of beta output buffer. This is a dff that's hardwired to reflect Mem[0xC]
 
 ## What next?
 
