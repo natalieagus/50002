@@ -114,7 +114,7 @@ So if the falling edge of G briefly invalidates Q, the memory fails because Q is
 
 A D-latch operates by capturing the input voltage (valid low or high) at the D wire when a valid high voltage is applied to the G wire (also shown as the **Clock** port in the diagram below). After the voltage at G switches to low, the D-latch retains the value from D at the time G was high, without needing to maintain D's initial values.
 
-By arranging multiple D-latches in parallel, we can create a stable N-bit output that "remembers" the input values without requiring continuous input at the D ports. This stored output can then serve as a reliable input to a combinational logic device for the duration of its processing time (\(t_{pd}\)), mitigating issues with unreliable external inputs.
+By arranging multiple D-latches in parallel, we can create a stable N-bit output that "remembers" the input values without requiring continuous input at the D ports. This stored output can then serve as a reliable input to a combinational logic device for the duration of its processing time ($$t_{pd}$$), mitigating issues with unreliable external inputs.
 
 The accompanying figure demonstrates a setup with a 4-bit input and a corresponding 4-bit output. Each rectangle (marked with a ">" at its lower left corner) represents a **Flip-Flop**, which consists of D-latches and will be discussed in a later section.
 
