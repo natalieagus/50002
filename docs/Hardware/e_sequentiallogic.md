@@ -133,7 +133,7 @@ If G changes from `1` to `0` at the ***exact*** moment when D just turned **inva
 #### 2: Invalid/unstable output due to transition in input
 If the *existing* stable input value in D is flipped, e.g: is changed from `1` to  `0` or vice versa,  the value at D will be invalid (*momentarily*) during this *transition*.
 
-The voltage value at D can also be invalid (unstable, unreliable) due to any disturbance. This will affect the output at Q if G is 1, because it will pass **all** input from D to the output wire Q, regardless of whether it is a valid or stable input or not (during transition or any disturbance). We end up with potentially unstable/invalid output **half the time.
+The voltage value at D can also be invalid (unstable, unreliable) due to any disturbance. This will affect the output at Q if G is 1, because it will pass **all** input from D to the output wire Q, regardless of whether it is a valid or stable input or not (during transition or any disturbance). We end up with potentially unstable/invalid output **half the time**.
 
 In practice, this is <span class="orange-bold">not acceptable</span> because we do not want our electronic devices (e.g: computers) to have invalid output computed (e.g: be unstable, or hang, or freeze) at any point in time, *even when D is transitioning*. We want it to be **robust**, and **reliable** at **all** times.
 
