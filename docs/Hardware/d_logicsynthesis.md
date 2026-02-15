@@ -271,7 +271,7 @@ You can **simplify** the Karnaugh Map using these six fundamental rules:
 
 1. **Maximize `1` cells in each group**, avoiding any blank cells.
 2. Groups must be **powers of 2**: 1, 2, 4, 8, 16, 32, etc.
-3. **Adjacent grouping only**: `1` cells can be grouped with others immediately to the left, right, above, or below—**no diagonals**.
+3. **Groups must form rectangles**: each group must be an axis-aligned rectangle made of adjacent cells. No L, Z, or T shapes allowed. This is so that each group corresponds to one implicant, which in Sum of Product form is one product term: an AND of literals like A B' D.
 4. **Overlapping is allowed**, enabling smaller groups to expand, thus aiding in achieving the simplest solution.
 5. Consider the **map's edges and corners as continuous**: groups can extend over the top and bottom or left and right edges, with corners also able to join these edge groups, provided all other rules are met.
 6. **Minimize the number of groups** to streamline the solution.
