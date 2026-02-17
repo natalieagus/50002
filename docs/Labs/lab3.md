@@ -746,9 +746,9 @@ const TEST_VALUES = {
   ...
 }
 
-a = TEST_VALUES[index][23:16]
-b = TEST_VALUES[index][15:8]
-expected = TEST_VALUES[index][7:0]
+a = TEST_VALUES[23:16]
+b = TEST_VALUES[15:8]
+expected = TEST_VALUES[7:0]
 ```
 
 Each test case is stored as **one record**, so alignment errors are impossible. It is more elegant since it matches how real datapaths often store multiple fields in a single word. Slightly harder to read, but more compact and structurally robust.
