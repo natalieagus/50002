@@ -1180,7 +1180,7 @@ out = RISE &  in & ~last.q   OR
       FALL & ~in &  last.q
 ```
 
-### Case 1: input is synchronous (what you want with a button conditioner)
+#### Case 1: input is synchronous (what you want with a button conditioner)
 
 If `in` only changes **on rising edges of `clk`** (for example it is the debounced button output or any flop output on the same clock), then:
 
@@ -1192,7 +1192,7 @@ So with a **synchronous** input the pulse is exactly **one full clock period** l
 
 That matches the module description: “set `out` high for that clock cycle”.
 
-### Case 2: input changes in the middle of the clock period
+#### Case 2: input changes in the middle of the clock period
 
 {:.new-title}
 > The big question
