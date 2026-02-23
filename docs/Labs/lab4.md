@@ -1120,7 +1120,7 @@ A few key control responsibilities:
 ## Appendix
 
 ### Proposed Datapath
-<img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-datapath-lab4.drawio-4.png"  class="center_full"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-datapath-lab4.drawio-2.png"  class="center_full"/>
 
 ### Alchitry Edge Detector
 
