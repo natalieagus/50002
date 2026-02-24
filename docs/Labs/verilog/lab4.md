@@ -40,7 +40,7 @@ In this lab, you are going to **implement** an FSM + Datapath, and **write testb
 
 Following Lab 4 Lucid Version, the proposed datapath is as follows: 
 
-<img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-datapath-lab4.drawio-4.png"  class="center_full"/>
+<img src="{{ site.baseurl }}}/docs/Labs/images/cs-2026-50002-datapath-lab4.drawio-2.png"  class="center_full"/>
 
 You are free to modify them but we are going to stick with implementing the above in this handout.
 
