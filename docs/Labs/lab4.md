@@ -1060,8 +1060,8 @@ You can set the following interface:
 
 <img src="{{ site.baseurl }}/docs/Labs/images/Screenshot 2025-12-04 at 10.27.16 AM.png"  class="center_seventy no-invert"/>
 
-Here's a sample demo using the simulator. The usage of seven segment is optional. For now, it represents the current test index ID. 
-- In this demo, we have 16 test cases.
+Here's a sample demo using the simulator. The usage of seven segment is optional. You can read [this](https://natalieagus.github.io/50002/fpga/fpga_3_2024) guide if you are interested. For now, you can use basic io LED to show current test index ID. 
+- In this sample demo, we have 16 test cases. As demo purposes, we used the seven segments. You are not required to use it for checkoff. 
 - `io_button[0]` is used to start/restart the tester
 - `io_dip[2][7]` will force bit-flip the adder's output and induce and error, to demonstrate that our tester can show error. This is a <span class="orange-bold">forced</span> error.
 - Once error is induced, the tester **stops** at the test-case index of that error
