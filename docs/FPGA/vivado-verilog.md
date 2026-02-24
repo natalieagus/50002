@@ -639,5 +639,60 @@ Do not forget to reset `synth_1` runs as necessary when you edit the source file
 
 <img src="{{ site.baseurl }}//docs/FPGA/images/vivado-verilog/2026-02-24-11-55-11.png"  class="center_seventy no-invert"/>
 
+## Viewing LUTs Usage
+
+Once implementation is complete, you can double click on `impl_1`, this will open the netlist. Alternatively, go to Tcl Console and type `open_run impl_1`:
+
+<img src="{{ site.baseurl }}//docs/FPGA/images/vivado-verilog/2026-02-24-12-15-41.png"  class="center_seventy no-invert"/>
+
+Afterwards, type the command `report_utilization`:
+
+<img src="{{ site.baseurl }}//docs/FPGA/images/vivado-verilog/2026-02-24-12-16-19.png"  class="center_seventy no-invert"/>
+
+Then scroll down to `Slice Logic`:
+
+<img src="{{ site.baseurl }}//docs/FPGA/images/vivado-verilog/2026-02-24-12-16-42.png"  class="center_seventy no-invert"/>
+
+This report shows that we only use 9.80% of the Slice LUTs, which just a small amount.
+
+## Timing Summary
+
+Design Runs typically also report timing constraints. WNS and TNS are the important ones:
+
+<img src="{{ site.baseurl }}//docs/FPGA/images/vivado-verilog/2026-02-24-12-17-42.png"  class="center_seventy no-invert"/>
+
+WNS: **Worst Negative Slack**
+* The single worst setup timing slack in the design
+* >= 0 ns means setup timing meets for all analyzed paths
+* < 0 ns means timing violation exists (you are late by that amount on the worst path)
+  
+TNS: **Total Negative Slack**
+* Sum of negative setup slack across failing endpoints
+* 0 ns means no setup violations
+* More negative means broader timing problems, not just one bad path
+
+TLDR: if you see these numbers in <span class="orange-bold">red</span>, you are in trouble. You might want to insert `dff` in the violating paths or reduce the [clock]({{ site.baseurl }}/fpga/clocks) frequency.
+
+To find out the violating paths, open the Timing Window and view the Intra-Clock Paths:
+<img src="{{ site.baseurl }}//docs/FPGA/images/vivado-verilog/2026-02-24-12-21-13.png"  class="center_seventy no-invert"/>
+
+The table reports:
+* Worst setup slack = -25.570 ns which is very bad
+* Levels = 42 means about 42 logic stages on the path (very deep)
+* High Fanout = 97 also hurts timing
+* Total Delay ~35.45 ns
+* Logic Delay ~5.8 ns
 
 
+You can then click on the path to inspect it further:
+<img src="{{ site.baseurl }}//docs/FPGA/images/vivado-verilog/2026-02-24-12-22-20.png"  class="center_seventy no-invert"/>
+
+Immediate fixes you can do that's suitable for 50.002 projects:
+1. break long combinational chain with pipeline registers, this increases latency but shouldn't be an issue
+2. Edit the control logic to consider the edges of slower internal clock (a level slow counter passed through an edge-detector)
+
+AI/Google searches might suggest you to do:
+* reduce fanout on heavily-used control signals (google this)
+* register outputs of large mux trees (google this)
+
+These are absolutely **overkill** for school projects. Resort to method 1 & 2 above instead.
