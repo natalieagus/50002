@@ -539,7 +539,7 @@ If you have difficulties remembering **why** synchronisation is required, rememb
 <figcaption style="text-align: center">The Ford assembly line in 1913. Wikimedia Commons/public domain.</figcaption>
 </figure>
 
-Our CPU is very similar to that. It's a giant synchronous circuit consisted of billions of transistors working together to compute results together. A CPU is typically reported with a clk rate (something around 3-4 Ghz in 2023) -- that's our clock signal: a **timing signal**, like a conductor in an orchestra or the constant humming of machines in a factory that keeps up the assembly line's **tempo**.
+Our CPU is very similar to that. It's a giant synchronous circuit consisted of billions of transistors working together to compute results together. A CPU is typically reported with a clk rate (something around 3-4 Ghz in 2023); that's our clock signal: a **timing signal**, like a conductor in an orchestra or the constant humming of machines in a factory that keeps up the assembly line's **tempo**.
 
 
 Our combinational logic devices will still work (to an extent) without adding clocks, but its functionality will be primitive. It will not be able to process series of inputs and outputs in an orderly (pipelined) fashion, and it will not be able to compute an output based on sequences of input (no memory device).
