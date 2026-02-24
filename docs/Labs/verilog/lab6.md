@@ -2745,6 +2745,7 @@ We shall use the same UI interface as defined in the [official lab]({{ site.base
 16. `0xF`: LSB 16 bits of beta output buffer. This is a dff that's hardwired to reflect Mem[0xC]
 
 ### Suggested Verilog top file
+The Verilog Top file processes all I/O (passing it through conditioners and edge detectors) where necessary and connects it to the motherboard:
 
 ```verilog
 `timescale 1ns / 1ps
@@ -2803,12 +2804,12 @@ module alchitry_top_verilog (
   wire slowclk_pulse;
 
   edge_detector #(
-      .EDGE(1)
+      .RISE(1),
+      .FALL(0)
   ) u_ed_1 (
-      .clk  (clk),
-      .rst  (rst),
-      .sig  (btn_cond),
-      .pulse(slowclk_pulse)
+      .clk(clk),
+      .in (btn_cond),
+      .out(slowclk_pulse)
   );
   // ------------------------------------------------------------
   // IRQ from button 1: conditioner + rising-edge detector
@@ -2829,19 +2830,19 @@ module alchitry_top_verilog (
   wire btn_1_pulse;
 
   edge_detector #(
-      .EDGE(1)
+      .RISE(1),
+      .FALL(0)
   ) u_ed_2 (
-      .clk  (clk),
-      .rst  (rst),
-      .sig  (btn_cond_1),
-      .pulse(btn_1_pulse)
+      .clk(clk),
+      .in (btn_cond_1),
+      .out(btn_1_pulse)
   );
 
   // ------------------------------------------------------------
   // reset conditioner
   // ------------------------------------------------------------
   wire rst_cond;
-  wire rst = ~rst_cond; // change to active high
+  wire rst = ~rst_cond;
 
   reset_conditioner u_reset_conditioner (
       .clk(clk),
@@ -2929,8 +2930,7 @@ module alchitry_top_verilog (
     io_led_flat[15:8] = view16[15:8];
 
     // Use LED bank 2 for something useful (optional)
-    // Here: show selector + slowclk pulse + irq
-    io_led_flat[23:16] = {view_sel, 1'b0, irq_w, btn_cond, slowclk_pulse};
+    io_led_flat[23:16] = {view_sel, btn_cond_1, btn_cond, irq_w, slowclk_pulse};
 
     // Also drive the onboard 8 LEDs with out_reg low byte (optional)
     led = out_reg_w[7:0];
@@ -2939,10 +2939,11 @@ module alchitry_top_verilog (
 endmodule
 
 
+
 ```
 
 {:.note}
-The module above uses `button_conditioner`. See appendix.
+The module above uses `button_conditioner` and `edge_detector`. See appendix.
 
 ### Combine with default `alchitry_top.sv`
 
@@ -3390,4 +3391,42 @@ module button_conditioner #(
 endmodule
 ```
 
+## Edge Detector
+
+
+```verilog
+module edge_detector #(
+    parameter RISE = 1'b1,
+    parameter FALL = 1'b1
+) (
+    input  wire clk,
+    input  wire in,
+    output reg  out
+);
+
+  reg last_q;
+
+  initial begin
+    last_q = 1'b0;
+  end
+
+  always @* begin
+    out = 1'b0;
+
+    if (RISE) begin
+      if (in == 1'b1 && last_q == 1'b0) out = 1'b1;
+    end
+
+    if (FALL) begin
+      if (in == 1'b0 && last_q == 1'b1) out = 1'b1;
+    end
+  end
+
+  always @(posedge clk) begin
+    last_q <= in;
+  end
+
+endmodule
+
+```
 
