@@ -633,5 +633,11 @@ Similarly with button conditioner:
   );
 ```
 
+## Reset Runs
+
+Do not forget to reset `synth_1` runs as necessary when you edit the source files before generating new bitstream.
+
+<img src="{{ site.baseurl }}//docs/FPGA/images/vivado-verilog/2026-02-24-11-55-11.png"  class="center_seventy no-invert"/>
+
 
 

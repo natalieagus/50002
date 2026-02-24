@@ -2637,7 +2637,7 @@ You can use the BRAM for this, but to get BRAM inference you need a synchronous-
 
 ```verilog
 `timescale 1ns / 1ps
-`define FW_HEX_FILE "data/firmware.hex"
+`define FW_HEX_FILE "data/firmware.mem"
 
 module firmware_rom_bram #(
     parameter integer WORDS = 128
@@ -2684,7 +2684,7 @@ endmodule
 Then you instantiate this in `memory_unit.v` as:
 
 ```verilog
-firmware_rom #(.WORDS(128), .INIT_HEX("firmware.hex")) u_firmware_rom (
+firmware_rom #(.WORDS(128), .INIT_HEX("firmware.mem")) u_firmware_rom (
   .clk(clk),
   .ia(ia),
   .id(id),
@@ -2701,6 +2701,15 @@ C03F0003
 607F0020
 7BE3FFFB
 ```
+
+### Adding memory file in Vivado
+
+Choose the file type of Memory File in Vivado when adding Design Sources.
+
+<img src="{{ site.baseurl }}//docs/Labs/verilog/images/lab6/2026-02-24-11-56-27.png"  class="center_seventy no-invert"/>
+
+If you name your file properly, e.g: `firmware.mem`, Vivado is also able to find that file as you import. You can simply just define the hex file as-is in the header of `firmware_bram.v`. Vivado will find the file and figure out the pathing automatically.
+
 
 ### `slowclk` Requirement
 
@@ -2794,7 +2803,7 @@ module alchitry_top_verilog (
   wire slowclk_pulse;
 
   edge_detector #(
-      .EDGE(1)
+      .RISE(1)
   ) u_ed_1 (
       .clk  (clk),
       .rst  (rst),
@@ -2820,7 +2829,7 @@ module alchitry_top_verilog (
   wire btn_1_pulse;
 
   edge_detector #(
-      .EDGE(1)
+      .RISE(1)
   ) u_ed_2 (
       .clk  (clk),
       .rst  (rst),
