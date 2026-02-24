@@ -2803,7 +2803,7 @@ module alchitry_top_verilog (
   wire slowclk_pulse;
 
   edge_detector #(
-      .RISE(1)
+      .EDGE(1)
   ) u_ed_1 (
       .clk  (clk),
       .rst  (rst),
@@ -2829,7 +2829,7 @@ module alchitry_top_verilog (
   wire btn_1_pulse;
 
   edge_detector #(
-      .RISE(1)
+      .EDGE(1)
   ) u_ed_2 (
       .clk  (clk),
       .rst  (rst),
@@ -2840,12 +2840,13 @@ module alchitry_top_verilog (
   // ------------------------------------------------------------
   // reset conditioner
   // ------------------------------------------------------------
-  wire rst;
+  wire rst_cond;
+  wire rst = ~rst_cond; // change to active high
 
   reset_conditioner u_reset_conditioner (
       .clk(clk),
       .in (rst_n),
-      .out(rst)
+      .out(rst_cond)
   );
   // ------------------------------------------------------------
   // Motherboard instance
@@ -2929,13 +2930,14 @@ module alchitry_top_verilog (
 
     // Use LED bank 2 for something useful (optional)
     // Here: show selector + slowclk pulse + irq
-    io_led_flat[23:16] = {view_sel, 2'b00, irq_w, slowclk_pulse};
+    io_led_flat[23:16] = {view_sel, 1'b0, irq_w, btn_cond, slowclk_pulse};
 
     // Also drive the onboard 8 LEDs with out_reg low byte (optional)
     led = out_reg_w[7:0];
   end
 
 endmodule
+
 
 ```
 

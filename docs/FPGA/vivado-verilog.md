@@ -608,12 +608,14 @@ A Verilog-2005 (.v) module can instantiate a SystemVerilog (.sv) module as long 
 For example, suppose we create `reset_conditioner.sv`, just use it like so inside `alchitry_top_verilog.v`:
 
 ```verilog
-wire rst;
+wire rst_cond; // conditioned active low reset
+wire rst = ~rst_cond; // invert to obtain active high
+
 
 reset_conditioner u_reset_conditioner(
     .clk(clk),
     .in(rst_n),
-    .out(rst)
+    .out(rst_cond)
 )
 ```
 
