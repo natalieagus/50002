@@ -228,7 +228,7 @@ Let two 2-bit numbers A and B be given:
 You must determine if `A > B` using logic gates only. *We are only testing for `A > B`, not `B < A` or `B == A`*.
 
 
-**(a.)** Write the Boolean expression for the output `Z = 1` if `A > B` using any logic gate.
+**(a)** Write the Boolean expression for the output `Z = 1` if `A > B` using any logic gate.
 
 <div cursor="pointer" class="collapsible">Show Answer</div>
 <div class="content_answer"><p>
@@ -242,7 +242,7 @@ Z = (A1 AND (NOT B1))
 </p></div><br>
 
 
-**(c.)** Identify *which* part of the expression corresponds to the **MSB** comparison and which to the **LSB** comparison.
+**(b)** Identify *which* part of the expression corresponds to the **MSB** comparison and which to the **LSB** comparison.
 
 <div cursor="pointer" class="collapsible">Show Answer</div>
 <div class="content_answer"><p>
