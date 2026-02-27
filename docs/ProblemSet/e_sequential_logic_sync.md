@@ -89,7 +89,7 @@ Signal 5, although it has <span style="color:red; font-weight: bold;">invalid</s
 
 Consider the following circuit, and notice the **feedback loop**. You may assume that the circuit has been **reset**, that is all dffs are outputting a valid (reset) signal (e.g: bit `0` in reset state) in the beginning:
 
-<img src="https://dropbox.com/s/jhq2pg9rs70rlrj/Q8.png?raw=1" class="center_fifty">
+<img src="https://dropbox.com/s/jhq2pg9rs70rlrj/Q8.png?raw=1" class="center_seventy">
 
 Setup time, hold time, propagation delay, and contamination delay (all in nanoseconds) of each component is as written above. Lets now analyse its timing constraints:
 
