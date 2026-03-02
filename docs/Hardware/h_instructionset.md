@@ -256,7 +256,7 @@ In the figure above, each *row* contains $$4\times8$$ bits in total $$=32$$ bits
 * **Each subsequent word has their addresses increased by 4**.  
 
 {: .note}
-The size of a *WORD* actually may depend on the ISA. The computer model that we learn for this course is a 32-bit architecture, **therefore we define 1 WORD to be 32 bits.
+The size of a *WORD* actually may depend on the ISA. The computer model that we learn for this course is a 32-bit architecture, therefore we define 1 WORD to be 32 bits.
   
 ### [Programmability of a Von Neumann Machine](https://www.youtube.com/watch?v=h1KGzAbJH4Q&t=2881s)
   
@@ -264,7 +264,7 @@ We can clearly see how electronic devices that are designed based on this model 
 
 **The Memory Unit** represents the "tape" of the Universal Turing Machine, while the CPU is the "arrow" that performs the logic computation and perform read/write to the memory. Both "input" and "program" (instructions) can be stored in the memory unit. We can never have an infinitely huge RAM, but we can get really large RAM, that's close enough.
 
-**The CPU** is a complex sequential logic circuit -- a datapath whose job is to **fetch** and **execute** *instructions* loaded from the memory, one instruction at a time per clock cycle. 
+**The CPU** is a complex sequential logic circuit: a datapath whose job is to **fetch** and **execute** *instructions* loaded from the memory, one instruction at a time per clock cycle. 
 
 **The Control Unit** provides different control signals depending on the current instruction read. This allows us to **reuse the same data paths** for computing a set of different functions -- or in other words: provide programmability. Programmable data paths give some algorithmic flexibility, achievable by just changing the control structure.  
 
