@@ -222,7 +222,7 @@ The bigger the size of your memory unit, the more data you can store within it. 
 Since the memory unit can **store** a huge amount of data (in Gigabytes), the CPU must be able to *read* just a particular $$N$$ bits of relevant data from the memory unit. It is able to do this by giving an **address** as an input to the memory unit. The memory unit **receives this address** and output the data stored at the given address. 
 
 To *write* onto or *read* from the memory unit, the CPU must provide **two inputs** to the Memory Unit: 
-1. **Address**: the **address** where this $$N$$ bits of data should be stored or loateded from
+1. **Address**: the **address** where this $$N$$ bits of data should be stored or loaded from
 2. **Content**: the data itself. 
 
 The memory device generally receives three kinds of input, 1-bit WE signal (write enable), address, and data input (bit size varies, depending on how much data can the memory holds). The figure below illustrate a <span class="orange-bold">byte addressable</span> memory unit where $$N$$ is 8 bits.
