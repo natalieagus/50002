@@ -160,6 +160,11 @@ The dynamic discipline states that there are **two timing** **requirements for t
 
 These two values are crucial for [later](#sequential-logic-device-timing-constraint-t1-and-t2).
 
+{:.note}
+> $$T_{setup}$$ and $$T_{hold}$$ are **not contiguous**. $$T_{setup}$$ ends when G *begins* transitioning from `1` toward `0`, and $$T_{hold}$$ begins only when G *reaches* a valid `0`. The clock's own finite transition period sits between them: neither $$T_{setup}$$ nor $$T_{hold}$$ formally governs D during this interval.
+> 
+> <img src="{{ site.baseurl }}/docs/Hardware/images/cs-2026-50002-clk-dynamic-disc.drawio.png"  class="center_seventy"/>
+
 ### [Edge-Triggered D Flip-Flop ](https://www.youtube.com/watch?v=HlizelEp4Yc&t=2066s)
 
 To address the second problem: the presence of **unstable/invalid output during transition of input**, we need to create another device called the *Edge-Triggered D Flip Flop* (or shortened as DFF) by putting two D-Latches in series as shown:
@@ -231,7 +236,7 @@ Recall that the *dynamic discipline* ($$T_{setup}$$ and $$T_{hold}$$) ensure tha
 
 To obey the dynamic discipline, there exist this **timing constraint** for the D Flip-Flop configuration:
 
-$$t_{CD_{master}} > t_{H_{slave}}$$
+$$t_{CD_{master}} \geq t_{H_{slave}}$$
 
 {:.highlight}
 Head to [Appendix](#dff-timing-constraint) if you're interested to learn why.
@@ -244,7 +249,10 @@ We can integrate Flip-Flops into our circuits as 'synchronization' or 'memory' d
 {: .warning}
 Due to Dynamic Discipline, we have **two** timing constraints called **$$t_1$$ and $$t_2$$** that should **always** apply in **ANY** path between two (one upstream and one downstream) connecting Flip-Flops  (regardless of how many CLs are there in the middle of the two Flip-Flops) in a SL circuit.
 
-Take into example a very simple combination as shown in the figure below, consisted of two Flip-Flops and one CL device in between. Let's name the Flip-Flop R1 on the left as the "upstream" Flip-Flop and the Flip-Flop R2 on the right as the "downstream" Flip-Flop:
+Take into example a very simple circuit as shown in the figure below, consisted of two Flip-Flops and one CL device in between. Let's name the Flip-Flop R1 on the left as the "upstream" Flip-Flop and the Flip-Flop R2 on the right as the "downstream" Flip-Flop:
+
+{:.important}
+Each of these are a DFF! Not slave-master latch setup. 
 
 <img src="/50002/assets/contentimage/week3notes/1.png" class="center_seventy">
 
@@ -257,7 +265,9 @@ From the diagram above, we can define two timing constraints for this particular
 - $$t_2$$ : $$t_{PD} R_1 + t_{PD} CL + t_S R_2 \leq t_{CLK}$$
 
 {:.note}
-You may read [this supplementary document](https://dropbox.com/s/gi4r2ea1tdv5x4d/Seq_Logic_Timing_Extras_2020.pdf?dl=1) to know more about timing computations for sequential logic device. If you're interested to find the **reasoning** behind t1 and t2 constraints, read this [appendix](#t1-and-t2-constraint-derivation) section.
+> These formulas assume the clock signal transitions **instantaneously**: a standard idealization used throughout this course. In reality, every clock edge has a finite transition time $$t_{slope}$$, which introduces reference-point mismatches between the timing quantities above. For $$t_1$$ this mismatch is self-correcting; for $$t_2$$ it introduces an explicit $$t_{slope}$$ term. See the [appendix](#non-ideal-clock-and-t_slope) for further explanation (not required in the syllabus).
+>
+> You may read [this supplementary document](https://dropbox.com/s/gi4r2ea1tdv5x4d/Seq_Logic_Timing_Extras_2020.pdf?dl=1) to know more about timing computations for sequential logic device. If you're interested to find the **reasoning** behind t1 and t2 constraints, read this [appendix](#t1-and-t2-constraint-derivation) section.
 
 
 
@@ -427,7 +437,7 @@ In order for sequential logic devices to work, we need to obey the dynamic disci
 Here are the key points from this notes:
 1. General structure of **sequential logic devices**:
   <img src="https://dropbox.com/s/7crg33w0e7yg2hn/Q1.png?raw=1"    class="center_seventy"   >
-2. **Dynamic discipline**: The setup time (t1) and hold time (t2) constraints ensures the proper operation of sequential circuits by guaranteeing that data is reliably transferred between flip-flops in a sequential circuit. They prevent timing violations that could lead to incorrect operation of the circuit (incorrect propagation of signals). These constraints enforce specific time windows during which the data must remain **stable** around the clock edge (t1 **before** the clock edge for **upstream** dff, and t2 **after** the clock edge for **downstream** dff)
+2. **Dynamic discipline**: The **hold time** constraint (t1) and **setup time** constraint (t2) ensure the proper operation of sequential circuits by guaranteeing that data is reliably transferred between flip-flops in a sequential circuit. They prevent timing violations that could lead to incorrect operation of the circuit (incorrect propagation of signals). t1 ensures data from the upstream register remains stable long enough **after** the clock edge to satisfy the hold time of the downstream register. t2 ensures valid data arrives at the downstream register **before** the next clock edge with sufficient setup time.
 3. **$$t_{cd}$$ and $$t_{pd}$$ computation of sequential logic devices**: $$t_{cd}$$ and $$t_{pd}$$ are computed based only on the downstream combinational logic relative to the clock input, <span class="orange-bold">not</span> user inputs.
 4. **Metastable state**: Occurs in flip-flops when the input changes too close to the clock edge, **violating** setup or hold time. In this state, the output is **neither** a stable 0 nor 1 and may oscillate or settle unpredictably. It arises because flip-flops internal feedback cannot resolve conflicting signal states quickly. We can mitigate metastability (but cannot completely avoid it) by using synchronizers and ensuring that dynamic discipline is obeyed.
 
@@ -483,7 +493,7 @@ The truth table for the lenient MUX is as follows:
 
 To obey the dynamic discipline, there exist this **timing constraint** for the D Flip-Flop configuration:
 
-$$t_{CD_{master}} > t_{H_{slave}}$$
+$$t_{CD_{master}} \geq t_{H_{slave}}$$
 
 Imagine the exact moment when the INV CLK seen by master (latch) changes from `0` to `1`, at the same time, the CLK signal seen by slave (latch)  changes from `1` to `0`. This transition by the CLK is **not immediate** and there is a short time window where the CLK goes from (valid) `1` to invalid value to (valid) `0`.
 
@@ -496,7 +506,7 @@ The $$\star$$ has to retain its **previous** valid value (when the clock was val
 - Reflect whatever new input is given at D port of the master latch, even though the master latch is at the `write` mode.
 
 
-This means the **contamination** delay of the master latch (time taken on signal on $$\star$$ is be invalid after CLK at G port  becomes invalid) has to be **larger** than the hold time of the slave latch *so that the Flip-Flop system obeys the dynamic discipline.*
+This means the **contamination** delay of the master latch (time taken on signal on $$\star$$ is be invalid after CLK at G port  becomes invalid) has to be **at least as large as** the hold time of the slave latch *so that the Flip-Flop system obeys the dynamic discipline.*
 
 
 ## t1 and t2 Constraint Derivation
@@ -523,6 +533,45 @@ We can call the $$t_{PD} CL$$ (propagation delay of the CL) as the time taken to
 
 The propagation or contamination delays of a Flip-Flop is not considered a logic computation, because unlike combinational logic devices (that can be made to implement functionalities such as addition, subtraction, boolean expressions, etc), a Flip-Flop **does not implement** any other special functionalities except to function as a memory device.
 
+
+## Non-Ideal Clock and $$t_{slope}$$
+
+The $$t_1$$ and $$t_2$$ formulas assume the clock transitions **instantaneously** between valid `0` and valid `1`. Under this idealization there is a single well-defined clock edge, and all reference points for $$t_{CD}$$, $$t_{PD}$$, $$t_H$$, and $$t_S$$ coincide at that edge. In reality every clock has a finite transition time $$t_{slope}$$ during which the voltage is neither valid `0` nor valid `1`. This is the same window that sits between $$T_{setup}$$ and $$T_{hold}$$ as noted earlier.
+
+
+Consider the timing diagram below using a simple setup with one upstream DFF `R1` and one downstream DFF `R2` with differing timing specs:
+
+<img src="{{ site.baseurl }}/docs/Hardware/images/cs-2026-50002-Page-27.drawio.png"  class="center_full"/>
+
+### Effect on $$t_1$$ (Hold Constraint)
+
+The two quantities in $$t_1$$ have **mismatched starting reference points**:
+- $$t_{CD}$$ of R1 is measured from when CLK *begins* rising (leaves valid `0`), indicated by  timestamp `B` to `D` above.
+- $$t_H$$ of R is measured from when CLK *finishes* rising (reaches valid `1`), , indicated by  timestamp `C` to `D` above.
+
+These are separated by exactly some amount of time $$t_{slope}$$ (timestamp `B` to `C`) which is the transition time of the rising CLK signal. The physically precise constraint is:
+
+$$t_{CD_{R1}} + t_{CD_{CL}} \geq t_{H_{R2}} + t_{slope}$$
+
+However, $$t_{CD}$$ and $$t_H$$ values reported on datasheets are both measured from the same defined reference point on the clock edge, for instance the 50% VDD threshold crossing somewhere between timestamp `B` anc `C`. Because both quantities share the same measurement start time, there is no reference-point mismatch between them in the first place. The standard formula $$t_{CD_{R1}} + t_{CD_{CL}} \geq t_{H_{R2}}$$ therefore holds directly with datasheet values, and no explicit $$t_{slope}$$ correction term is needed.
+
+
+### Effect on $$t_2$$ (Setup Constraint)
+
+The two quantities in $$t_2$$ also have **mismatched ending reference points**:
+- $$t_{CLK}$$ is measured from when CLK has just reached valid `1` to the next valid `1` (timestamp `C` to `H`). This technically includes two $$t_{slope}$$. 
+- $$t_H$$ of R is measured from when CLK *finishes* rising (reaches valid `1`), indicated by  timestamp `C` to `D` above.
+
+This means that $$t_{CLK}$$ and $$t_H$$ does <span class="orange-bold">not</span> have the same ending reference point.  The slope at the end of the period therefore eats into the available propagation budget. The physically precise constraint is therefore:
+
+$$t_{PD_{R1}} + t_{PD_{CL}} + t_{S_{R2}}  \leq t_{CLK} - t_{slope}$$
+
+Similarly in practice this doesn't matter anyway. $$t_{S}$$ and $$t_{CLK}$$ values reported on datasheets are both measured to/from the **same** defined reference point on the clock edge, for instance the 50% VDD threshold crossing of CLK signal. With this same ref point, there is no mismatch between the tsetup deadline and the end of the clock period. The standard formula $$t_{PD_{R1}} + t_{PD_{CL}} + t_{S_{R2}} \leq t_{CLK}$$ therefore holds directly with datasheet values, and no explicit $$t_{slope}$$ correction term is needed.
+
+{:.note-title}
+> Just for curious readers
+> 
+> This whole $$t_{slope}$$ discussion is just to show *why* the idealization is safe, but the practical takeaway is simply that the clock transition is treated as **instantaneous**. There is therefore no $$t_{slope}$$ term in either $$t_1$$ or $$t_2$$, and the standard formulas hold directly. Everything else in the appendix is just the deeper justification for the curious reader.
 
 ## About CPU Clock
 

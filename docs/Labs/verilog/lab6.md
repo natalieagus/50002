@@ -3383,7 +3383,7 @@ module button_conditioner #(
     if (!in_sync) begin
       ctr <= {CTR_W{1'b0}};
     end else if (!(&ctr)) begin
-      ctr <= ctr + {{(CTR_W - 1) {1'b0}}, 1'b1};
+      ctr <= ctr + { {(CTR_W - 1) {1'b0} }, 1'b1};
     end
     out <= &ctr;
   end
