@@ -288,7 +288,7 @@ The NAND gate is just one of many possible gates that we will encounter in this 
 <img src="/50002/assets/contentimage/lab2/3.png"  class=" center_fourty"/>
 
 
-We will <span style="color:red; font-weight: bold;">not</span> test you on designing transistor-level circuitry, but you should be able to a given CMOS circuit and derive the truth table from it. 
+We will <span style="color:red; font-weight: bold;">not</span> test you on designing transistor-level circuitry, but you should be able to derive its truth table given the corresponding CMOS circuitry. 
 
 As an exercise, write down the truth table of the following CMOS circuitry:
 <img src="{{ site.baseurl }}/assets/images/lab2/mhp-cmos.png"  class="center_fifty"/>
