@@ -2,7 +2,7 @@
 layout: default 
 title: Useful Resources 
 permalink: /resources
-nav_order: 101
+nav_order: 104
 ---
 
 # Useful Resources 
