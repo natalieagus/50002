@@ -37,6 +37,7 @@ Here are the list of guides written so far, separated by categories.
 * [**MAX7219:**]({{ site.baseurl }}/fpga/max7219) a serially controlled LED matrix/7-seg driver IC that multiplexes 8 digits (8x8 matrix) with built-in current regulation, letting you update the display by writing registers over SPI-like signals.
 * [**SN74HC595:**]({{ site.baseurl }}/fpga/sn74hc595) an 8-bit serial-in, parallel-out shift register that shifts bits in on a clock and then latches them to 8 output pins (and can be daisy-chained for more outputs).
 * [**RGB LED Matrix (HUB75, Adafruit-style panels):**]({{ site.baseurl }}/fpga/hub75) a scanned (multiplexed) RGB panel interface where you stream pixel data into shift registers for the active row pair and use row-address and latch/clock signals to refresh the display continuously.
+* [**VGA:**]({{ site.baseurl }}/fpga/vga-textmode) a simple 640x480 VGA output driver with sample glyphs.
 
 ### Useful Modules
 
