@@ -55,6 +55,8 @@ Driving LED displays efficiently requires understanding various communication pr
 4. **[MAX7219](https://www.analog.com/media/en/technical-documentation/data-sheets/max7219-max7221.pdf) LED Driver**  
    The **MAX7219** is a serially interfaced **LED driver** designed for controlling 7-segment displays, dot matrices, and bar graphs. It simplifies driving multiple LEDs by handling current regulation and multiplexing internally. Communication with the MAX7219 is done using a **simple SPI-like protocol**, making it an efficient solution for driving multiple digits or LED segments with minimal FPGA resources.
 
+5. **[VGA](https://eater.net/vga)**: The VGA interface drives a monitor by outputting analog RGB signals along with HSYNC and VSYNC pulses at precise timings. A VGA driver in text mode divides the 640x480 visible area into character cells, looks up each cell's character and color from a memory buffer, and uses a font ROM to determine per-pixel ink or background color. Because the RGB output is combinational and the memory is shared with the CPU, careful attention must be paid to clock domain multiplexing, memory read latency, and pipelined address lookahead to ensure the correct pixel data is displayed at the right time.
+
 Each of these devices requires a *different* approach to interfacing with an FPGA. 
 
 You can refer to these repositories for demos of following drivers in LucidV2 & its guide: 
@@ -62,6 +64,7 @@ You can refer to these repositories for demos of following drivers in LucidV2 & 
 2. [HUB75 RGB LED Matrix](https://github.com/natalieagus/rgb-led-matrix-driver-demo/blob/main/source/rgb_led_matrix_driver.luc) , [guide](https://natalieagus.github.io/50002/fpga/hub75)
 3. [75HC595 Shift Register](https://github.com/natalieagus/sn74hc595-v2.git), [guide]({{ site.baseurl }}/fpga/sn74hc595)
 4. [MAX7219](https://github.com/natalieagus/max7219-v2), [guide]({{ site.baseurl }}/fpga/max7219)
+4. [VGA](https://github.com/natalieagus/vga-textmode-20x15-v2.git), [guide]({{ site.baseurl }}/fpga/vga-textmode)
 
 These are the same drivers but implemented in LucidV1. 
 1. [WS2812B](https://github.com/natalieagus/ws2812b)
