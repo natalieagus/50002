@@ -665,7 +665,7 @@ Design Runs typically also report timing constraints. WNS and TNS are the import
 
 WNS: **Worst Negative Slack**
 * The single worst setup timing slack in the design
-* >= 0 ns means setup timing meets for all analyzed paths
+* \>= 0 ns means setup timing meets for all analyzed paths
 * < 0 ns means timing violation exists (you are late by that amount on the worst path)
   
 TNS: **Total Negative Slack**
