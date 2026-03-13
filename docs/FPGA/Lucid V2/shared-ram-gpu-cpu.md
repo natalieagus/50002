@@ -32,9 +32,12 @@ The relevant files for this design are:
 
 ## Overview
 
-A VGA renderer (GPU) and a CPU both need to read from the same screen buffer RAM. The problem is that a typical BRAM has one read port and one write port. The write port is straightforwardly owned by the CPU; it only writes. The read port, however, must be shared: the GPU reads every single pixel clock to fetch the current cell's character and color, and the CPU also needs to read back values it has written.
+A  renderer  (GPU-ish, e.g: VGA driver) and a CPU both need to read from the same screen buffer RAM. The problem is that a typical BRAM has one read port and one write port. The write port is straightforwardly owned by the CPU; it only writes. The read port, however, must be shared: the GPU reads every single pixel clock to fetch the current cell's character and color, and the CPU also needs to read back values it has written.
 
 The solution here is <span class="orange-bold">time-division multiplexing</span> of the single read port, orchestrated entirely by the relationship between two clocks: a 50 MHz clock (`clk50`) and a 25 MHz clock (`clk25`). No arbitration logic, no handshake, and no FSM needed. The two clock edges carve the time axis into *alternating* CPU and GPU slots, and the mux select is literally just `clk25`.
+
+{:.note}
+This notes is written with the assumption that the GPU runs on 25Mhz clock e.g: for VGA. You can adjust the logic accordingly for different clock rates.
 
 ## Clock Relationship
 
@@ -151,6 +154,9 @@ posedge clk50 = t=50   RAM latches raddr = gpu_addr, ram_rdata becomes valid aft
 negedge clk50 = t=60   GPU cache register captures ram_rdata
                = posedge clk25 (next CPU slot starts)
 ```
+
+{:.important}
+The GPU **MUST** produce a new read address request `@negedge clk25`. If your driver's address is latched, ensure you are computing the address early so there's no long latency from `negedge clk25` to when GPU produces a new read address request to the shared ram.
 
 Unlike the CPU path, the GPU result <span class="orange-bold">cannot</span> be read as a raw wire at the right time because we need the RAM result for the entire period of `clk25` for the VGA driver to work. 
 
