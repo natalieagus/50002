@@ -76,7 +76,12 @@ The assembler runs **two passes** over the source:
 
 ### Output Format
 
-The hex/bin dump is written in **reverse address order** (lowest address at the bottom of the file). This matches the Lucid memory initialisation format expected on the Alchitry AU. If you are using Verilog's `$readmemh`, you do not have to reverse it and you should not have trailing `,`. Change the implementation of `arr_to_str` in `assembler.py`:
+The hex/bin dump is written in **reverse address order** (lowest address at the bottom of the file). This matches the Lucid memory initialisation format expected on the Alchitry AU.
+
+<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/beta-assembler/2026-03-17-10-11-30.png"  class="center_seventy no-invert"/>
+
+
+If you are using Verilog's `$readmemh`, you do not have to reverse it and you should not have trailing `,`. Change the implementation of `arr_to_str` in `assembler.py`:
 
 ```python
         if input_format == "data":
@@ -252,6 +257,8 @@ Column 0 and column 11 are permanent **walls**, pre-filled with `1` in `tetris_d
 ### Display
 
 The terminal display shows the board on the left (27 terminal columns wide), all 32 registers on the right, and disassembly below showing the current PC and any breakpoints.
+
+<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/beta-assembler/2026-03-17-10-12-30.png"  class="center_seventy no-invert"/>
 
 ### Keyboard Controls
 
