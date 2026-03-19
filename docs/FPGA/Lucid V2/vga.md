@@ -17,9 +17,9 @@ Information Systems Technology and Design
 <br>
 Singapore University of Technology and Design
 
-## **Driving a VGA Display with an FPGA**
+# **Driving a VGA Display with an FPGA**
 
-### Driver Code
+## Driver Code
 
 You can download the driver code from the repository. The files below are designed to work together.
 
