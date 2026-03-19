@@ -177,7 +177,7 @@ To understand how the Write Enable `WE` signal works more clearly, we need to di
 {: .note-title}
 > The Special Register `R31`
 > 
-> R31's content is  always  `0x00000000`, regardless of what values are written to it. Therefore it is not a regular register like the other 30 registers in the REGFILE. It is simply giving out `0x00000000` as output when RA1 or RA2 is 11111, which is illustrated as the 0 on the rightmost part of each read MUXes.
+> R31's content is  always  `0x00000000`, regardless of what values are written to it. Therefore it is not a regular register like the other 30 registers in the REGFILE. It is simply giving out `0x00000000` as output when RA1 or RA2 is 11111, which is illustrated as the 0 on the leftmost part of each read MUXes.
 
 <img src="/50002/assets/contentimage/beta/regfile_detailed.png"  class="center_seventy"/>
 
