@@ -23,11 +23,17 @@ This checkoff requires you to implement a fully functional 32-bit ALU as per the
 - **Output**: ALU[31:0], **z, v, n**
 - Follow [ALU Lab](/lab/lab5) **functionalities** and **modularity** format. 
 - Note that the output of this FPGA ALU **MUST include z, v, n.**
-- **Manually** able key in 32-bit A, 32-bit B, and ALUFN (easiest way is to use dip switches on the IO, but you’re free to be creative) and observe ALL 32 output bits on the Alchitry-IO (LED/7seg, or any output device of your choice) to check manually that the output is **correct. 
+- **Manually** able key in 32-bit A, 32-bit B, and ALUFN (easiest way is to use dip switches on the IO, but you’re free to be creative) and observe ALL 32 output bits on the Alchitry-IO (LED/7seg, or any output device of your choice) to check manually that the output is **correct. <span class="orange-bold">This is the bare minimum</span>, you will get an automatic zero if you fail to bring a working hardware.
+  - A working simulator does <span class="orange-bold">not</span> count, it goes towards Lab credits
 - [Automated ALU Tester](#automated-tester) using FSM
 
+
 If you have completed the ALU Lab, then you would’ve completed majority of this checkoff. Consult the [rubric](#rubric) for more details.
-  
+
+### Minimum Requirement
+
+To make it crystal clear, the minimum requirement for the checkoff is to come with the hardware and allow us to **manually** test the functionality of your ALU on the hardware (FPGA). If you fail to do this, you get an automatic zero. The rubric will not apply anymore.
+
 ## Constraints
 
 Strictly <span class="orange-bold">no</span> usage of math and compare Lucid operators (see below) when implementing all 13 ALU operations stated in the lab handout: `ADD, SUB, MUL, SHL, SRA, SHR, CMPEQ, CMPLE, CMPLT, AND, OR, XOR, A`. 
@@ -53,19 +59,23 @@ DO NOT use these operators to implement the **COMPARE** operators (CMPEQ, CMPLE,
 
 ### List of Forbidden Math Operators
 
-Do NOT use any of these operators to implement the **MATH** operators (ADD, SUB, MUL, SHL, SRA, SHR):
+Do NOT use any of these operators to implement the **MATH** operators (ADD, SUB, SHL, SRA, SHR):
 
 | Function | Expression |
 | --- | --- |
 | Negate: | `-EXPR` |
 | Add: | `EXPR` `+` `EXPR` |
 | Subtract: | `EXPR` `-` `EXPR` |
-| Multiply: | `EXPR` `*` `EXPR` |
 | Divide: | `EXPR` `/` `EXPR` |
 | Shift right: | `EXPR` `>>` `NUM_BITS` |
 | Signed shift right: | `EXPR` `>>>` `NUM_BITS` |
 | Shift left: | `EXPR` `<<` `NUM_BITS` |
 | Signed shift left: | `EXPR` `<<<` `NUM_BITS` |
+
+{:.note-title}
+> EXception for MUL
+>
+> You can however use `*` for MUL after implementing the original schematic (comment it out) to speed up simulation and build time.
 
 ### List of Forbidden Bool Operators
 
@@ -116,6 +126,15 @@ For example: when testing the adder, we expect you to supply values of A and B t
 
 We **expect** to find documentation or relevant info about your ALU in your **Google Doc report**. It will be aiding your checkoff. We won’t read any other info elsewhere.
 
+### ALU Additional Functionality
+
+To obtain the highest tier on Functionality [rubrics](#rubric), your ALU should have an additional functionality other than the 13 functionalities found in Lab: ALU.
+- You may use any Lucid operator for this. The constriants above don't apply.
+- It **MUST** be meaningful for your project, otherwise you won't get any credits
+
+
+For example, if your game is a very simple implementation of [crossy road](https://crossy-road.io/), you might need [circular shift](https://onlinetoolz.net/bitshift) functionality. You can modify your ALU to implement this and give it a new ALUFN. You **must** add this to your automated test cases as well.
+
 ## Submission Procedure
 
 **Submit the following at eDimension Week 8 tab**:
@@ -129,7 +148,9 @@ Paste the link to your github repo containing the code for your ALU so we have a
 Find the timeslot for your group's checkoff in the course handout.
 
 During the checkoff:
-- You’re given 10-15 minutes per group
+- You’re given 10-15 minutes per group, no major time extension given
+- Come prepared by <span class="orange-bold">pre-loading</span> the binary to your ALU into the hardware (FPGA)
+  - We will <span class="orange-bold">not</span> wait for your build to complete
 - **All group members must be present** unless you have valid LOA
 
 We will scan your Google Doc report during Checkoff 1 (your ALU writeup), then give us your Alchitry Au (Hardware) with the ALU loaded into it, and allow us to check several operations **manually**. Answer questions when asked (related to operating the ALU).
@@ -142,8 +163,8 @@ This checkoff is worth 3% of your total assessment grades.
 
 | Criteria | Weight | Not Present | Minimal (20%) | Basic (40%) | Intermediate (60%) | Advanced (80%) | Exemplary (100%) |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| **Functionality** | 25%  | ALU not implemented | ALU only has < 13 working functionalities listed in Lab 3: ALU | ALU has ALL working functionalities listed in Lab 3: ALU, but some are buggy (not more than 2) | ALU has ALL of the functionalities listed in Lab3: ALU, and they’re all working as intended | ALU has additional  functionalities other than the 13 functionalities found in Lab3: ALU | Proficient and additional functionalities are actually useful to the proposed 1D game (requires students to explain basic idea of the 1D game prototype) |
-| Design | 25% | ALU not implemented. If you are not using an ALU, you will also get 0 on this category.  | ALU design is poor, not hierarchical and not modular, everything falls under top level file, e.g: `au_top.luc` and does not adhere to ALUFN given | ALU design adheres to ALUFN given, but everything is implemented under top level file, e.g: `au_top.luc` | ALU Design follows Lab3: ALU instructions, with SOME components being modular, e.g: `adder` is separated from `compare` but not for all components. | ALU Design follows Lab3: ALU instructions: hierarchical and modular for ALL components, i.e: every component placed as separated files.  | Proficient **and** additional functionalities are arranged in its proper component. This category cannot be scored if there’s no additional functionality for the ALU.  |
+| **Functionality** | 25%  | ALU not implemented | ALU only has < 13 working functionalities listed in Lab 3: ALU | ALU has ALL working functionalities listed in Lab 3: ALU, but some are buggy (not more than 2) | ALU has ALL of the functionalities listed in Lab: ALU, and they’re all working as intended | ALU has additional  functionalities other than the 13 functionalities found in Lab: ALU | Proficient and additional functionalities are actually useful to the proposed 1D game (requires students to explain basic idea of the 1D game prototype) |
+| Design | 25% | ALU not implemented. If you are not using an ALU, you will also get 0 on this category.  | ALU design is poor, not hierarchical and not modular, everything falls under top level file, e.g: `au_top.luc` and does not adhere to ALUFN given | ALU design adheres to ALUFN given, but everything is implemented under top level file, e.g: `au_top.luc` | ALU Design follows Lab: ALU instructions, with SOME components being modular, e.g: `adder` is separated from `compare` but not for all components. | ALU Design follows Lab: ALU instructions: hierarchical and modular for ALL components, i.e: every component placed as separated files.  | Proficient **and** additional functionalities are arranged in its proper component. This category cannot be scored if there’s no additional functionality for the ALU.  |
 | **Testing** | 25% | No manual testing present, no automatic testing present | Students are only able to show some functionality of the ALU manually (<10) | Students are ready to demonstrate all 13 functionality of the ALU manually, but some bugs are present from instructor-given manual test case | Students are ready to manually   demonstrate all 13 functionality of the ALU without any bugs when instructor gives random test cases | Intermediate **and**  students are able to show ALL of the functionality of the ALU using a self-test circuit (FSM), with clear indication on **which test case** are currently happening at any point in time. Students can use 7Seg or LED (indexed test cases).  | Proficient **and** students can demo **cases of errors properly**, and test circuit can indicate these kinds of errors properly using either 7Seg or LED.  |
 | Source Code and Documentation | 25%  | Code is not pushed to the Github Classroom Repository | No or little documentation on HDL source code, at least 30% of variable naming does not make sense.  | Comments are present but not properly written (with noticeable typos, >20%). Some variable naming and module naming are somewhat proper.  | ALL variable naming and module naming is somewhat proper, but source code is too excessively commented.  | ALL Variable naming and module naming is proper, comments are provided elegantly with good quality and not just bombarding of comments. Debug code is present and just commented out, cluttering the workspace. | Proficient **and** useless code is removed and not just commented out. Git commits are meaningful, periodical, and follows proper commit conventions (see [conventionalcommits.org](https://www.conventionalcommits.org/en/v1.0.0/)).  |
 
