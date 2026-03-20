@@ -13,7 +13,7 @@ nav_order: 1
 # Checkoff 1: ALU (3%)
 {: .no_toc}
 
-This checkoff requires you to implement a fully functional 32-bit ALU as per the specification written in the [ALU lab handout](/lab/lab5) on your Alchitry Au FPGA.
+This checkoff requires you to implement a fully functional 32-bit ALU on the <span class="orange-bold">hardware</span> as per the specification written in the [ALU lab handout](/lab/lab5) on your Alchitry Au FPGA.
 
 ## The Task
 
