@@ -26,11 +26,20 @@ Consult the [rubric](#rubric) for more details.
 
 ## How to start
 
+### FSM-Datapath Track
+
+This is the **standard** track. You shall implement your project using a datapath and an FSM that produces **control signals**, much like how we designed the automated testers during the Lab. 
+
 {:.note-title}
 > Instructor's Sample
 > 
 > You are strongly recommended to see Instructor sample game datapath and FSM [here]({{ site.baseurl }}/project/1d/project-sample) before beginning this task. This instructor sample warrants 100% of Checkoff 2 marks.
 
+### ISA Track (Advanced)
+If you plan to implement an ISA as your project, the regular [rubric](#rubric) below will not apply to you. You will checkoff in a separate occassion with the instructor. Contact them for more details.
+
+{:.important}
+There's no additional marks to try this track. It is purely for knowledge and experience. 
 
 ## Submission
 
