@@ -87,16 +87,16 @@ If you are using Verilog's `$readmemh`, you do not have to reverse it and you sh
         if input_format == "data":
             return "\n".join(
                 [
-                    f"{output_prefix}{''.join(data[i : min(i + (beta.memory_width // 8), len(data))][::-1])}," # reverses
+                    f"{output_prefix}{''.join(data[i : min(i + (beta.memory_width // 8), len(data))][::-1])}," 
                     for i in range(0, len(data), (beta.memory_width // 8)) 
-                ][::-1]
+                ][::-1] # reverses
             )
         else:
             return "\n".join(
                 [
-                    f"{output_prefix}{''.join(data[i : min(i + (beta.instruction_width // 8), len(data))][::-1])}," # reverses
+                    f"{output_prefix}{''.join(data[i : min(i + (beta.instruction_width // 8), len(data))][::-1])}," 
                     for i in range(0, len(data), (beta.instruction_width // 8))
-                ][::-1]
+                ][::-1] # reverses
             )
 ```
 
