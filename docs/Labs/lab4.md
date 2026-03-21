@@ -477,7 +477,9 @@ We will present BOTH ways to you and the pros and cons of each.
 **Pros**: You can see the state transitions well, with minimal mental gymnastics to implement.
 
 **<span class="orange-bold">Cons</span>**: This is a <span class="orange-bold">bad practice</span> for three reasons. 
+
 - **Firstly**, you lose the global reset [for this reason](https://natalieagus.github.io/50002/fpga/fpga_1_2024) 
+
 <img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-12-03 at 8.37.21 AM.gif"  class="center_seventy no-invert"/> 
 
 - **Secondly**, you make your FSM *unresponsive* by running on such a **slow** clock. See the gif below
@@ -496,9 +498,7 @@ As a result, components driven by the slow clock and components driven by the 10
 {:.note}
 See [Custom Clock Pitfall]({{ site.baseurl }}/fpga/custom-clock-pitfall) for a full explanation of what goes wrong when you use data signal as `clk` input to other modules in your design.
 
-There's some workaround though to fix the reset issue (the first issue mentioned):
-
-If you'd like to reset the `simple_fsm`, you need to pass it as an input signal that you check at the end of your always block.
+There's some workaround though to fix the reset issue (the first issue mentioned): if you'd like to reset the `simple_fsm`, you need to pass it as an input signal that you check at the end of your always block.
 
 ```verilog
     // simple_fsm
