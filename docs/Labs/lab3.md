@@ -949,7 +949,7 @@ In digital systems, this is commonly implemented using a counter (a bank of D fl
 
 By selecting one of these bits as a new clock signal, the original frequency is effectively divided. The figure below illustrates how frequency division works. You can connect these flip flops in series to further divide the frequency by powers of 2.
 
-<img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-freq-divider.drawio.png"  class="center_seventy no-invert"/>
+<img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-freq-divider.drawio.png"  class="center_seventy"/>
 
  
 The Lucid equivalent code for the above arrangement is:
