@@ -867,6 +867,70 @@ For checkoff, you then constructed a testbench to test the functionality of your
 
 Although subtle, we also learned how to **match latency**: since the registered adder output is delayed by two clock boundaries from the tester’s point of view, the expected sum must be *delayed* by the same number of stages before comparison.
 
+### Warning on Using Custom Slow Clock as `clk` (Important)
+
+In this simple lab, we are supplying the `slow_clock` signal as your `registered_adder`'s `clk`:
+
+```verilog
+registered_rca rr(#SIZE(8), .a(io_dip[0]), .b(io_dip[1]), .clk(slow_clock.value), .rst(rst))
+```
+
+It generally "works" and it is convenient, plus you are likely not going to meet any issue in hardware built. However, it is a <span class="orange-bold">BAD</span> practice because you are using data as `clk`, instead of using a single synchronous `clk` (100Mhz) or [Clock Wizard-generated clock]({{ site.baseurl }}/fpga/clocks) for all components in your design. 
+
+The output of a custom frequency divider, whether from a chained DFF or a counter bit tap, is a **data signal** routed through general fabric. It must <span class="orange-bold">NEVER</span> be used as a clock pin for any (big) downstream module, <span class="orange-bold">especially BRAMs</span>. 
+
+{:.important}
+A good practice is to only as input to an `edge_detector` or as a synchronous enable. See [Custom Clock Pitfall]({{ site.baseurl }}/fpga/custom-clock-pitfall) for a full explanation of what goes wrong when you do.
+
+So a better way to implement the registered adder is to receive the `slowclk_rising_edge` signal separately and enable the dff:
+
+```verilog
+  module registered_rca#(
+        SIZE = 8 : SIZE > 0
+    ) (
+        input a[SIZE],  
+        input b[SIZE],  
+        output s[SIZE], 
+        input clk, 
+        input slowclk_rising_edge,
+        input rst
+        // optionally, you can have output cout port here
+    ) {
+
+        dff value_a[SIZE](.clk(clk), .rst(rst), #INIT(0))
+        dff value_b[SIZE](.clk(clk), .rst(rst), #INIT(0))
+        dff value_s[SIZE](.clk(clk), .rst(rst), #INIT(0)) // optionally, you can set this to have SIZE + 1 bits to include cout. We omitted it for this lab
+        
+        rca rca(#SIZE(8), .a(value_a.q), .b(value_b.q), .cin(0)) // edit the ports yourself to suit your rca's interface
+
+        always {
+            s = value_s.q
+
+            // maintain value at all times
+            value_a.d = value_a.q
+            value_b.d = value_b.q
+            value_s.d = value_s.q
+            
+            // update only when slowclock edge fires
+            if (slowclk_rising_edge){
+                value_a.d = a
+                value_b.d = b 
+                value_s.d = rca.s
+            }
+        }
+    }
+```
+
+You will still see the result at `N+2` `slowclk` period later, so the effect is still the same, with a little nuance: value `s` produced at the output of the system has a "latency" of one period of `clk`.
+
+Suppose at `t=0`, the `clk`, e.g: 100 MHz rising edge fires and the edge detector output goes to `1`. That `1` is now sitting on the `.slow_clock_edge` port from 0 to 10 ns, along with the new values of `a` and `b` placed at the DFF's `d` ports. The DFFs only capture whatever is on `.d` at the *next* 100 MHz rising edge, which is t=10 ns. So the new `q` values only appear from `t=10` ns onwards. There is always one full 100 MHz clock period of latency between the slow clock edge firing and the output actually updating.
+
+
+{:.highlight}
+The new values of `value_a.q`, `value_b.q`, and `value_s.q` therefore appear one 100 MHz period later, which is 10 ns <span class="orange-bold">after</span> the slow clock edge. 
+
+This means the output `s` does <span class="orange-bold">not</span> update exactly at the slow clock edge but 10 ns after it. In most designs this is completely inconsequential since the slow clock period is orders of magnitude larger, for example 20 ms for a 50 Hz slow clock. But it is worth being aware of if you are building something that has tight dependencies between the slow clock edge and when downstream logic reads the output. **For this lab, it does not affect the output you see or your design.**
+
 
 ## Appendix
 
@@ -960,6 +1024,10 @@ Example: `DIV = 3` taps `q[2]`, so `out = clk / 8`.
 
 
 This counter-bit method is just a neat way to produce a frequency divider: instead of thinking “chain DIV flip-flops,” we think “make a DIV-bit counter and tap bit DIV−1,” and that <span class="orange-bold">tapped</span> bit has the same divided frequency.
+
+{:.warning}
+The output of this frequency divider, whether from a chained DFF or a counter bit tap, is a **data signal** routed through general fabric. It must <span class="orange-bold">NEVER</span> be used as a clock pin for any downstream module, especially BRAMs. Use it only as input to an `edge_detector` or as a synchronous enable. See [Custom Clock Pitfall]({{ site.baseurl }}/fpga/custom-clock-pitfall) for a full explanation of what goes wrong when you do.
+
 
 
 
