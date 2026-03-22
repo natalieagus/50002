@@ -537,6 +537,13 @@ So at some time `t`, the 100 MHz edge fires first, the counter increments, and `
 
 The `slow_clock.value` being derived from the same 100 MHz counter is the **key**: its edges are always slightly after a 100 MHz edge, never exactly on one. This further stresses the importance that all components in your system should be driven by the same `clk` source.
 
+Here's a demo gif to show you the "effect" of using `slow_clock.value` as enable signal:
+
+<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2026-03-22 at 10.41.05 AM.gif"  class="center_seventy no-invert"/>
+
+When `io_dip` is changed (a and b values) as:
+1. `slow_clock.value = 0`, the output at `io_led[2]` is not updated until the next time `slow_clock.value = 1`.
+2. `slow_clock.value = 1`, the output at `io_led[2]` will be updated at each `clk` rising edge (e.g: 1000Hz in simulator, or 100Mhz in hardware)
 
 ## Testbench 
 
