@@ -91,6 +91,19 @@ The clock hardware is literally like a conductor in an orchestra.
 - It does not produce the music itself, but it **dictates** exactly <span class="orange-bold">when</span> each section is allowed to act, 
 - This ensures  that ALL parts of the system **progress together** and <span class="orange-bold">remain synchronised</span>.
 
+## One Clock to Rule Them All
+
+The Alchitry Au board has a <span class="orange-bold">100 MHz onboard oscillator</span>, and new Alchitry Labs projects are configured to use this as the system clock by default.
+
+This is your <span class="orange-bold">one</span> source of truth for all clocked components, and if you need a different frequency you use the [Clock Wizard](https://natalieagus.github.io/50002/fpga/clocks#method-2-generate-new-clock-signal-using-clock-wiz-in-vivado-ip-catalog) to derive it [properly](https://natalieagus.github.io/50002/fpga/clocks#method-2-generate-new-clock-signal-using-clock-wiz-in-vivado-ip-catalog).
+
+Never use a counter bit or any other data signal as `clk`, because a clock is a <span class="orange-bold">physically special signal</span> that must travel on dedicated routing and be visible to the timing analyzer.
+
+### Vivado Timing Analysis
+
+When you build your project to run on hardware in the following labs, Vivado performs static timing analysis on every path in your design to **verify** that all <span class="orange-bold">setup</span> and <span class="orange-bold">hold</span> requirements are met (dynamic discipline not violated). **This analysis is only meaningful if your clock is a proper, constrained signal.** If you use a [custom frequency divider](#frequency-divider) (read later sections) like a counter bit as a clock, Vivado <span class="orange-bold">cannot</span> trace those paths correctly, reports no violations, and gives you a false sense of safety. 
+
+Your design passes testbenches, simulation, and builds cleanly but fails on hardware in ways that are extremely <span class="orange-bold">difficult</span> to debug. If you are interested to dive deeper, read [this]({{ site.baseurl }}/fpga/custom-clock-pitfall) section.
 
 ### `dff` 
 
@@ -262,10 +275,10 @@ You can connect the `io_dips` to its `.a` and `.b` port and manually observe its
 
 In real systems, inputs are not provided manually, and outputs are not inspected continuously. 
 
-Instead, data arrives as a **time-ordered sequence**, one set of values per clock cycle. Each set is **sampled** at a clock edge, processed, and then passed forward on the next edge. Remember, just like an assembly line. Real digital systems behave like a highly automated **factory**.
+Instead, data (`N` bits) arrives as a **time-ordered sequence**, one set of values per clock cycle. Each set is **sampled** at a clock edge, processed, and then passed forward on the next edge. Remember, just like an assembly line. Real digital systems behave like a highly automated **factory**.
 
 {:.highlight}
-> In other words, although the signals are parallel in space, they are *serial* in time.
+> Although the `N` bit signals are parallel in space, they are *serial* in time.
 >
 > At any *one* instant in time, the system is handling **N** bits in parallel. *That is spatial parallelism*. 
 > Over successive clock cycles, those N-bit values arrive one after another. *That is temporal serialism*.
@@ -275,7 +288,7 @@ To support this behaviour, combinational logic is placed **between** registers (
 - At each clock edge, a new input set enters the pipeline, and the result of the previous set moves to the next stage. 
 - Values are captured, held, and transferred forward only on clock edges.
   
-This structure is known as a **pipeline**. 
+**This structure is known as a pipeline**. 
 
 ### Simple Registered Adder
 
@@ -328,17 +341,21 @@ We can build this easily in Lucid, following this arrangement:
 
 ### Test
 
-To observe the orderly-fashion output, you will need to simulate it with slower clock, like 1Hz. 
+{:.highlight-title}
+> Test using a very slow clock
+> 
+> To observe that the registers provide an orderly-fashioned output, you will need to simulate it with slower clock, like 1Hz. 
 
-In `alchitry_top`, we instantiate this registered rca, and also the combinational logic rca. We use a component called `counter` (you can import it from the **component** library, under miscellaneous category). Then connect the display to the two LED rows:
+In `alchitry_top`, instantiate this `registered_rca`, and also the combinational logic `rca`. To make a <span class="orange-bold">toy</span> slow clock, we use a component called `counter` (you can import it from the **component** library, under miscellaneous category). Then connect the display to the two LED rows:
 
 {:.note}
-The `counter` component is used here simply as a [**frequency divider**](#frequency-divider) to **slow** the system clock down to a **human-observable** rate. It is roughly slowed down to 1Hz (as opposed to 1000Hz). Give the [appendix](#frequency-divider) a read if you're not familiar with the concept of frequency divider.
+The `counter` component is used here simply as a <span class="orange-bold">toy</span> [**frequency divider**](#frequency-divider) to **slow** the system clock down to a **human-observable** rate. It is roughly slowed down to 1Hz (as opposed to 1000Hz) <span class="orange-bold">for testing purposes only</span>. Give the [appendix](#frequency-divider) a read if you're not familiar with the concept of frequency divider.
 
 
 ```verilog
     counter slow_clock(#DIV(9), .clk(clk), .rst(rst), #SIZE(1))
 
+    // FOR DEMO PURPOSES ONLY in SIMULATOR: we connect .clk port of registered_rca to slow_clock
     registered_rca rr(#SIZE(8), .a(io_dip[0]), .b(io_dip[1]), .clk(slow_clock.value), .rst(rst))
     rca rca(.a(io_dip[0]), .b(io_dip[1]))
 
@@ -349,11 +366,11 @@ The `counter` component is used here simply as a [**frequency divider**](#freque
     }
 ```
 
-The goal is to observe that with slower clock, we see that the output shown in `io_led[0]` is periodic and consistent, akin to a consistent display "refresh rate", while the output in `io_led[1]` depends on the input, that is manually controlled and hence erratic. 
+The goal is to observe that with slower clock, we see that the output shown in `io_led[0]` is periodic and consistent, synchronized to the slow clock's frequency. This is akin to a consistent display "refresh rate". However, the output in `io_led[1]` depends on the input, that is manually controlled and unpredictable (does not get refreshed at a constant rate).
 
 <img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-11-28 at 11.47.07 AM.gif"  class="center_seventy no-invert"/>
 
-### Missing inputs between clock edges
+#### Observation 1: Unregistered inputs between clock edges
 
 {:.important}
 In a clocked system, only the value that exists **at the sampling edge matters**. Any changes that occur in between edges are intentionally <span class="orange-bold">ignored</span>. This is not a flaw. It is the entire design principle of a digital system.
@@ -362,25 +379,51 @@ You can think of it like a camera taking one photograph per second.
 - Movements between photos may be interesting, but they are not recorded. 
 - The system only commits to what is visible at the instant the picture is taken.
 
-Similarly, a `dff` only captures what is present **at the edge** of the clock. Everything else is transient and deliberately discarded. This is what makes behaviour **consistent** and **repeatable**.
+Similarly, a `dff` only captures what is present <span class="orange-bold">at the edge</span> of the clock. Everything else is transient and deliberately discarded. This is what makes behaviour **consistent** and **repeatable**.
 
-### Periodic and Synchronized Output
+<img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-dff-capture.drawio.png"  class="center_full"/>
 
-The registered adder produces an output that is:
+#### Observation 2: Periodic and Synchronized Output Suitable for Downstream Components
+
+Like what we have learned in lecture, the registered adder produces an output that is:
 * Time **aligned** to a known reference: the clock
 * **Stable** for a **full period**
 * *Independent* of how noisy or irregular the input activity is in between edges
 
-This kind of output is essential when the result is used by another clocked block, which expects it to be stable, for example: a comparator block after the registered adder block.
+This kind of output is essential when the result is used by another clocked block, which expects it to be stable, for example: if you add a comparator block after the registered adder block to post-process the adder's result.
 
 <img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-Page-12.drawio-2.png"  class="center_full"/>
 
-In contrast, the unregistered adder reacts immediately to every flicker of the input. That makes it appear “responsive” but it is actually unreliable and unsynchronised. Its output *cannot* be reliably consumed by other logic without additional timing control.
+In contrast, the unregistered adder reacts immediately to every change in the input. That makes it appear more “responsive” but it is actually unreliable and unsynchronised. Its output *cannot* be reliably consumed by other logic without additional timing control.
 
-### Using Faster Clock
-You can make the registered adder MORE responsive by connecting it to a FASTER clock, provided that it obeys the <span class="orange-bold">dynamic discipline</span>. You can change the `DIV` value of the `counter slow_clock` to do this.
+### Clock speed in practice
 
-<img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-11-28 at 11.57.45 AM.gif"  class="center_seventy no-invert"/>
+In practice, we use a clock frequency fast enough to make the unit appear responsive, for example: 100MHz as provided by default in Alchitry Projects.
+
+As mentioned in the intro, can synthesize faster clocks (>100Mhz) using [Vivado Clock Wiz](https://natalieagus.github.io/50002/fpga/clocks#method-2-generate-new-clock-signal-using-clock-wiz-in-vivado-ip-catalog), provided that it obeys the <span class="orange-bold">dynamic discipline</span>. 
+
+### (Important) Demo Code Warning
+
+The test code above connects the `.clk` port of the `registered_rca` into the `slow_clock` data output for <span class="orange-bold">demo purposes only</span>:
+
+```verilog
+    counter slow_clock(#DIV(9), .clk(clk), .rst(rst), #SIZE(1))
+
+    // FOR DEMO PURPOSES ONLY in SIMULATOR: we connect .clk port of registered_rca to slow_clock
+    registered_rca rr(#SIZE(8), .a(io_dip[0]), .b(io_dip[1]), .clk(slow_clock.value), .rst(rst))
+```
+
+{:.important}
+NEVER do this in real projects. You should always connect the global clock from `alchitry_top` as `.clk` input to all components in your project. Read the ["one clock to rule them all"](#one-clock-to-rule-them-all) section above again if you are unclear.
+
+```verilog
+    // clk comes from alchitry_top
+    registered_rca rr(#SIZE(8), .a(io_dip[0]), .b(io_dip[1]), .clk(clk), .rst(rst))
+```
+
+If you really need to "slow down" the dffs in the adder for specific purposes, you should do one of these two things:
+1. Generate **slower clock** using [Vivado Clock Wiz](https://natalieagus.github.io/50002/fpga/clocks#method-2-generate-new-clock-signal-using-clock-wiz-in-vivado-ip-catalog) and use it in your project.
+2. Use the frequency divider's output as an `enable` signal to the `dff` in your `registered_adder` (see [below](#register-with-write-enable-signal))
 
 ## Button-controlled Sampling
 
@@ -449,8 +492,9 @@ module registered_rca_en#(
 ```
 
 {:.note}
-For this lab, we simplify and omit `cout` in `registered_adder_en` module. You can choose to include it if you wish. It will not affect your checkoff. 
+For this lab, we simplify and omit `cout` in `registered_adder_en` module. You can choose to include it if you wish. It will **not** affect your checkoff. 
 
+### Capture signal with `io_button`
 When instantiating this module, you can connect one of the `io_button` to the `enable` signal.
 
 ```verilog
@@ -467,6 +511,32 @@ When instantiating this module, you can connect one of the `io_button` to the `e
 The following shows that the new button-triggered adder will be fed with new input only when `io_button[0]` is pressed:
 
 <img src="{{ site.baseurl }}/docs/Labs/images/Screen Recording 2025-11-28 at 3.36.01 PM.gif"  class="center_seventy no-invert"/>
+
+### Capture signal with `slow_clock` as `enable`:
+
+You can also achieve the same "slow down" effect like the test demo above by passing `slow_clock` signal through an `edge_detector`, and using it as the `enable` signal for this adder:
+
+
+```verilog
+    counter slow_clock(#DIV(9), .clk(clk), .rst(rst), #SIZE(1))
+
+    registered_rca_en rr_en_with_slowclock(.a(io_dip[0]), .b(io_dip[1]), .clk(clk), .rst(rst),.enable(slow_clock.value))
+```
+
+This keeps everything clocked on the <span class="orange-bold">true</span> 100 MHz clock while still slowing down when the adder captures new inputs. 
+
+{:.note}
+Note that using `slow_clock.value` directly as an enable means the adder will update for **multiple** consecutive 100 MHz cycles as long as `slow_clock` is high (see diagram below), <span class="orange-bold">*not just once*</span> per slow clock period. If you want it to update <span class="orange-bold">exactly once</span> per slow clock rising edge, you will need an `edge_detector`, which we will cover in the next lab.
+
+<img src="{{ site.baseurl }}/docs/Labs/images/cs-2026-50002-slowclock-plain-as-en.drawio-2.png"  class="center_full"/>
+
+
+Notice also the "slight delay" of the `slow_clock` signal indicated by the green shade in the diagram above. Since `slow_clock` is generated by a frequency divider driven by 100 MHz, its output transitions happen slightly after a default `clk` (100 MHz) rising edge, <span class="orange-bold">not</span> exactly at the same time. 
+
+So at some time `t`, the 100 MHz edge fires first, the counter increments, and `slow_clock.value` changes a short time after that due to clock-to-q delay (tpd). Therefore, there's no violation of dynamic discipline here. 
+
+The `slow_clock.value` being derived from the same 100 MHz counter is the **key**: its edges are always slightly after a 100 MHz edge, never exactly on one. This further stresses the importance that all components in your system should be driven by the same `clk` source.
+
 
 ## Testbench 
 
@@ -867,63 +937,6 @@ For checkoff, you then constructed a testbench to test the functionality of your
 
 Although subtle, we also learned how to **match latency**: since the registered adder output is delayed by two clock boundaries from the tester’s point of view, the expected sum must be *delayed* by the same number of stages before comparison.
 
-### Warning on Using Custom Slow Clock as `clk` (Important)
-
-In this simple lab, we are supplying the `slow_clock` signal as your `registered_adder`'s `clk`:
-
-```verilog
-registered_rca rr(#SIZE(8), .a(io_dip[0]), .b(io_dip[1]), .clk(slow_clock.value), .rst(rst))
-```
-
-It generally "works" and it is convenient, plus you are likely not going to meet any issue in hardware built. However, it is a <span class="orange-bold">BAD</span> practice because you are using data as `clk`, instead of using a single synchronous `clk` (100Mhz) or [Clock Wizard-generated clock]({{ site.baseurl }}/fpga/clocks) for all components in your design. 
-
-The output of a custom frequency divider, whether from a chained DFF or a counter bit tap, is a **data signal** routed through general fabric. It must <span class="orange-bold">NEVER</span> be used as a clock pin for any (big) downstream module, <span class="orange-bold">especially BRAMs</span>. 
-
-{:.important}
-A good practice is to only as input to an `edge_detector` or as a synchronous enable. See [Custom Clock Pitfall]({{ site.baseurl }}/fpga/custom-clock-pitfall) for a full explanation of what goes wrong when you do.
-
-So a better way to implement the registered adder is to receive the `slowclk_rising_edge` signal separately and enable the dff:
-
-```verilog
-  module registered_rca#(
-        SIZE = 8 : SIZE > 0
-    ) (
-        input a[SIZE],  
-        input b[SIZE],  
-        output s[SIZE], 
-        input clk, 
-        input slowclk_rising_edge,
-        input rst
-        // optionally, you can have output cout port here
-    ) {
-
-        dff value_a[SIZE](.clk(clk), .rst(rst), #INIT(0))
-        dff value_b[SIZE](.clk(clk), .rst(rst), #INIT(0))
-        dff value_s[SIZE](.clk(clk), .rst(rst), #INIT(0)) // optionally, you can set this to have SIZE + 1 bits to include cout. We omitted it for this lab
-        
-        rca rca(#SIZE(8), .a(value_a.q), .b(value_b.q), .cin(0)) // edit the ports yourself to suit your rca's interface
-
-        always {
-            s = value_s.q
-
-            // maintain value at all times
-            value_a.d = value_a.q
-            value_b.d = value_b.q
-            value_s.d = value_s.q
-            
-            // update only when slowclock edge fires
-            if (slowclk_rising_edge){
-                value_a.d = a
-                value_b.d = b 
-                value_s.d = rca.s
-            }
-        }
-    }
-```
-
-You will still see the result at `N+2` `slowclk` period later, so the effect is still the same, with a little nuance: value `s` produced at the output of the system has a "latency" of one period of `clk`.
-
-Suppose at `t=0`, the `clk`, e.g: 100 MHz rising edge fires and the edge detector output goes to `1`. That `1` is now sitting on the `.slow_clock_edge` port from 0 to 10 ns, along with the new values of `a` and `b` placed at the DFF's `d` ports. The DFFs only capture whatever is on `.d` at the *next* 100 MHz rising edge, which is t=10 ns. So the new `q` values only appear from `t=10` ns onwards. There is always one full 100 MHz clock period of latency between the slow clock edge firing and the output actually updating.
 
 
 {:.highlight}
