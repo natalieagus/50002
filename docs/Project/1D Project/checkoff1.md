@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Checkoff 1 (ALU)
-permalink: /project/1d/checkoff-1
+permalink: /project/checkoff-1
 parent: 50.002 1D Project 
 grand_parent: 1D&2D Project (Details)
 nav_order: 1
