@@ -46,7 +46,7 @@ The 1D project is separated into 5 checkoffs. Click each section to view the rub
 - [Checkoff 5: Peer Review, 8% (Week 12/13, via **TEAMMATES**)]({{ site.baseurl }}/project/checkoff-5)
 
 
-{.important}
+{:.important}
 Consult the course handout for actual due dates.
 
 ## Constraints
