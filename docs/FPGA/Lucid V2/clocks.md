@@ -100,15 +100,28 @@ Wait awhile, and you will see Vivado launched:
 
 <img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/clocks/2025-04-21-16-04-18.png"  class="center_seventy no-invert"/>
 
-Search `FPGA Features and Design`, choose Clocking, then double click Clocking Wizard to launch:
+Search `Clocking`, then double click Clocking Wizard to launch:
 
-<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/clocks/2025-04-21-16-06-46.png"  class="center_seventy no-invert"/>
+<img src="{{ site.baseurl }}/docs/FPGA/Lucid V2/images/Screenshot 2026-03-25 at 4.33.05 PM.png"  class="center_seventy no-invert"/>
 
 The Clocking Wizard window will appear. At the Clocking Options tab, choose MMCM. The MMCM module will be expecting a 100MHz input signal, and is coming from the Single-ended clock capable pin, N14, from your Alchitry Au. 
 
 <img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/clocks/2025-04-21-16-36-37.png"  class="center_seventy no-invert"/>
 
 Then, at the Output Clocks tab, change the Requested Frequency to be the one you want, e.g: 10MHz. You might also want to change the component name to follow the frequency so you remember which component is producing what. For instance, `clk_wiz_10` for 10MHz clock. 
+
+For phase, it sets far you **shift** a clock waveform relative to its "normal" starting position, measured in degrees out of 360. 360 degrees means one full period of that clock. For example, for a 50MHz clock (20ns period)
+- Rising edges at: 0, 20, 40, 60, 80 ns...
+- Falling edges at: 10, 30, 50, 70, 90 ns...
+
+If we apply a 180 degree phase shift, we can compute phase shift in time = (180 / 360) x 20 ns = 0.5 x 20 ns = 10 ns
+
+So every edge shifts *forward* by 10 ns:
+- Rising edges at: 0+10, 20+10, 40+10... = 10, 30, 50, 70, 90 ns...
+- Falling edges at: 10+10, 30+10, 50+10... = 20, 40, 60, 80, 100 ns...
+
+{:.note}
+You can apply phase shift as necessary to align rising/falling edges of various clock signals you are generating.
 
 <img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/clocks/2025-04-21-16-08-45.png"  class="center_seventy no-invert"/>
 
