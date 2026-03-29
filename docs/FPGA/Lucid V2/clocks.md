@@ -1,7 +1,7 @@
 ---
 layout: default
 permalink: /fpga/clocks
-title: Clocks 
+title: Modifying Clock
 description: How to use modify the clock
 parent: Lucid V2
 grand_parent: 1D&2D Project (FPGA)
@@ -125,10 +125,6 @@ You can apply phase shift as necessary to align rising/falling edges of various 
 
 <img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/clocks/2025-04-21-16-08-45.png"  class="center_seventy no-invert"/>
 
-At the bottom, delete the optional `reset` and `locked`:
-
-<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/clocks/2025-04-21-16-37-48.png"  class="center_seventy no-invert"/>
-
 Finally, click **OK** then **Generate**:
 
 <img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/clocks/2025-04-21-16-12-15.png"  class="center_seventy no-invert"/>
@@ -150,6 +146,30 @@ You can then use it like any other module:
         dff slow_counter[32](.rst(rst))
     }
 ```
+
+### The Original 100Mhz clock
+
+Once you feed the raw onboard clock into `clk_wiz`, do **not** use it anywhere else. The MMCM inside `clk_wiz` introduces phase shifts on all its outputs, so mixing the raw input with any `clk_wiz` output gives you unknown phase relationships between clock domains, causing metastability.
+
+Instead, configure `clk_wiz` to output **all** the frequencies you need, including 100 MHz, and use only those outputs downstream. 
+
+All outputs from the same `clk_wiz` instance have a known phase relationship since they come from the same MMCM. Also gate your reset on locked so your design stays in reset until the MMCM stabilizes.​​​​​​​​​​​​​​​​
+
+### Gating RESET on locked
+
+{:.note}
+`locked` is an output signal from the `clock_wiz` IP that goes HIGH when the MMCM has stabilized and its output clocks are reliable.
+
+When the FPGA first powers up or comes out of reset, the MMCM needs some time to lock onto the input clock and settle its VCO and dividers. During this startup period, the output clocks are not yet stable. `locked` stays LOW during this time and only goes HIGH once the MMCM is confident its outputs are correct.
+
+Therefore, you shall use it to hold your entire design in reset until it is safe to run:
+
+```
+reset_cond.in = ~rst_n | ~slow_clock.locked
+```
+
+This means your design stays in reset if either the user pressed reset, or the MMCM has not locked yet. Without this, your flip flops could start clocking on garbage clock signals during MMCM startup and end up in an undefined state even after locked goes high.​​​​​​​​​​​​​​​​
+
 
 ### Test 
 
@@ -177,7 +197,7 @@ module alchitry_top (
     dff led_state_slow(.rst(rst), .clk(slow_clock.clk_out1), #INIT(0))
     
     // regular 100MHz clock
-    .clk(clk) {
+    .clk(slow_clock.clk_out2) {
         // The reset conditioner is used to synchronize the reset signal to the FPGA
         // clock. This ensures the entire FPGA comes out of reset at the same time.
         reset_conditioner reset_cond
