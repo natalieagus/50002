@@ -19,7 +19,7 @@ Information Systems Technology and Design
 Singapore University of Technology and Design
 
 
-# Clocks 
+# Modifying Clock Signal
 
 This document is written to guide you with generating new clock signals for your project should it fails to meet timing specifications. If your project **works** in simulation but behaves erratically on physical FPGA, it is likely that you have timing issues. 
 
