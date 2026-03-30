@@ -32,12 +32,85 @@ The relevant files for this design are:
 
 ## Overview
 
-A  renderer  (GPU-ish, e.g: VGA driver) and a CPU both need to read from the same screen buffer RAM. The problem is that a typical BRAM has one read port and one write port. The write port is straightforwardly owned by the CPU; it only writes. The read port, however, must be shared: the GPU reads every single pixel clock to fetch the current cell's character and color, and the CPU also needs to read back values it has written.
+A  renderer  (GPU-ish, e.g: VGA driver) and a CPU both need to read from the same screen buffer RAM. The problem is that a typical BRAM has only two ports: one read port and one write port, for simultaneous reads and writes at *different addresses*. The write port is straightforwardly owned by the CPU; it only writes. The read port, however, must be shared: the GPU reads every single pixel clock to fetch the current cell's character and color, and the CPU also needs to read back values it has written.
 
 The solution here is <span class="orange-bold">time-division multiplexing</span> of the single read port, orchestrated entirely by the relationship between two clocks: a 50 MHz clock (`clk50`) and a 25 MHz clock (`clk25`). No arbitration logic, no handshake, and no FSM needed. The two clock edges carve the time axis into *alternating* CPU and GPU slots, and the mux select is literally just `clk25`.
 
 {:.note}
 This notes is written with the assumption that the GPU runs on 25Mhz clock e.g: for VGA. You can adjust the logic accordingly for different clock rates.
+
+### Dual-Read Port BRAM Configuration
+
+For a single BRAM primitive (RAMB36E1 on Artix-7), we have:
+* 2 ports total, A and B
+* Each port can be read/write independently
+* So maximum is 2 read ports and 2 write ports, but they share the *same* 2 physical ports
+
+The configuration explained above: read and write to different addresses independently is the standard usage. This is what you get if you use `simple_dual_port_ram` in Alchitry Labs
+
+However, you can also create a dual-port BRAM with the following specs instead if you <span class="orange-bold">don't need</span> to read/write **simultaneously** at the different addresses:
+1. Port A: Read/Write to address X
+2. Port B: Read from address Y
+
+
+Therefore you can utilise the two ports available on the BRAM for independent reads, and one of the ports has shared read/write.
+
+```verilog
+module dual_port_bram #(
+    parameter ADDR_WIDTH = 14,
+    parameter DATA_WIDTH = 8
+)(
+    // Port A: CPU read/write
+    input                       clk_a,
+    input  [ADDR_WIDTH-1:0]     addr_a,
+    input  [DATA_WIDTH-1:0]     wdata_a,
+    input                       we_a,
+    output reg [DATA_WIDTH-1:0] rdata_a,
+
+    // Port B: GPU read only
+    input                       clk_b,
+    input  [ADDR_WIDTH-1:0]     addr_b,
+    output reg [DATA_WIDTH-1:0] rdata_b
+);
+    (* ram_style = "block" *)
+    reg [DATA_WIDTH-1:0] mem [0:(1<<ADDR_WIDTH)-1];
+
+    // Port A: CPU
+    always @(posedge clk_a) begin
+        if (we_a)
+            mem[addr_a] <= wdata_a;
+        rdata_a <= mem[addr_a];
+    end
+
+    // Port B: VGA
+    always @(posedge clk_b) begin
+        rdata_b <= mem[addr_b];
+    end
+
+endmodule
+```
+
+If your system is okay with the above design, then you can skip this guide entirely and let CPU and VGA read from the BRAM independently without multiplexing.
+
+
+Note that `rdata_a` on Port A gives you the **old** value at `addr_a` even on a write cycle (read-first mode). If you want the new written value to appear on `rdata_a` immediately, change Port A to:
+
+```verilog
+always @(posedge clk_a) begin
+    if (we_a) begin
+        mem[addr_a] <= wdata_a;
+        rdata_a     <= wdata_a;  // write-first mode
+    end else begin
+        rdata_a <= mem[addr_a];
+    end
+end
+```
+
+Which mode you want depends on whether your CPU ever reads and writes the same address in the *same* cycle.
+
+### Assumption
+
+This guide is written with the assumption that you *need* simultaneous read/write at *different* addresses. Therefore, the modules that need to read from the BRAM have to share the `read` time slices. If you do not need this constraint, skip this guide entirely.
 
 ## Clock Relationship
 
