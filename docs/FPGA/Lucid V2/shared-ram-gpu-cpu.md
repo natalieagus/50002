@@ -17,7 +17,7 @@ Information Systems Technology and Design
 <br>
 Singapore University of Technology and Design
 
-## **Sharing a Single RAM Between CPU and GPU**
+# Sharing a Single RAM Between CPU and GPU
 
 ### Module Code
 
@@ -38,6 +38,14 @@ The solution here is <span class="orange-bold">time-division multiplexing</span>
 
 {:.note}
 This notes is written with the assumption that the GPU runs on 25Mhz clock e.g: for VGA. You can adjust the logic accordingly for different clock rates.
+
+### Assumptions
+
+Here's the hardware assumptions for this setup:
+1. Memory (BRAM) contains data only, not instruction
+2. Instruction memory is separate from data memory
+3. Modules needs to read and write simultaneously to the data memory in a single cycle to different address
+4. PC regfile has combinational read ports and synchronous write port
 
 ### Dual-Read Port BRAM Configuration
 
@@ -178,11 +186,12 @@ You should use Vivado `clock_wiz` or equivalent to generate the clock signal pro
 - You will need these clock signals:
   - `clk100`: 100Mhz (for CPU's dffs and other dffs)
   - `clk50`: 50Mhz (for BRAM)
-  - `clk25`: 25Mhz (for CPU advance, and GPU/driver)
+  - `clk25`: 25Mhz (for CPU advance/clock, and GPU/driver clock)
   - `clk50_n`: 50Mhz (phase: 180, for GPU/driver cache register)
+  - `clk25`: 25Mhz (phase: 180, for GPU cache enable)
 - Once generated, use it to drive the `clk` port of the RAM, CPU, GPU, etc
 
-### RAM clock: `clk50`
+### Data RAM clock: `clk50`
 
 The underlying BRAM is clocked on `posedge clk50`. This is the moment the RAM <span class="orange-bold">latches</span> the current `ram_raddr` and produces `ram_rdata` on its output. Because the BRAM is *synchronous*, `ram_rdata` is not valid immediately after the address is driven; it only updates after a `clk50` posedge has occurred with the address stable at its input.
 
@@ -214,19 +223,20 @@ assign cpu_rdata_raw = ram_rdata;
 {:.highlight}
 CPU read latency from address driven to data readable (at the RAM's read data port) is half a period of 50 MHz clock (10 ns).
 
-### Stalling the CPU During GPU Slot Timing
+### CPU PC and REGFILE clk
 
-There's typically no need to cache the RAM result to the CPU, as the CPU can be made to *stall* during `negedge clk25`. It should have completed instruction execution within `posedge clk25`.
+There is no need to cache the RAM result to the CPU, as the CPU can be made to *stall* during `negedge clk25`. It should have completed instruction execution within `posedge clk25`.
 
-This can be done by detecting the falling edge of `clk25` and let the regs in the regfile capture solely during that timing and nothing else. In other words, you can make the regfile clocked on inverted 25MHz. The only affected instruction (if you implement Beta ISA) is `LD`. 
-- At that moment the RAM output has been valid since t=10 and does not change until t=30 when the GPU takes over. 
 
-This gives 10ns of setup and 10ns of hold margin, so the regfile captures the correct RAM data cleanly with no modifications to the CPU.
+You can stall the CPU in the low level of `clk25` by making its regfile clocked on `clk25_n` directly, and the pc reg clocked on `clk25`. 
+> We assume that instruction BRAM is exclusive to the CPU and only data BRAM is shared between CPU and GPU. Read [assumptions](#assumptions) section above. 
+
+This clock setup gives 10ns of setup and 10ns of hold margin during data `LD`, so the regfile captures the correct RAM data cleanly with no modifications to the CPU.
 
 {:.note}
-> PC on posedge of `clk25`, Regfile on negedge of `clk25`
+> PC on posedge of `clk25`, REGFILE on negedge of `clk25`
 > 
-> The PC should still be clocked to rising 25MHz edge. Every posedge 25MHz the PC advances to the next instruction, issues the new address to RAM, and the CPU begins execution. The full high half of the 25MHz period is the execution window. At the falling edge, the regfile commits and the CPU is idle for the rest of the cycle.
+> The PC should still be clocked to rising 25MHz edge. Every posedge 25MHz the PC advances to the next instruction, issues the new address to instruction RAM, and the CPU begins execution. The full high half of the 25MHz period is the execution window. At the falling edge, the regfile commits and the CPU is idle for the rest of the cycle.
 
 
 ## GPU Slot Timing
@@ -243,7 +253,7 @@ negedge clk50 = t=60   GPU cache register captures ram_rdata
 {:.important}
 The GPU **MUST** produce a new read address request `@negedge clk25`. If your driver's address is latched, ensure you are computing the address early so there's no long latency from `negedge clk25` to when GPU produces a new read address request to the shared ram.
 
-Unlike the CPU path, the GPU result <span class="orange-bold">cannot</span> be read as a raw wire at the right time because we need the RAM result for the entire period of `clk25` for the VGA driver to work. 
+Unlike the CPU path, the GPU result <span class="orange-bold">cannot</span> be read as a raw wire at the right time because we need the RAM result for the entire period of `clk25` for certain drivers like VGA to work. 
 
 By t=60, the system has already crossed into the next `clk25` posedge, which begins the CPU slot. To hold the GPU result stable across the next CPU period (and beyond), it must be **registered**. This register is called `gpu_cache_u`. There's a dedicated section for this [below](#the-gpu-cache-register).
 
