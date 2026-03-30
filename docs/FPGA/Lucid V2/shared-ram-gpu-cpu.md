@@ -184,11 +184,12 @@ Each `clk25` half-period is exactly 20 ns wide.
 You should use Vivado `clock_wiz` or equivalent to generate the clock signal properly and not use other signals as clock. Read this [handout](https://natalieagus.github.io/50002/fpga/clocks) for more information.
 - Give appropriate `phase` value in the Clocking Wizard window to align the 25Mhz and 50Mhz clock properly
 - You will need these clock signals:
-  - `clk100`: 100Mhz (for CPU's dffs and other dffs)
-  - `clk50`: 50Mhz (for BRAM)
-  - `clk25`: 25Mhz (for CPU advance/clock, and GPU/driver clock)
-  - `clk50_n`: 50Mhz (phase: 180, for GPU/driver cache register)
-  - `clk25`: 25Mhz (phase: 180, for GPU cache enable)
+  - `clk100`: 100Mhz (just in case you need the original clk)
+  - `clk50`: 50Mhz (for data & instruction BRAM)
+  - `clk25`: 25Mhz (for CPU PC reg, and GPU/driver reg)
+  - `clk50_n`: 50Mhz (phase: 180, for GPU/driver cache reg)
+  - `clk25_n`: 25Mhz (phase: 180, for CPU regfiles)
+  - `clk25_270`: 25Mhz (phase: 270, for GPU/driver cache enable), optional, you can generate this signal combinationally like in the sample code
 - Once generated, use it to drive the `clk` port of the RAM, CPU, GPU, etc
 
 ### Data RAM clock: `clk50`
@@ -281,7 +282,7 @@ register #(.W(32), .RESET_VALUE(0)) gpu_cache_u (
 
 The cache's job is to cache the gpu's read request and it's driven by `clk50` negedge (`clk50_n`).
 
-The GPU result register (`gpu_cache_u`) is clocked on `clk50_n`, which is the logical inverse of `clk50`. Clocking on the negedge of `clk50` serves a single very important purpose: it places the cache capture (orange box) 10 ns *after* the RAM posedge, giving the RAM output (ram_rdata) the maximum possible time to settle before the register samples it.. 
+The GPU result register (`gpu_cache_u`) is clocked on `clk50_n`, which is the logical inverse of `clk50`. Clocking on the negedge of `clk50` serves a single very important purpose: it places the cache capture (orange box) 10 ns *after* the RAM posedge, giving the RAM output (ram_rdata) the maximum possible time to settle before the register samples it.
 
 
 ```verilog
@@ -295,13 +296,13 @@ The cache's output remains stable for the entire duration denoted by the pink bo
 ### Cache enable  
 
 {:.highlight}
-Denoted as `en_gpu`, registered one half-period late.
+Denoted as `en_gpu`, remains high for a full 20ns covering rising edge of `clk25`. 
 
 The cache must only capture during the GPU read slot (during low levels of 25Mhz clock), not the CPU slot. The naive implementation would be `en = ~clk25`. This is wrong. At the `clk50` negedge that ends the GPU slot (orange box region), `clk25` is simultaneously rising (beginning the next CPU slot). The enable and the register clock would be transitioning at the *same* instant, creating a setup/hold violation on the enable input of the register.
 
 <img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/shared-ram-gpu-cpu/2026-03-12-16-05-57.png"  class="center_full no-invert"/>
 
-Because of this, we shift the `en_gpu` one-half period late as opposed to exactly aligned with the low levels of `clk25`. In other words, `en_gpu` is asserted one `clk50` half-period later, at the preceding `clk50` posedge:
+Because of this, we shift the `en_gpu` one-half period (of `clk50`) late as opposed to exactly aligned with the low levels of `clk25`. In other words, `en_gpu` is asserted one `clk50` half-period later, at the preceding `clk50` posedge:
 
 ```verilog
 reg en_gpu;
@@ -309,6 +310,8 @@ always @(posedge clk50) begin
     en_gpu <= ~clk25;
 end
 ```
+
+You can also use the signal `clk25_270` if you generated it as enable signal. 
 
 At each `clk50` posedge, `en_gpu` is loaded with the **current** value of `~clk25`:
 
