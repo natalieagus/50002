@@ -216,7 +216,7 @@ You also have to **force** the lower two bits of inputs going into the PC+4, PC+
 Example: 
 
 ```verilog
-pc.d = c{pcsel_out[31:2], b00};
+pc.d = c{ pcsel_out_sig[31:2], 2b00 }
 ```
 
 ### Task 2: RESET Multiplexer
@@ -276,8 +276,8 @@ The branch-offset adder **adds** PC+4 to the 16-bit offset encoded in the instru
 Implement the `shift-and-add` unit inside `pc_unit.luc`. Ensure to set the right signals declared as shown: 
 
 ```verilog
-    pc_4_sxtc_32_sig = // implement intermediary signal: pc + 4 + SXT(C)
-    pc_4_sxtc_sig = // preserve the supervisor bit 
+pc_4sxtc32_sig = // implement intermediary signal: pc + 4 + SXT(C)
+pc_4sxtc_sig = // preserve the supervisor bit
 ```
 
 ### Task 5: Supervisor Bit
