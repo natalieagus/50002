@@ -110,6 +110,8 @@ The Clocking Wizard window will appear. At the Clocking Options tab, choose MMCM
 
 Then, at the Output Clocks tab, change the Requested Frequency to be the one you want, e.g: 10MHz. You might also want to change the component name to follow the frequency so you remember which component is producing what. For instance, `clk_wiz_10` for 10MHz clock. 
 
+### Phase Setting
+
 For phase, it sets far you **shift** a clock waveform relative to its "normal" starting position, measured in degrees out of 360. 360 degrees means one full period of that clock. For example, for a 50MHz clock (20ns period)
 - Rising edges at: 0, 20, 40, 60, 80 ns...
 - Falling edges at: 10, 30, 50, 70, 90 ns...
