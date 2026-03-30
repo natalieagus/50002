@@ -106,9 +106,11 @@ Search `Clocking`, then double click Clocking Wizard to launch:
 
 The Clocking Wizard window will appear. At the Clocking Options tab, choose MMCM. The MMCM module will be expecting a 100MHz input signal, and is coming from the Single-ended clock capable pin, N14, from your Alchitry Au. 
 
-<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/clocks/2025-04-21-16-36-37.png"  class="center_seventy no-invert"/>
+<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/clocks/docs/FPGA/Lucid%20V2/images/clocks/2025-04-21-16-36-37.png.png"  class="center_seventy no-invert"/>
 
-Then, at the Output Clocks tab, change the Requested Frequency to be the one you want, e.g: 10MHz. You might also want to change the component name to follow the frequency so you remember which component is producing what. For instance, `clk_wiz_10` for 10MHz clock. 
+Then, at the Output Clocks tab, change the Requested Frequency to be the one you want, e.g: 10MHz. You might also want to change the output port name to follow the frequency so you remember which port is producing which frequency.
+
+<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/clocks/2026-03-30-17-01-06.png"  class="center_seventy no-invert"/>
 
 ### Phase Setting
 
@@ -125,57 +127,70 @@ So every edge shifts *forward* by 10 ns:
 {:.note}
 You can apply phase shift as necessary to align rising/falling edges of various clock signals you are generating.
 
-<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/clocks/2025-04-21-16-08-45.png"  class="center_seventy no-invert"/>
+
+### Gating `reset` on `locked`
+
+<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/clocks/2026-03-30-16-51-59.png"  class="center_seventy no-invert"/>
+
+
+{:.note}
+`locked` is an output signal from the `clock_wiz` IP that goes HIGH when the MMCM has stabilized and its output clocks are reliable.
+
+When the FPGA first powers up or comes out of reset, the MMCM needs some time to lock onto the input clock and settle its VCO and dividers. During this startup period, the output clocks are not yet stable. `locked` stays LOW during this time and only goes HIGH **once** the MMCM is confident its outputs are correct.
+
+Therefore, you shall use it to hold your entire design in reset until it is safe to run:
+
+```verilog
+
+    sig rst                 // reset signal
+    clk_wiz_various clocks(.clk_in1(clk))
+
+always{
+    reset_cond.in = ~rst_n | ~clocks.locked
+}
+```
+
+This means your design stays in reset if either the user pressed reset, or the MMCM has not locked yet. Without this, your flip flops could start clocking on garbage clock signals during MMCM startup and end up in an undefined state even after locked goes high.​​​​​​​​​​​​​​​​
+
+
+### Generate
 
 Finally, click **OK** then **Generate**:
 
-<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/clocks/2025-04-21-16-12-15.png"  class="center_seventy no-invert"/>
+<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/clocks/2026-03-30-16-54-16.png"  class="center_seventy no-invert"/>
 
-It will take some time. 
+It will take some time. Get some coffee and return later.
 
-<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/clocks/2025-04-21-16-13-03.png"  class="center_seventy no-invert"/>
+<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/clocks/2026-03-30-16-54-38.png"  class="center_seventy no-invert"/>
 
 Once done, you can close Vivado. When you return to Alchitry Labs, you will see your new clock created:
 
-<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/clocks/2025-04-21-16-14-30.png"  class="center_seventy no-invert"/>
+<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/clocks/2026-03-30-17-18-52.png"  class="center_seventy no-invert"/>
 
 You can then use it like any other module:
 
-```
-    clk_wiz_10 slow_clock(.clk_in1(clk), .reset(rst))
+```verilog
+    clk_wiz_various clocks(.clk_in1(clk), .reset(rst))
     
-    .clk(slow_clock.clk_out1){
+    .clk(clocks.clk25){
         dff slow_counter[32](.rst(rst))
     }
 ```
 
 ### The Original 100Mhz clock
 
-Once you feed the raw onboard clock into `clk_wiz`, do **not** use it anywhere else. The MMCM inside `clk_wiz` introduces phase shifts on all its outputs, so mixing the raw input with any `clk_wiz` output gives you unknown phase relationships between clock domains, causing metastability.
+Once you feed the raw onboard clock into `clk_wiz`, do **not** use it anywhere else. The MMCM inside `clk_wiz` introduces phase shifts on all its outputs, so mixing the raw input with any `clk_wiz` output gives you unknown phase relationships between clock domains, causing <span class="orange-bold">metastability</span>.
 
-Instead, configure `clk_wiz` to output **all** the frequencies you need, including 100 MHz, and use only those outputs downstream. 
+Instead, configure `clk_wiz` to output **all** the frequencies you need, including 100 MHz, and use only those outputs downstream. Here's one example:
+
 
 All outputs from the same `clk_wiz` instance have a known phase relationship since they come from the same MMCM. Also gate your reset on locked so your design stays in reset until the MMCM stabilizes.​​​​​​​​​​​​​​​​
 
-### Gating RESET on locked
-
-{:.note}
-`locked` is an output signal from the `clock_wiz` IP that goes HIGH when the MMCM has stabilized and its output clocks are reliable.
-
-When the FPGA first powers up or comes out of reset, the MMCM needs some time to lock onto the input clock and settle its VCO and dividers. During this startup period, the output clocks are not yet stable. `locked` stays LOW during this time and only goes HIGH once the MMCM is confident its outputs are correct.
-
-Therefore, you shall use it to hold your entire design in reset until it is safe to run:
-
-```
-reset_cond.in = ~rst_n | ~slow_clock.locked
-```
-
-This means your design stays in reset if either the user pressed reset, or the MMCM has not locked yet. Without this, your flip flops could start clocking on garbage clock signals during MMCM startup and end up in an undefined state even after locked goes high.​​​​​​​​​​​​​​​​
 
 
 ### Test 
 
-This `alchitry_top.luc` file blinks two LEDs:
+This `alchitry_top.luc` file blinks two LEDs (`led[1:0]`) while doing the regular `io_demo` sequence:
 {%raw%}
 ```verilog
 module alchitry_top (
@@ -192,65 +207,45 @@ module alchitry_top (
 ) {
 
     sig rst                 // reset signal
-    clk_wiz_10 slow_clock(.clk_in1(clk))
-    
-    // dff using slow 10MHz clock
-    dff slow_counter[32](.rst(rst),.clk(slow_clock.clk_out1))
-    dff led_state_slow(.rst(rst), .clk(slow_clock.clk_out1), #INIT(0))
-    
-    // regular 100MHz clock
-    .clk(slow_clock.clk_out2) {
+    clk_wiz_various clocks(.clk_in1(clk), .reset(rst))
+    .clk(clocks.clk100) {
         // The reset conditioner is used to synchronize the reset signal to the FPGA
         // clock. This ensures the entire FPGA comes out of reset at the same time.
         reset_conditioner reset_cond
-        dff counter[32](.rst(rst), #INIT(0))
-        dff led_state(.rst(rst), #INIT(0))
+        
+        edge_detector edge_detector(#RISE(1), #FALL(0))
+
+        .rst(rst) {
+            // Reduce DIV values for simulation so it doesn't take forever
+            multi_seven_seg seg (#DIV($is_sim() ? 1 : 16), #DIGITS(4))
+            multi_decimal_counter dec_ctr (#DIGITS(4))
+            counter ctr (#SIZE(1), #DIV($is_sim() ? 8 : 24))
+        }
     }
-    
+
     always {
-        reset_cond.in = ~rst_n  // input raw inverted reset signal
+        reset_cond.in = ~rst_n | ~clocks.locked  // input raw inverted reset signal
         rst = reset_cond.out    // conditioned reset
-        
-        led = 8h00              // turn LEDs off
-        
+
+        led = c{3b0, io_button} // connect buttons to LEDs
+
         usb_tx = usb_rx         // loop serial port
-        
-        io_led = 3x{{8h00}}
-        io_segment = 8hff
-        io_select = 4hf
-        
-        led_state.d = led_state.q
-        led_state_slow.d = led_state_slow.q
-        
-        counter.d = counter.q + 1 
-        slow_counter.d = slow_counter.q + 1
-        
-        if (counter.q == d10_000_000){
-            led_state.d = ~led_state.q
-            counter.d = 0
-        }
-        
-        if (slow_counter.q == d10_000_000){
-            led_state_slow.d = ~led_state_slow.q
-            slow_counter.d = 0
-        }
-        
-        io_led[0][0] = led_state.q
-        io_led[1][0] = led_state_slow.q
-        io_led[2] = counter.q
-        led = slow_counter.q
+
+        edge_detector.in = ctr.value
+        dec_ctr.inc = edge_detector.out
+        seg.values = dec_ctr.digits
+
+        io_segment = ~seg.seg // connect segments to the driver
+        io_select = ~seg.sel  // connect digit select to the driver
+
+        io_led = io_dip       // connect the DIP switches to the LEDs
+        led[0] = clocks.clk50
+        led[1] = clocks.clk25
         
     }
 }
 ```
 {%endraw%}
-
-The two LEDs are:
-
-```verilog
-        io_led[0][0] = led_state.q // will blink 10x faster than the other LED
-        io_led[1][0] = led_state_slow.q
-```
 
 
 ## Summary
