@@ -19,7 +19,7 @@ Information Systems Technology and Design
 Singapore University of Technology and Design
 
 
-# Modifying Clock Signal
+# Generating New Clock Frequencies
 
 This document is written to guide you with generating new clock signals for your project should it fails to meet timing specifications. If your project **works** in simulation but behaves erratically on physical FPGA, it is likely that you have timing issues. 
 
@@ -143,7 +143,7 @@ Therefore, you shall use it to hold your entire design in reset until it is safe
 ```verilog
 
     sig rst                 // reset signal
-    clk_wiz_various clocks(.clk_in1(clk))
+    clk_wiz_various clocks(.clk_in1(clk), .reset(~rst_n))
 
 always{
     reset_cond.in = ~rst_n | ~clocks.locked
@@ -152,6 +152,15 @@ always{
 
 This means your design stays in reset if either the user pressed reset, or the MMCM has not locked yet. Without this, your flip flops could start clocking on garbage clock signals during MMCM startup and end up in an undefined state even after locked goes high.​​​​​​​​​​​​​​​​
 
+### Feed raw `rst_n`
+
+Do <span class="orange-bold">not</span> pass the output of `reset_conditioner` into `reset` port of the `clk_wiz_*` module. This is because Clocking Wizard reset **asynchronously** clears the MMCM/PLL internal state and restarts lock when released. Instead, pass `rst_n` directly from `alchitry_top` board:
+
+```verilog
+    clk_wiz_various clocks(.clk_in1(clk), .reset(~rst_n))
+```
+
+AMD also documents that the wizard reset type is configurable, with active-high as the default.
 
 ### Generate
 
@@ -190,7 +199,8 @@ All outputs from the same `clk_wiz` instance have a known phase relationship sin
 
 ### Test 
 
-This `alchitry_top.luc` file blinks two LEDs (`led[1:0]`) while doing the regular `io_demo` sequence:
+Create a regular `io_demo V1 with pulldown` starter project on Alchitry Labs. Then after creating the clocks as per the screenshot, test them this way. This `alchitry_top.luc` file blinks two LEDs (`led[1:0]`) while doing the regular `io_demo` sequence:
+
 {%raw%}
 ```verilog
 module alchitry_top (
@@ -207,7 +217,7 @@ module alchitry_top (
 ) {
 
     sig rst                 // reset signal
-    clk_wiz_various clocks(.clk_in1(clk), .reset(rst))
+    clk_wiz_various clocks(.clk_in1(clk), .reset(~rst_n))
     .clk(clocks.clk100) {
         // The reset conditioner is used to synchronize the reset signal to the FPGA
         // clock. This ensures the entire FPGA comes out of reset at the same time.
@@ -239,13 +249,18 @@ module alchitry_top (
         io_select = ~seg.sel  // connect digit select to the driver
 
         io_led = io_dip       // connect the DIP switches to the LEDs
-        led[0] = clocks.clk50
-        led[1] = clocks.clk25
+        led[0] = clocks.clk100
+        led[1] = clocks.clk50
+        led[2] = clocks.clk_25
+        led[3] = clocks.locked
+        led[4] = ctr.value
         
     }
 }
 ```
 {%endraw%}
+
+You can refer to [this](https://github.com/natalieagus/clock-demo) repository for the source code and build for this simple clock demo.
 
 
 ## Summary
