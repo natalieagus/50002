@@ -252,7 +252,7 @@ negedge clk50 = t=60   GPU cache register captures ram_rdata
 ```
 
 {:.important}
-The GPU **MUST** produce a new read address request `@negedge clk25`. If your driver's address is latched, ensure you are computing the address early so there's no long latency from `negedge clk25` to when GPU produces a new read address request to the shared ram.
+The GPU **MUST** produce a new read address request `@negedge clk25`. If your driver's address is latched, ensure you are computing the address early (lookahead) so there's no terrible pixel offset. If you are combinationally processing the GPU address output, make sure it doesn't take longer than 10 ns. This is the time between `negedge clk25` and the next `posedge clk25` (ram issues new read output).
 
 Unlike the CPU path, the GPU result <span class="orange-bold">cannot</span> be read as a raw wire at the right time because we need the RAM result for the entire period of `clk25` for certain drivers like VGA to work. 
 
