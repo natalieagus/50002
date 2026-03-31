@@ -230,6 +230,157 @@ The **destination register is always last** in the assembly syntax (e.g., `ADD(R
 
 `SVC(code)` has opcode `0x01`. The `code` argument is embedded in the 16-bit constant field. The datapath is responsible for handling the trap.
 
+## `LD` and `ST`
+
+By default, we make `LD` a 2-cycle instruction (assembled twice), so that it covers 2 CPU cycles because BRAM needs **synchronous reads**. However, `ST` is sufficient in a single-cycle. We write down 3 possible scenarios below.
+
+
+### Clock Definitions
+
+Suppose you have varying clock speed for CPU and the BRAM:
+- **clkB**: the CPU clock.
+- **clkA**: twice the frequency of clkB. Generated from the same MMCM with a 180 degree phase offset, so clkA rising edges fall midway between clkB edges.
+
+
+
+### Timing Reference
+
+All times are relative to a rising edge of clkB, called `t`. Let `T` be *one quarter* of the clkB period (equivalently, one half of the clkA period).
+
+| Label | Offset | Event |
+|---|---|---|
+| `t` | 0 | Rising edge of clkB |
+| `t+T` | +T | First rising edge of clkA after `t` |
+| `t+2T` | +2T | Falling edge of clkB |
+| `t+3T` | +3T | Second rising edge of clkA after `t` |
+| `t+4T` | +4T | Next rising edge of clkB (start of next CPU cycle) |
+
+Here's a simple illustration with clkA = 25Mhz, and clkB = 50Mhz.
+
+<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/shared-ram-gpu-cpu/2026-03-12-15-47-47.png"  class="center_full no-invert"/>
+
+### Common Assumptions
+
+- Instruction memory and data memory are separate (Harvard style).
+- PC has a **combinational** read port and a synchronous write port.
+- Register file has **combinational** read ports and a synchronous write port.
+- The data BRAM is simple dual-port: one read port and one write port. This BRAM makes up Instruction and Data memory.
+- The write port of the data BRAM is always owned by the CPU (never shared with the GPU).
+- In scenarios where the GPU shares the data BRAM, only the **read port** is time-multiplexed, not the write port.
+
+### Scenario 1: BRAM Clocked at clkB (Same Speed as CPU), Unshared
+
+**Clock setup:**
+- Instruction BRAM: posedge clkB
+- Data BRAM: posedge clkB
+- PC: posedge clkB
+- Regfile: posedge clkB
+
+`clkA` is not used and everything runs on a single `clkB`.
+
+#### LD: Must be 2 Cycles
+
+1. At `t`, posedge clkB fires. PC presents the instruction address. The instruction BRAM latches this address and, shortly after, outputs the instruction. Suppose it is `LD`.
+2. Combinational logic decodes the instruction, reads registers, and the ALU computes the effective address (EA). All of this settles some time after `t`.
+3. The data BRAM also clocks on posedge clkB. It already latched whatever was on its address input at `t`, which was not the `EA` (the `EA` did not exist yet). The data BRAM's one and only edge this cycle <span class="orange-bold">has already passed</span>.
+4. At `t+4T`, the next posedge clkB fires. The data BRAM can now latch the `EA`. But the regfile also latches at `t+4T`. The BRAM output (Mem[EA]) only stabilizes **after** `t+4T`, so the regfile cannot capture it at this edge.
+5. The regfile should capture `Mem[EA]` at `t+8T` (the next posedge clkB). **LD takes 2 cycles**.
+6. During `t+4T` to `t+8T`, the instruction cannot change.
+
+{:.note}
+With only one BRAM edge per CPU cycle, the `EA` <span class="orange-bold">cannot</span> be both computed from the instruction and presented to the data BRAM within the **same** cycle. The read output then arrives too late for the regfile to latch.
+
+#### ST: 1 Cycle
+
+1. At `t`, the instruction BRAM outputs `ST`. Combinational decode, reg read, and ALU produce both the EA and the store data (Reg[Rc]). Both are stable well before `t+4T`.
+2. At `t+4T`, posedge clkB fires. The data BRAM write port latches EA and Reg[Rc], and the write commits.
+3. No regfile writeback is needed (WERF=0 for ST). 
+
+{:.note}
+ST only needs the BRAM **write** port, and the write inputs (`EA` and data) just need to be stable *before* the next edge.  Unlike `LD`, there is no BRAM read output that must propagate back to the regfile.
+
+### Scenario 2: BRAM Clocked at clkA (2x CPU Speed), Unshared
+
+**Clock setup:**
+- Instruction BRAM: posedge clkA
+- Data BRAM: posedge clkA
+- PC: posedge clkB
+- Regfile: posedge clkB
+
+The 2x clock gives BRAMs two edges per CPU cycle: `t+T` and `t+3T`.
+
+#### LD: 1 Cycle is Enough
+
+1. At `t`, posedge clkB fires. PC advances and presents the new instruction address.
+2. At `t+T`, posedge clkA fires. The instruction BRAM latches the address and shortly after outputs the instruction (`LD`).
+3. Combinational decode, reg read, ALU computes `EA`. This settles between `t+T` and `t+3T`.
+4. At `t+3T`, posedge clkA fires again. The data BRAM latches the `EA`.
+5. Shortly after `t+3T`, the data BRAM outputs `Mem[EA]`.
+6. At `t+4T`, posedge clkB fires. The regfile latches `Mem[EA]` into the destination register. PC advances. Done in 1 cycle.
+
+{:.note}
+The 2x clock provides a **second** BRAM edge (`t+3T`) between the moment the instruction appears (`t+T`) and the moment the regfile latches (`t+4T`). This is exactly the extra edge needed to service the data BRAM read.
+
+#### ST: 1 Cycle
+
+1. Instruction appears after `t+T`. Decode, reg read, ALU produce EA and Reg[Rc] before `t+3T`.
+2. At `t+3T`, the data BRAM write port latches EA and Reg[Rc]. Write commits.
+3. No regfile writeback needed.
+
+
+### Scenario 3: BRAM Clocked at clkA (2x CPU Speed), Read Port Shared with GPU
+
+**Clock setup:**
+- Instruction BRAM: posedge clkA
+- Data BRAM: posedge clkA, but the **read port** is time-multiplexed:
+  - `t` to `t+2T` (first clkA half): CPU's read slot (latches at `t+T`)
+  - `t+2T` to `t+4T` (second clkA half): GPU's read slot (latches at `t+3T`)
+- Data BRAM write port: CPU only, not shared
+- PC: posedge clkB
+- Regfile: **negedge clkB** (at `t+2T`), because the posedge-to-posedge window crosses into GPU territory
+
+The regfile latches on negedge clkB (`t+2T`) instead of posedge because the second half of each clkB period (`t+2T` to `t+4T`) is the GPU's read slot. For non-memory ALU instructions, the result is ready before `t+2T`, so latching at negedge works. This setup is discussed in [this]({{ site.baseurl }}/fpga/shared-ram-gpu-cpu) page too.
+
+#### LD: Must be 2 Cycles
+
+1. At `t`, posedge clkB fires. PC presents the instruction address.
+2. At `t+T`, posedge clkA fires (CPU's read slot). The instruction BRAM latches the address and shortly after outputs the instruction (`LD`). Simultaneously, the data BRAM read port latches whatever address the CPU is presenting. 
+   - But the correct `EA` depends on the instruction that is only now appearing. 
+   - The CPU cannot have a valid `EA` ready at `t+T`.
+   - Combinational decode, reg read, ALU compute `EA` is only possible after instruciton is received at `t+T`.
+3. At `t+2T`, negedge clkB fires. The regfile **latches**. But the data BRAM never received the correct `EA` this cycle, so there is correct `Mem[EA]` to write back.
+4. At `t+3T`, posedge clkA fires, but this is the **GPU's read slot**. <span class="orange-bold">The CPU cannot use the data BRAM read port,</span> unless it is somehow cached. We assume no cache.
+5. The pipeline stalls. PC does not advance at `t+4T`. The LD's control signals are held.
+6. At `t+5T` (next CPU read slot), posedge clkA fires. The data BRAM read port latches the `EA`.
+7. Shortly after `t+5T`, `Mem[EA]` appears on the data output.
+8.  At `t+6T` (negedge clkB of the next cycle), the regfile latches `Mem[EA]` into the destination register. LD completes after 2 cycles.
+
+{:.note}
+The CPU's single data BRAM read slot (`t+T`) coincides with the instruction BRAM output. The `EA` depends on the instruction, so it cannot be ready at the same edge that produces the instruction. The GPU's ownership of the `t+3T` read slot eliminates the fallback that makes Scenario 2 work.
+
+#### ST: 1 Cycle
+
+1. At `t+T`, instruction BRAM outputs `ST`. Decode, reg read, ALU produce EA and Reg[Rc]. Both settle before `t+3T`.
+2. At `t+3T`, the data BRAM **write port** (CPU-only, no GPU contention) latches EA and Reg[Rc]. Write commits.
+3. No regfile writeback needed. 
+
+{:.note}
+The GPU shares the **read** port, not the write port. `ST` only needs the write port, so GPU contention is irrelevant.
+
+
+### Summary of Clock Cases
+
+| Instruction | Scenario 1 (clkB, unshared) | Scenario 2 (clkA, unshared) | Scenario 3 (clkA, shared reads) |
+|---|---|---|---|
+| LD | 2 cycles | 1 cycle | 2 cycles |
+| ST | 1 cycle | 1 cycle | 1 cycle |
+
+
+LD is the <span class="orange-bold">only</span> instruction affected because it is the only one that requires a data BRAM **read** whose output must feed back into the regfile within the same cycle. ST avoids this because it only writes to the BRAM and does not need the result to propagate anywhere.
+
+{:.note}
+We do not discuss this phenomenon in detail while learning Beta CPU in class because we assume that the RAM has combinational read ports, therefore instruction read and data read from the RAM can happen all in the same cycle.
+
 ## **Tetris Board Simulator** (`tetris` branch)
 
 {:.note}

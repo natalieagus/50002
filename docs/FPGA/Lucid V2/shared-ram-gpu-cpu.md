@@ -43,7 +43,7 @@ This notes is written with the assumption that the GPU runs on 25Mhz clock e.g: 
 
 Here's the hardware assumptions for this setup:
 1. Memory (BRAM) contains data only, not instruction
-2. Instruction memory is separate from data memory
+2. Instruction memory is separate from data memory (Harvard Style)
 3. Modules needs to read and write simultaneously to the data memory in a single cycle to different address
 4. PC regfile has combinational read ports and synchronous write port
 
@@ -136,6 +136,18 @@ This means every `clk25` half-period contains exactly one `clk50` posedge in its
 
 <img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/shared-ram-gpu-cpu/2026-03-12-15-47-47.png"  class="center_full no-invert"/>
 
+### Terminology
+
+To facilitate the explanation better, we shall use these terms:
+1. `t`: this is the time of each `clk25` rising edge
+2. `t+10`: 10 ns after the rising edge of `clk25`, which is the first rising edge of `clk50` after `t`
+3. `t+20`: 20 ns after the rising edge of `clk25`, which is equivalent to falling edge of `clk25`
+4. `t+30`: 30 ns after the rising edge of `clk25`, which is the second rising edge of `clk50` after `t`
+5. `t+40`: 40 ns (one full perio of `clk25`) after the rising edge of `clk25`
+
+Similarly, `t+10` is equivalent to `t+50`, etc.
+
+
 ## Time-Sliced Read Port Mux
 
 The read address to the RAM is selected combinationally based on `clk25`:
@@ -144,10 +156,15 @@ The read address to the RAM is selected combinationally based on `clk25`:
 assign ram_raddr = (clk25 == 1'b1) ? cpu_addr : gpu_addr;
 ```
 
-- When `clk25 = 1` (high half, 20 ns wide): the RAM reads the **CPU address**
-- When `clk25 = 0` (low half, 20 ns wide): the RAM reads the **GPU address**
+- From `t` to `t+20`, when `clk25 = 1` (high half, 20 ns wide): the RAM reads the **CPU address**
+- From `t+20` to `t+40`, when `clk25 = 0` (low half, 20 ns wide): the RAM reads the **GPU address**
 
-Because the BRAM is posedge-clocked on `clk50`, the address that gets latched and read is whichever address was stable when the `clk50` posedge arrived. Since every `clk25` edge leads a `clk50` posedge by 10 ns, the new address is always stable well *before* the RAM samples it.
+Because the BRAM is posedge-clocked on `clk50`, the address that gets latched and read is whichever address was stable when the `clk50` posedge arrived. 
+- Data BRAM captures read address request from CPU at `t+10`
+- Data BRAM captures read address request from GPU at `t+30`
+
+{:.highlight}
+Since every `clk25` edge leads a `clk50` posedge by 10 ns, the new address is always stable well *before* the RAM samples it.
 
 ## Clock Specifications
 
@@ -156,17 +173,17 @@ Because the BRAM is posedge-clocked on `clk50`, the address that gets latched an
 {:.highlight}
 This is the 50 MHz master clock with a period of 20ns. 
 
-This is the fastest clock in the system and is the reference everything else is derived from or phased against. All sequential elements that need to capture data from the RAM use this clock or its inverse. Posedges land at t = 10, 30, 50, 70, ... and negedges land at t = 20, 40, 60, 80, ...
+This is the **fastest** clock in the system and is the reference everything else is derived from or phased against. All sequential elements that need to capture data from the RAM use this clock or its inverse. Posedges land at t = 10, 30, 50, 70, ... and negedges land at t = 20, 40, 60, 80, ...
 
 ### `clk25` 
 
 {:.highlight}
-This is the 25 MHz pixel clock with a period of 40 ns. 
+This is the 25 MHz *pixel clock* with a period of 40 ns. 
 
-This is the VGA pixel clock. The GPU issues one read address per pixel clock, and the CPU is given access to the shared RAM in the complementary half-period. `clk25` is not just any 25 MHz clock. It's phase relative to `clk50` is the entire basis of the design's correctness.
+This is the GPU clock. We use 25MHz as an example here because it's common to drive VGA with it. The GPU issues one read address per pixel clock, and the CPU is given access to the shared RAM in the complementary half-period. `clk25` is not just any 25 MHz clock. It's phase relative to `clk50` is the entire basis of the design's correctness.
 
 {:.important}
-The defining constraint is: **Every rising edge of `clk25` is aligned to a falling edge of `clk50`.**
+The defining constraint is: **every rising edge of `clk25` is aligned to a falling edge of `clk50`.**
 
 Because `clk25` is exactly half the frequency of `clk50`, this alignment automatically guarantees that every falling edge of `clk25` is also aligned to a falling edge of `clk50`. In other words, both transitions of `clk25` land on `clk50` negedges, and the `clk50` posedges always fall in the *interior* of a `clk25` half-period, never at the boundary. Look at this waveform again to internalise that.
 
@@ -184,19 +201,18 @@ Each `clk25` half-period is exactly 20 ns wide.
 You should use Vivado `clock_wiz` or equivalent to generate the clock signal properly and not use other signals as clock. Read this [handout](https://natalieagus.github.io/50002/fpga/clocks) for more information.
 - Give appropriate `phase` value in the Clocking Wizard window to align the 25Mhz and 50Mhz clock properly
 - You will need these clock signals:
-  - `clk100`: 100Mhz (just in case you need the original clk)
+  - `clk100`: 100Mhz (just in case you need the original clk for other components unrelated to this)
   - `clk50`: 50Mhz (for data & instruction BRAM)
   - `clk25`: 25Mhz (for CPU PC reg, and GPU/driver reg)
   - `clk50_n`: 50Mhz (phase: 180, for GPU/driver cache reg)
   - `clk25_n`: 25Mhz (phase: 180, for CPU regfiles)
-  - `clk25_270`: 25Mhz (phase: 270, for GPU/driver cache enable), optional, you can generate this signal combinationally like in the sample code
 - Once generated, use it to drive the `clk` port of the RAM, CPU, GPU, etc
 
 ### Data RAM clock: `clk50`
 
-The underlying BRAM is clocked on `posedge clk50`. This is the moment the RAM <span class="orange-bold">latches</span> the current `ram_raddr` and produces `ram_rdata` on its output. Because the BRAM is *synchronous*, `ram_rdata` is not valid immediately after the address is driven; it only updates after a `clk50` posedge has occurred with the address stable at its input.
+The underlying BRAM is clocked on `posedge clk50`. This is the moment the RAM <span class="orange-bold">latches</span> the current `ram_raddr` and produces `ram_rdata` on its output. Because the BRAM is *synchronous*, `ram_rdata` is not valid immediately after the address is driven but it only updates after a `clk50` posedge has occurred with the address stable at its input.
 
-The RAM sees one posedge per `clk25` half-period: one during the CPU slot and one during the GPU slot, and each time it captures whatever address the mux is currently presenting.
+The RAM sees one `clk50` posedge per `clk25` half-period: at one during the CPU slot (`t+10`) and one during the GPU slot (`t+30), and each time it captures whatever address the mux is currently presenting.
 
 ## Warning: Detecting Clock Edges    
 
@@ -226,18 +242,23 @@ CPU read latency from address driven to data readable (at the RAM's read data po
 
 ### CPU PC and REGFILE clk
 
-There is no need to cache the RAM result to the CPU, as the CPU can be made to *stall* during `negedge clk25`. It should have completed instruction execution within `posedge clk25`.
-
-
-You can stall the CPU in the low level of `clk25` by making its regfile clocked on `clk25_n` directly, and the pc reg clocked on `clk25`. 
-> We assume that instruction BRAM is exclusive to the CPU and only data BRAM is shared between CPU and GPU. Read [assumptions](#assumptions) section above. 
-
-This clock setup gives 10ns of setup and 10ns of hold margin during data `LD`, so the regfile captures the correct RAM data cleanly with no modifications to the CPU.
-
-{:.note}
+{:.important}
 > PC on posedge of `clk25`, REGFILE on negedge of `clk25`
 > 
-> The PC should still be clocked to rising 25MHz edge. Every posedge 25MHz the PC advances to the next instruction, issues the new address to instruction RAM, and the CPU begins execution. The full high half of the 25MHz period is the execution window. At the falling edge, the regfile commits and the CPU is idle for the rest of the cycle.
+> The PC should be clocked to rising 25MHz edge. Every posedge 25MHz the PC advances to the next instruction, issues the new address to instruction RAM, and the CPU begins execution. The full high half of the 25MHz period is the execution window. At the falling edge, the regfile commits and the CPU is idle for the rest of the cycle.
+
+#### RAM Cache for CPU
+There is no need to cache the RAM result to the CPU, as the CPU can be made to *stall* during `negedge clk25`. It should have completed instruction execution within `posedge clk25`.
+
+#### Stalling the CPU
+You can stall the CPU in the low level of `clk25` by making its regfile clocked on `clk25_n` directly, and the pc reg clocked on `clk25`. 
+
+{:.note-title}
+> Assumption
+> 
+> We assume that instruction BRAM is exclusive to the CPU and only data BRAM is shared between CPU and GPU. Read [assumptions](#assumptions) section above. 
+
+This clock setup gives 10ns of setup (from `t+10` to `t+20`) and 10ns of hold (from `t+20` to `t+30`) margin during data `LD`, so the regfile captures the correct RAM data cleanly with no modifications to the CPU.
 
 
 ## GPU Slot Timing
@@ -245,123 +266,115 @@ This clock setup gives 10ns of setup and 10ns of hold margin during data `LD`, s
 The GPU drives its address at `negedge clk25` (which is also a `clk50` negedge). At this moment `clk25` goes low and the mux switches to `gpu_addr`.
 
 ```
-negedge clk25 = t=40   GPU drives gpu_addr, mux selects gpu_addr
-posedge clk50 = t=50   RAM latches raddr = gpu_addr, ram_rdata becomes valid after delta
-negedge clk50 = t=60   GPU cache register captures ram_rdata
-               = posedge clk25 (next CPU slot starts)
+negedge clk25 (t+20) = GPU drives gpu_addr, mux selects gpu_addr
+posedge clk50 (t+30) = RAM latches raddr = gpu_addr, ram_rdata becomes valid after delta
+posedge clk25 (t+40) = GPU cache register captures ram_rdata, CPU slot starts
 ```
 
 {:.important}
 The GPU **MUST** produce a new read address request `@negedge clk25`. If your driver's address is latched, ensure you are computing the address early (lookahead) so there's no terrible pixel offset. If you are combinationally processing the GPU address output, make sure it doesn't take longer than 10 ns. This is the time between `negedge clk25` and the next `posedge clk25` (ram issues new read output).
 
+### Caching RAM's output for GPU
+
 Unlike the CPU path, the GPU result <span class="orange-bold">cannot</span> be read as a raw wire at the right time because we need the RAM result for the entire period of `clk25` for certain drivers like VGA to work. 
 
-By t=60, the system has already crossed into the next `clk25` posedge, which begins the CPU slot. To hold the GPU result stable across the next CPU period (and beyond), it must be **registered**. This register is called `gpu_cache_u`. There's a dedicated section for this [below](#the-gpu-cache-register).
+By `t+40`, the system has already crossed into the next `clk25` posedge, which begins the CPU slot. The RAM will produce CPU's read request at `t+50` (which is `t+10` in the next cycle). More often than not, we need to hold the GPU's read request result stable across the next CPU period until the next GPU address call (i.e a full `clk25` period). Therefore, it must be **registered**. This register is called `gpu_cache_u`. 
 
-GPU read latency from address driven to cached data valid: **20 ns** (one `clk50` period, or one `clk25` half-period).
+### The GPU Cache Register
 
-
-## The GPU Cache Register
-
-The GPU cache is a standard synchronous register with three connections worth examining closely: its clock, its enable, and its data input.
+The GPU cache is a standard **synchronous** register with three connections worth examining closely: its clock, its enable, and its data input.
 
 ```verilog
-wire reg_clk = clk50_n;   // captures on clk50 negedge
-
-register #(.W(32), .RESET_VALUE(0)) gpu_cache_u (
-    .clk(reg_clk),
-    .rst(rst),
-    .en (en_gpu),
-    .d  (ram_rdata),
-    .q  (gpu_rdata_cached)
-);
+  // GPU-side cache register
+  register #(
+      .W(32),
+      .RESET_VALUE(0)
+  ) gpu_cache_u (
+      .clk(clk25),
+      .rst(rst),
+      .en (1'b1),
+      .d  (ram_rdata),
+      .q  (gpu_rdata_cached)
+  );
 ```
 
+It is clocked with `clk25`, so it captures inputs at `.d` at each rising edge of `clk25` (`t+40`). It is always enabled.
 
 ### Cache clock 
 
-The cache's job is to cache the gpu's read request and it's driven by `clk50` negedge (`clk50_n`).
+The cache's job is to cache the gpu's read request and it's driven by `clk25` posedge. At each `clk25` posedge, the RAM's output would'be been stable for at least 10ns (green box) and will remain so for another 10ns.
 
-The GPU result register (`gpu_cache_u`) is clocked on `clk50_n`, which is the logical inverse of `clk50`. Clocking on the negedge of `clk50` serves a single very important purpose: it places the cache capture (orange box) 10 ns *after* the RAM posedge, giving the RAM output (ram_rdata) the maximum possible time to settle before the register samples it.
+<img src="{{ site.baseurl }}/docs/FPGA/Lucid V2/images/Screenshot 2026-03-31 at 10.18.23 AM.png"  class="center_seventy no-invert"/>
 
+The cache's output remains stable for the entire duration denoted by the pink box, which is a full 25MHz period (40ns), until new address is supplied by the GPU at the falling edge of the 25MHz clock (if any). In short, capturing on the posedge `clk25` gives maximum setup margin on the RAM output.
 
-```verilog
-wire reg_clk = clk50_n;
-```
+## Data RAM Write Port
 
-<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/shared-ram-gpu-cpu/2026-03-12-16-05-57.png"  class="center_full no-invert"/>
+The CPU writes directly through to the Data RAM with <span class="orange-bold">no time-slicing needed</span>. 
 
-The cache's output remains stable for the entire duration denoted by the pink box, which is a full 25MHz period (40ns), until new address is supplied by the GPU at the falling edge of the 25MHz clock. In short, capturing on the negedge gives maximum setup margin on the RAM output.
+### `ST` Timeline
 
-### Cache enable  
+The underlying `simple_dual_port_ram` module produced by Alchitry labs has *separate* read and write ports. CPU writes (`ST` instructions) go to the write port (clocked on `clk50` posedge), and reads go to the shared read port described above. The write requests go as follows:
+1. At `t`, `PC` issues new read (instruction) address that goes to instruction memory (unshared)
+2. At `t+10`, instruction data is produced by instruction memory (clocked at `clk50`)
+3. If this instruction is a `ST`, the regfile **combinational read ports** can produce the requested data to store from `t+10+e` until `t+50` (next instruction received)
+4. The data RAM received Write signals at `t+30`, and perform the `ST` then
 
-{:.highlight}
-Denoted as `en_gpu`, remains high for a full 20ns covering rising edge of `clk25`. 
+At `t+30`, the GPU issues another read request, but there's <span class="orange-bold">no write-read conflict</span> between CPU writes and GPU reads because they use separate physical port paths.
 
-The cache must only capture during the GPU read slot (during low levels of 25Mhz clock), not the CPU slot. The naive implementation would be `en = ~clk25`. This is wrong. At the `clk50` negedge that ends the GPU slot (orange box region), `clk25` is simultaneously rising (beginning the next CPU slot). The enable and the register clock would be transitioning at the *same* instant, creating a setup/hold violation on the enable input of the register.
+If the CPU writes and the GPU reads the **same address** in the same `clk25` period (at `t+30`), the GPU will see the newly written value in its cache output one `clk25` period later (after the read completes at the next `clk50` posedge following the GPU address being placed on the mux). The testbench verifies this in Phase 3.
 
-<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/shared-ram-gpu-cpu/2026-03-12-16-05-57.png"  class="center_full no-invert"/>
+## `LD` Must be 2 Cycles
 
-Because of this, we shift the `en_gpu` one-half period (of `clk50`) late as opposed to exactly aligned with the low levels of `clk25`. In other words, `en_gpu` is asserted one `clk50` half-period later, at the preceding `clk50` posedge:
+Since there are two reads: instruction read and `LD` data read, and both reads are combinational, we need to ensure that `LD` data (`Mem[EA]`) is properly latched by the regfile at `t+20`. However this is impossible given our setup:
 
-```verilog
-reg en_gpu;
-always @(posedge clk50) begin
-    en_gpu <= ~clk25;
-end
-```
+1. At `t`, `PC` issues new read (instruction) address that goes to instruction memory (unshared)
+2. At `t+10`, instruction data is produced by instruction memory (clocked at `clk50`). Suppose this is a `LD` instruction
+3. That means, the data RAM *cannot* issue the requested data at `t+10` as instruction is only received at `t+10`. We need some time to compute `EA` for the `LD`
+4. The registers that are latching at `t+20` (negedge `clk25`) is **not** capturing the right read request from the RAM. It is in fact, capturing whatever `Mem[EA_STALE]` where `EA_STALE` is whatever read request CPU gives at `t+10`.
+5. This instruction is maintained all the way until `t+50`, when new instruction arrived.
+6. At this time, the data RAM received the `EA` given by `LD` instruction in `t+10`, and produced `Mem[EA]` at `t+50`
+7. However the new instruction at `t+50` might not be `LD` anymore, so we entirely will miss `Mem[EA]` produced by the Data RAM
 
-You can also use the signal `clk25_270` if you generated it as enable signal. 
-
-At each `clk50` posedge, `en_gpu` is loaded with the **current** value of `~clk25`:
-
-- `clk50` posedge at t=30 (during CPU half, `clk25=1`): `en_gpu <= 0` -- disable capture
-- `clk50` posedge at t=50 (during GPU half, `clk25=0`): `en_gpu <= 1` —- enable capture
-
-{:.important}
-Ensure you understand that when the register clocks at t=60 (negedge `clk50`), `en_gpu` is already 1 (set 10 ns earlier at t=50). The RAM output has been stable since shortly after t=50. The register captures cleanly.
+To fix this, `LD` instruction **must be 2 CPU cycles**. If you are making the assembler, simply printout the `LD` instruction <span class="orange-bold">twice</span>. You can find more details about it [here]({{ site.baseurl }}/fpga/beta-assembler).
 
 
-At the `clk50` posedge in the middle of the GPU slot (within yellow box), `clk25` is still `0`, so `en_gpu` gets loaded with `1`. This happens 10 ns before the cache's capture edge. By the time the negedge arrives and the register clocks (orange box), `en_gpu` has been stable for 10 ns with no pending transitions. 
-
-{:.note}
-`clk25` rising simultaneously at that negedge has zero effect on `en_gpu` because the register that holds it *already* fired.
-
-Similarly, at the `clk50` posedge in the middle of the CPU slot, `clk25` is 1, so `en_gpu` gets loaded with 0 (teal box). The cache will <span class="orange-bold">not</span> capture at the subsequent negedge.
-
-<img src="{{ site.baseurl }}/docs/FPGA/Lucid V2/images/shared-ram-gpu-cpu/2026-03-12-16-16-28.png"  class="center_seventy no-invert"/>
-
-
-{:.note}
-The complete chain per GPU read is therefore: GPU drives address at `negedge clk25` --> `clk50` posedge 10 ns later latches it into RAM and simultaneously loads `en_gpu = 1` --> `clk50` negedge 10 ns after that captures `ram_rdata` into the cache with a clean, settled enable.
-
-
-## Write Port
-
-The CPU writes directly through to the RAM with <span class="orange-bold">no time-slicing needed</span>:
-
-```verilog
-assign ram_we = cpu_we;
-```
-
-The underlying `simple_dual_port_ram` has *separate* read and write ports. CPU writes go to the write port (clocked on `clk50` posedge), and reads go to the shared read port described above. There is <span class="orange-bold">no write-read conflict</span> between CPU writes and GPU reads because they use separate physical port paths.
-
-If the CPU writes and the GPU reads the **same address** in the same `clk25` period, the GPU will see the newly written value in its cache output one `clk25` period later (after the read completes at the next `clk50` posedge following the GPU address being placed on the mux). The testbench verifies this in Phase 3.
 
 ## Latency
 
-The diagram below shows one full `clk25` period (40 ns) covering a GPU slot followed by a CPU slot.
+The diagram below shows a timing plot of a full GPU slot followed by a CPU slot.
 
-<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/shared-ram-gpu-cpu/2026-03-12-16-41-20.png"  class="center_seventy no-invert"/>
+<img src="{{ site.baseurl }}//docs/FPGA/Lucid%20V2/images/shared-ram-gpu-cpu/2026-03-12-16-41-20.png"  class="center_full no-invert"/>
 
 Legend:
-1. Yellow box: CPU latency
-2. Orange box: CPU read request outputted (at RAM's read data output)
-3. Red box: GPU latency (with reference to GPU cache)
-4. Pink box: GPU read request outputted at the `.q` port of GPU cache
+1. Yellow box: CPU latency (10ns)
+2. Orange box: CPU read request outputted (at RAM's read data output), stable for 20ns.
+3. Red box: GPU latency (with reference to GPU cache), 20ns
+4. Pink box: GPU read request outputted at the `.q` port of GPU cache, stable for 40ns.
 
 
 ## Integration Notes
+
+### Using Other Clock 
+
+In this test bench, CPU issues address exactly at `posedge clk25`, and GPU issues address exactly at `negedge clk25`. It is important that you ensure this in your design by not using any registers driven by other clock, e.g; 100Mhz. 
+
+If you have certain pipelined address request such as follows, where `address` is a `dff` driven by other clock, say `clk100`,
+
+```verilog
+    dff address[N](.clk(clk_100))
+
+    if (clk_25_fall){
+        address.d = address.q + 1
+    }
+    
+    gpu_address_read_request = address.q
+```
+
+Then there will be some latency (~10ns) after the falling edge of `clk25` before GPU's read address request is valid. This might <span class="orange-bold">violate</span> the timing constraint, where we require GPU's read address request to be valid before the RAM captures it at t+30 (end of green box).
+
+<img src="{{ site.baseurl }}/docs/FPGA/Lucid V2/images/Screenshot 2026-03-31 at 10.29.57 AM.png"  class="center_seventy no-invert"/>
+
 
 An important consequence for the VGA use case: by the time the GPU cache produces a result at `posedge clk25`, the VGA renderer is already 50% through its `clk25` period. The renderer's pipeline <span class="orange-bold">must account</span> for this one-half-period offset when deciding which address to issue relative to which pixel it expects to draw. We address it in [this]({{ site.baseurl }}/fpga/vga-textmode) guide.
 
