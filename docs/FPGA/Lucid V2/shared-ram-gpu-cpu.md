@@ -204,7 +204,6 @@ You should use Vivado `clock_wiz` or equivalent to generate the clock signal pro
   - `clk100`: 100Mhz (just in case you need the original clk for other components unrelated to this)
   - `clk50`: 50Mhz (for data & instruction BRAM)
   - `clk25`: 25Mhz (for CPU PC reg, and GPU/driver reg)
-  - `clk50_n`: 50Mhz (phase: 180, for GPU/driver cache reg)
   - `clk25_n`: 25Mhz (phase: 180, for CPU regfiles)
 - Once generated, use it to drive the `clk` port of the RAM, CPU, GPU, etc
 
