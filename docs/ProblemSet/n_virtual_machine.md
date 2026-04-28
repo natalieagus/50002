@@ -52,12 +52,20 @@ Answer the following questions:
     </p></div><br>
 2.  Suppose in alternate ISA, a `JMP` initiated to kernel space that failed caused the  user program continues with the next instruction at the user side. What address does the memory unit see when `LD(R2, 0x10, R3)` executes, and what does `Reg[R3]` receive?
     <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-        The address adder computes <code>Reg[R2] + 0x10 = 0x80000030</code>. The notes specify that <code>LD</code>, <code>LDR</code>, and <code>ST</code> in user mode <strong>ignore the MSB</strong> of the computed address, so the memory unit sees <code>0x00000030</code>. <code>Reg[R3]</code> receives <code>M[0x00000030]</code>, which is in user space.
-    </p></div><br>
+     The address adder computes <code>Reg[R2] + 0x10 = 0x80000030</code>. The Beta spec defines <strong>no masking</strong> for <code>LD</code> or <code>ST</code> on the EA path: the full 32 bit sum is presented to the memory unit. So the memory unit sees <code>0x80000030</code>, and <code>Reg[R3]</code> receives <code>M[0x80000030]</code>, which is in the kernel address range.
+ </p><p>
+     The Beta spec as written does <strong>not</strong> prevent this access. The supervisor bit (<code>PC31</code>) lives only in the PC and governs execution mode and it does not propagate into the data memory path. The only spec level masking on a memory operation is in <code>LDR</code>, where <code>PC31</code> is masked when computing <code>EA = (PC &amp; 0x7FFFFFFF) + 4 + 4*SEXT(literal)</code>. That masking exists so a supervisor mode <code>LDR</code> resolves into user space, which is a different concern from kernel protection.
+ </p><p>
+     Closing this discrepancy requires an MMU that checks the privilege of every <code>LD</code>/<code>ST</code> against the target page. Bare Beta has no such check.
+ </p></div><br>
 3. The two questions above involve two **different** hardware mechanisms that both <span class="orange-bold">protect</span> the kernel. Name where in the datapath each mechanism lives, and explain in one sentence why a single mechanism cannot cover both cases.
     <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-    The ALU computes `EA` <code>Reg[R2] + 0x10 = 0x80000030</code>. If we specify that <code>LD</code>, <code>LDR</code>, and <code>ST</code> in user mode <strong>ignore the MSB</strong> of the computed address, we need to ensure that the datapath always mask the highest bit of `EA` to `0`, such that the Memory Unit receives <code>0x00000030</code>. For the `JMP` protection, we `AND` `PC31` with `Reg[Ra]31` to disallow switching from user to kernel mode via `JMP`.
-    </p></div><br>
+     The <code>JMP</code> case <strong>is</strong> protected. The mechanism lives at the PC register write path: <code>new_PC31 = old_PC31 AND JT31</code>. Whatever 32 bit value the user constructs in <code>Reg[Ra]</code>, its MSB is ANDed with the current <code>PC31</code> before it lands in the PC. In user mode <code>PC31 = 0</code>, so the AND forces the new <code>PC31</code> to 0 regardless of the register contents. The same masking applies to <code>BEQ</code>/<code>BNE</code> branch targets on the next PC path.
+ </p><p>
+     The <code>LD</code> case <strong>is not</strong> protected. The mechanism that would be needed (a comparator on the EA path that checks user mode against the address MSB) does not exist in the Beta spec. The EA adder produces <code>0x80000030</code> and the memory unit receives it unmodified. There is no place in the bare Beta datapath where a privilege check on data accesses occurs.
+ </p><p>
+     A single mechanism cannot cover both because the two paths produce addresses for <strong>different consumers</strong> at different stages: the JMP/branch target feeds the PC register, while the LD/ST EA feeds the memory unit. Masking at the PC input does nothing for memory accesses, and masking at the EA path does nothing for control transfers. To protect both, you need <strong>two</strong> separate checks, and Beta only specifies one of them. The data memory check is what an MMU adds.
+ </p></div><br>
 
 ## Adjusting `XP` (Basic)
 
@@ -239,23 +247,29 @@ Neither symptom is "the program ran a bit slower". Both change observable behavi
 
 ## Implications of `PC31` as Status Bit (Intermediate)
 
-A user mode program executing at $$\text{PC} = \texttt{0x00400000}$$ contains the instruction
- 
+A user mode program executing at \\(\text{PC} = \texttt{0x00400000}\\) contains the instruction
+
 ```
 LD(R0, 0x1000, R1)
 ```
- 
-with `Reg[R0]` holding the value `0x80000000`. **Trace what actually happens**: what address is presented to the memory unit, what value lands in `Reg[R1]`, and whether the kernel data nominally stored at `0x80001000` was protected. Then state what additional hardware would be required for a user load of `0x80001000` to actually **fault** rather than silently "aliasing".
- 
-<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-The effective address computed by the adder is <code>Reg[R0] + 0x1000 = 0x80001000</code>. Beta ISA specify that for <code>LD</code>, <code>LDR</code>, and <code>ST</code>, the MSB of the computed address is <strong>ignored</strong> when in user mode. So the value sent to the memory unit is <code>0x00001000</code>, and <code>Reg[R1]</code> receives <code>M[0x00001000]</code>, a location in user space. The kernel data at <code>0x80001000</code> was <em>not</em> read.
-</p><p>
-So protection is achieved, but by <em>aliasing</em> rather than by faulting. The user sees a shadow of every kernel address <code>0x8000XXXX</code> at <code>0x0000XXXX</code>. The OS must therefore be careful not to store anything sensitive in low memory and must accept that user programs can read and write the low addresses freely.
-</p><p>
-To make a user access to <code>0x80001000</code> fault outright, you need a hardware check that compares the MSB of the <em>computed</em> address against <code>PC31</code> and raises a synchronous trap (e.g. routes the PC to <code>ILLOP</code>) when a user mode access targets the kernel half. In practice this is one of the jobs of an **MMU**: a privilege bit on each page or region, checked by a comparator in the memory access stage.
-</p></div><br>
- 
 
+with `Reg[R0]` holding the value `0x80000000`. **Trace what actually happens** per the Beta spec: what address is presented to the memory unit, what value lands in `Reg[R1]`, and is the kernel data nominally stored at `0x80001000` <span class="orange-bold">protected</span>? Then state what additional hardware would be required for this access to actually <span class="orange-bold">fault</span>.
+
+
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+    The effective address computed by the adder is <code>Reg[R0] + 0x1000 = 0x80001000</code>. The Beta spec defines no masking on the <code>LD</code> EA path, so the value sent to the memory unit is <code>0x80001000</code> as is, and <code>Reg[R1]</code> receives <code>M[0x80001000]</code>, which is whatever kernel data happens to live at that address. The kernel data was <strong>not</strong> protected.
+</p><p>
+    This is not covered in the Beta ISA spec. The supervisor bit (<code>PC31</code>) controls execution mode and exists only in the PC. It is not visible to the data memory access path, so <code>LD</code> and <code>ST</code> have no privilege check. A user mode program in bare Beta can read and write any kernel address it can construct in a register. The only spec level masking on a memory operation is in <code>LDR</code>, but that masks <code>PC31</code> (not <code>Reg[Ra]31</code>) and exists to ensure supervisor mode <code>LDR</code> resolves into user space, which is a separate concern.
+</p><p>
+    To make a user access to <code>0x80001000</code> fault outright, the implementation needs an <strong>MMU</strong> that:
+</p><p>
+    1. Intercepts the EA on every <code>LD</code>/<code>ST</code>.<br>
+    2. Looks up the privilege level associated with the page containing EA.<br>
+    3. Compares it against the current execution mode (<code>PC31</code>).<br>
+    4. Raises a synchronous trap (routes <code>PC</code> to <code>ILLOP</code>) when a user mode access targets a kernel page.
+</p><p>
+    Real architectures (x86, ARM, RISC-V) all provide this in hardware. Beta as specified does not, as it is just a simplified CPU used for pedagogy. 
+</p></div><br>
  
 A user mode program executes `BEQ(R0, label, R1)` where the computed branch target $$\text{PC} + 4 + 4 \cdot \text{SXT(literal)}$$ has MSB `1`. **Describe** the hardware mechanism in Beta that <span class="orange-bold">prevents</span> this from entering kernel mode. Then contrast with `JMP(R31)` when `Reg[R31]` contains `0x80004000`. Are both protected by the same mechanism, and **at what stage** of the datapath?
  
