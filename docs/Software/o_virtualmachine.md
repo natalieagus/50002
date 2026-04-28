@@ -280,7 +280,7 @@ Note that this is just an example. In other architectures, the MMUs can perform 
 
 The restrictions are illustrated using Beta CPU as example.
 
-##### Restricted Branch
+
 
 ##### Restricted Branch
 
@@ -298,7 +298,7 @@ The restrictions are illustrated using Beta CPU as example.
 A user-mode program loading `0x80000000` into a register and executing `JMP` to it will **not** enter kernel mode. The MSB will be masked off.
 
 
-##### Restricted Memory Accesso
+##### Restricted Memory Access (some)
 Programs runing in user mode (`PC31 == 0`) should theoretically never load/store to data from/to the kernel address space. Computations of addresses in `LD`, `LDR` and `ST` should take this into account, but our plain Beta CPU datapath didn't protect LD and ST. 
 
 The Beta ISA states that `LDR` computes its effective address relative to the current PC:
