@@ -266,7 +266,12 @@ With this convention of using the MSB of the PC as the status bit, we theoretica
 * **User space**: Addresses which MSB is `0`: from `0x0000 0000` to `0x7FFF FFFF`
 * **Kernel space**: Addresses which MSB is `1`: from `0x8000 0000` to `0xFFFF FFFF`.
 
-Kernel program and kernel data (privileged information, data structures, etc) are stored in the **kernel space**. The rest of the program in the system live in the **user space**. 
+{:.important-title}
+> Key Point
+> 
+> The split is a consequence of embedding the mode bit inside the PC, NOT a separately enforced policy. Any address above `0x7FFFFFFF` is “kernel space” simply because executing code there would require PC31 = 1.
+
+Kernel program and kernel data (privileged information, data structures, etc) can be safely stored in the **kernel address space**. The rest of the program in the system live in the **user address space**
 
 {:.note}
 Note that this is just an example. In other architectures, the MMUs can perform **memory protection** (protect certain regions) depending on the status bit, e.g: the MMU utilises the CSR (control status register) in RISC-V that contains the current privilege level and triggers a **page fault** if one tries to access illegal memory location.
@@ -276,10 +281,77 @@ Note that this is just an example. In other architectures, the MMUs can perform 
 The restrictions are illustrated using Beta CPU as example.
 
 ##### Restricted Branch
-Programs running in user mode (`PC31 == 0`) can **never** branch or jump to instructions in the kernel space placed at higher memory address (`0x8000000` onwards). Computations of next instruction address in`BEQ`, `BNE`, and `JMP` cannot change `PC31` value from `0` to `1`. 
 
-##### Restricted Memory Access
-Programs runing in user mode (`PC31 == 0`) can never load/store to data from/to the kernel space. Computations of addresses in `LD`, `LDR` and `ST` **ignores** the MSB. 
+##### Restricted Branch
+
+`BEQ`, `BNE`, and `JMP` in user mode cannot set PC31 from 0 to 1. Branch target computation for `BEQ`/`BNE` adds a signed offset to PC+4, and since PC31 = 0 in user mode, the resulting target will also have bit 31 = 0 unless the offset is large enough to overflow into the upper half, which the hardware does not allow because only exceptions set PC31.
+
+`JMP` has an explicit rule: it can **clear** PC31 but never **set** it. The new PC31 is computed as `old_PC31 AND JT31`, where `JT31` is bit 31 of the jump target register. So if PC31 is already 0, the result is always 0 regardless of the register value.
+
+| old PC31 | JT31 | new PC31 |
+|---|---|---|
+| 0 | 0 | 0 |
+| 0 | 1 | 0 |
+| 1 | 0 | 0 |
+| 1 | 1 | 1 |
+
+A user-mode program loading `0x80000000` into a register and executing `JMP` to it will **not** enter kernel mode. The MSB will be masked off.
+
+
+##### Restricted Memory Accesso
+Programs runing in user mode (`PC31 == 0`) should theoretically never load/store to data from/to the kernel address space. Computations of addresses in `LD`, `LDR` and `ST` should take this into account, but our plain Beta CPU datapath didn't protect LD and ST. 
+
+The Beta ISA states that `LDR` computes its effective address relative to the current PC:
+
+```
+EA = (PC & 0x7FFFFFFF) + 4 + 4 * SEXT(literal)
+```
+
+PC31 is explicitly **masked to zero** before the addition. This means a `LDR` issued from supervisor mode (PC31 = 1) will always resolve into user space. The masking is intentional -- `LDR` is designed to load constants placed near the instruction stream in user space, so it must ignore the mode bit.
+
+However, `LD` and `ST` compute their effective address as follows without any protection:
+
+```
+EA = Reg[Ra] + SEXT(literal)
+```
+
+There is **no masking of any bit** in this computation. The full 32-bit result of the addition is used as the memory address. The Beta spec defines no hardware check on whether EA falls in user space or kernel space.
+
+This means a user-mode program can construct an EA with bit 31 set and issue `LD` or `ST` to it. For example:
+
+```
+| CMOVE(0x8000, R1)      | R1 = 0x00008000             |
+| SHLC(R1, 16, R1)       | R1 = 0x80000000             |
+| LD(R1, 0x10, R2)       | EA = 0x80000010, no fault   |
+| ST(R3, 0x10, R1)       | EA = 0x80000010, no fault   |
+```
+
+From the CPU's perspective, both accesses go through to memory without any mode check. **Nothing in the plain Beta datapath stops this.**
+
+In short, The Beta address space split enforces kernel isolation only for *control flow*. A user program cannot *execute* kernel code because it cannot set PC31. However, it can freely *read and write* kernel memory addresses through `LD`/`ST` if it constructs the right EA. In a real system, this would allow a user program to corrupt the kernel's data structures, process table, or interrupt handlers.
+
+{:.note}
+MMU is needed to protect Kernel data. 
+
+Since the Beta spec explicitly leaves `LD`/`ST` memory protection as **implementation-defined**. The correct way to close this gap in a real implementation is a **Memory Management Unit (MMU)**:
+
+```
+CPU --> MMU --> Physical Memory
+         |
+    checks EA against
+    page table entries
+    (user/supervisor bit,
+     read/write permissions)
+         |
+    raises fault if
+    user-mode EA hits
+    kernel page
+```
+
+On each `LD`/`ST`, the MMU intercepts the EA, looks up the page table entry for that address, and checks whether the current privilege mode (from PC31 or equivalent) is permitted to access that page. If not, it raises a **page fault**, which traps into the kernel's fault handler (`ILLOP`). The kernel then terminates the offending process.
+
+Without an MMU, the Beta as specified provides **execution isolation only**, that is: user code cannot run in kernel mode, but it can still read and write kernel memory addresses directly through data memory instructions.
+
 
 ##### Restricted Kernel Mode Entry
 
@@ -289,8 +361,22 @@ Entry to the kernel mode can only be done via restricted entry points. In $$\bet
 3. Reset (setting PC to `RESET: 0x8000 0000`)
 
 {:.important}
-We may also assume that we will never use the entire 32-bit address space for the $$\beta$$ CPU, thereforew we can utilise its MSB as a "status" flag. However, we lose the address "space" protection. Suppose we place Kernel code at address `0x00ABCC00`. There's nothing that can stop a user program from branching directly to this address (unlike if we place the kernel code at address `0x80ABCC00`). This is just one of the <span class="orange-bold">consequences</span> of using `PC31` as the CPU status. There has to be other additional hardware unit in place to protect the kernel space in the RAM. 
+We may also assume that we will never use the entire 32-bit address space for the $$\beta$$ CPU, therefore we can utilise its MSB as a "status" flag. However, we lose the address "space" protection. Suppose we place Kernel code at address `0x00ABCC00`. There's nothing that can stop a user program from branching directly to this address (unlike if we place the kernel code at address `0x80ABCC00`). This is just one of the <span class="orange-bold">consequences</span> of using `PC31` as the CPU status. There has to be other additional hardware unit in place to protect the kernel space in the RAM. 
 
+### Summary 
+
+This table summarizes all the points above: 
+
+| Attempted action from user mode | Protected? | Mechanism |
+|---|---|---|
+| Branch/JMP into kernel space | Yes | PC31 cannot be set by branch or JMP |
+| Execute kernel instructions | Yes | PC31 stays 0; kernel code unreachable |
+| `LD` from kernel address | **No** | No EA masking in `LD` |
+| `ST` to kernel address | **No** | No EA masking in `ST` |
+| `LDR` resolving into kernel space | Partially | PC31 masked in EA calc, but only protects against accidentally landing in kernel space from supervisor-mode LDR |
+| Entering kernel mode voluntarily | Yes | Only exceptions set PC31 |
+
+Full `LD`/`ST` protection requires an MMU with page-level access control.
 
 
 ## [Synchronous Interrupt: Trap and Exception](https://www.youtube.com/watch?v=4pizOgCT11k&t=2120s)
