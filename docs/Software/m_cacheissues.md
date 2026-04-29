@@ -153,7 +153,7 @@ An NWSA cache is made up of  `N` DM caches, connected in a *parallel* fashion. T
 Given a write address `A`, we segment it into `K`-bits lower address (excluding the LSB `00`) and `T` bits upper address. We need to first find the **set** which this `K` bits belong to. That particular combination of `K`-bits lower address, its higher `T` bits `TAG` and its `Content` can be stored in **any** of the N cache lines in the **same** set.
 
 #### To Read
-Given a query address `A`, we will need to **wait** for the device to *decode* its last `K` bits and find the right set.  Then, the device will perform a **parallel** lookup operation for all `N` cache lines same set. The lookup operation to find the cache line with the right content is done using **bitwise-comparison** with the `T` bits of the query address.
+Given a query address `A`, we will need to **wait** for the device to *decode* its last `K` bits and find the right set.  Then, the device will perform a **parallel** lookup operation for all `N` cache lines in the same set. The lookup operation to find the cache line with the right content is done using **bitwise-comparison** with the `T` bits of the query address.
 
 
 ##  [Replacement Policies](https://www.youtube.com/watch?v=2OARjqLK4io&t=1069s)
@@ -233,7 +233,7 @@ The LRR is essentially implemented in hardware as a **pointer** containing the i
 #### Overhead
 An LRR replacement policy has comparably less overhead than LRU:	
 * We only need to know which is **oldest** cache line  in the device. 
-* If there are `N` items in the cache, we need  to have a pointer of size $$O(\log_2 N)$$ bits that can **remember** to the oldest cache line plus a simple (not as complex) logic unit to perform the LRR algorithm, that is to find the *next*
+* If there are `N` items in the cache, we need  to have a pointer of size $$O(\log_2 N)$$ bits that can **remember** to the oldest cache line plus a simple (not as complex) logic unit to perform the LRR algorithm, that is to find the *next* oldest cache line. 
 
 #### Example
 Suppose we have an FA cache of size `N=4`, and we request these addresses in sequence: `0x0004,0x000C,0x0C08,0x0004,0xFF00,0xAACC` at `t=0,1,2,3,4,5` respectively. Assume that we will always fill *empty* cache from the **smallest** index to the **largest** index.
