@@ -36,7 +36,7 @@ Consider the following diagram of a simple sequential circuit:
   
 The components labeled `CL1` and `CL2` are combinational and `R1` and `R2` are edge triggered flip flops. Timing parameters for each component are as shown in the figure (in ns). Answer both questions below:
 
-1. Suggest the values for each timing specifications: **ts**, **th**, **tcd** , **tcd** `CL2`, **tpd**, **tclk** (clock period) for the wholen system using the timing specifications of each of the internal components that are given in the figure. 
+1. Suggest the values for each timing specifications: **ts**, **th**, **tcd** , **tcd** `CL2`, **tpd**, **tclk** (clock period) for the whole system using the timing specifications of each of the internal components that are given in the figure. 
 
 	<div  cursor="pointer"  class="collapsible">Show Answer</div>  <div  class="content_answer">
 	<p>
